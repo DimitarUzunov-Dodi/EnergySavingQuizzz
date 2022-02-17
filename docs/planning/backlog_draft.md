@@ -39,9 +39,9 @@
 ## Could haves:
 22. Players can change their answer before the round timer runs out.
 23. Questions and answers can contain runtime-generated data (based on db records).
-* Questions and ansewers can be genarated during the runtime.
+* Questions and answers can be generated during the runtime.
 24. Inactive players are automatically kicked out of the match.
-* As a user I could be kicked out of the match automaticallyfor being inacvtive.
+* As a user I could be kicked out of the match automatically for being inactive.
 25. Players can see the all-time leaderboard when outside matches. (names my not be unique)
 * As a user I could see a record of the all-time best leaderboards when outside matches. 
 26. More jokers can be added to the game.
