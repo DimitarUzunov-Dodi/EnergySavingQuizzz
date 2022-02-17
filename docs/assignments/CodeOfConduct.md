@@ -42,7 +42,7 @@ We will meet each Tuesday before the TA meeting to have our sprint retrospective
 Decisions are made with a through discussion about each side and then a consensus. If it is not reached then the TA shall be asked to help.
 
 ## Dealing with conflicts: 
-Have a civilized discussion with each side explaining their points, if a consensus is not reached, ask a TA, if they cannot help, then a majority vote. If there is a draw then flip a coin.
+Have a civilized discussion with each side explaining their points, if a consensus is not reached, ask a TA, if they cannot help, then a majority vote. If there is a draw decide using random chance.
 
 ## Guidance:
 We expect guidance and feedback on collaboration and content, we expect help with organizatorial problems.
