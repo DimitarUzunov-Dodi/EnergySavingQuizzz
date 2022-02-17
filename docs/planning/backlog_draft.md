@@ -41,11 +41,15 @@
 18. Questions and answers should contain images along the text.
 * As a user, I see questions and answers that contain both images and text.
 19. While being in a room players are shown the player count and list.
+* As a user, while waiting in a room I can see a list containing the player count and names
 20. Players are shown the score table after every question.
+* As a user, after every question I can see a table containing all the users and their current scores.
 21. Some stats like answer accuracy and all-time score (sp/mp).
+* As a user, i can see stats about myself, like answer accuracy and all-time score
 
 ## Could haves:
 22. Players can change their answer before the round timer runs out.
+* As a user, i can change my answer before the round timer runs out. 
 23. Questions and answers can contain runtime-generated data (based on db records).
 * Questions and answers can be generated during the runtime.
 24. Inactive players are automatically kicked out of the match.
