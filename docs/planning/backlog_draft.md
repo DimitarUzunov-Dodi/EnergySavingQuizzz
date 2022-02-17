@@ -23,11 +23,15 @@
 13. Players can react with emoticons during each question round.
 14. Question data is stored in the database.
 15. Players are shown the correct answer and other people's answers at the end of each round.
+* As a user I am shown the correct answer as well as other players' answers at the end of each round.
 16. Players are shown the final score table at the end of the match.
+* As a user, I am shown the final score table at the end of each match.
 17. Singleplayer and multiplayer stats and score boards are separate.
+* As a user, I can access singleplayer and multiplayer stats separately.
 
 ## Should haves:
 18. Questions and answers should contain images along the text.
+* As a user, I see questions and answers that contain both images and text.
 19. While being in a room players are shown the player count and list.
 20. Players are shown the score table after every question.
 21. Some stats like answer accuracy and all-time score (sp/mp).
