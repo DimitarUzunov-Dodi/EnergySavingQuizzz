@@ -13,7 +13,7 @@ The application shall support at least [TBD] concurrent multiplayer games.
 As an user, I can choose my own display name before each game.
 
 4. **Joker cards**
-As a user, I have a set of one-time-use jokers per match that I can use before I answer which can give me an advantage in the qui
+As a user, I have a set of one-time-use jokers per match that I can use before I answer which can give me an advantage in the quiz.
 	- Decrease round duration for all other players by a certain percentage.
 	- Cross out one incorrect answer from the 3 available.
 	- Double the points gained from the current question.
