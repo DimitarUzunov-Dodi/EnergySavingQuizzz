@@ -13,6 +13,7 @@ Add your own name (do not add the names for others!) to the section below.
 | ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Your Name Here | Y.NameHere@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=ACC&length=4&size=100&color=FFFFF&background=ff8c00&font-size=0.400)| Alex Cazacu | a.c.cazacu@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=DSU&length=4&size=100&color=FFFFF&background=008000&font-size=0.400) | Dimitar Uzunov | D.S.Uzunov-1@student.tudelft.nl |
+| ![](https://secure.gravatar.com/avatar/a610540d973a99c2fe5c2a84e907d9dd?s=800&d=identicon) | Raul Cotar | rcotar@student.tudelft.nl |
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
 <!-- - Mention your *student* email address -->
