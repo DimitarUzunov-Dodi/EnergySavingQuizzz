@@ -15,9 +15,13 @@
 6. Players cannot join in the middle of the match.
 * As an user I cannot join an ongoing match.
 7. During a match players answer \~20 multiple choice question with 3 possible answers.
+* As a user, during the game I answer ~20 multiple choice question where each question contains 3 potential answers and only one correct.
 8. Question rounds are synchronised across all players in the same match.
+* As a user, I may be sure that all players get the same question at the same round and no two users can get different questions at the same round.
 9. Points are rewarded based on player response time and correctness.
+* As a user, I get my points based on the correctness on my answer and how fast it was given(in case it's the correct one).
 10. Question rounds are designed to make the game fast-paced.
+* As a user, I might be sure that if another player doesn't give an answer, the game wouldn't freeze, because for each round there is a timer.
 11. Players have a set of one-time use jokers available each match. (see list below)
 12. Players can use jokers after they gave an answer and before the round ends.
 13. Players can react with emoticons during each question round.
