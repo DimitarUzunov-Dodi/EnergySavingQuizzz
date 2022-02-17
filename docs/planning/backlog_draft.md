@@ -23,9 +23,13 @@
 10. Question rounds are designed to make the game fast-paced.
 * As a user, I might be sure that if another player doesn't give an answer, the game wouldn't freeze, because for each round there is a timer.
 11. Players have a set of one-time use jokers available each match. (see list below)
-12. Players can use jokers after they gave an answer and before the round ends.
+* As an user, I have a set of one-time use jokers per match which can give an advantage in the quiz
+12. Players can use jokers after new question is presented and the answer from user is given.
+* As an user, I can use one of the jokers before I gave the answer.
 13. Players can react with emoticons during each question round.
+* As an user, I can send a reaction with an emoji to everyone during each question
 14. Question data is stored in the database.
+* The application shall store questions in in the database.
 15. Players are shown the correct answer and other people's answers at the end of each round.
 * As a user I am shown the correct answer as well as other players' answers at the end of each round.
 16. Players are shown the final score table at the end of the match.
