@@ -9,44 +9,45 @@ The application shall be connected to a persistent database of TBD type using TB
 As an user, I can play a game alone or in multiplayer mode.
 The application shall support at least [TBD] concurrent multiplayer games.
 
-3. **Custom usernames**
-As an user, I can choose my own display name before each game.
-
-4. **Joker cards**
-As a user, I have a set of one-time-use jokers per match that I can use before I answer which can give me an advantage in the quiz.
-	- Decrease round duration for all other players by a certain percentage.
-	- Cross out one incorrect answer from the 3 available.
-	- Double the points gained from the current question.
-
-5. **Waiting room**
+3. **Waiting room**
 As an user, I can join a waiting area for a multiplayer game and I can start a match from the waiting area if there enough players.
-6. **Display answers**
+
+4. **Display answers**
 As a user I am shown the correct answer as well as other players' answers at the end of each round.
 
-7. **Rounds are synchronized**
+5. **Rounds are synchronized**
 As a user, I may be sure that all players get the same question at the same time and no two users can get different questions at the same round.
 
 ## Should have:
 
-8. **Inactivity kick**
+6. **Custom usernames**
+As an user, I can choose my own display name before each game.
+
+7. **Inactivity kick**
 As a user I could be kicked out of the match automatically for being inactive.
 
-9. **Player reactions**
-As a user, I can send a reaction with an emoji to everyone during each question.
-
-10. **Final score table**
+8. **Final score table**
 As a user, I am shown the final score table at the end of each match.
 
-11. **Can't join ongoing matches**
+9. **Can't join ongoing matches**
 As an user I cannot join an ongoing match.
 
-12. **Points are rewarded based on correctness and time**
+10. **Points are rewarded based on correctness and time**
 As a user, I get my points based on the correctness on my answer and how fast it was given (in case it's the correct one).
 
-13. **20 multiple choice questions**
+11. **~20 multiple choice questions**
 As a user, during the game, I answer ~20 multiple choice questions where each question contains 3 potential answers and only one correct.
 
 ## Could have:
+
+12. **Player reactions**
+As a user, I can send a reaction with an emoji to everyone during each question.
+
+13. **Joker cards**
+As a user, I have a set of one-time-use jokers per match that I can use before I answer which can give me an advantage in the quiz.
+	- Decrease round duration for all other players by a certain percentage.
+	- Cross out one incorrect answer from the 3 available.
+	- Double the points gained from the current question.
 
 14. **Runtime-generated content**
 The application can generate questions and answers at runtime using data from the db.
@@ -57,7 +58,7 @@ As a user I can see a record of the all-time best leaderboards when outside matc
 16. **Additional jokers**
 The application could support more jokers which could be added later in development.
 
-17. **Sp and Mp stats and scores**
+17. **All-time Sp and Mp stats and scores**
 As a user, I can access singleplayer and multiplayer stats separately.
 
 18. **Text and images for questions and answers**
