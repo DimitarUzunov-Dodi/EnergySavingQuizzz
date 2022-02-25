@@ -12,7 +12,7 @@ In this course we want to improve our teaworking and technical skills. At the en
 Every team member wishes to achieve a grade of 8 or higher in this course.
 
 ## Products:
-The code will be delivered on GitLab, including documents. The relevant assignments will be submitted on brightspace. The code submitted must pass a set of TBD Checkstyle rules. The code shall have a reasonable line coverage in testing. 
+The code will be delivered on GitLab, including documents. The relevant assignments will be submitted on brightspace. The code submitted must pass a set of TBD Checkstyle rules. The code shall have at least 80% line coverage in testing. 
 
 To contribute in an organized manner, team members shall branch from 'develop'. Each issue shall have a single branch and work shall be committed only in that branch. After the issue is solved, pipelines passes and code achieves the quality standards detailed in this document, a merge request into 'develop' shall be created. After at least two other team members review the changes, the merge request shall be approved, merged and the source branch deleted. Each Sunday the code contributed by the team shall be merged into main. 
 
@@ -44,13 +44,15 @@ The chairs must submit their agendas on time, and the minute takers should have 
 ## Meetings:
 We will meet each Tuesday before the TA meeting to have our sprint retrospective and planning. To prepare for this meeting everyone should have all of their issues merged on main before Sunday. On Thursday we will be available the whole working day and we will update each other on progress or shortfalls.
 
+If 2 or more teammates cannot attend a meeting it will be rescheduled as soon as possible.
+
 Emergency meetings can be held on weekends, if they are necessary.
 
 ## Decision-making:
 Decisions are made with a through discussion about each side and then a consensus. If it is not reached then the TA shall be asked to help.
 
 ## Dealing with conflicts: 
-Have a civilized discussion with each side explaining their points, if a consensus is not reached, ask a TA, if they cannot help, then a majority vote. If there is a draw decide using random chance.
+Have a civilized, thorough discussion about the point of the disagreement. Go through all arguments for each side and try to reach a consensus. If that does not seem feasible, ask a TA, if they cannot help, then a majority vote. If there is a draw decide using random chance.
 
 ## Guidance:
 We expect guidance and feedback on collaboration and content, we expect help with organizatorial problems.
