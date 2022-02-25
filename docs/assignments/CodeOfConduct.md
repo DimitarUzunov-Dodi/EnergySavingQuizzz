@@ -4,15 +4,19 @@ In a Code of Conduct you discuss with each other what you expect from each other
 
 
 ## Assignment description:
-As a team, deliver a quiz game in the proposed timeframe using the required frameworks.
+As a team, deliver a quiz game about energy in the proposed timeframe using the required frameworks. The game can be played in singleplayer or multiplayer mode and consists of 20 multiple choice questions picked randomly from a question pool.
 
 ## Target or ambition level:
+In this course we want to improve our teaworking and technical skills. At the end we want to be more proeficient in a team setting and have a good grasp on Spring and JavaFX.
+
 Every team member wishes to achieve a grade of 8 or higher in this course.
 
 ## Products:
 The code will be delivered on GitLab, including documents. The relevant assignments will be submitted on brightspace. The code submitted must pass a set of TBD Checkstyle rules. The code shall have a reasonable line coverage in testing. 
 
 To contribute in an organized manner, team members shall branch from 'develop'. Each issue shall have a single branch and work shall be committed only in that branch. After the issue is solved, pipelines passes and code achieves the quality standards detailed in this document, a merge request into 'develop' shall be created. After at least two other team members review the changes, the merge request shall be approved, merged and the source branch deleted. Each Sunday the code contributed by the team shall be merged into main. 
+
+The other assignments shall be uploaded on Brightspace by the chair for that sprint.
 
 
 ## Planning:
@@ -23,6 +27,8 @@ The team shall abide by 'Agile practices'. Each sprint shall be from Tuesday aft
 Each issue is a team member's own responsibility.
 
 Pair programming may be used, but is discouraged for each team member's sake, due the way code contributions are counted in this course.
+
+Regarding all the work created by the team, code or assignment, every team member should work on every part.
 
 ## Behavior: 
 Team members are expected to treat eachother with respect. The way disagreements will be handled is clarified below. If someone is more than 5 minutes late, they shall bring something sweet, maybe cake, to the next meeting. The cake requirement is stackable.
@@ -36,7 +42,9 @@ Each piece of code merged must not fail the pipeline, must be reasonably tested 
 The chairs must submit their agendas on time, and the minute takers should have at least one bullet point for each important matter discussed by the TA.
 
 ## Meetings:
-We will meet each Tuesday before the TA meeting to have our sprint retrospective and planning. On Thursday we will be available the whole working day and we will update each other on progress or shortfalls.
+We will meet each Tuesday before the TA meeting to have our sprint retrospective and planning. To prepare for this meeting everyone should have all of their issues merged on main before Sunday. On Thursday we will be available the whole working day and we will update each other on progress or shortfalls.
+
+Emergency meetings can be held on weekends, if they are necessary.
 
 ## Decision-making:
 Decisions are made with a through discussion about each side and then a consensus. If it is not reached then the TA shall be asked to help.
