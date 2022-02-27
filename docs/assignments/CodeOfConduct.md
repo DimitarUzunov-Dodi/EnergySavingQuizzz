@@ -4,7 +4,7 @@ In a Code of Conduct you discuss with each other what you expect from each other
 
 
 ## Assignment description:
-As a team, deliver a quiz game about energy in the proposed timeframe using the required frameworks. The game can be played in singleplayer or multiplayer mode and consists of 20 multiple choice questions picked randomly from a question pool.
+As a team, deliver a quiz game about energy in the proposed timeframe using the required frameworks. The game can be played in singleplayer or multiplayer mode and consists of 20 multiple choice questions picked randomly from a question pool. The quiz might have its own features such as jokers, timer, leaderboards and others that make the game more exciting and pleasurable to play.
 
 ## Target or ambition level:
 In this course we want to improve our teaworking and technical skills. At the end we want to be more proeficient in a team setting and have a good grasp on Spring and JavaFX.
@@ -34,7 +34,7 @@ Regarding all the work created by the team, code or assignment, every team membe
 Team members are expected to treat eachother with respect. The way disagreements will be handled is clarified below. If someone is more than 5 minutes late, they shall bring something sweet, maybe cake, to the next meeting. The cake requirement is stackable.
 
 ## Communication:
-The main platforms for communication are going to be Discord and Whatsapp. Team members are expected to be available on Thurdays from 10pm to 6pm to help other teammates. Helping is greatly encouraged! 
+The main platforms for communication are going to be Discord and Whatsapp. Team members are expected to be available on Thurdays from 10pm to 6pm to help other teammates. Communication with the TA happens on the Mattermost platform and during on-campus meetings. Helping is greatly encouraged!
 
 ## Commitment:
 Each piece of code merged must not fail the pipeline, must be reasonably tested and must pass Checkstyle.
