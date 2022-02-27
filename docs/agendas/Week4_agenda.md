@@ -21,7 +21,7 @@
 
 * 17:15     **Endpoints feedback**
 
-* 17:20     **Question Round**
+* 17:20     **Question Round (see questions below)**
 
 * 17:30     **Summary & action points** – Who, what, when?
 
@@ -29,5 +29,5 @@
 
 * 17:44     **Closure**
 
-## TA meeting notes
-tbd
+### Questions
+- do we want user authentication?
