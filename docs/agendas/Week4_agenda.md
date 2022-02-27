@@ -13,19 +13,19 @@
 
 * 16:45     **Opening by chair**
 
-* 16:50     **Check-in with teammates**
+* 16:50     **Check-in with teammates** check if everyone has looked into spring and javafx, check availability
 
-* 17:00     **Backlog feedback**
+* 17:00     **Check Backlog** discuss differences between ours and the official
 
 * 17:10     **Code of Conduct**
 
-* 17:15     **Endpoints feedback**
+* 17:15     **Endpoints feedback** is it enough/correct?
 
-* 17:20     **Question Round (see questions below)**
+* 17:20     **Question Round** (see questions below)
 
-* 17:30     **Summary & action points** – Who, what, when?
+* 17:30     **Summary & action points** – Who, what, when, if?
 
-* 17:40     **Feedback Round**
+* 17:40     **Feedback Round** Is everything going smoothly between us?
 
 * 17:44     **Closure**
 
