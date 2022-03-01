@@ -12,6 +12,6 @@ public class SomeController {
     @GetMapping("/")
     @ResponseBody
     public String index() {
-        return "Hello world! This is an example";
+        return "This string is hardcoded in .../server/SomeController.java";
     }
 }
