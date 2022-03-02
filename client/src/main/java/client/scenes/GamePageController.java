@@ -12,10 +12,10 @@ import java.util.ResourceBundle;
 
 public class GamePageController implements Initializable {
 
-    /*
+
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-*/
+
     @FXML
     private ListView<String> Leaderboard_list;
 
@@ -24,14 +24,15 @@ public class GamePageController implements Initializable {
 
     String[] names = {"foo", "bar", "test"};
 
-  /*  @Inject
-    public GamePageCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    @Inject
+    public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
-   */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         Leaderboard_list.getItems().addAll(names);
     }
 
