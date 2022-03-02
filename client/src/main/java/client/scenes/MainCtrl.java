@@ -26,16 +26,18 @@ public class MainCtrl {
 
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
-
+    private Scene gamePage;
     private AddQuoteCtrl addCtrl;
+    private GamePageController gamePageController;
     private Scene add;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+            Pair<AddQuoteCtrl, Parent> add, Pair<GamePageController, Parent> GamePage) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
-
+        this.gamePageController = GamePage.getKey();
+        this.gamePage = new Scene(GamePage.getValue());
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
