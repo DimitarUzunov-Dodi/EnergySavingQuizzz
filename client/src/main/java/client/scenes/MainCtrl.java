@@ -41,7 +41,7 @@ public class MainCtrl {
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
-        showOverview();
+        showGamePage();
         primaryStage.show();
     }
 
@@ -54,6 +54,11 @@ public class MainCtrl {
     public void showAdd() {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
+        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+    public void showGamePage() {
+        primaryStage.setTitle("gamePage");
+        primaryStage.setScene(gamePage);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 }

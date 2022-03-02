@@ -17,10 +17,9 @@ public class GamePageController implements Initializable {
     private final MainCtrl mainCtrl;
 
     @FXML
-    private ListView<String> Leaderboard_list;
+    private ListView<String> currentLeaderboard;
 
-    @FXML
-    private Label Leaderboard_label;
+
 
     String[] names = {"foo", "bar", "test"};
 
@@ -33,7 +32,12 @@ public class GamePageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        Leaderboard_list.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
     }
 
 
