@@ -1,7 +1,5 @@
 package commons;
 
-import javax.persistence.GenerationType;
-
 import static javax.persistence.GenerationType.*;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
