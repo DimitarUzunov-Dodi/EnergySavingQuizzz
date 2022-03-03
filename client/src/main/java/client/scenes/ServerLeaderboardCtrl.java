@@ -1,7 +1,7 @@
 package client.scenes;
 
 import com.google.inject.Inject;
-import commons.ServerLeaderboardEntry;
+import commons.LeaderboardEntry;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,13 +16,13 @@ public class ServerLeaderboardCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     @FXML
-    private TableView<ServerLeaderboardEntry> table;
+    private TableView<LeaderboardEntry> table;
     @FXML
-    private TableColumn<ServerLeaderboardEntry, String> colUsername;
+    private TableColumn<LeaderboardEntry, String> colUsername;
     @FXML
-    private TableColumn<ServerLeaderboardEntry, String> colGamesPlayed;
+    private TableColumn<LeaderboardEntry, String> colGamesPlayed;
     @FXML
-    private TableColumn<ServerLeaderboardEntry, String> colScore;
+    private TableColumn<LeaderboardEntry, String> colScore;
 
     @Inject
     public ServerLeaderboardCtrl(MainCtrl mainCtrl) {
