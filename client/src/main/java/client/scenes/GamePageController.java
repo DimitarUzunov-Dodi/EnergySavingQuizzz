@@ -24,10 +24,9 @@ public class GamePageController implements Initializable {
     private Parent root;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private int playerScore;
 
-    //an example to use until a proper point calculation is implemented
-    private int placeholderPoints = 10;
+
+
 
     @FXML
     private ListView<String> currentLeaderboard;
@@ -53,9 +52,7 @@ public class GamePageController implements Initializable {
         currentLeaderboard.getItems().addAll(names);
     }
 
-    public void UpdatePlayerScore(int points) {
-        playerScore += points;
-    }
+
     public void SwitchToGameScene(ActionEvent event) throws IOException {
     mainCtrl.showOverview();
 
