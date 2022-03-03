@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" style="-fx-min-height: 500;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.SplashCtrl">
   <columnConstraints>
       <ColumnConstraints />
@@ -88,7 +87,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField id="nicknameField" alignment="CENTER" promptText="Your name" GridPane.columnIndex="1" />
+                  <TextField id="nicknameField" alignment="CENTER" onKeyTyped="#saveNickname" promptText="Your name" GridPane.columnIndex="1" />
                   <Label text="Hi" />
                </children>
             </GridPane>

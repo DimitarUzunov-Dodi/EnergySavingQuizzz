@@ -26,9 +26,7 @@ import com.google.inject.Injector;
 
 import client.scenes.MainCtrl;
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 public class Main extends Application {
 
