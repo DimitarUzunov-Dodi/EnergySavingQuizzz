@@ -38,6 +38,8 @@ public class MainCtrl {
         this.settingsCtrl = settingsScreen.getKey();
         this.settings = new Scene(settingsScreen.getValue());
 
+        this.splashCtrl.initTextField(splash);
+
         showSplashScreen();
         primaryStage.show();
     }
