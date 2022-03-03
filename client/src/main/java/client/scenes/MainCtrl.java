@@ -27,19 +27,22 @@ public class MainCtrl {
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
     private Scene gamePage;
+    private Scene dummy;
     private AddQuoteCtrl addCtrl;
     private GamePageController gamePageController;
+    private DummyController dummyController;
     private Scene add;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair<GamePageController, Parent> GamePage) {
+            Pair<DummyController, Parent> dummy, Pair<GamePageController, Parent> GamePage) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
         this.gamePageController = GamePage.getKey();
         this.gamePage = new Scene(GamePage.getValue());
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
+        this.dummyController = dummy.getKey();
+        this.dummy = new Scene(dummy.getValue());
+
 
         showGamePage();
         primaryStage.show();
@@ -50,15 +53,20 @@ public class MainCtrl {
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
+    public void showDummy() {
+        primaryStage.setTitle("Quotes: Dummy");
+        primaryStage.setScene(dummy);
+      //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
 
     public void showAdd() {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+      //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -24,5 +25,6 @@
       <Circle fx:id="emoji1" fill="#1fff69" layoutX="422.0" layoutY="27.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="emoji2" fill="#ff371f" layoutX="457.0" layoutY="27.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="emoji3" fill="DODGERBLUE" layoutX="493.0" layoutY="27.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+      <Button layoutX="246.0" layoutY="27.0" mnemonicParsing="false" onAction="#SwitchToGameScene" text="Switch to dummy" />
    </children>
 </AnchorPane>
