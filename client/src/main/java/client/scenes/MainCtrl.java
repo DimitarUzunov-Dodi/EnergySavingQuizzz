@@ -24,34 +24,37 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+    private SplashCtrl splashCtrl;
+    private Scene splash;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
+    private SettingsCtrl settingsCtrl;
+    private Scene settings;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen) {
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+        this.splashCtrl = splashScreen.getKey();
+        this.splash = new Scene(splashScreen.getValue());
 
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
+        this.settingsCtrl = settingsScreen.getKey();
+        this.settings = new Scene(settingsScreen.getValue());
 
-        showOverview();
+        this.splashCtrl.initTextField(splash);
+
+        showSplashScreen();
         primaryStage.show();
     }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+    public void showSplashScreen() {
+        primaryStage.setTitle("Splash screen");
+        primaryStage.setScene(splash);
     }
 
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    public void showSettingsScreen() {
+        primaryStage.setTitle("Settings screen");
+        primaryStage.setScene(settings);
+    }
+
+    public Scene getSplashScreenScene(){
+        return this.splash;
     }
 }
