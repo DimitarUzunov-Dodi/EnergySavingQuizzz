@@ -15,6 +15,19 @@
  */
 package client.scenes;
 
+import static com.google.inject.Guice.createInjector;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import client.MyModule;
+import client.scenes.ServerLeaderboardCtrl;
+import com.google.inject.Injector;
+
+import client.scenes.MainCtrl;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,5 +44,11 @@ public class MainCtrlTest {
     public void writeSomeTests() {
         // TODO create replacement objects and write some tests
         // sut.initialize(null, null, null);
+    }
+
+    @Test
+    public void testShowServerLeaderboard() {
+        sut.showServerLeaderboard();
+        //assertEquals(sut.getCurrentScene().getClass())
     }
 }
