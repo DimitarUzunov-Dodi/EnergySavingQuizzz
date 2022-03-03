@@ -20,12 +20,15 @@ import static com.google.inject.Guice.createInjector;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import client.scenes.SettingsCtrl;
 import client.scenes.SplashCtrl;
 import com.google.inject.Injector;
 
 import client.scenes.MainCtrl;
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class Main extends Application {
 
@@ -40,8 +43,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         var splash = FXML.load(SplashCtrl.class, "client", "scenes", "SplashScreen.fxml");
-
+        var settings = FXML.load(SettingsCtrl.class, "client", "scenes", "SettingsScreen.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, splash);
+        mainCtrl.initialize(primaryStage, splash, settings);
     }
 }

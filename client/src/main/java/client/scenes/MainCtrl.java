@@ -27,10 +27,16 @@ public class MainCtrl {
     private SplashCtrl splashCtrl;
     private Scene splash;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen) {
+    private SettingsCtrl settingsCtrl;
+    private Scene settings;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen) {
         this.primaryStage = primaryStage;
         this.splashCtrl = splashScreen.getKey();
         this.splash = new Scene(splashScreen.getValue());
+
+        this.settingsCtrl = settingsScreen.getKey();
+        this.settings = new Scene(settingsScreen.getValue());
 
         showSplashScreen();
         primaryStage.show();
@@ -39,5 +45,14 @@ public class MainCtrl {
     public void showSplashScreen() {
         primaryStage.setTitle("Splash screen");
         primaryStage.setScene(splash);
+    }
+
+    public void showSettingsScreen() {
+        primaryStage.setTitle("Settings screen");
+        primaryStage.setScene(settings);
+    }
+
+    public Scene getSplashScreenScene(){
+        return this.splash;
     }
 }
