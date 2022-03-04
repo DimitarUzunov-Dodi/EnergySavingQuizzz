@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+import static client.scenes.UserAlert.userAlert;
+
 
 public class SplashCtrl {
 
@@ -63,7 +65,7 @@ public class SplashCtrl {
                 this.setNickname(username);
 
             } catch (FileNotFoundException e) {
-                // TODO: Add error message
+                userAlert("ERROR", "Error while getting username", "Error occurred while trying to get a username from a file.");
                 e.printStackTrace();
             }
         }
@@ -72,7 +74,7 @@ public class SplashCtrl {
                 Files.createDirectories(Paths.get(pathToUserData));
                 userData.createNewFile();
             } catch (IOException e) {
-                // TODO: Add error message
+                userAlert("ERROR", "Error while getting username", "Error occurred while trying to create a file for storing username.");
                 e.printStackTrace();
             }
         }
@@ -92,7 +94,7 @@ public class SplashCtrl {
                 fWriter.print(nicknameString);
                 fWriter.close();
             } catch (IOException e) {
-                // TODO: Add error message
+                userAlert("ERROR", "Error while saving username", "Error occurred while trying to save username to file.");
                 e.printStackTrace();
             }
         }
@@ -104,7 +106,7 @@ public class SplashCtrl {
                 fWriter.print(nicknameString);
                 fWriter.close();
             } catch (IOException e) {
-                // TODO: Add error message
+                userAlert("ERROR", "Error while saving username", "Error occurred while trying to create a file for storing username.");
                 e.printStackTrace();
             }
         }
