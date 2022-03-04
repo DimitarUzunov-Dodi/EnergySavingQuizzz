@@ -1,6 +1,5 @@
 package client.scenes;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 
 public class UserAlert {
