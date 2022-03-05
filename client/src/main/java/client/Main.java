@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 
 import client.scenes.SettingsCtrl;
 import client.scenes.SplashCtrl;
+import client.scenes.ServerLeaderboardCtrl;
 import com.google.inject.Injector;
 
 import client.scenes.MainCtrl;
@@ -39,10 +40,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
         var splash = FXML.load(SplashCtrl.class, "client", "scenes", "SplashScreen.fxml");
         var settings = FXML.load(SettingsCtrl.class, "client", "scenes", "SettingsScreen.fxml");
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, splash, settings);
+        var serverLeaderboard = FXML.load(ServerLeaderboardCtrl.class, "client", "scenes", "ServerLeaderboard.fxml");
+
+        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard);
     }
 }

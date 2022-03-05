@@ -1,24 +1,11 @@
-/*
- * Copyright 2021 Delft University of Technology
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package client.scenes;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.util.Objects;
 
 public class MainCtrl {
 
@@ -30,31 +17,59 @@ public class MainCtrl {
     private SettingsCtrl settingsCtrl;
     private Scene settings;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen) {
+    private ServerLeaderboardCtrl serverLeaderboardCtrl;
+    private Scene serverLeaderboardScn;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen,
+                           Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard) {
+        // primary stage
         this.primaryStage = primaryStage;
+        this.primaryStage.setMinWidth(700);
+        this.primaryStage.setMinHeight(450);
+
+        // splash scene
         this.splashCtrl = splashScreen.getKey();
         this.splash = new Scene(splashScreen.getValue());
 
+        // settings scene
         this.settingsCtrl = settingsScreen.getKey();
         this.settings = new Scene(settingsScreen.getValue());
 
-        this.splashCtrl.initTextField(splash);
+        // server leaderboard scene
+        this.serverLeaderboardCtrl = serverLeaderboard.getKey();
+        this.serverLeaderboardScn = new Scene(serverLeaderboard.getValue());
+        serverLeaderboardScn.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/ServerLeaderboard.css")).toExternalForm());
 
         showSplashScreen();
+        //showServerLeaderboard(); // for testing only
         primaryStage.show();
     }
 
     public void showSplashScreen() {
-        primaryStage.setTitle("Splash screen");
+        splashCtrl.initTextField(splash);
+        primaryStage.setTitle("Splash Screen");
         primaryStage.setScene(splash);
     }
 
     public void showSettingsScreen() {
-        primaryStage.setTitle("Settings screen");
+        primaryStage.setTitle("Settings Screen");
         primaryStage.setScene(settings);
     }
 
-    public Scene getSplashScreenScene(){
+    /**
+     * Display server leaderboard and refresh table
+     */
+    public void showServerLeaderboard() {
+        primaryStage.setTitle("Server Leaderboard");
+        primaryStage.setScene(serverLeaderboardScn);
+        serverLeaderboardCtrl.refresh();
+    }
+
+    public Scene getCurrentScene() {
+        return primaryStage.getScene();
+    }
+
+    public Scene getSplashScreenScene() {
         return this.splash;
     }
 }

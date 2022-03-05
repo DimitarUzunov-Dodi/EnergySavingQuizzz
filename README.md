@@ -24,6 +24,23 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## How to run it
 
+## How to connect to the database
+
+* Open PGAdmin
+* Create a new server
+* Use the following credentials
+
+```
+username = doadmin
+password = C9fxievExhPqJ8H6
+host = db-postgresql-ams3-87857-do-user-10980855-0.b.db.ondigitalocean.com
+port = 25061
+database = serverdbpool
+sslmode = require
+```
+
+* Congrats!
+
 ## How to contribute to it
 
 ## Copyright / License (opt.)
