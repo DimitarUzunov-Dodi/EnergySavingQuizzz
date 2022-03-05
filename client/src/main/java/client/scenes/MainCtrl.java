@@ -46,7 +46,7 @@ public class MainCtrl {
     }
 
     public void showSplashScreen() {
-        splashCtrl.initTextField(splash);
+        splashCtrl.initTextField();
         primaryStage.setTitle("Splash Screen");
         primaryStage.setScene(splash);
     }

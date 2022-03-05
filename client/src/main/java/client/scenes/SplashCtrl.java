@@ -47,37 +47,14 @@ public class SplashCtrl {
 
     /**
      * Function initializes nickname TextField in SplashScreen scene
-     * @param splash Scene of SplashScreen that contains a TextField for inputting username
      */
-    public void initTextField(Scene splash) {
+    public void initTextField() {
         File userData = new File(pathToUserData + fileName);
-        if(userData.exists()) {
-            try {
-                String username = "";
+        TextField usernameField = (TextField) mainCtrl.getSplashScreenScene().lookup("#nicknameField");
 
-                Scanner userNameScanner = new Scanner(userData);
-
-                if(userNameScanner.hasNextLine())
-                    username = userNameScanner.nextLine();
-
-                TextField usernameField = (TextField) splash.lookup("#nicknameField");
-                usernameField.setText(username);
-                this.setNickname(username);
-
-            } catch (FileNotFoundException e) {
-                userAlert("ERROR", "Error while getting username", "Error occurred while trying to get a username from a file.");
-                e.printStackTrace();
-            }
-        }
-        else {
-            try {
-                Files.createDirectories(Paths.get(pathToUserData));
-                userData.createNewFile();
-            } catch (IOException e) {
-                userAlert("ERROR", "Error while getting username", "Error occurred while trying to create a file for storing username.");
-                e.printStackTrace();
-            }
-        }
+        String username = readNickname(userData);
+        usernameField.setText(username);
+        this.setNickname(username);
     }
 
     /**
@@ -88,6 +65,27 @@ public class SplashCtrl {
         File userData = new File(pathToUserData + fileName);
         TextField usernameField = (TextField) mainCtrl.getSplashScreenScene().lookup("#nicknameField");
         String nicknameString = usernameField.getText();
+        writeNickname(userData, nicknameString);
+    }
+
+    /**
+     * Get method for nickname attribute, so nickname can be accessed everywhere by every client function
+     * Subject to change, because to the best thing to import SplashCtrl everytime. Maybe we should add function somewhere in common class
+     * @return
+     */
+    public String getNickname() {
+        return nickname;
+    }
+
+    /**
+     * Set method for nickname attribute
+     * @param nickname String value which is going to be assigned to nickname class attribute but will not be saved in file
+     */
+    private void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    private void writeNickname(File userData, String nicknameString) {
         if(userData.exists()) {
             try {
                 PrintWriter fWriter = new PrintWriter(userData);
@@ -112,20 +110,30 @@ public class SplashCtrl {
         }
     }
 
-    /**
-     * Get method for nickname attribute, so nickname can be accessed everywhere by every client function
-     * Subject to change, because to the best thing to import SplashCtrl everytime. Maybe we should add function somewhere in common class
-     * @return
-     */
-    public String getNickname() {
-        return nickname;
-    }
+    private String readNickname(File userData) {
+        String username = "";
+        if(userData.exists()) {
+            try {
+                Scanner userNameScanner = new Scanner(userData);
 
-    /**
-     * Set method for nickname attribute
-     * @param nickname String value which is going to be assigned to nickname class attribute but will not be saved in file
-     */
-    private void setNickname(String nickname) {
-        this.nickname = nickname;
+                if(userNameScanner.hasNextLine())
+                    username = userNameScanner.nextLine();
+
+            } catch (FileNotFoundException e) {
+                userAlert("ERROR", "Error while getting username", "Error occurred while trying to get a username from a file.");
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                Files.createDirectories(Paths.get(pathToUserData));
+                userData.createNewFile();
+            } catch (IOException e) {
+                userAlert("ERROR", "Error while getting username", "Error occurred while trying to create a file for storing username.");
+                e.printStackTrace();
+            }
+        }
+
+        return username;
     }
 }
