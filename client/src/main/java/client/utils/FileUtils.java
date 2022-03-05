@@ -16,7 +16,45 @@ public class FileUtils {
     private static final String fileName = "UserData.userdata";
 
     private static final File defaultUserData = new File(pathToUserData + fileName);
-    
+
+    /**
+     * Default function to saving nickname to a defaultUserData file
+     * @param nicknameString - nickname
+     */
+    public static void writeNickname(String nicknameString) {
+        writeNickname(defaultUserData, nicknameString);
+    }
+
+    /**
+     * Custom function for saving nickname to a specified file
+     * @param userData - user file for storing the nickname
+     * @param nicknameString - nickname
+     */
+    public static void writeNickname(File userData, String nicknameString) {
+        if(userData.exists()) {
+            try {
+                PrintWriter fWriter = new PrintWriter(userData);
+                fWriter.print(nicknameString);
+                fWriter.close();
+            } catch (IOException e) {
+                userAlert("ERROR", "Error while saving username", "Error occurred while trying to save username to file.");
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                Files.createDirectories(Paths.get(pathToUserData));
+                userData.createNewFile();
+                PrintWriter fWriter = new PrintWriter(userData);
+                fWriter.print(nicknameString);
+                fWriter.close();
+            } catch (IOException e) {
+                userAlert("ERROR", "Error while saving username", "Error occurred while trying to create a file for storing username.");
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Method for reading nickname from default file
      * @return nickname read from a default user file
