@@ -20,11 +20,17 @@ import static com.google.inject.Guice.createInjector;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+
+import client.scenes.*;
 import com.google.inject.Injector;
 
-import client.scenes.AddQuoteCtrl;
+import client.scenes.SettingsCtrl;
+import client.scenes.SplashCtrl;
+import client.scenes.ServerLeaderboardCtrl;
+import com.google.inject.Injector;
+
 import client.scenes.MainCtrl;
-import client.scenes.QuoteOverviewCtrl;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -34,16 +40,24 @@ public class Main extends Application {
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-        launch();
+        launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-
-        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
-        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add);
+
+
+       
+        var gamePage = FXML.load(GamePageController.class, "client", "scenes", "GameScreen.fxml");
+        var dummyPage = FXML.load(DummyController.class, "client", "scenes", "DummyScene.fxml");
+      
+
+        var splash = FXML.load(SplashCtrl.class, "client", "scenes", "SplashScreen.fxml");
+        var settings = FXML.load(SettingsCtrl.class, "client", "scenes", "SettingsScreen.fxml");
+        var serverLeaderboard = FXML.load(ServerLeaderboardCtrl.class, "client", "scenes", "ServerLeaderboard.fxml");
+
+        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage);
+
     }
 }
