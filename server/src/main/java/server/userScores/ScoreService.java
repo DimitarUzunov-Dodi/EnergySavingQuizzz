@@ -1,14 +1,17 @@
 package server.userScores;
 
+import commons.ScoreRecord;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ScoreService {
 
-    private final ScoreRecordRepository ScoreRecordRepository;
+    private final ScoreRecordRepository scoreRecordRepository;
 
     public ScoreService(server.userScores.ScoreRecordRepository scoreRecordRepository) {
-        ScoreRecordRepository = scoreRecordRepository;
+        this.scoreRecordRepository = scoreRecordRepository;
     }
 
     /**
@@ -18,9 +21,15 @@ public class ScoreService {
      */
     void addScore(String nickname, int score) {
 
-        var existingRecord = ScoreRecordRepository.findById(nickname).get();
-        existingRecord.setScore(existingRecord.getScore() + score);
-        ScoreRecordRepository.save(existingRecord);
+        var existingRecord = scoreRecordRepository.findById(nickname);
+        if(!existingRecord.isPresent()){
+           existingRecord = Optional.of(new ScoreRecord(nickname,0));
+        }
+        var finalScoreRecord =existingRecord.get();
+
+        finalScoreRecord.setScore(finalScoreRecord.getScore() + score);
+        scoreRecordRepository.save(finalScoreRecord);
+
     }
 
 
