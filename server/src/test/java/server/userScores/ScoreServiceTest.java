@@ -12,7 +12,7 @@ class ScoreServiceTest {
     @Autowired
     private ScoreRecordRepository repository;
 
-
+/*
     @Test
     @Transactional
     void addScoreTest1() {
@@ -30,5 +30,5 @@ class ScoreServiceTest {
         var scoreRecord = repository.findById("Bob");
         assertTrue(scoreRecord.get().getScore() == 20);
     }
-
+*/
 }

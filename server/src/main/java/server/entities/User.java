@@ -1,12 +1,20 @@
 package server.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "user_score")
 public class User {
 
     @Id
+    @Column(name = "username")
     private String username;
+    @Column(name = "game_code")
     private String gameCode;
+    @Column(name = "score")
     private int score;
 
     public User() {
