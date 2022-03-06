@@ -51,10 +51,7 @@ public class GamePageController implements Initializable {
     }
 
 
-    public void SwitchToGameScene(ActionEvent event) throws IOException {
-    mainCtrl.showOverview();
 
-    }
 
 
 

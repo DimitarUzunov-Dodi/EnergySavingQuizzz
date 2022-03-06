@@ -11,7 +11,7 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-<<<<<<< client/src/main/java/client/scenes/MainCtrl.java
+
 
 
     private Scene gamePage;
@@ -59,7 +59,7 @@ public class MainCtrl {
 
         showSplashScreen();
         //showServerLeaderboard(); // for testing only
->>>>>>> client/src/main/java/client/scenes/MainCtrl.java
+
         primaryStage.show();
     }
 
@@ -92,19 +92,15 @@ public class MainCtrl {
       //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
-<<<<<<< client/src/main/java/client/scenes/MainCtrl.java
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-      //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-    }
+
+
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
-=======
+    }
     public Scene getSplashScreenScene() {
         return this.splash;
->>>>>>> client/src/main/java/client/scenes/MainCtrl.java
+
     }
 }

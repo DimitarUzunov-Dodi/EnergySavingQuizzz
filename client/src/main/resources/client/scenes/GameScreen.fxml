@@ -57,6 +57,6 @@
             </Button>
          </children>
       </GridPane>
-      <Button mnemonicParsing="false" onAction="#SwitchToGameScene" text="Switch to dummy" />
+      <Button mnemonicParsing="false" text="Switch to dummy" />
    </children>
 </GridPane>
