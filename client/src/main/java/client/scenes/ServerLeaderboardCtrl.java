@@ -1,19 +1,27 @@
 package client.scenes;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
+
+import client.utils.ServerUtils;
 import commons.LeaderboardEntry;
+
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class ServerLeaderboardCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
+	private final ServerUtils server;
+
+	private ObservableList<LeaderboardEntry> data;
 
     @FXML
     private TableView<LeaderboardEntry> table;
@@ -25,8 +33,9 @@ public class ServerLeaderboardCtrl implements Initializable {
     private TableColumn<LeaderboardEntry, String> colScore;
 
     @Inject
-    public ServerLeaderboardCtrl(MainCtrl mainCtrl) {
+    public ServerLeaderboardCtrl(MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
+        this.server = server;
     }
 
     @Override
@@ -37,12 +46,15 @@ public class ServerLeaderboardCtrl implements Initializable {
     }
 
     public void refresh() {
-        // TODO: refresh table data
-        System.out.println("Refreshing table...");
+        new Thread(() -> {
+            System.out.println("Refreshing server leaderboard table...");
+            data = FXCollections.observableList(server.getServerLeaderboard());
+            table.setItems(data);
+            System.out.println("Populated table with "+data.size()+" entries.");
+        }).start();
     }
 
     public void onBackButton() {
-        //mainCtrl.showSplash();
-        System.out.println("User pressed the back button.");
+        mainCtrl.showSplashScreen();
     }
 }

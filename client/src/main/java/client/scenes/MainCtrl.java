@@ -11,16 +11,11 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-
-
-
     private Scene gamePage;
     private Scene dummy;
     private GamePageController gamePageController;
     private DummyController dummyController;
 
-
-   
     private SplashCtrl splashCtrl;
     private Scene splash;
 
@@ -58,9 +53,8 @@ public class MainCtrl {
         this.serverLeaderboardScn = new Scene(serverLeaderboard.getValue());
         serverLeaderboardScn.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/ServerLeaderboard.css")).toExternalForm());
 
-        showSplashScreen();
         //showServerLeaderboard(); // for testing only
-
+        showSplashScreen();
         primaryStage.show();
     }
 
@@ -93,13 +87,12 @@ public class MainCtrl {
       //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
-
-
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
+
     public Scene getSplashScreenScene() {
         return this.splash;
 
