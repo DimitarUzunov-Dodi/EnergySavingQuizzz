@@ -2,6 +2,7 @@ package server.api;
 
 import commons.LeaderboardEntry;
 import org.springframework.data.domain.Example;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.LeaderboardRepository;
@@ -15,17 +16,30 @@ public class LeaderboardController {
 
     private final LeaderboardRepository repo;
 
+    /**
+     * Constructor for leaderboard controller
+     * @param repo Server Leaderboard Repository
+     */
     public LeaderboardController(LeaderboardRepository repo) {
         this.repo = repo;
     }
 
-    @GetMapping(path = { "", "/" })
+    /**
+     * Get all leaderboard entries from the server
+     * @return list of all entries
+     */
+    @GetMapping("/")
     public List<LeaderboardEntry> getServerLeaderboard() {
         return repo.findAll();
     }
 
+    /**
+     * Get a specific entry from the server leaderboard
+     * @param username entry username
+     * @return HTTP 200 if ok, error code otherwise
+     */
     @GetMapping("/{username}")
-    public ResponseEntity<LeaderboardEntry> getByUsername(@PathVariable("username") String username) {
+    public ResponseEntity<LeaderboardEntry> getEntryByUsername(@PathVariable("username") String username) {
         if (username == null || username.equals(""))
             return ResponseEntity.badRequest().build();
 
@@ -34,21 +48,34 @@ public class LeaderboardController {
 
         if(entry.isPresent()) {
             return ResponseEntity.ok(entry.get());
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        else
+            return ResponseEntity.notFound().build();
     }
-/*
-    @PostMapping(path = { "", "/" })
-    public ResponseEntity<LeaderboardEntry> add(@RequestBody LeaderboardEntry quote) {
 
-        if (quote.person == null || isNullOrEmpty(quote.person.firstName) || isNullOrEmpty(quote.person.lastName)
-                || isNullOrEmpty(quote.quote)) {
+    /**
+     * Add/Update an entry
+     * @param username entry username
+     * @param score entry score
+     * @param gamesPlayed entry gamesPlayed
+     * @return HTTP 201 if all updated existing, 202 if created new entry, error code otherwise
+     */
+    @PutMapping("/{username}")
+    public ResponseEntity<LeaderboardEntry> updateEntry(@PathVariable String username, @RequestBody Integer score, @RequestBody Integer gamesPlayed) {
+        if (username == null || username.isEmpty() || score == null || gamesPlayed == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        Quote saved = repo.save(quote);
-        return ResponseEntity.ok(saved);
+        Example<LeaderboardEntry> example = Example.of(new LeaderboardEntry(username, null, null));
+        var found = repo.findOne(example);
+        if(found.isPresent()) {
+            found.get().setScore(score);
+            found.get().setGamesPlayed(gamesPlayed);
+            return ResponseEntity.accepted().body(repo.save(found.get()));
+        }
+        else {
+            LeaderboardEntry e = new LeaderboardEntry(username, gamesPlayed, score);
+            return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(e));
+        }
     }
-*/
 }
