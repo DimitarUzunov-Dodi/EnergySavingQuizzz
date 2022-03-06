@@ -16,16 +16,17 @@ public class ScoreService {
 
     /**
      * adds the score to the user in the database
+     *
      * @param nickname
      * @param score
      */
     void addScore(String nickname, int score) {
 
         var existingRecord = scoreRecordRepository.findById(nickname);
-        if(!existingRecord.isPresent()){
-           existingRecord = Optional.of(new ScoreRecord(nickname,0));
+        if (!existingRecord.isPresent()) {
+            existingRecord = Optional.of(new ScoreRecord(nickname, 0));
         }
-        var finalScoreRecord =existingRecord.get();
+        var finalScoreRecord = existingRecord.get();
 
         finalScoreRecord.setScore(finalScoreRecord.getScore() + score);
         scoreRecordRepository.save(finalScoreRecord);
