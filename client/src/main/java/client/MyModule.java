@@ -15,19 +15,33 @@
  */
 package client;
 
+<<<<<<< client/src/main/java/client/MyModule.java
 import client.scenes.*;
+=======
+
+
+>>>>>>> client/src/main/java/client/MyModule.java
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 
+<<<<<<< client/src/main/java/client/MyModule.java
+=======
+import client.scenes.MainCtrl;
+
+>>>>>>> client/src/main/java/client/MyModule.java
 public class MyModule implements Module {
 
     @Override
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
+<<<<<<< client/src/main/java/client/MyModule.java
         binder.bind(GamePageController.class).in(Scopes.SINGLETON);
         binder.bind(DummyController.class).in(Scopes.SINGLETON);
+=======
+        binder.bind(SplashCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(SettingsCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ServerLeaderboardCtrl.class).in(Scopes.SINGLETON);
+>>>>>>> client/src/main/java/client/MyModule.java
     }
 }

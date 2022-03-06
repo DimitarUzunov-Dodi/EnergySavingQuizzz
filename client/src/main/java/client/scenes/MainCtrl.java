@@ -1,18 +1,3 @@
-/*
- * Copyright 2021 Delft University of Technology
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package client.scenes;
 
 import javafx.scene.Parent;
@@ -20,38 +5,86 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.Objects;
+
 public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+<<<<<<< client/src/main/java/client/scenes/MainCtrl.java
+
+
     private Scene gamePage;
     private Scene dummy;
-    private AddQuoteCtrl addCtrl;
     private GamePageController gamePageController;
     private DummyController dummyController;
-    private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<DummyController, Parent> dummy, Pair<GamePageController, Parent> GamePage) {
+
+   
+    private SplashCtrl splashCtrl;
+    private Scene splash;
+
+    private SettingsCtrl settingsCtrl;
+    private Scene settings;
+
+    private ServerLeaderboardCtrl serverLeaderboardCtrl;
+    private Scene serverLeaderboardScn;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy) {
+        // primary stage
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+        this.primaryStage.setMinWidth(700);
+        this.primaryStage.setMinHeight(450);
+
+        // splash scene
+        this.splashCtrl = splashScreen.getKey();
+        this.splash = new Scene(splashScreen.getValue());
+
+        // settings scene
+        this.settingsCtrl = settingsScreen.getKey();
+        this.settings = new Scene(settingsScreen.getValue());
+        
+        // Game scene
         this.gamePageController = GamePage.getKey();
         this.gamePage = new Scene(GamePage.getValue());
+
+        // Dummy scene
         this.dummyController = dummy.getKey();
         this.dummy = new Scene(dummy.getValue());
+        
+        // server leaderboard scene
+        this.serverLeaderboardCtrl = serverLeaderboard.getKey();
+        this.serverLeaderboardScn = new Scene(serverLeaderboard.getValue());
+        serverLeaderboardScn.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/ServerLeaderboard.css")).toExternalForm());
 
-
-        showGamePage();
+        showSplashScreen();
+        //showServerLeaderboard(); // for testing only
+>>>>>>> client/src/main/java/client/scenes/MainCtrl.java
         primaryStage.show();
     }
 
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+    public void showSplashScreen() {
+        splashCtrl.initTextField(splash);
+        primaryStage.setTitle("Splash Screen");
+        primaryStage.setScene(splash);
+    }
+
+    public void showSettingsScreen() {
+        primaryStage.setTitle("Settings Screen");
+        primaryStage.setScene(settings);
+    }
+
+    /**
+     * Display server leaderboard and refresh table
+     */
+    public void showServerLeaderboard() {
+        primaryStage.setTitle("Server Leaderboard");
+        primaryStage.setScene(serverLeaderboardScn);
+        serverLeaderboardCtrl.refresh();
+    }
+
+    public Scene getCurrentScene() {
+        return primaryStage.getScene();
     }
     public void showDummy() {
         primaryStage.setTitle("Quotes: Dummy");
@@ -59,6 +92,7 @@ public class MainCtrl {
       //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+<<<<<<< client/src/main/java/client/scenes/MainCtrl.java
     public void showAdd() {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
@@ -68,5 +102,9 @@ public class MainCtrl {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+=======
+    public Scene getSplashScreenScene() {
+        return this.splash;
+>>>>>>> client/src/main/java/client/scenes/MainCtrl.java
     }
 }

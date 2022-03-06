@@ -32,4 +32,10 @@ public class MainCtrlTest {
         // TODO create replacement objects and write some tests
         // sut.initialize(null, null, null);
     }
+
+    @Test
+    public void testShowServerLeaderboard() {
+        //sut.showServerLeaderboard();
+        //assertEquals(sut.getCurrentScene().getClass())
+    }
 }
