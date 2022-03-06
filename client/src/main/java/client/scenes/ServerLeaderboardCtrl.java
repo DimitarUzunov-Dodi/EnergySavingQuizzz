@@ -1,19 +1,25 @@
 package client.scenes;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
+
+import client.utils.ServerUtils;
 import commons.LeaderboardEntry;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class ServerLeaderboardCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
+	private final ServerUtils server;
+
+	private ObservableList<LeaderboardEntry> data;
 
     @FXML
     private TableView<LeaderboardEntry> table;
@@ -25,8 +31,9 @@ public class ServerLeaderboardCtrl implements Initializable {
     private TableColumn<LeaderboardEntry, String> colScore;
 
     @Inject
-    public ServerLeaderboardCtrl(MainCtrl mainCtrl) {
+    public ServerLeaderboardCtrl(MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
+        this.server = server;
     }
 
     @Override
@@ -34,15 +41,18 @@ public class ServerLeaderboardCtrl implements Initializable {
         colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
         colGamesPlayed.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().gamesPlayed.toString()+" games played"));
         colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score.toString()+" points"));
+		refresh();
     }
 
     public void refresh() {
-        // TODO: refresh table data
-        System.out.println("Refreshing table...");
+        // TODO: implement server.getLeaderboard();
+        System.out.println("Refreshing server leaderboard table...");
+		data = FXCollections.observableList(server.getLeaderboard());
+		table.setItems(data);
     }
 
     public void onBackButton() {
-        //mainCtrl.showSplash();
+        //mainCtrl.showMultiplayerScreen();
         System.out.println("User pressed the back button.");
     }
 }
