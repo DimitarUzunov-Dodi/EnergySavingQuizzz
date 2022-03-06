@@ -9,6 +9,8 @@ import client.utils.ServerUtils;
 import commons.LeaderboardEntry;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -41,18 +43,18 @@ public class ServerLeaderboardCtrl implements Initializable {
         colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
         colGamesPlayed.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().gamesPlayed.toString()+" games played"));
         colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score.toString()+" points"));
-		refresh();
     }
 
     public void refresh() {
-        // TODO: implement server.getLeaderboard();
-        System.out.println("Refreshing server leaderboard table...");
-		data = FXCollections.observableList(server.getLeaderboard());
-		table.setItems(data);
+        new Thread(() -> {
+            System.out.println("Refreshing server leaderboard table...");
+            data = FXCollections.observableList(server.getServerLeaderboard());
+            table.setItems(data);
+            System.out.println("Populated table with "+data.size()+" entries.");
+        }).start();
     }
 
     public void onBackButton() {
-        //mainCtrl.showMultiplayerScreen();
-        System.out.println("User pressed the back button.");
+        mainCtrl.showSplashScreen();
     }
 }

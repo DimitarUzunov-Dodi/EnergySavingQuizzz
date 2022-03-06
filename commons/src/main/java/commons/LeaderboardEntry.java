@@ -22,7 +22,7 @@ public class LeaderboardEntry {
         // for object mappers
     }
 
-    public LeaderboardEntry(String username, int gamesPlayed, int score) {
+    public LeaderboardEntry(String username, Integer gamesPlayed, Integer score) {
         this.username = username;
         this.gamesPlayed = gamesPlayed;
         this.score = score;
