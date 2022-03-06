@@ -30,6 +30,7 @@ public class MainCtrl {
         // splash scene
         this.splashCtrl = splashScreen.getKey();
         this.splash = new Scene(splashScreen.getValue());
+        this.splash.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/Splash.css")).toExternalForm());
 
         // settings scene
         this.settingsCtrl = settingsScreen.getKey();
@@ -46,7 +47,7 @@ public class MainCtrl {
     }
 
     public void showSplashScreen() {
-        splashCtrl.initTextField(splash);
+        splashCtrl.initTextField();
         primaryStage.setTitle("Splash Screen");
         primaryStage.setScene(splash);
     }

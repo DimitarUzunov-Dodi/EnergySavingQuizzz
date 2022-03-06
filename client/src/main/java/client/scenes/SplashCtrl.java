@@ -1,26 +1,18 @@
 package client.scenes;
 
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Scanner;
-
-import static client.scenes.UserAlert.userAlert;
+import static client.utils.FileUtils.*;
 
 
 public class SplashCtrl {
 
     private final MainCtrl mainCtrl;
-    private static final String pathToUserData = "./src/main/data/";
-    private static final String fileName = "UserData.userdata";
     private String nickname;
 
     @Inject
@@ -47,37 +39,13 @@ public class SplashCtrl {
 
     /**
      * Function initializes nickname TextField in SplashScreen scene
-     * @param splash Scene of SplashScreen that contains a TextField for inputting username
      */
-    public void initTextField(Scene splash) {
-        File userData = new File(pathToUserData + fileName);
-        if(userData.exists()) {
-            try {
-                String username = "";
+    public void initTextField() {
+        TextField usernameField = (TextField) mainCtrl.getSplashScreenScene().lookup("#nicknameField");
 
-                Scanner userNameScanner = new Scanner(userData);
-
-                if(userNameScanner.hasNextLine())
-                    username = userNameScanner.nextLine();
-
-                TextField usernameField = (TextField) splash.lookup("#nicknameField");
-                usernameField.setText(username);
-                this.setNickname(username);
-
-            } catch (FileNotFoundException e) {
-                userAlert("ERROR", "Error while getting username", "Error occurred while trying to get a username from a file.");
-                e.printStackTrace();
-            }
-        }
-        else {
-            try {
-                Files.createDirectories(Paths.get(pathToUserData));
-                userData.createNewFile();
-            } catch (IOException e) {
-                userAlert("ERROR", "Error while getting username", "Error occurred while trying to create a file for storing username.");
-                e.printStackTrace();
-            }
-        }
+        String username = readNickname();
+        usernameField.setText(username);
+        this.setNickname(username);
     }
 
     /**
@@ -85,31 +53,10 @@ public class SplashCtrl {
      * Nickname is stored according to pathToUserData
      */
     public void saveNickname() {
-        File userData = new File(pathToUserData + fileName);
         TextField usernameField = (TextField) mainCtrl.getSplashScreenScene().lookup("#nicknameField");
         String nicknameString = usernameField.getText();
-        if(userData.exists()) {
-            try {
-                PrintWriter fWriter = new PrintWriter(userData);
-                fWriter.print(nicknameString);
-                fWriter.close();
-            } catch (IOException e) {
-                userAlert("ERROR", "Error while saving username", "Error occurred while trying to save username to file.");
-                e.printStackTrace();
-            }
-        }
-        else {
-            try {
-                Files.createDirectories(Paths.get(pathToUserData));
-                userData.createNewFile();
-                PrintWriter fWriter = new PrintWriter(userData);
-                fWriter.print(nicknameString);
-                fWriter.close();
-            } catch (IOException e) {
-                userAlert("ERROR", "Error while saving username", "Error occurred while trying to create a file for storing username.");
-                e.printStackTrace();
-            }
-        }
+
+        writeNickname(nicknameString);
     }
 
     /**
@@ -128,4 +75,5 @@ public class SplashCtrl {
     private void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
 }
