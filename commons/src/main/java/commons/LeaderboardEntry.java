@@ -25,6 +25,12 @@ public class LeaderboardEntry {
         // for object mappers
     }
 
+    /**
+     * Constructor
+     * @param username username
+     * @param gamesPlayed nr of games played
+     * @param score highest score
+     */
     public LeaderboardEntry(String username, Integer gamesPlayed, Integer score) {
         this.username = username;
         this.gamesPlayed = gamesPlayed;
