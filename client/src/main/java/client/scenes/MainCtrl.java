@@ -11,6 +11,16 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
+
+
+
+    private Scene gamePage;
+    private Scene dummy;
+    private GamePageController gamePageController;
+    private DummyController dummyController;
+
+
+   
     private SplashCtrl splashCtrl;
     private Scene splash;
 
@@ -20,8 +30,7 @@ public class MainCtrl {
     private ServerLeaderboardCtrl serverLeaderboardCtrl;
     private Scene serverLeaderboardScn;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen,
-                           Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard) {
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
@@ -35,7 +44,15 @@ public class MainCtrl {
         // settings scene
         this.settingsCtrl = settingsScreen.getKey();
         this.settings = new Scene(settingsScreen.getValue());
+        
+        // Game scene
+        this.gamePageController = GamePage.getKey();
+        this.gamePage = new Scene(GamePage.getValue());
 
+        // Dummy scene
+        this.dummyController = dummy.getKey();
+        this.dummy = new Scene(dummy.getValue());
+        
         // server leaderboard scene
         this.serverLeaderboardCtrl = serverLeaderboard.getKey();
         this.serverLeaderboardScn = new Scene(serverLeaderboard.getValue());
@@ -43,6 +60,7 @@ public class MainCtrl {
 
         showSplashScreen();
         //showServerLeaderboard(); // for testing only
+
         primaryStage.show();
     }
 
@@ -69,8 +87,21 @@ public class MainCtrl {
     public Scene getCurrentScene() {
         return primaryStage.getScene();
     }
+    public void showDummy() {
+        primaryStage.setTitle("Quotes: Dummy");
+        primaryStage.setScene(dummy);
+      //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
 
+
+
+    public void showGamePage() {
+        primaryStage.setTitle("gamePage");
+        primaryStage.setScene(gamePage);
+        //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
     public Scene getSplashScreenScene() {
         return this.splash;
+
     }
 }
