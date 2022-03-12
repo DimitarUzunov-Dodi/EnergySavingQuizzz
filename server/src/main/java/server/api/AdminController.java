@@ -10,8 +10,9 @@ import server.Main;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    @PostMapping
+    @PostMapping(value = "/restart")
     public ResponseEntity<?> restartServer(){
+        System.out.println("Restart has been started");
         Main.restart();
         return ResponseEntity.ok("Restarted successfully");
     }

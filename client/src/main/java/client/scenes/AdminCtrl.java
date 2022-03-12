@@ -23,7 +23,11 @@ public class AdminCtrl implements Initializable {
         this.server = server;
     }
 
+    /**
+     * Function called by button when clicked. Invokes server's restart
+     * @param event passed by JavaFX by default
+     */
     public void restartAction(ActionEvent event){
-        System.out.println("Hello");
+        server.invokeServerRestart();
     }
 }
