@@ -54,6 +54,7 @@ public class MainCtrl {
         serverLeaderboardScn.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/ServerLeaderboard.css")).toExternalForm());
 
         //showServerLeaderboard(); // for testing only
+        //showGamePage();
         showSplashScreen();
         primaryStage.show();
     }

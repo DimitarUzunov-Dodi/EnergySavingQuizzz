@@ -13,14 +13,14 @@
 
 <GridPane prefHeight="400.0" prefWidth="577.0" style="-fx-background-color: C4C4C4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GamePageController">
    <columnConstraints>
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="476.8" minWidth="10.0" prefWidth="347.1999755859375" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="310.8" minWidth="10.0" prefWidth="253.60002441406243" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="55.0" prefWidth="347.1999755859375" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="45.0" prefWidth="253.60002441406243" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="316.3999931335449" minHeight="10.0" prefHeight="47.99999160766602" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="368.6000213623047" minHeight="10.0" prefHeight="333.60000839233396" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="316.3999931335449" minHeight="10.0" percentHeight="10.0" prefHeight="47.99999160766602" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="368.6000213623047" minHeight="10.0" percentHeight="85.0" prefHeight="333.60000839233396" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="343.99998703002933" minHeight="10.0" prefHeight="21.399978637695312" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="123.79999389648441" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="123.79999389648441" minHeight="0.0" percentHeight="5.0" prefHeight="0.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
       <ListView id="Leaderboard_list" fx:id="currentLeaderboard" prefHeight="216.0" prefWidth="250.0" style="-fx-background-color: #7389A4;" GridPane.columnIndex="1" GridPane.rowIndex="1">
