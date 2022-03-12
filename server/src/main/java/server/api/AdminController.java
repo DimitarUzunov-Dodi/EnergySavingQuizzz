@@ -11,7 +11,7 @@ import server.Main;
 public class AdminController {
 
     @PostMapping(value = "/restart")
-    public ResponseEntity<?> restartServer(){
+    public ResponseEntity<String> restartServer(){
         System.out.println("Restart has been started");
         Main.restart();
         return ResponseEntity.ok("Restarted successfully");
