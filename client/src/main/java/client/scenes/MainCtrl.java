@@ -63,7 +63,6 @@ public class MainCtrl {
         //showServerLeaderboard(); // for testing only
         showSplashScreen();
         //showLoadingScreen();
-        //showGamePage();
         primaryStage.show();
     }
 
