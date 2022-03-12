@@ -41,8 +41,8 @@ public class LoadingController {
     public void countDown() {
         final Service<Integer> countDownThread = new Service<>() {
             @Override
-            protected Task createTask() {
-                return new Task() {
+            protected Task<Integer> createTask() {
+                return new Task<Integer>() {
                     @Override
                     protected Integer call() {
                         int i;

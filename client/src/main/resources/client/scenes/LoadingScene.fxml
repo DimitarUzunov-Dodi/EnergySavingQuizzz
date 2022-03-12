@@ -22,7 +22,7 @@
          <children>
             <Label id="username" alignment="CENTER" contentDisplay="CENTER" style="-fx-background-color: lightblue;" text="Username" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
-                  <Font size="25.0" />
+                  <Font name="System Italic" size="25.0" />
                </font>
             </Label>
             <Label id="score" alignment="CENTER" contentDisplay="CENTER" style="-fx-background-color: lightyellow;" text="Score" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -47,9 +47,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Get Ready!" textFill="#733d68" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label text="Get Ready!" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
-                  <Font size="80.0" />
+                  <Font name="Bauhaus 93" size="80.0" />
                </font>
             </Label>
             <GridPane GridPane.rowIndex="1">
