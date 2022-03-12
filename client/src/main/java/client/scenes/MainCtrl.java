@@ -25,7 +25,10 @@ public class MainCtrl {
     private ServerLeaderboardCtrl serverLeaderboardCtrl;
     private Scene serverLeaderboardScn;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy) {
+    private AdminCtrl adminCtrl;
+    private Scene adminPageScene;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<AdminCtrl, Parent> adminPage) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
@@ -52,6 +55,10 @@ public class MainCtrl {
         this.serverLeaderboardCtrl = serverLeaderboard.getKey();
         this.serverLeaderboardScn = new Scene(serverLeaderboard.getValue());
         serverLeaderboardScn.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/ServerLeaderboard.css")).toExternalForm());
+
+        // Admin page scene
+        this.adminCtrl = adminPage.getKey();
+        this.adminPageScene = new Scene(adminPage.getValue());
 
         //showServerLeaderboard(); // for testing only
         showSplashScreen();
@@ -95,6 +102,10 @@ public class MainCtrl {
 
     public Scene getSplashScreenScene() {
         return this.splash;
+    }
 
+    public void showAdmin() {
+        primaryStage.setTitle("Admin page");
+        primaryStage.setScene(adminPageScene);
     }
 }
