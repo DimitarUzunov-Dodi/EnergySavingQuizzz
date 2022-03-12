@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -28,6 +29,9 @@ public class GamePageController implements Initializable {
     @FXML
     private ListView<String> currentLeaderboard;
 
+    @FXML
+    private Text Question_text;
+
 
 
     String[] names = {"foo", "bar", "test"};
@@ -40,6 +44,10 @@ public class GamePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+       // Question_text = new Text("foo");
+
+
+        Question_text.setText("foo");
 
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);

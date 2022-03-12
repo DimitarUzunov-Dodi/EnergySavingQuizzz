@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
 
 <GridPane prefHeight="400.0" prefWidth="577.0" style="-fx-background-color: C4C4C4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GamePageController">
    <columnConstraints>
@@ -58,5 +59,40 @@
          </children>
       </GridPane>
       <Button mnemonicParsing="false" text="Switch to dummy" />
+      <GridPane GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="311.2" minHeight="10.0" prefHeight="284.80003662109374" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="311.2" minHeight="10.0" prefHeight="284.80003662109374" valignment="CENTER" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="165.59998168945313" minHeight="10.0" prefHeight="55.99996337890627" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="A" />
+                  <Button mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="B" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="C" GridPane.columnIndex="2" />
+                  <Button mnemonicParsing="false" style="-fx-background-color: #407897; -fx-pref-width: 50;" text="D" GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
+            <ImageView fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../../OneDrive/Pictures/OIP.jpg" />
+               </image>
+            </ImageView>
+            <Text id="Question_text" fx:id="Question_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
    </children>
 </GridPane>
