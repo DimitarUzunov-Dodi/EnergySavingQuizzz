@@ -1,18 +1,21 @@
 package server.api;
 
+import commons.ScoreRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import server.database.GameRepository;
 import server.database.UserRepository;
 import server.entities.Game;
 import server.entities.User;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -70,11 +73,29 @@ public class UserController {
      * Updates an user's score when they answer a question correctly.
      *
      * @param gameCode Unique identifier for each game
-     * @param username Unique username
-     * @param newScore The user's new score
-     * @return
+     * @return Response entity possibly containing a list of ScoreRecords
      */
-    @PutMapping("/score/{gameCode}/{username}/{newScore}")
+    @GetMapping("/score/{gameCode}")
+    public ResponseEntity<List<ScoreRecord>> getLeaderboard(@PathVariable String gameCode) {
+        if(gameCode == null || gameCode.isEmpty())
+            return ResponseEntity.badRequest().build();
+
+        Optional<Game> game = gameRepository.findById(gameCode);
+        if (game.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        Optional<List<User>> entries = userRepository.findAllByGameCode(gameCode);
+        if (entries.isEmpty())
+            return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok().body(
+                entries.get()
+                .stream().map(e -> new ScoreRecord(e.getUsername(), e.getScore()))
+                .collect(Collectors.toList())
+        );
+    }
+
+    @GetMapping("/score/{gameCode}/{username}/{newScore}")
     public ResponseEntity<?> updateScore(@PathVariable String gameCode,
                                          @PathVariable String username, @PathVariable int newScore) {
         Optional<Game> game = gameRepository.findById(gameCode);

@@ -12,9 +12,13 @@ public class MainCtrl {
     private Stage primaryStage;
 
     private Scene gamePage;
-    private Scene dummy;
     private GamePageController gamePageController;
+
+    private Scene dummy;
     private DummyController dummyController;
+
+    private Scene transitionScn;
+    private TransitionScreenCtrl transitionCtrl;
 
     private SplashCtrl splashCtrl;
     private Scene splash;
@@ -25,7 +29,7 @@ public class MainCtrl {
     private ServerLeaderboardCtrl serverLeaderboardCtrl;
     private Scene serverLeaderboardScn;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy) {
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<TransitionScreenCtrl, Parent> transition) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
@@ -44,6 +48,10 @@ public class MainCtrl {
         this.gamePageController = GamePage.getKey();
         this.gamePage = new Scene(GamePage.getValue());
 
+        // Transition screen
+        this.transitionCtrl = transition.getKey();
+        this.transitionScn = new Scene(transition.getValue());
+
         // Dummy scene
         this.dummyController = dummy.getKey();
         this.dummy = new Scene(dummy.getValue());
@@ -53,8 +61,8 @@ public class MainCtrl {
         this.serverLeaderboardScn = new Scene(serverLeaderboard.getValue());
         serverLeaderboardScn.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/ServerLeaderboard.css")).toExternalForm());
 
-        //showServerLeaderboard(); // for testing only
-        showSplashScreen();
+        showTransitionScreen("testonly"); // for testing only
+        //showSplashScreen();
         primaryStage.show();
     }
 
@@ -78,9 +86,15 @@ public class MainCtrl {
         serverLeaderboardCtrl.refresh();
     }
 
+    public void showTransitionScreen(String gameCode) {
+        primaryStage.setScene(transitionScn);
+        transitionCtrl.refresh(gameCode);
+    }
+
     public Scene getCurrentScene() {
         return primaryStage.getScene();
     }
+
     public void showDummy() {
         primaryStage.setTitle("Quotes: Dummy");
         primaryStage.setScene(dummy);
@@ -95,6 +109,5 @@ public class MainCtrl {
 
     public Scene getSplashScreenScene() {
         return this.splash;
-
     }
 }
