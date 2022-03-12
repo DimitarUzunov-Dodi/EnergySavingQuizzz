@@ -59,12 +59,11 @@ public class MainCtrl {
         // Loading scene
         this.loadingCtrl = loadingScreen.getKey();
         this.loading = new Scene(loadingScreen.getValue());
+        this.loading.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/Loading.css")).toExternalForm());
 
         //showServerLeaderboard(); // for testing only
-        //showSplashScreen();
-        showLoadingScreen();
-        loadingCtrl.init();
-        loadingCtrl.countDown();
+        showSplashScreen();
+        //showLoadingScreen();
         primaryStage.show();
     }
 
@@ -109,6 +108,9 @@ public class MainCtrl {
     public void showLoadingScreen() {
         primaryStage.setTitle("Get Ready!");
         primaryStage.setScene(loading);
+
+        loadingCtrl.init();
+        loadingCtrl.countDown();
     }
 
     public Scene getSplashScreenScene() {
