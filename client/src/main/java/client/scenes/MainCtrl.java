@@ -61,8 +61,10 @@ public class MainCtrl {
         this.loading = new Scene(loadingScreen.getValue());
 
         //showServerLeaderboard(); // for testing only
-        showSplashScreen();
-        //showLoadingScreen();
+        //showSplashScreen();
+        showLoadingScreen();
+        loadingCtrl.init();
+        loadingCtrl.countDown();
         primaryStage.show();
     }
 
