@@ -80,10 +80,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="A" />
-                  <Button mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="B" GridPane.columnIndex="1" />
-                  <Button mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="C" GridPane.columnIndex="2" />
-                  <Button mnemonicParsing="false" style="-fx-background-color: #407897; -fx-pref-width: 50;" text="D" GridPane.columnIndex="3" />
+                  <Button fx:id="button1" mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="A" />
+                  <Button fx:id="button2" mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="B" GridPane.columnIndex="1" />
+                  <Button fx:id="button3" mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="C" GridPane.columnIndex="2" />
+                  <Button fx:id="button4" mnemonicParsing="false" style="-fx-background-color: #407897; -fx-pref-width: 50;" text="D" GridPane.columnIndex="3" />
                </children>
             </GridPane>
             <ImageView fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
