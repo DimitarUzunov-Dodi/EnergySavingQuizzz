@@ -16,6 +16,7 @@
 package client.utils;
 
 import commons.LeaderboardEntry;
+import commons.ScoreRecord;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
@@ -50,6 +51,23 @@ public class ServerUtils {
                 .target(SERVER).path("api/admin/restart")
                 .request(APPLICATION_JSON)
                 .post(null);
+    }
+
+    /**
+     * Retrieve a match leaderboard from the server
+     * @return List of player score entries
+     */
+    public List<ScoreRecord> getMatchLeaderboard(String gameCode) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/user/score/"+gameCode)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<List<ScoreRecord>>() {});
+        } catch (Exception e) {
+            System.err.println("getMatchLeaderboard: "+e);
+            return null;
+        }
     }
 
 /* LEFT HERE FOR REFERENCE
