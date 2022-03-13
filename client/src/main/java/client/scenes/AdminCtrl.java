@@ -30,4 +30,12 @@ public class AdminCtrl implements Initializable {
     public void restartAction(ActionEvent event){
         server.invokeServerRestart();
     }
+
+    /**
+     * Function called by button when clicked. Returns to the Splashscreen.
+     * @param event passed by JavaFX by default
+     */
+    public void backToSplashAction(ActionEvent event){
+        mainCtrl.showSplashScreen();
+    }
 }
