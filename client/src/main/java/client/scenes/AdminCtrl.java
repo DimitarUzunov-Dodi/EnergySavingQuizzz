@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
