@@ -28,7 +28,10 @@ public class MainCtrl {
     private AdminCtrl adminCtrl;
     private Scene adminPageScene;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<AdminCtrl, Parent> adminPage) {
+    private LoadingController loadingCtrl;
+    private Scene loading;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<AdminCtrl, Parent> adminPage) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
@@ -60,8 +63,15 @@ public class MainCtrl {
         this.adminCtrl = adminPage.getKey();
         this.adminPageScene = new Scene(adminPage.getValue());
 
+        // Loading scene
+        this.loadingCtrl = loadingScreen.getKey();
+        this.loading = new Scene(loadingScreen.getValue());
+        this.loading.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/Loading.css")).toExternalForm());
+
         //showServerLeaderboard(); // for testing only
+        //showGamePage();
         showSplashScreen();
+        //showLoadingScreen();
         primaryStage.show();
     }
 
@@ -98,6 +108,17 @@ public class MainCtrl {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+
+    /**
+     * Display loading screen
+     */
+    public void showLoadingScreen() {
+        primaryStage.setTitle("Get Ready!");
+        primaryStage.setScene(loading);
+
+        loadingCtrl.init();
+        loadingCtrl.countDown();
     }
 
     public Scene getSplashScreenScene() {
