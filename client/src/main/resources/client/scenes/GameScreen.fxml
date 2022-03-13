@@ -90,7 +90,7 @@
             </GridPane>
             <ImageView fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../OneDrive/Pictures/OIP.jpg" />
+                  <Image url="@../images/OIP.jpg" />
                </image>
             </ImageView>
             <Text id="Question_text" fx:id="Question_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />

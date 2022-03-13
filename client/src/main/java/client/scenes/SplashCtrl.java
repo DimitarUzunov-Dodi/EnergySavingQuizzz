@@ -37,6 +37,10 @@ public class SplashCtrl {
         mainCtrl.showSettingsScreen();
     }
 
+    public void singlePlayerAction(ActionEvent event) {
+        mainCtrl.showGamePage();
+    }
+
     /**
      * Function initializes nickname TextField in SplashScreen scene
      */
