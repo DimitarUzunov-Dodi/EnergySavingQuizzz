@@ -38,4 +38,12 @@ public class AdminCtrl implements Initializable {
             userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
         }
     }
+
+    /**
+     * Function called by button when clicked. Returns to the Splashscreen.
+     * @param event passed by JavaFX by default
+     */
+    public void backToSplashAction(ActionEvent event){
+        mainCtrl.showSplashScreen();
+    }
 }
