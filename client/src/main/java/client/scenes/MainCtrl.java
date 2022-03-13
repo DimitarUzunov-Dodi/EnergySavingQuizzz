@@ -12,9 +12,13 @@ public class MainCtrl {
     private Stage primaryStage;
 
     private Scene gamePage;
-    private Scene dummy;
     private GamePageController gamePageController;
+
+    private Scene dummy;
     private DummyController dummyController;
+
+    private Scene matchLeaderboardScn;
+    private MatchLeaderboardCtrl matchLeaderboardCtrl;
 
     private SplashCtrl splashCtrl;
     private Scene splash;
@@ -25,11 +29,20 @@ public class MainCtrl {
     private ServerLeaderboardCtrl serverLeaderboardCtrl;
     private Scene serverLeaderboardScn;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy) {
+    private AdminCtrl adminCtrl;
+    private Scene adminPageScene;
+
+    private LoadingController loadingCtrl;
+    private Scene loading;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
         this.primaryStage.setMinHeight(450);
+
+        // CSS
+        String background = Objects.requireNonNull(this.getClass().getResource("../css/Background.css")).toExternalForm();
 
         // splash scene
         this.splashCtrl = splashScreen.getKey();
@@ -39,22 +52,39 @@ public class MainCtrl {
         // settings scene
         this.settingsCtrl = settingsScreen.getKey();
         this.settings = new Scene(settingsScreen.getValue());
-        
+
         // Game scene
         this.gamePageController = GamePage.getKey();
         this.gamePage = new Scene(GamePage.getValue());
 
+        // match leaderboard screen
+        this.matchLeaderboardCtrl = matchLeaderboard.getKey();
+        this.matchLeaderboardScn = new Scene(matchLeaderboard.getValue());
+        matchLeaderboardScn.getStylesheets().addAll(background);
+
         // Dummy scene
         this.dummyController = dummy.getKey();
         this.dummy = new Scene(dummy.getValue());
-        
+
         // server leaderboard scene
         this.serverLeaderboardCtrl = serverLeaderboard.getKey();
         this.serverLeaderboardScn = new Scene(serverLeaderboard.getValue());
-        serverLeaderboardScn.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/ServerLeaderboard.css")).toExternalForm());
+        serverLeaderboardScn.getStylesheets().addAll(background);
+
+        // Admin page scene
+        this.adminCtrl = adminPage.getKey();
+        this.adminPageScene = new Scene(adminPage.getValue());
+
+        // Loading scene
+        this.loadingCtrl = loadingScreen.getKey();
+        this.loading = new Scene(loadingScreen.getValue());
+        this.loading.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/Loading.css")).toExternalForm());
 
         //showServerLeaderboard(); // for testing only
+        //showGamePage();
         showSplashScreen();
+        //showLoadingScreen();
+        //showMatchLeaderboardScreen("ID");
         primaryStage.show();
     }
 
@@ -78,23 +108,47 @@ public class MainCtrl {
         serverLeaderboardCtrl.refresh();
     }
 
+    public void showMatchLeaderboardScreen(String gameCode) {
+        primaryStage.setScene(matchLeaderboardScn);
+        matchLeaderboardCtrl.refresh(gameCode);
+    }
+
     public Scene getCurrentScene() {
         return primaryStage.getScene();
     }
+
     public void showDummy() {
         primaryStage.setTitle("Quotes: Dummy");
         primaryStage.setScene(dummy);
       //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+    /**
+     * Display game screen
+     */
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+    /**
+     * Display loading screen
+     */
+    public void showLoadingScreen() {
+        primaryStage.setTitle("Get Ready!");
+        primaryStage.setScene(loading);
+
+        loadingCtrl.init();
+        loadingCtrl.countDown();
+    }
+
     public Scene getSplashScreenScene() {
         return this.splash;
+    }
 
+    public void showAdmin() {
+        primaryStage.setTitle("Admin page");
+        primaryStage.setScene(adminPageScene);
     }
 }

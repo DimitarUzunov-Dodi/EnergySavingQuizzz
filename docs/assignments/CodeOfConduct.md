@@ -14,7 +14,7 @@ Every team member wishes to achieve a grade of 8 or higher in this course.
 ## Products:
 The code will be delivered on GitLab, including documents. The relevant assignments will be submitted on brightspace. The code submitted must pass a set of TBD Checkstyle rules. The code shall have at least 80% line coverage in testing. 
 
-To contribute in an organized manner, team members shall branch from 'develop'. Each issue shall have a single branch and work shall be committed only in that branch. After the issue is solved, pipelines passes and code achieves the quality standards detailed in this document, a merge request into 'develop' shall be created. After at least two other team members review the changes, the merge request shall be approved, merged and the source branch deleted. Each Sunday the code contributed by the team shall be merged into main. 
+To contribute in an organized manner, team members shall branch from 'develop'. Each issue shall have a single branch and work shall be committed only in that branch. After the issue is solved, pipelines passes and code achieves the quality standards detailed in this document, a merge request into 'develop' shall be created. After at least two other team members review the changes, the merge request shall be approved, merged and the source branch deleted. Each Sunday at 18:00 the code contributed by the team shall be merged into main. 
 
 The other assignments shall be uploaded on Brightspace by the chair for that sprint.
 

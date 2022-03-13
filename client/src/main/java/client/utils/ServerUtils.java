@@ -16,8 +16,10 @@
 package client.utils;
 
 import commons.LeaderboardEntry;
+import commons.ScoreRecord;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.util.List;
@@ -39,6 +41,35 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<LeaderboardEntry>>() {});
     }
+
+    /**
+     * Send post request to start the restart procedure of the server
+     * @return
+     */
+    public Response invokeServerRestart() throws RuntimeException {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/admin/restart")
+                .request(APPLICATION_JSON)
+                .post(null);
+    }
+
+    /**
+     * Retrieve a match leaderboard from the server
+     * @return List of player score entries
+     */
+    public List<ScoreRecord> getMatchLeaderboard(String gameCode) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/user/score/"+gameCode)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<List<ScoreRecord>>() {});
+        } catch (Exception e) {
+            System.err.println("getMatchLeaderboard: "+e);
+            return null;
+        }
+    }
+
 /* LEFT HERE FOR REFERENCE
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL("http://localhost:8080/api/quotes");

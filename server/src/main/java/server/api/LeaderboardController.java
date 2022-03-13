@@ -36,7 +36,7 @@ public class LeaderboardController {
     /**
      * Get a specific entry from the server leaderboard
      * @param username entry username
-     * @return HTTP 200 if ok, error code otherwise
+     * @return HTTP 200 with a leaderboard entry if ok, error code otherwise
      */
     @GetMapping("/{username}")
     public ResponseEntity<LeaderboardEntry> getEntryByUsername(@PathVariable("username") String username) {

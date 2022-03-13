@@ -1,15 +1,19 @@
 package server.entities;
 
-import javax.persistence.*;
+import commons.Question;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.util.List;
 
 @Entity
-@Table(name = "game")
-//@Data
 public class Game {
 
     @Id
-    @Column(name = "game_code")
     private String gameCode;
+    @Transient
+    private List<Question> activeQuestionList;
 
     public Game() {
 
@@ -21,5 +25,14 @@ public class Game {
 
     public void setGameCode(String gameCode) {
         this.gameCode = gameCode;
+    }
+
+
+    public List<Question> getActiveQuestionList() {
+        return activeQuestionList;
+    }
+
+    public void setActiveQuestionList(List<Question> activeQuestionList) {
+        this.activeQuestionList = activeQuestionList;
     }
 }
