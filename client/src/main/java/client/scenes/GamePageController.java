@@ -3,12 +3,15 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -26,6 +29,11 @@ public class GamePageController implements Initializable {
     private final MainCtrl mainCtrl;
 
 
+
+    private static final int TIME_TO_NEXT_ROUND = 3;
+
+    @FXML
+    private ProgressBar progressBar;
 
 
     @FXML
@@ -60,6 +68,8 @@ public class GamePageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
+        progressBar.setProgress(0);
        // Question_text = new Text("foo");
         button_List.add(button1);
         button_List.add(button2);
@@ -76,10 +86,34 @@ public class GamePageController implements Initializable {
         currentLeaderboard.getItems().addAll(names);
     }
 
+    /**
+     * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar
+     */
+    public void countDown() {
+        final Service<Integer> countDownThread = new Service<>() {
+            @Override
+            protected Task<Integer> createTask() {
+                return new Task<Integer>() {
+                    @Override
+                    protected Integer call() {
+                        int i;
+                        for(i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
+                            updateProgress(i, TIME_TO_NEXT_ROUND * 100);
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return i;
+                    }
+                };
+            }
+        };
 
 
 
 
 
 
-}
+}}

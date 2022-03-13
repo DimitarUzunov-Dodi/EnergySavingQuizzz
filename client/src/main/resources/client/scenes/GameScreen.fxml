@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -64,12 +65,13 @@
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="311.2" minHeight="10.0" prefHeight="284.80003662109374" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="311.2" minHeight="10.0" prefHeight="284.80003662109374" valignment="CENTER" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="165.59998168945313" minHeight="10.0" prefHeight="55.99996337890627" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="311.2" minHeight="10.0" prefHeight="215.19998168945312" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="311.2" minHeight="10.0" prefHeight="53.60003051757812" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="311.2" minHeight="10.0" prefHeight="73.59996948242187" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="165.59998168945313" minHeight="10.0" prefHeight="55.99996337890627" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane GridPane.rowIndex="2">
+            <GridPane GridPane.rowIndex="3">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -91,7 +93,8 @@
                   <Image url="@../../../../../../../../../../OneDrive/Pictures/OIP.jpg" />
                </image>
             </ImageView>
-            <Text id="Question_text" fx:id="Question_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
+            <Text id="Question_text" fx:id="Question_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
+            <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="500.0" progress="0.0" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
