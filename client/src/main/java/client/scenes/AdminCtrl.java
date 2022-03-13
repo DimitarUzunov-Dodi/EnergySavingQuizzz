@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.ConnectException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
