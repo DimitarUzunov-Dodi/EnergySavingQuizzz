@@ -91,6 +91,7 @@ public class MainCtrl {
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
+        gamePageController.countDown();
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 

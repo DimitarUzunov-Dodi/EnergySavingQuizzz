@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static client.scenes.UserAlert.userAlert;
+
 public class GamePageController implements Initializable {
 
     private Stage stage;
@@ -110,10 +112,19 @@ public class GamePageController implements Initializable {
                 };
             }
         };
+/*
+        // Next Round Transition
+        countDownThread.setOnSucceeded(event -> {
+            userAlert("INFO", "Next Round", "Next Round Start");
+        });
+*/
+        // bind thread to progress bar and start it
+        progressBar.progressProperty().bind(countDownThread.progressProperty());
+        countDownThread.start();
+
+        // TODO "uses unchecked or unsafe operations"
+
+    }
 
 
-
-
-
-
-}}
+}
