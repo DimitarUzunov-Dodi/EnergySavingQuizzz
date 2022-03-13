@@ -68,6 +68,11 @@ public class GamePageController implements Initializable {
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     * initializes user interface components
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");

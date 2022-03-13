@@ -104,6 +104,9 @@ public class MainCtrl {
       //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
+    /**
+     * Display game screen
+     */
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
