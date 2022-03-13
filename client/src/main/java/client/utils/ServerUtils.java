@@ -46,7 +46,7 @@ public class ServerUtils {
      * Send post request to start the restart procedure of the server
      * @return
      */
-    public Response invokeServerRestart() throws InvocationTargetException {
+    public Response invokeServerRestart() throws RuntimeException {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/admin/restart")
                 .request(APPLICATION_JSON)

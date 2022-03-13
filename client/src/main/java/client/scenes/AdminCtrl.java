@@ -33,7 +33,7 @@ public class AdminCtrl implements Initializable {
     public void restartAction(ActionEvent event){
         try {
             server.invokeServerRestart();
-        } catch (InvocationTargetException e) {
+        } catch (RuntimeException e) {
             userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
         }
     }
