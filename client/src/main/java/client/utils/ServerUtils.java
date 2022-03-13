@@ -21,6 +21,7 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -45,7 +46,7 @@ public class ServerUtils {
      * Send post request to start the restart procedure of the server
      * @return
      */
-    public Response invokeServerRestart() {
+    public Response invokeServerRestart() throws InvocationTargetException {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/admin/restart")
                 .request(APPLICATION_JSON)

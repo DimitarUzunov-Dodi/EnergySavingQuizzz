@@ -5,8 +5,12 @@ import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static client.scenes.UserAlert.userAlert;
 
 public class AdminCtrl implements Initializable {
 
@@ -28,6 +32,10 @@ public class AdminCtrl implements Initializable {
      * @param event passed by JavaFX by default
      */
     public void restartAction(ActionEvent event){
-        server.invokeServerRestart();
+        try {
+            server.invokeServerRestart();
+        } catch (InvocationTargetException e) {
+            userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+        }
     }
 }
