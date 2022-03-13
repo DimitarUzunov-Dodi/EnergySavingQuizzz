@@ -56,10 +56,10 @@ public class Main extends Application {
         var splash = FXML.load(SplashCtrl.class, "client", "scenes", "SplashScreen.fxml");
         var settings = FXML.load(SettingsCtrl.class, "client", "scenes", "SettingsScreen.fxml");
         var serverLeaderboard = FXML.load(ServerLeaderboardCtrl.class, "client", "scenes", "ServerLeaderboard.fxml");
-
+        var adminPage = FXML.load(AdminCtrl.class, "client", "scenes", "AdminPage.fxml");
         var loading = FXML.load(LoadingController.class, "client", "scenes", "LoadingScene.fxml");
 
-        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading);
+        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, adminPage);
 
     }
 }

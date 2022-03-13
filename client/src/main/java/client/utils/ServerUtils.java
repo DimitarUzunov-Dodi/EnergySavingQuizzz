@@ -18,6 +18,7 @@ package client.utils;
 import commons.LeaderboardEntry;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.util.List;
@@ -39,6 +40,18 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<LeaderboardEntry>>() {});
     }
+
+    /**
+     * Send post request to start the restart procedure of the server
+     * @return
+     */
+    public Response invokeServerRestart() throws RuntimeException {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/admin/restart")
+                .request(APPLICATION_JSON)
+                .post(null);
+    }
+
 /* LEFT HERE FOR REFERENCE
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL("http://localhost:8080/api/quotes");
