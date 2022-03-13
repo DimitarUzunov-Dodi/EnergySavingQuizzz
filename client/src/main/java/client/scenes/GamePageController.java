@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static client.scenes.UserAlert.userAlert;
+
 
 public class GamePageController implements Initializable {
 
