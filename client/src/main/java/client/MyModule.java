@@ -43,5 +43,7 @@ public class MyModule implements Module {
         binder.bind(SettingsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerLeaderboardCtrl.class).in(Scopes.SINGLETON);
 
+        binder.bind(LoadingController.class).in(Scopes.SINGLETON);
+
     }
 }
