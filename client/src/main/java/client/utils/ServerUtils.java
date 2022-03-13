@@ -46,7 +46,6 @@ public class ServerUtils {
      * Retrieve a match leaderboard from the server
      * @return List of player score entries
      */
-    @Nullable
     public List<ScoreRecord> getMatchLeaderboard(String gameCode) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
@@ -55,7 +54,7 @@ public class ServerUtils {
                     .accept(APPLICATION_JSON)
                     .get(new GenericType<List<ScoreRecord>>() {});
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.err.println("getMatchLeaderboard: "+e);
             return null;
         }
     }
