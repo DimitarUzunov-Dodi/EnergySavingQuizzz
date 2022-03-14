@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
+import client.communication.AdminCommunication;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -12,7 +12,7 @@ import static client.scenes.UserAlert.userAlert;
 
 public class AdminCtrl implements Initializable {
 
-    private final ServerUtils server;
+    private final AdminCommunication server;
     private final MainCtrl mainCtrl;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -20,7 +20,7 @@ public class AdminCtrl implements Initializable {
     }
 
     @Inject
-    public AdminCtrl(MainCtrl mainCtrl, ServerUtils server) {
+    public AdminCtrl(MainCtrl mainCtrl, AdminCommunication server) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }

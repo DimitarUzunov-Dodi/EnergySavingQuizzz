@@ -19,7 +19,6 @@ import commons.LeaderboardEntry;
 import commons.ScoreRecord;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
-import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.util.List;
@@ -40,17 +39,6 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<LeaderboardEntry>>() {});
-    }
-
-    /**
-     * Send post request to start the restart procedure of the server
-     * @return
-     */
-    public Response invokeServerRestart() throws RuntimeException {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/restart")
-                .request(APPLICATION_JSON)
-                .post(null);
     }
 
     /**
