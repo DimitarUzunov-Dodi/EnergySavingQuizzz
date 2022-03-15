@@ -58,7 +58,8 @@ public class Main extends Application {
         var adminPage = FXML.load(AdminCtrl.class, "client", "scenes", "AdminPage.fxml");
         var loading = FXML.load(LoadingController.class, "client", "scenes", "LoadingScene.fxml");
         var matchLeaderboard = FXML.load(MatchLeaderboardCtrl.class, "client", "scenes", "MatchLeaderboard.fxml");
+        var adminQuestionPanel = FXML.load(AdminQuestionsCtrl.class, "client", "scenes", "AdminQuestionsScreen.fxml");
 
-        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage);
+        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage, adminQuestionPanel);
     }
 }

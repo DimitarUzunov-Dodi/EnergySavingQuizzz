@@ -44,4 +44,12 @@ public class AdminCtrl implements Initializable {
     public void backToSplashAction(ActionEvent event){
         mainCtrl.showSplashScreen();
     }
+
+    /**
+     * Function called by button when clicked. Switches to admin activity panel.
+     * @param event passed by JavaFX by default
+     */
+    public void switchToAdminQuestionPanel(ActionEvent event){
+        mainCtrl.showAdminQuestionPanel();
+    }
 }

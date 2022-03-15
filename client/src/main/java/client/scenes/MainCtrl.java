@@ -35,7 +35,10 @@ public class MainCtrl {
     private LoadingController loadingCtrl;
     private Scene loading;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage) {
+    private AdminQuestionsCtrl adminQuestionsCtrl;
+    private Scene adminQuestionPanelScreen;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage, Pair<AdminQuestionsCtrl, Parent> adminQuestionPanel) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
@@ -74,6 +77,10 @@ public class MainCtrl {
         // Admin page scene
         this.adminCtrl = adminPage.getKey();
         this.adminPageScene = new Scene(adminPage.getValue());
+
+        //Admin questions panel
+        this.adminQuestionsCtrl = adminQuestionPanel.getKey();
+        this.adminQuestionPanelScreen = new Scene(adminQuestionPanel.getValue());
 
         // Loading scene
         this.loadingCtrl = loadingScreen.getKey();
@@ -147,8 +154,19 @@ public class MainCtrl {
         return this.splash;
     }
 
+    /**
+     * Display admin panel screen
+     */
     public void showAdmin() {
         primaryStage.setTitle("Admin page");
         primaryStage.setScene(adminPageScene);
+    }
+
+    /**
+     * Display admin panel for managing the questions
+     */
+    public void showAdminQuestionPanel() {
+        primaryStage.setTitle("Questions panel");
+        primaryStage.setScene(adminQuestionPanelScreen);
     }
 }
