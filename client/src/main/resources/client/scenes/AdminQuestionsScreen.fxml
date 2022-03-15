@@ -19,12 +19,12 @@
     <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-        <columns>
-          <TableColumn prefWidth="77.0" text="activity_id" />
-          <TableColumn prefWidth="87.0" text="activity_text" />
-            <TableColumn prefWidth="75.0" text="value" />
-        </columns>
+      <TableView fx:id="activityTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <columns>
+            <TableColumn fx:id="colActivityId" prefWidth="75.0" text="id" />
+            <TableColumn fx:id="colActivityText" prefWidth="75.0" text="text" />
+            <TableColumn fx:id="colActivityValue" prefWidth="75.0" text="value" />
+         </columns>
       </TableView>
       <Button mnemonicParsing="false" onAction="#switchToAdminPanel" prefHeight="44.0" prefWidth="44.0" text="Back" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
       <GridPane GridPane.columnIndex="1">
@@ -40,8 +40,8 @@
         </rowConstraints>
          <children>
             <Button mnemonicParsing="false" text="Load activities" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" text="View activity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" text="Add activity" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#refresh" text="View activity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#add" text="Add activity" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

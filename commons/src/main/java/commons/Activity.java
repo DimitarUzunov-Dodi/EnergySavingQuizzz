@@ -30,6 +30,13 @@ public class Activity {
         this.imageId = imageId;
     }
 
+    public Activity(String activityText, int value, String source, long imageId) {
+        this.activityText = activityText;
+        this.value = value;
+        this.source = source;
+        this.imageId = imageId;
+    }
+
     public long getActivityId() {
         return activityId;
     }
