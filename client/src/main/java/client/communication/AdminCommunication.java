@@ -49,4 +49,16 @@ public class AdminCommunication {
                 .request(APPLICATION_JSON)
                 .post(null);
     }
+
+    /**
+     * Send get request to the server to delete all activities on the server
+     * @return response
+     * @throws RuntimeException when unable to connect to the server
+     */
+    public static Response deleteActivities() throws RuntimeException {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/admin/activity/deleteAll")
+                .request(APPLICATION_JSON)
+                .delete();
+    }
 }

@@ -2,10 +2,7 @@ package server.api;
 
 import commons.Activity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.Main;
 import server.database.ActivityRepository;
 
@@ -38,5 +35,12 @@ public class AdminController {
         System.out.println("Adding new activity");
         repo.save(new Activity("TestText", 13, "SourceText", 1));
         return ResponseEntity.ok("Added entity successfully");
+    }
+
+    @DeleteMapping(value = "/activity/deleteAll")
+    public ResponseEntity<String> deleteAllActivities() {
+        System.out.println("Deleting all activities");
+        repo.deleteAll();
+        return ResponseEntity.ok("Deleted all entities successfully");
     }
 }

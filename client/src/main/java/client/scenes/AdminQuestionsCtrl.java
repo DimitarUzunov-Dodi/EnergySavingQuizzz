@@ -54,7 +54,7 @@ public class AdminQuestionsCtrl implements Initializable {
     /**
      * Method refreshes the activity list available in admin panel
      */
-    public void refresh(){
+    public void refresh() {
         new Thread(() -> {
             System.out.println("Refreshing activities table...");
             data = FXCollections.observableList(AdminCommunication.getAllActivities());
@@ -63,7 +63,15 @@ public class AdminQuestionsCtrl implements Initializable {
         }).start();
     }
 
-    public void add(){
+    public void add() {
         AdminCommunication.addTestingActivity();
+    }
+
+    public void deleteAllActivities() {
+        AdminCommunication.deleteActivities();
+    }
+
+    public void edit() {
+
     }
 }

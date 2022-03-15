@@ -168,9 +168,7 @@ public class MainCtrl {
     public void showAdminQuestionPanel() {
         primaryStage.setTitle("Questions panel");
         primaryStage.setScene(adminQuestionPanelScreen);
+        adminQuestionsCtrl.refresh();
     }
 
-    public Scene getAdminQuestionPanelScreen() {
-        return this.adminQuestionPanelScreen;
-    }
 }
