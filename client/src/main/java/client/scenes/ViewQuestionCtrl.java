@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.communication.AdminCommunication;
 import com.google.inject.Inject;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
