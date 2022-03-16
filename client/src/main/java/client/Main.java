@@ -32,7 +32,6 @@ import client.scenes.ServerLeaderboardCtrl;
 import client.scenes.MainCtrl;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
