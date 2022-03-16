@@ -43,4 +43,11 @@ public class AdminController {
         repo.deleteAll();
         return ResponseEntity.ok("Deleted all entities successfully");
     }
+
+    @PostMapping(value = "/activity/edit/{activityId}")
+    public ResponseEntity<String> editActivity(@PathVariable String activityId, @RequestBody Activity newActivity) {
+        System.out.println("Editing activity " + activityId);
+        repo.save(newActivity);
+        return ResponseEntity.ok("Added entity successfully");
+    }
 }

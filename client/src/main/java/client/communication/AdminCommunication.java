@@ -2,6 +2,7 @@ package client.communication;
 
 import commons.Activity;
 import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
@@ -60,5 +61,13 @@ public class AdminCommunication {
                 .target(SERVER).path("api/admin/activity/deleteAll")
                 .request(APPLICATION_JSON)
                 .delete();
+    }
+
+    public static Response editActivity(long activityId, Activity constructed) {
+        System.out.println("Sending entity");
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/admin/activity/edit/" + Long.toString(activityId))
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(constructed, APPLICATION_JSON));
     }
 }

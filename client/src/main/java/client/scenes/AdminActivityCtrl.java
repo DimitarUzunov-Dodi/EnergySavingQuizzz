@@ -15,7 +15,7 @@ import javafx.scene.control.TableView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminQuestionsCtrl implements Initializable {
+public class AdminActivityCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private final AdminCommunication server;
 
@@ -31,7 +31,7 @@ public class AdminQuestionsCtrl implements Initializable {
     private TableColumn<Activity, String> colActivityValue;
 
     @Inject
-    public AdminQuestionsCtrl(MainCtrl mainCtrl, AdminCommunication server) {
+    public AdminActivityCtrl(MainCtrl mainCtrl, AdminCommunication server) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
@@ -63,15 +63,25 @@ public class AdminQuestionsCtrl implements Initializable {
         }).start();
     }
 
+    /**
+     * FOR MANUAL TESTING PURPOSES ONLY
+     */
     public void add() {
         AdminCommunication.addTestingActivity();
     }
 
+    /**
+     * Deletes all available activities on the server
+     */
     public void deleteAllActivities() {
         AdminCommunication.deleteActivities();
     }
 
+    /**
+     * Switches a window to editing mode, so you can change activity details
+     */
     public void edit() {
-
+        Activity selected = activityTable.getSelectionModel().getSelectedItem();
+        mainCtrl.showAdminActivityDetails(selected);
     }
 }

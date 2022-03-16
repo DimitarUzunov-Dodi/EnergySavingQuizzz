@@ -14,6 +14,7 @@ public class AdminCtrl implements Initializable {
 
     private final AdminCommunication server;
     private final MainCtrl mainCtrl;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -49,7 +50,7 @@ public class AdminCtrl implements Initializable {
      * Function called by button when clicked. Switches to admin activity panel.
      * @param event passed by JavaFX by default
      */
-    public void switchToAdminQuestionPanel(ActionEvent event){
-        mainCtrl.showAdminQuestionPanel();
+    public void switchToAdminActivityPanel(ActionEvent event){
+        mainCtrl.showAdminActivityPanel();
     }
 }

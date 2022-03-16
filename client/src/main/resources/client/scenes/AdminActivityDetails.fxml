@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="client.scenes.ViewQuestionsCtrl">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminActivityDetailsCtrl">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="60.0" prefWidth="100.0" />
@@ -27,7 +27,7 @@
       <Label text="value" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
       <Label text="source" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
       <Label text="image_id" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-      <TextField fx:id="idField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="idField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="activityTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="valueField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <TextField fx:id="sourceField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -41,8 +41,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#switchToQuestionPanel" prefHeight="45.0" prefWidth="60.0" text="Back" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#switchToAdminPanel" prefHeight="45.0" prefWidth="60.0" text="Confirm" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#confirmAction" prefHeight="45.0" prefWidth="60.0" text="Confirm" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#switchToActivityPanel" prefHeight="45.0" prefWidth="60.0" text="Back" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>
