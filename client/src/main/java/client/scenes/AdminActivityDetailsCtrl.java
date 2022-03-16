@@ -72,9 +72,11 @@ public class AdminActivityDetailsCtrl implements Initializable {
     }
 
     /**
-     * Function called when confirm button pressed
+     * Function called when confirm button pressed.
+     * It checks if activity was changed and if so sends a PUT request to the server
+     * to change and existing record of that activity
      */
-    public void confirmAction(ActionEvent e) {
+    public void confirmAction(ActionEvent event) {
         Activity constructed;
         try {
             constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Integer.parseInt(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));
@@ -85,7 +87,12 @@ public class AdminActivityDetailsCtrl implements Initializable {
         if(this.selectedActivity.equals(constructed)) {
             mainCtrl.showAdminActivityPanel();
         } else {
-            AdminCommunication.editActivity(selectedActivity.getActivityId(), constructed);
+            try {
+                AdminCommunication.editActivity(selectedActivity.getActivityId(), constructed);
+            } catch (RuntimeException e) {
+                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+                return;
+            }
             mainCtrl.showAdminActivityPanel();
         }
     }

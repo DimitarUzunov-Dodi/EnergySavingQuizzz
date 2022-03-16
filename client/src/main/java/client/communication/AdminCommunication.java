@@ -16,7 +16,7 @@ public class AdminCommunication {
     private static final String SERVER = "http://localhost:8080/";
 
     /**
-     * Send post request to start the restart procedure of the server
+     * Send POST request to start the restart procedure of the server
      * @return
      * @throws RuntimeException when unable to connect to the server
      */
@@ -28,7 +28,7 @@ public class AdminCommunication {
     }
 
     /**
-     * Send get request to the server to get list of available activities on the server
+     * Send GET request to the server to get list of available activities on the server
      * @return list of Activity entities retrieved from the server
      * @throws RuntimeException when unable to connect to the server
      */
@@ -40,7 +40,7 @@ public class AdminCommunication {
     }
 
     /**
-     * Send get request to the server to get list of available activities on the server
+     * Send POST request to the server to add a dummy activity. Used for manual testing
      * @return list of Activity entities retrieved from the server
      * @throws RuntimeException when unable to connect to the server
      */
@@ -52,7 +52,7 @@ public class AdminCommunication {
     }
 
     /**
-     * Send get request to the server to delete all activities on the server
+     * Send DELETE request to the server to delete all activities on the server
      * @return response
      * @throws RuntimeException when unable to connect to the server
      */
@@ -63,7 +63,13 @@ public class AdminCommunication {
                 .delete();
     }
 
-    public static Response editActivity(long activityId, Activity constructed) {
+    /**
+     * Sends PUT request to modify an activity that is already in the database
+     * @param activityId id of activity
+     * @param constructed new activity that is going to replace an old version
+     * @return Response from the server
+     */
+    public static Response editActivity(long activityId, Activity constructed) throws RuntimeException {
         System.out.println("Sending entity");
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/admin/activity/edit/" + Long.toString(activityId))

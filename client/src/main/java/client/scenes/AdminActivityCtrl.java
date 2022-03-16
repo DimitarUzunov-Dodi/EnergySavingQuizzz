@@ -15,6 +15,8 @@ import javafx.scene.control.TableView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static client.scenes.UserAlert.userAlert;
+
 public class AdminActivityCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private final AdminCommunication server;
@@ -57,9 +59,13 @@ public class AdminActivityCtrl implements Initializable {
     public void refresh() {
         new Thread(() -> {
             System.out.println("Refreshing activities table...");
-            data = FXCollections.observableList(AdminCommunication.getAllActivities());
-            activityTable.setItems(data);
-            System.out.println("Populated table with "+data.size()+" entries.");
+            try {
+                data = FXCollections.observableList(AdminCommunication.getAllActivities());
+                activityTable.setItems(data);
+                System.out.println("Populated table with "+data.size()+" entries.");
+            } catch (RuntimeException e) {
+                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+            }
         }).start();
     }
 
@@ -74,7 +80,11 @@ public class AdminActivityCtrl implements Initializable {
      * Deletes all available activities on the server
      */
     public void deleteAllActivities() {
-        AdminCommunication.deleteActivities();
+        try {
+            AdminCommunication.deleteActivities();
+        } catch (RuntimeException e) {
+            userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+        }
     }
 
     /**
