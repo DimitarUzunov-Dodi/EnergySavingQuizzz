@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static client.scenes.UserAlert.userAlert;
-
 public class ActivityBankUtils {
     private static final String pathToBankZip = "./src/main/data/";
     private static final String zipName = "oopp-activity-bank.zip";

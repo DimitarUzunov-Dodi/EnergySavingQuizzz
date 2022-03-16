@@ -79,7 +79,7 @@ public class AdminActivityDetailsCtrl implements Initializable {
     public void confirmAction(ActionEvent event) {
         Activity constructed;
         try {
-            constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Integer.parseInt(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));
+            constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Long.parseLong(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));
         } catch (NumberFormatException exception){
             userAlert("ERROR", "Bad format", "Text fields with numbers are inputted incorrectly.");
             return;

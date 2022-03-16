@@ -109,9 +109,6 @@ public class AdminActivityCtrl implements Initializable {
                 exception.printStackTrace();
                 // userAlert("ERROR", "Unable to load archive", "Error occurred while trying to read an archive");
             }
-        }).start();
-        new Thread(() -> {
-            System.out.println("Loading activities...");
             try {
                 ActivityBankUtils.jsonToActivityBankEntry();
             } catch (IOException exception) {

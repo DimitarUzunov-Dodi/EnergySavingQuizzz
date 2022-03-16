@@ -10,11 +10,11 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "activity_id")
     private long activityId;
-    @Column(name = "activity_text")
+    @Column(name = "activity_text", length = 512)
     private String activityText;
     @Column(name = "value")
     private long value;
-    @Column(name = "source")
+    @Column(name = "source", length = 512)
     private String source;
     @Column(name = "image_id")
     private long imageId;
