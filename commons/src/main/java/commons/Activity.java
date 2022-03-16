@@ -13,7 +13,7 @@ public class Activity {
     @Column(name = "activity_text")
     private String activityText;
     @Column(name = "value")
-    private int value;
+    private long value;
     @Column(name = "source")
     private String source;
     @Column(name = "image_id")
@@ -22,7 +22,7 @@ public class Activity {
     public Activity() {
     }
 
-    public Activity(long activityId, String activityText, int value, String source, long imageId) {
+    public Activity(long activityId, String activityText, long value, String source, long imageId) {
         this.activityId = activityId;
         this.activityText = activityText;
         this.value = value;
@@ -30,7 +30,7 @@ public class Activity {
         this.imageId = imageId;
     }
 
-    public Activity(String activityText, int value, String source, long imageId) {
+    public Activity(String activityText, long value, String source, long imageId) {
         this.activityText = activityText;
         this.value = value;
         this.source = source;
@@ -53,11 +53,11 @@ public class Activity {
         this.activityText = activityText;
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(long value) {
         this.value = value;
     }
 
@@ -95,7 +95,7 @@ public class Activity {
     public int hashCode() {
         int result = (int) (getActivityId() ^ (getActivityId() >>> 32));
         result = 31 * result + getActivityText().hashCode();
-        result = 31 * result + getValue();
+        result = 31 * result + (int) getValue();
         result = 31 * result + getSource().hashCode();
         result = 31 * result + (int) (getImageId() ^ (getImageId() >>> 32));
         return result;

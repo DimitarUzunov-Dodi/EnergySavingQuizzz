@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Activity;
+import commons.ActivityBankEntry;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.Main;
@@ -34,6 +35,14 @@ public class AdminController {
     public ResponseEntity<String> addDefaultActivity() {
         System.out.println("Adding new activity");
         repo.save(new Activity("TestText", 13, "SourceText", 1));
+        return ResponseEntity.ok("Added entity successfully");
+    }
+
+    @PostMapping(value = "/activitybank/add")
+    public ResponseEntity<String> addActivityBankEntry(@RequestBody ActivityBankEntry newActivity) {
+        System.out.println("Adding new activity bank entry");
+        Activity translatedActivity = new Activity(newActivity.getTitle(), newActivity.getConsumption_in_wh(), newActivity.getSource(), 1);
+        repo.save(translatedActivity);
         return ResponseEntity.ok("Added entity successfully");
     }
 

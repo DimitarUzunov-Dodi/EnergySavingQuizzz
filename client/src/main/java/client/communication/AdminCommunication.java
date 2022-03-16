@@ -1,6 +1,7 @@
 package client.communication;
 
 import commons.Activity;
+import commons.ActivityBankEntry;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -64,7 +65,7 @@ public class AdminCommunication {
     }
 
     /**
-     * Sends PUT request to modify an activity that is already in the database
+     * Sends POST request to modify an activity that is already in the database
      * @param activityId id of activity
      * @param constructed new activity that is going to replace an old version
      * @return Response from the server
@@ -73,6 +74,18 @@ public class AdminCommunication {
         System.out.println("Sending entity");
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/admin/activity/edit/" + Long.toString(activityId))
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(constructed, APPLICATION_JSON));
+    }
+
+    /**
+     * Sends POST request with activity bank
+     */
+
+    public static Response addActivityBankEntry(ActivityBankEntry constructed) throws RuntimeException {
+        System.out.println("Sending entity");
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/admin/activitybank/add/")
                 .request(APPLICATION_JSON)
                 .post(Entity.entity(constructed, APPLICATION_JSON));
     }

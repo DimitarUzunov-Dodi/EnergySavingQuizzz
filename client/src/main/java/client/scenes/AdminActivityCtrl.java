@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.communication.AdminCommunication;
+import client.utils.ActivityBankUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -93,5 +95,28 @@ public class AdminActivityCtrl implements Initializable {
     public void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
         mainCtrl.showAdminActivityDetails(selected);
+    }
+
+    /**
+     * Loads activities from the archive based on jsons there
+     */
+    public void load(){
+        new Thread(() -> {
+            System.out.println("Loading activities...");
+            try {
+                ActivityBankUtils.unzipActivityBank();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                // userAlert("ERROR", "Unable to load archive", "Error occurred while trying to read an archive");
+            }
+        }).start();
+        new Thread(() -> {
+            System.out.println("Loading activities...");
+            try {
+                ActivityBankUtils.jsonToActivityBankEntry();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }).start();
     }
 }
