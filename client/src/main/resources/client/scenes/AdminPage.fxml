@@ -31,7 +31,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button id="gameSettings" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#switchToAdminActivityPanel" prefHeight="120.0" prefWidth="215.0" text="Add a question" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Button id="gameSettings" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#switchToAdminActivityPanel" prefHeight="120.0" prefWidth="215.0" text="Manage activities" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets left="10.0" />
                     </GridPane.margin>
@@ -39,7 +39,7 @@
                         <Font size="20.0" />
                     </font>
                 </Button>
-            <Button id="serverRestartButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#restartAction" prefHeight="97.0" prefWidth="230.0" text=" Restar the server" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button id="serverRestartButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#restartAction" prefHeight="97.0" prefWidth="230.0" text=" Restart the server" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
