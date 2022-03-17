@@ -1,12 +1,11 @@
 package client.scenes;
 
-import client.communication.GameCommunication;
+
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -18,11 +17,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static client.scenes.UserAlert.userAlert;
+
 
 
 public class GamePageController implements Initializable {
@@ -30,7 +30,7 @@ public class GamePageController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private final GameCommunication server;
+    private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
 
@@ -67,18 +67,11 @@ public class GamePageController implements Initializable {
 
 
     @Inject
-    public GamePageController(GameCommunication server, MainCtrl mainCtrl) {
+    public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
 
-    public void DoThing(ActionEvent event){
-        try {
-            server.connectTest();
-        } catch (RuntimeException e) {
-            userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
-        }
-    }
 
     /**
      * initializes user interface components
@@ -87,6 +80,7 @@ public class GamePageController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ArrayList<String> list = new ArrayList<>();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
         progressBar.setProgress(0);
        // Question_text = new Text("foo");
@@ -103,6 +97,12 @@ public class GamePageController implements Initializable {
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
+       /* server.send("/app/chat", "foo" );
+        server.registerForMessages("/topic/chat",String.class, q -> {
+            list.add(q);
+        });
+
+        */
     }
 
     /**

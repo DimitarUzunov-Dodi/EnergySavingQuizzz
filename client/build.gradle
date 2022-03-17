@@ -22,8 +22,10 @@ javafx {
 dependencies {
 
 	implementation project(":commons")
-	implementation 'org.springframework:spring-messaging:5.3.15'
-	implementation 'org.springframework:spring-websocket:5.3.15'
+	implementation "javax.websocket:javax.websocket-api:1.1"
+	implementation 'org.springframework:spring-messaging:5.3.16'
+	implementation 'org.springframework:spring-websocket:5.3.16'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket:2.6.4'
 	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.0.3'
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.3'
 	implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '3.0.3'

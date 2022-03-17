@@ -15,14 +15,15 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint(GAME_ENDPOINT).setAllowedOrigins("http://localhost:8080/").withSockJS();
+        registry.addEndpoint(GAME_ENDPOINT);
         //System.out.println("foo");
     }
 
 
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry registry){
-        registry.enableSimpleBroker("/websocket");
+        registry.enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/app");
    }
 
     /*
