@@ -21,9 +21,9 @@
    <children>
       <TableView fx:id="activityTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <columns>
-            <TableColumn fx:id="colActivityId" editable="false" prefWidth="75.0" text="id" />
-            <TableColumn fx:id="colActivityText" editable="false" prefWidth="75.0" text="text" />
-            <TableColumn fx:id="colActivityValue" editable="false" prefWidth="75.0" text="value" />
+            <TableColumn fx:id="colActivityId" editable="false" prefWidth="53.0" text="id" />
+            <TableColumn fx:id="colActivityText" editable="false" prefWidth="250.0" text="text" />
+            <TableColumn fx:id="colActivityValue" editable="false" prefWidth="176.0" text="value" />
          </columns>
       </TableView>
       <Button mnemonicParsing="false" onAction="#switchToAdminPanel" prefHeight="44.0" prefWidth="44.0" text="Back" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />

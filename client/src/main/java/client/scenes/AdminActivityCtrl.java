@@ -10,11 +10,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static client.scenes.UserAlert.userAlert;
@@ -56,7 +60,7 @@ public class AdminActivityCtrl implements Initializable {
     }
 
     /**
-     * Method refreshes the activity list available in admin panel
+     * Method refreshes the list of activities in admin panel
      */
     public void refresh() {
         new Thread(() -> {
@@ -73,6 +77,9 @@ public class AdminActivityCtrl implements Initializable {
 
     /**
      * FOR MANUAL TESTING PURPOSES ONLY
+     * (It's still available in the admin panel)
+     * Adds a dummy activity with fixed values:
+     *
      */
     public void add() {
         AdminCommunication.addTestingActivity();
@@ -82,10 +89,17 @@ public class AdminActivityCtrl implements Initializable {
      * Deletes all available activities on the server
      */
     public void deleteAllActivities() {
-        try {
-            AdminCommunication.deleteActivities();
-        } catch (RuntimeException e) {
-            userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+        Stage thisStage = (Stage) activityTable.getScene().getWindow();
+        Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        quitAlert.setTitle("Quit");
+        quitAlert.setHeaderText("Are you sure you want to delete all activities?");
+        Optional<ButtonType> result = quitAlert.showAndWait();
+        if(result.get() == ButtonType.OK) {
+            try {
+                AdminCommunication.deleteActivities();
+            } catch (RuntimeException e) {
+                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+            }
         }
     }
 
