@@ -1,10 +1,12 @@
 package client.scenes;
 
+import client.communication.GameCommunication;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -20,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static client.scenes.UserAlert.userAlert;
 
 
 public class GamePageController implements Initializable {
@@ -27,7 +30,7 @@ public class GamePageController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private final ServerUtils server;
+    private final GameCommunication server;
     private final MainCtrl mainCtrl;
 
 
@@ -58,14 +61,23 @@ public class GamePageController implements Initializable {
 
 
 
+
     String[] names = {"foo", "bar", "test"};
     private ArrayList<Button> button_List = new ArrayList<>();
 
 
     @Inject
-    public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
+    public GamePageController(GameCommunication server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+    }
+
+    public void DoThing(ActionEvent event){
+        try {
+            server.connectTest();
+        } catch (RuntimeException e) {
+            userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+        }
     }
 
     /**

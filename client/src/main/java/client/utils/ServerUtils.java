@@ -41,6 +41,9 @@ public class ServerUtils {
                 .get(new GenericType<List<LeaderboardEntry>>() {});
     }
 
+    private StompSession session = connect("ws://localhost:8080/websocket")
+
+
     /**
      * Retrieve a match leaderboard from the server
      * @return List of player score entries
