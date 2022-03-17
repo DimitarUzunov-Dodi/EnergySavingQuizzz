@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 package client.utils;
-
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompSession;
 import commons.LeaderboardEntry;
 import commons.ScoreRecord;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -41,7 +46,22 @@ public class ServerUtils {
                 .get(new GenericType<List<LeaderboardEntry>>() {});
     }
 
-    private StompSession session = connect("ws://localhost:8080/websocket")
+    private StompSession session = connect("ws://localhost:8080/websocket");
+
+    private StompSession connect(String s) {
+        var client = new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try {
+            return stomp.connect(SERVER, new StompSessionHandlerAdapter() {}).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException();
+
+    }
 
 
     /**
