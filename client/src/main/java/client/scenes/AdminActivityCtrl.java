@@ -2,8 +2,11 @@ package client.scenes;
 
 import client.communication.AdminCommunication;
 import client.utils.ActivityBankUtils;
+import client.utils.CorruptImageException;
+import client.utils.ImageNotSupportedException;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.ActivityImage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +25,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static client.scenes.UserAlert.userAlert;
+import static client.utils.ActivityImageUtils.imageToByteArray;
 
 public class AdminActivityCtrl implements Initializable {
     private final MainCtrl mainCtrl;
@@ -83,6 +87,7 @@ public class AdminActivityCtrl implements Initializable {
      */
     public void add() {
         AdminCommunication.addTestingActivity();
+        addImage();
     }
 
     /**
@@ -127,6 +132,19 @@ public class AdminActivityCtrl implements Initializable {
                 ActivityBankUtils.jsonToActivityBankEntry();
             } catch (IOException exception) {
                 exception.printStackTrace();
+            }
+        }).start();
+    }
+
+    // Temporary code
+    public void addImage() {
+        new Thread(() -> {
+            try {
+                String path = "C:/Users/Lenovo/Desktop/oopp/repository-template/client/src/main/Data/unzipped/01/ipad.jpg";
+                AdminCommunication.addActivityImage(
+                        new ActivityImage(0, imageToByteArray(path)));
+            } catch (IOException | ImageNotSupportedException | CorruptImageException e) {
+                e.printStackTrace();
             }
         }).start();
     }
