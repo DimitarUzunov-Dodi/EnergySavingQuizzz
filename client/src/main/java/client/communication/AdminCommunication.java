@@ -2,6 +2,7 @@ package client.communication;
 
 import commons.Activity;
 import commons.ActivityBankEntry;
+import commons.ActivityImage;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -88,5 +89,19 @@ public class AdminCommunication {
                 .target(SERVER).path("api/admin/activitybank/add/")
                 .request(APPLICATION_JSON)
                 .post(Entity.entity(constructed, APPLICATION_JSON));
+    }
+
+    /**
+     * Sends POST request to add an image to the activity
+     * @param activityImage image of activity
+     * @return Response from the server
+     * @throws RuntimeException when unable to connect to the server
+     */
+    public static Response addActivityImage(ActivityImage activityImage) throws RuntimeException {
+        System.out.println("Sending an image");
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/admin/activity/add/image")
+                .request(APPLICATION_JSON)
+                .post(Entity.entity(activityImage, APPLICATION_JSON));
     }
 }

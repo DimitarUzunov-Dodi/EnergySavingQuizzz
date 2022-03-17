@@ -4,6 +4,7 @@ import client.communication.AdminCommunication;
 import client.utils.ActivityBankUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.ActivityImage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,6 +77,7 @@ public class AdminActivityCtrl implements Initializable {
      */
     public void add() {
         AdminCommunication.addTestingActivity();
+        //AdminCommunication.addActivityImage(new ActivityImage(0, new byte[]{}));
     }
 
     /**
@@ -115,5 +117,9 @@ public class AdminActivityCtrl implements Initializable {
                 exception.printStackTrace();
             }
         }).start();
+    }
+
+    public void addImage() {
+
     }
 }

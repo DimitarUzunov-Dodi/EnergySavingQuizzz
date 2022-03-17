@@ -2,9 +2,11 @@ package server.api;
 
 import commons.Activity;
 import commons.ActivityBankEntry;
+import commons.ActivityImage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.Main;
+import server.database.ActivityImagesRepository;
 import server.database.ActivityRepository;
 
 import java.util.List;
@@ -15,8 +17,11 @@ public class AdminController {
 
     private ActivityRepository repo;
 
-    public AdminController(ActivityRepository repo){
+    private ActivityImagesRepository imageRepo;
+
+    public AdminController(ActivityRepository repo, ActivityImagesRepository imageRepo){
         this.repo = repo;
+        this.imageRepo = imageRepo;
     }
 
     @PostMapping(value = "/restart")
@@ -58,5 +63,12 @@ public class AdminController {
         System.out.println("Editing activity " + activityId);
         repo.save(newActivity);
         return ResponseEntity.ok("Added entity successfully");
+    }
+
+    @PostMapping(value = "/activity/add/image")
+    public ResponseEntity<String> addActivityImage(@RequestBody ActivityImage newActivityImage) {
+        System.out.println("Adding a new activity image");
+        imageRepo.save(newActivityImage);
+        return ResponseEntity.ok("Added the image successfully");
     }
 }
