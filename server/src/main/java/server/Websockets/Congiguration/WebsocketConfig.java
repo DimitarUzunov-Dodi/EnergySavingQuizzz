@@ -7,6 +7,8 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
 import server.Websockets.Handler.GameWebsocketHandler;
 
+import java.util.logging.Logger;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
@@ -22,7 +24,7 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry registry){
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/topic", "/emoji");
         registry.setApplicationDestinationPrefixes("/app");
    }
 

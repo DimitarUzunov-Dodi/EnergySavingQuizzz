@@ -42,7 +42,7 @@
             <RowConstraints maxHeight="5.600008392333976" minHeight="0.0" prefHeight="3.79998779296875" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Circle fx:id="emoji1" fill="#1fff69" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="emoji1" fill="#1fff69" onMouseClicked="#emojiPressed" onTouchPressed="#emojiPressed" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="emoji2" fill="#ff371f" radius="13.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" />
             <Circle fx:id="emoji3" fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" />
             <Button maxHeight="-Infinity" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="120.0" style="-fx-border-radius: 90; -fx-border-width: 1; -fx-background-radius: 90;" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">

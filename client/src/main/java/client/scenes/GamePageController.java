@@ -4,6 +4,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 
+import commons.Person;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -13,16 +14,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-
 
 
 public class GamePageController implements Initializable {
@@ -32,7 +31,6 @@ public class GamePageController implements Initializable {
     private Parent root;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
 
 
     private static final int TIME_TO_NEXT_ROUND = 3;
@@ -59,7 +57,8 @@ public class GamePageController implements Initializable {
     @FXML
     private Text Question_text;
 
-
+    @FXML
+    private Circle emoji1;
 
 
     String[] names = {"foo", "bar", "test"};
@@ -75,6 +74,7 @@ public class GamePageController implements Initializable {
 
     /**
      * initializes user interface components
+     *
      * @param location
      * @param resources
      */
@@ -83,7 +83,7 @@ public class GamePageController implements Initializable {
         ArrayList<String> list = new ArrayList<>();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
         progressBar.setProgress(0);
-       // Question_text = new Text("foo");
+        // Question_text = new Text("foo");
         button_List.add(button1);
         button_List.add(button2);
         button_List.add(button3);
@@ -97,12 +97,15 @@ public class GamePageController implements Initializable {
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
-       /* server.send("/app/chat", "foo" );
-        server.registerForMessages("/topic/chat",String.class, q -> {
+        server.send("/app/chat", "foo");
+        server.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
         });
+        server.registerForMessages("/emoji/receive", Person.class, v -> {
+            System.out.println(v);
+        });
 
-        */
+
     }
 
     /**
@@ -116,7 +119,7 @@ public class GamePageController implements Initializable {
                     @Override
                     protected Integer call() {
                         int i;
-                        for(i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
+                        for (i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
                             updateProgress(i, TIME_TO_NEXT_ROUND * 100);
                             try {
                                 Thread.sleep(10);
@@ -129,6 +132,9 @@ public class GamePageController implements Initializable {
                 };
             }
         };
+
+
+
 /*
         // Next Round Transition
         countDownThread.setOnSucceeded(event -> {
@@ -141,6 +147,10 @@ public class GamePageController implements Initializable {
 
         // TODO "uses unchecked or unsafe operations"
 
+    }
+
+    public void emojiPressed(){
+        server.send("/app/emoji", "brat");
     }
 
 
