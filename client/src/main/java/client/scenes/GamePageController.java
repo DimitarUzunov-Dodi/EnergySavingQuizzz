@@ -14,9 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 
 
 import java.net.URL;
@@ -34,6 +37,12 @@ public class GamePageController implements Initializable {
 
 
     private static final int TIME_TO_NEXT_ROUND = 3;
+
+    @FXML
+    private ImageView MenuButton;
+
+    @FXML
+    private ImageView Windmill;
 
     @FXML
     private ProgressBar progressBar;
@@ -80,6 +89,7 @@ public class GamePageController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        InitImages();
         ArrayList<String> list = new ArrayList<>();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
         progressBar.setProgress(0);
@@ -106,6 +116,11 @@ public class GamePageController implements Initializable {
         });
 
 
+    }
+
+    public void InitImages(){
+        Windmill.setImage(new Image("client/images/OIP.jpg"));
+        MenuButton.setImage(new Image(("client/images/menu.png")));
     }
 
     /**

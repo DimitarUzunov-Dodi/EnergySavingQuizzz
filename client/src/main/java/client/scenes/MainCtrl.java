@@ -53,9 +53,11 @@ public class MainCtrl {
         this.settingsCtrl = settingsScreen.getKey();
         this.settings = new Scene(settingsScreen.getValue());
 
+
         // Game scene
         this.gamePageController = GamePage.getKey();
         this.gamePage = new Scene(GamePage.getValue());
+        this.gamePage.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/GamePage.css")).toExternalForm());
 
         // match leaderboard screen
         this.matchLeaderboardCtrl = matchLeaderboard.getKey();
@@ -129,6 +131,8 @@ public class MainCtrl {
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
+        gamePageController.countDown();
+
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 

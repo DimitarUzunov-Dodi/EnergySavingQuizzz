@@ -1,0 +1,6 @@
+#pane{
+    -fx-background-image: url("../images/background_lightning.png");
+    -fx-background-repeat: repeat;
+    -fx-background-position: top left;
+}
+
