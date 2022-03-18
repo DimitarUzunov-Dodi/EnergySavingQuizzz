@@ -1,7 +1,5 @@
 package server.api;
 
-
-import commons.Activity;
 import commons.ActivityImage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
