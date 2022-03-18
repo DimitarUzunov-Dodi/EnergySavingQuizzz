@@ -21,6 +21,8 @@ import static client.utils.ActivityImageUtils.imageToByteArray;
 public class ActivityBankUtils {
     private static final String pathToBankZip = "./src/main/data/";
     private static final String zipName = "oopp-activity-bank.zip";
+    private static final String pathToResources = "./src/main/resources/client/images/";
+    private static final String defaultImageName = "default-image.png";
 
     public static void unzipActivityBank() throws IOException {
         String fileZip = pathToBankZip + zipName;
@@ -91,8 +93,7 @@ public class ActivityBankUtils {
                     .addActivityImage(new ActivityImage(imageToByteArray(path)))
                     .readEntity(Long.class);
         } catch (IOException | ImageNotSupportedException | CorruptImageException e) {
-            e.printStackTrace();
-            return -1; // TODO change to default
+            return uploadImage(pathToResources+defaultImageName);
         }
     }
 }

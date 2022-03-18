@@ -3,10 +3,7 @@ package client.scenes;
 import client.communication.ActivityImageCommunication;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.util.Objects;
 
 
 public class ActivityImageCtrl {

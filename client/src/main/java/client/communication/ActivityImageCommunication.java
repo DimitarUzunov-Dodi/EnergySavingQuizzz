@@ -28,6 +28,7 @@ public class ActivityImageCommunication {
             return imageFromByteArray(imageData);
         }
         catch (RuntimeException e) {
+            e.printStackTrace();
             return new Image(Objects.requireNonNull(ActivityImageCommunication.class.getResource("../images/default-image.png")).toExternalForm());
         }
     }
