@@ -44,7 +44,10 @@ public class MainCtrl {
     private AdminActivityDetailsCtrl adminActivityDetailsCtrl;
     private Scene adminActivityDetailsScene;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage, Pair<AdminActivityCtrl, Parent> adminActivityPanel,  Pair<AdminActivityDetailsCtrl, Parent> adminActivityDetails) {
+    private ActivityImageCtrl imageCtrl;
+    private Scene imageScene;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage, Pair<AdminActivityCtrl, Parent> adminActivityPanel,  Pair<AdminActivityDetailsCtrl, Parent> adminActivityDetails, Pair<ActivityImageCtrl, Parent> activityImage) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
@@ -96,6 +99,9 @@ public class MainCtrl {
         // Admin activity details
         this.adminActivityDetailsCtrl = adminActivityDetails.getKey();
         this.adminActivityDetailsScene = new Scene(adminActivityDetails.getValue());
+
+        this.imageCtrl = activityImage.getKey();
+        this.imageScene = new Scene(activityImage.getValue());
 
         //showServerLeaderboard(); // for testing only
         //showGamePage();
@@ -193,5 +199,11 @@ public class MainCtrl {
             return;
         }
         primaryStage.setScene(adminActivityDetailsScene);
+    }
+
+    public void showActivityImage(Activity selected) {
+        primaryStage.setTitle("Activity Image");
+        primaryStage.setScene(imageScene);
+        this.imageCtrl.showImage(selected.getImageId());
     }
 }

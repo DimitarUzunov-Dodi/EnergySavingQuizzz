@@ -36,17 +36,19 @@ public class AdminController {
         return  ResponseEntity.ok(repo.findAll());
     }
 
+    /*
     @PostMapping(value = "/activity/add")
     public ResponseEntity<String> addDefaultActivity() {
         System.out.println("Adding new activity");
         repo.save(new Activity("TestText", 13, "SourceText", 1));
         return ResponseEntity.ok("Added entity successfully");
     }
+     */
 
-    @PostMapping(value = "/activitybank/add")
-    public ResponseEntity<String> addActivityBankEntry(@RequestBody ActivityBankEntry newActivity) {
+    @PostMapping(value = "/activity/add")
+    public ResponseEntity<String> addActivityBankEntry(@RequestParam(name = "imageId") String imageId, @RequestBody ActivityBankEntry newActivity) {
         System.out.println("Adding new activity bank entry");
-        Activity translatedActivity = new Activity(newActivity.getTitle(), newActivity.getConsumption_in_wh(), newActivity.getSource(), 1);
+        Activity translatedActivity = new Activity(newActivity.getTitle(), newActivity.getConsumption_in_wh(), newActivity.getSource(), Long.parseLong(imageId));
         repo.save(translatedActivity);
         return ResponseEntity.ok("Added entity successfully");
     }
@@ -55,6 +57,7 @@ public class AdminController {
     public ResponseEntity<String> deleteAllActivities() {
         System.out.println("Deleting all activities");
         repo.deleteAll();
+        imageRepo.deleteAll();
         return ResponseEntity.ok("Deleted all entities successfully");
     }
 
@@ -66,9 +69,9 @@ public class AdminController {
     }
 
     @PostMapping(value = "/activity/add/image")
-    public ResponseEntity<String> addActivityImage(@RequestBody ActivityImage newActivityImage) {
+    public ResponseEntity<Long> addActivityImage(@RequestBody ActivityImage newActivityImage) {
         System.out.println("Adding a new activity image");
-        imageRepo.save(newActivityImage);
-        return ResponseEntity.ok("Added the image successfully");
+        long id = imageRepo.save(newActivityImage).getImageId();
+        return ResponseEntity.ok(id);
     }
 }

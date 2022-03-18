@@ -102,6 +102,11 @@ public class AdminActivityCtrl implements Initializable {
         mainCtrl.showAdminActivityDetails(selected);
     }
 
+    public void image() {
+        Activity selected = activityTable.getSelectionModel().getSelectedItem();
+        mainCtrl.showActivityImage(selected);
+    }
+
     /**
      * Loads activities from the archive based on jsons there
      */
