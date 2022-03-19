@@ -67,7 +67,14 @@ public class GamePageController implements Initializable {
     private Text Question_text;
 
     @FXML
-    private Circle emoji1;
+    private ImageView emoji1;
+    @FXML
+    private ImageView emoji2;
+    @FXML
+    private ImageView emoji3;
+
+
+
 
 
     String[] names = {"foo", "bar", "test"};
@@ -121,6 +128,10 @@ public class GamePageController implements Initializable {
     public void InitImages(){
         Windmill.setImage(new Image("client/images/OIP.jpg"));
         MenuButton.setImage(new Image(("client/images/menu.png")));
+        emoji1.setImage(new Image("client/images/emoji1.png"));
+        emoji2.setImage(new Image("client/images/emoji2.png"));
+        emoji3.setImage(new Image("client/images/emoji3.png"));
+
     }
 
     /**
