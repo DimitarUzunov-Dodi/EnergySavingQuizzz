@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
+import javafx.stage.WindowEvent;
 
 import static client.utils.FileUtils.readNickname;
 import static client.utils.FileUtils.writeNickname;
@@ -27,7 +28,12 @@ public class SplashCtrl {
      * @param event passed by JavaFX by default
      */
     public void quitAction(ActionEvent event) {
-        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+        Stage stage = (Stage)(((Button)event.getSource()).getScene().getWindow());
+        stage.fireEvent(
+        new WindowEvent(
+                stage,
+                WindowEvent.WINDOW_CLOSE_REQUEST
+        ));
     }
 
     /**
@@ -85,4 +91,11 @@ public class SplashCtrl {
         mainCtrl.showServerJoin();
     }
 
+    /**
+     * Function called by admin button when clicked. Changes scene to AdminPage scene.
+     * @param event passed by JavaFX by default
+     */
+    public void adminAction(ActionEvent event){
+        mainCtrl.showAdmin();
+    }
 }
