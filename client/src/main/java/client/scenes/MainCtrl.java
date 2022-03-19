@@ -1,11 +1,14 @@
 package client.scenes;
 
+import commons.Activity;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.Objects;
+
+import static client.scenes.UserAlert.userAlert;
 
 public class MainCtrl {
 
@@ -35,7 +38,16 @@ public class MainCtrl {
     private LoadingController loadingCtrl;
     private Scene loading;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage) {
+    private AdminActivityCtrl adminActivityCtrl;
+    private Scene adminActivityPanelScreen;
+
+    private AdminActivityDetailsCtrl adminActivityDetailsCtrl;
+    private Scene adminActivityDetailsScene;
+
+    private ActivityImageCtrl imageCtrl;
+    private Scene imageScene;
+
+    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage, Pair<AdminActivityCtrl, Parent> adminActivityPanel,  Pair<AdminActivityDetailsCtrl, Parent> adminActivityDetails, Pair<ActivityImageCtrl, Parent> activityImage) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
@@ -75,10 +87,21 @@ public class MainCtrl {
         this.adminCtrl = adminPage.getKey();
         this.adminPageScene = new Scene(adminPage.getValue());
 
+        // Admin activities panel
+        this.adminActivityCtrl = adminActivityPanel.getKey();
+        this.adminActivityPanelScreen = new Scene(adminActivityPanel.getValue());
+
         // Loading scene
         this.loadingCtrl = loadingScreen.getKey();
         this.loading = new Scene(loadingScreen.getValue());
         this.loading.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/Loading.css")).toExternalForm());
+
+        // Admin activity details
+        this.adminActivityDetailsCtrl = adminActivityDetails.getKey();
+        this.adminActivityDetailsScene = new Scene(adminActivityDetails.getValue());
+
+        this.imageCtrl = activityImage.getKey();
+        this.imageScene = new Scene(activityImage.getValue());
 
         //showServerLeaderboard(); // for testing only
         //showGamePage();
@@ -147,8 +170,40 @@ public class MainCtrl {
         return this.splash;
     }
 
+    /**
+     * Display admin panel screen
+     */
     public void showAdmin() {
         primaryStage.setTitle("Admin page");
         primaryStage.setScene(adminPageScene);
+    }
+
+    /**
+     * Display admin panel for managing the activities
+     */
+    public void showAdminActivityPanel() {
+        primaryStage.setTitle("Activity panel");
+        primaryStage.setScene(adminActivityPanelScreen);
+        adminActivityCtrl.refresh();
+    }
+
+    /**
+     *  Display admin panel for details od the selected activity
+     */
+    public void showAdminActivityDetails(Activity selected) {
+        primaryStage.setTitle("Activity details");
+        try {
+            this.adminActivityDetailsCtrl.setActivity(selected);
+        } catch (NullPointerException e){
+            userAlert("WARN", "No activity selected", "Please select an activity");
+            return;
+        }
+        primaryStage.setScene(adminActivityDetailsScene);
+    }
+
+    public void showActivityImage(Activity selected) {
+        primaryStage.setTitle("Activity Image");
+        primaryStage.setScene(imageScene);
+        this.imageCtrl.showImage(selected.getImageId());
     }
 }

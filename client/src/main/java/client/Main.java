@@ -19,6 +19,7 @@ import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 
 import client.scenes.*;
@@ -31,7 +32,11 @@ import client.scenes.ServerLeaderboardCtrl;
 import client.scenes.MainCtrl;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
@@ -58,7 +63,25 @@ public class Main extends Application {
         var adminPage = FXML.load(AdminCtrl.class, "client", "scenes", "AdminPage.fxml");
         var loading = FXML.load(LoadingController.class, "client", "scenes", "LoadingScene.fxml");
         var matchLeaderboard = FXML.load(MatchLeaderboardCtrl.class, "client", "scenes", "MatchLeaderboard.fxml");
+        var adminActivityPanel = FXML.load(AdminActivityCtrl.class, "client", "scenes", "AdminActivitiesScreen.fxml");
+        var adminActivityDetails = FXML.load(AdminActivityDetailsCtrl.class, "client", "scenes", "AdminActivityDetails.fxml");
+        var activityImage = FXML.load(ActivityImageCtrl.class,  "client", "scenes", "ActivityImageScreen.fxml");
 
-        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                quitAlert.setTitle("Quit");
+                quitAlert.setHeaderText("Are you sure you want to quit?");
+                Optional<ButtonType> result = quitAlert.showAndWait();
+                if(result.get() == ButtonType.OK){
+                    primaryStage.close();
+                } else {
+                    e.consume();
+                }
+            }
+        });
+
+        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage, adminActivityPanel, adminActivityDetails, activityImage);
     }
 }
