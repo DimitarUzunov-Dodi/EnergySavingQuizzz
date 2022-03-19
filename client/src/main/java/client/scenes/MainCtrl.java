@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.MyFXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,6 +11,7 @@ import java.util.Objects;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private MyFXML FXML;
 
     private Scene gamePage;
     private GamePageController gamePageController;
@@ -35,11 +37,26 @@ public class MainCtrl {
     private LoadingController loadingCtrl;
     private Scene loading;
 
-    public void initialize(Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage) {
+    private ServerJoinCtrl joinCtrl;
+    private Scene joinScn;
+
+    /**
+     * Uses the main MyFXML object to load the specified controller and associated javafx resource.
+     * This function can be used to dynamically load pages individually without the need to keep unused objects in memory all the time. Once the resources are loaded it's the caller's job to manage their lifetime.
+     * @param ctrl Type (class name) of the desired controller
+     * @param fxmlName Name of the .fxml file containing the associated UI
+     * @return Pair of an instance of the controller and it's parent (associated fxml)
+     */
+    public <Ctrl> Pair<Ctrl, Parent> loadPage(Class<Ctrl> ctrl, String fxmlName) {
+        return FXML.load(ctrl, "client", "scenes", fxmlName);
+    }
+
+    public void initialize(MyFXML fxml, Stage primaryStage, Pair<SplashCtrl, Parent> splashScreen, Pair<SettingsCtrl, Parent> settingsScreen, Pair<ServerLeaderboardCtrl, Parent> serverLeaderboard, Pair<GamePageController, Parent> GamePage,  Pair<DummyController, Parent> dummy, Pair<LoadingController, Parent> loadingScreen, Pair<MatchLeaderboardCtrl, Parent> matchLeaderboard, Pair<AdminCtrl, Parent> adminPage, Pair<ServerJoinCtrl, Parent> joinPage) {
         // primary stage
         this.primaryStage = primaryStage;
         this.primaryStage.setMinWidth(700);
         this.primaryStage.setMinHeight(450);
+        this.FXML = fxml;
 
         // CSS
         String background = Objects.requireNonNull(this.getClass().getResource("../css/Background.css")).toExternalForm();
@@ -80,11 +97,11 @@ public class MainCtrl {
         this.loading = new Scene(loadingScreen.getValue());
         this.loading.getStylesheets().addAll(Objects.requireNonNull(this.getClass().getResource("../css/Loading.css")).toExternalForm());
 
-        //showServerLeaderboard(); // for testing only
-        //showGamePage();
+        // Server join scene
+        this.joinCtrl = joinPage.getKey();
+        this.joinScn = new Scene(joinPage.getValue());
+
         showSplashScreen();
-        //showLoadingScreen();
-        //showMatchLeaderboardScreen("ID");
         primaryStage.show();
     }
 
@@ -150,5 +167,14 @@ public class MainCtrl {
     public void showAdmin() {
         primaryStage.setTitle("Admin page");
         primaryStage.setScene(adminPageScene);
+    }
+
+    public void showServerJoin() {
+        primaryStage.setScene(joinScn);
+    }
+
+    public void showWaitingRoom(String gameID) {
+        var room = loadPage(WaitingRoomController.class, "WaitingRoom.fxml");
+        primaryStage.setScene(new Scene(room.getValue())); // also calls 'initialize' (I think)
     }
 }

@@ -4,14 +4,10 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class WaitingRoomController implements Initializable {
+public class WaitingRoomController {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
@@ -30,9 +26,8 @@ public class WaitingRoomController implements Initializable {
         this.server = server;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        listView.setItems(playerList);
+    public void onBackButton() {
+        // TODO: close websockets connection
     }
     
 }
