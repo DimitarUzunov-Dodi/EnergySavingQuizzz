@@ -65,6 +65,7 @@ public class Main extends Application {
         var matchLeaderboard = FXML.load(MatchLeaderboardCtrl.class, "client", "scenes", "MatchLeaderboard.fxml");
         var adminActivityPanel = FXML.load(AdminActivityCtrl.class, "client", "scenes", "AdminActivitiesScreen.fxml");
         var adminActivityDetails = FXML.load(AdminActivityDetailsCtrl.class, "client", "scenes", "AdminActivityDetails.fxml");
+        var activityImage = FXML.load(ActivityImageCtrl.class,  "client", "scenes", "ActivityImageScreen.fxml");
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -81,6 +82,6 @@ public class Main extends Application {
             }
         });
 
-        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage, adminActivityPanel, adminActivityDetails);
+        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage, adminActivityPanel, adminActivityDetails, activityImage);
     }
 }

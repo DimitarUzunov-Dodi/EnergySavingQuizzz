@@ -83,10 +83,11 @@ public class AdminCommunication {
      * Sends POST request with activity bank
      */
 
-    public static Response addActivityBankEntry(ActivityBankEntry constructed) throws RuntimeException {
+    public static Response addActivityBankEntry(ActivityBankEntry constructed, long imageId) throws RuntimeException {
         System.out.println("Sending entity");
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/activitybank/add/")
+                .target(SERVER).path("api/admin/activity/add")
+                .queryParam("imageId", Long.toString(imageId))
                 .request(APPLICATION_JSON)
                 .post(Entity.entity(constructed, APPLICATION_JSON));
     }

@@ -4,6 +4,7 @@ import client.communication.AdminCommunication;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.ActivityBankEntry;
+import commons.ActivityImage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,9 +16,15 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import static client.utils.ActivityImageUtils.imageToByteArray;
+
+
 public class ActivityBankUtils {
     private static final String pathToBankZip = "./src/main/data/";
     private static final String zipName = "oopp-activity-bank.zip";
+    private static final String pathToResources = "./src/main/resources/client/images/";
+    private static final String defaultImageName = "default-image.png";
+
 
     public static void unzipActivityBank() throws IOException {
         String fileZip = pathToBankZip + zipName;
@@ -73,8 +80,21 @@ public class ActivityBankUtils {
         ObjectMapper objectMapper = new ObjectMapper();
         List<ActivityBankEntry> activityBankEntryList = objectMapper.readValue(jsonActivityBankArray, new TypeReference<List<ActivityBankEntry>>() {
         });
+
+        long imageId;
         for(ActivityBankEntry entry : activityBankEntryList) {
-            AdminCommunication.addActivityBankEntry(entry);
+            imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImage_path());
+            AdminCommunication.addActivityBankEntry(entry, imageId);
+        }
+    }
+
+    public static long uploadImage(String path) {
+        try {
+            return AdminCommunication
+                    .addActivityImage(new ActivityImage(imageToByteArray(path)))
+                    .readEntity(Long.class);
+        } catch (IOException | CorruptImageException | ImageNotSupportedException ex) {
+            return uploadImage(pathToResources+defaultImageName);
         }
     }
 }

@@ -8,23 +8,46 @@ import java.io.*;
 
 public class ActivityImageUtils {
 
+    public static byte[] imageToByteArray(String path) throws IOException, CorruptImageException, ImageNotSupportedException {
+        BufferedImage bImage = ImageIO.read(new FileInputStream(path));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        if(bImage == null) {
+            throw new CorruptImageException("Corrupt Image");
+        }
+
+        ImageIO.write(bImage, getFormat(path), outputStream);
+
+        byte[] imageData = outputStream.toByteArray();
+        if(imageData.length == 0) {
+            return imageToByteArrayAlternative(path);
+        }
+
+        return imageData;
+    }
+
     /**
      * converts image to byte array
      * @param path path of the file
      * @return byte array of the image
      * @throws IOException if file is not found or has any other issues related to IO
-     * @throws ImageNotSupportedException if image format is not supported
      */
-    public static byte[] imageToByteArray(String path) throws IOException, ImageNotSupportedException, CorruptImageException {
-        BufferedImage bImage = ImageIO.read(new FileInputStream(path));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    public static byte[] imageToByteArrayAlternative(String path) throws IOException, CorruptImageException {
+        File file = new File(path);
 
-        if(bImage == null)
-            throw new CorruptImageException("Corrupt Image!");
+        FileInputStream fis = new FileInputStream(file);
 
-        ImageIO.write(bImage, getFormat(path), outputStream);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        for (int readNum; (readNum = fis.read(buf)) != -1;) {
+            bos.write(buf, 0, readNum);
+        }
 
-        return outputStream.toByteArray();
+        byte[] imageData = bos.toByteArray();
+        if(imageData.length == 0)
+            throw new CorruptImageException("Corrupt Image");
+
+        return imageData;
     }
 
     /**

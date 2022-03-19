@@ -9,6 +9,8 @@ import java.util.Objects;
 public class ActivityImage {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_seq")
+    @SequenceGenerator(name = "image_seq", sequenceName = "image_seq_table")
     @Column(name = "image_id")
     private long imageId;
 
