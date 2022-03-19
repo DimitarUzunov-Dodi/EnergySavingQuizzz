@@ -3,6 +3,7 @@
 package server.Websockets.Controller;
 
 
+import commons.Person;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +20,16 @@ public class EmojiController {
 
     @MessageMapping("/emoji")
     @SendTo("/emoji/receive")
-    public Pair<String, Integer> sendEmoji(Pair<String, Integer> emojiInfo) throws Exception{
+    public Person sendEmoji(Person emojiInfo) throws Exception{
 
-        if (emojiInfo.getRight() == 1) {
-            LOGGER.info("Emoji1 send");
+        if (emojiInfo.lastName.equals("emoji1")) {
+            LOGGER.info("Emoji1 send by" + emojiInfo.firstName);
         }
-        if (emojiInfo.getRight() == 2) {
-            LOGGER.info("Emoji2 send");
+        if (emojiInfo.lastName.equals("emoji2")) {
+            LOGGER.info("Emoji2 send by" + emojiInfo.firstName);
         }
-        if (emojiInfo.getRight() == 3) {
-            LOGGER.info("Emoji2 send");
+        if (emojiInfo.lastName.equals("emoji3")) {
+            LOGGER.info("Emoji2 send by" + emojiInfo.firstName);
         }
         return emojiInfo;
 
