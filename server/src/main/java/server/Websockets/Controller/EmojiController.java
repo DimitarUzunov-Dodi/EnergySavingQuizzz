@@ -19,8 +19,8 @@ public class EmojiController {
 
     @MessageMapping("/emoji")
     @SendTo("/emoji/receive")
-    public Pair<String, Integer> sendEmoji(Object o) {
-        var emojiInfo = (Pair<String, Integer>) o;
+    public Pair<String, Integer> sendEmoji(Pair<String, Integer> emojiInfo) throws Exception{
+
         if (emojiInfo.getRight() == 1) {
             LOGGER.info("Emoji1 send");
         }

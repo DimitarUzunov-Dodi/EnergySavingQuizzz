@@ -86,7 +86,7 @@ public class GamePageController implements Initializable {
     public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-        this.username = FileUtils.readNickname();
+
     }
 
 
@@ -178,16 +178,19 @@ public class GamePageController implements Initializable {
     }
 
     public void emoji1Pressed(){
+        username = FileUtils.readNickname();
         Pair<String,Integer> emojiInfo = new Pair(username,1);
         server.send("/app/emoji", emojiInfo);
     }
     public void emoji2Pressed(){
+        username = FileUtils.readNickname();
         Pair<String,Integer> emojiInfo = new Pair(username,2);
         server.send("/app/emoji", emojiInfo);
     }
     public void emoji3Pressed(){
+        username = FileUtils.readNickname();
         Pair<String,Integer> emojiInfo = new Pair(username,3);
-        server.send("/app/emoji", 3);
+        server.send("/app/emoji", emojiInfo);
     }
 
 
