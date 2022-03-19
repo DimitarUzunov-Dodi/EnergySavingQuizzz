@@ -2,11 +2,8 @@ package client.scenes;
 
 import client.communication.AdminCommunication;
 import client.utils.ActivityBankUtils;
-import client.utils.CorruptImageException;
-import client.utils.ImageNotSupportedException;
 import com.google.inject.Inject;
 import commons.Activity;
-import commons.ActivityImage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +18,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static client.scenes.UserAlert.userAlert;
-import static client.utils.ActivityImageUtils.imageToByteArray;
 
 public class AdminActivityCtrl implements Initializable {
     private final MainCtrl mainCtrl;
