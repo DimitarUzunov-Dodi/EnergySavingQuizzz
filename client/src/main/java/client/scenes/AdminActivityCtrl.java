@@ -80,7 +80,6 @@ public class AdminActivityCtrl implements Initializable {
      */
     public void add() {
         AdminCommunication.addTestingActivity();
-        addImage();
     }
 
     /**
@@ -127,16 +126,4 @@ public class AdminActivityCtrl implements Initializable {
         }).start();
     }
 
-    // Temporary code
-    public void addImage() {
-        new Thread(() -> {
-            try {
-                String path = "C:/Users/Lenovo/Desktop/oopp/repository-template/client/src/main/Data/unzipped/01/ipad.jpg";
-                AdminCommunication.addActivityImage(
-                        new ActivityImage(0, imageToByteArray(path)));
-            } catch (IOException | ImageNotSupportedException | CorruptImageException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
 }

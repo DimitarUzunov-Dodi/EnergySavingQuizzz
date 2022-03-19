@@ -18,11 +18,13 @@ import java.util.zip.ZipInputStream;
 
 import static client.utils.ActivityImageUtils.imageToByteArray;
 
+
 public class ActivityBankUtils {
     private static final String pathToBankZip = "./src/main/data/";
     private static final String zipName = "oopp-activity-bank.zip";
     private static final String pathToResources = "./src/main/resources/client/images/";
     private static final String defaultImageName = "default-image.png";
+
 
     public static void unzipActivityBank() throws IOException {
         String fileZip = pathToBankZip + zipName;
@@ -83,7 +85,6 @@ public class ActivityBankUtils {
         for(ActivityBankEntry entry : activityBankEntryList) {
             imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImage_path());
             AdminCommunication.addActivityBankEntry(entry, imageId);
-
         }
     }
 
@@ -92,7 +93,7 @@ public class ActivityBankUtils {
             return AdminCommunication
                     .addActivityImage(new ActivityImage(imageToByteArray(path)))
                     .readEntity(Long.class);
-        } catch (IOException | ImageNotSupportedException | CorruptImageException e) {
+        } catch (IOException | CorruptImageException | ImageNotSupportedException ex) {
             return uploadImage(pathToResources+defaultImageName);
         }
     }
