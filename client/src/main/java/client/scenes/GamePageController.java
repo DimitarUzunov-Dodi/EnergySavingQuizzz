@@ -1,6 +1,7 @@
 package client.scenes;
 
 
+import client.utils.FileUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 
@@ -16,10 +17,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import javafx.util.Pair;
 
 
 import java.net.URL;
@@ -32,6 +32,7 @@ public class GamePageController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private String username;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
@@ -85,6 +86,7 @@ public class GamePageController implements Initializable {
     public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.username = FileUtils.readNickname();
     }
 
 
@@ -175,8 +177,17 @@ public class GamePageController implements Initializable {
 
     }
 
-    public void emojiPressed(){
-        server.send("/app/emoji", "brat");
+    public void emoji1Pressed(){
+        Pair<String,Integer> emojiInfo = new Pair(username,1);
+        server.send("/app/emoji", emojiInfo);
+    }
+    public void emoji2Pressed(){
+        Pair<String,Integer> emojiInfo = new Pair(username,2);
+        server.send("/app/emoji", emojiInfo);
+    }
+    public void emoji3Pressed(){
+        Pair<String,Integer> emojiInfo = new Pair(username,3);
+        server.send("/app/emoji", 3);
     }
 
 

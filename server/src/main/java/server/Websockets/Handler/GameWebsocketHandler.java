@@ -20,7 +20,7 @@ public class GameWebsocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
        webSocketSessionList.add(session);
-       LOGGER.info("Connection established dudoi");
+       LOGGER.info("Connection established");
     }
 
     @Override

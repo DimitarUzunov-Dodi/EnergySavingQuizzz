@@ -51,17 +51,17 @@
                   <Image url="@../images/menu.png" />
                </image>
             </ImageView>
-            <ImageView id="MenuButton" fx:id="emoji1" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emojiPressed" pickOnBounds="true" preserveRatio="true" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <ImageView id="MenuButton" fx:id="emoji1" fitHeight="40.0" fitWidth="26.0" onKeyPressed="#emoji1Pressed" onMouseClicked="#emojiPressed" pickOnBounds="true" preserveRatio="true" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <image>
                   <Image url="@../images/emoji1.png" />
                </image>
             </ImageView>
-            <ImageView id="MenuButton" fx:id="emoji2" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emojiPressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+            <ImageView id="MenuButton" fx:id="emoji2" fitHeight="40.0" fitWidth="26.0" onKeyPressed="#emoji2Pressed" onMouseClicked="#emojiPressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                <image>
                   <Image url="@../images/emoji2.png" />
                </image>
             </ImageView>
-            <ImageView id="MenuButton" fx:id="emoji3" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emojiPressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+            <ImageView id="MenuButton" fx:id="emoji3" fitHeight="40.0" fitWidth="26.0" onKeyPressed="#emoji3Pressed" onMouseClicked="#emojiPressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                <image>
                   <Image url="@../images/emoji3.png" />
                </image>
