@@ -177,16 +177,25 @@ public class GamePageController implements Initializable {
 
     }
 
+    /**
+     * When the first emoji is clicked it is sent to the server and also by whom it has been sent
+     */
     public void emoji1Pressed(){
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username,"emoji1");
         server.send("/app/emoji", emojiInfo);
     }
+    /**
+     * When the second emoji is clicked it is sent to the server and also by whom it has been sent
+     */
     public void emoji2Pressed(){
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username,"emoji2");
         server.send("/app/emoji", emojiInfo);
     }
+    /**
+     * When the third emoji is clicked it is sent to the server and also by whom it has been sent
+     */
     public void emoji3Pressed(){
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username,"emoji3");

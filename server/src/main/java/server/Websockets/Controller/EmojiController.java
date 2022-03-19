@@ -18,6 +18,12 @@ public class EmojiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmojiController.class);
 
+    /**
+     * sends the appropriate emoji to the clients of all websockets connected
+     * @param emojiInfo
+     * @return
+     * @throws Exception
+     */
     @MessageMapping("/emoji")
     @SendTo("/emoji/receive")
     public Person sendEmoji(Person emojiInfo) throws Exception{
