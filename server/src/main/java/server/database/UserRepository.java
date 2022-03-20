@@ -1,7 +1,7 @@
 package server.database;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import server.entities.User;
+import commons.User;
 
 import java.util.List;
 import java.util.Optional;

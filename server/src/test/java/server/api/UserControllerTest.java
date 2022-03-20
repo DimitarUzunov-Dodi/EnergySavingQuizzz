@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import server.database.GameRepository;
 import server.database.UserRepository;
-import server.entities.User;
+import commons.User;
 
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
