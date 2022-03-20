@@ -54,7 +54,7 @@ public class GamePageController implements Initializable {
 
 
     @FXML
-    private ListView<GameScreenLeaderboardEntry> currentLeaderboard;
+    private ListView<String> currentLeaderboard;
 
 
     @FXML
@@ -81,14 +81,14 @@ public class GamePageController implements Initializable {
 
 
 
-    private final Image cabinetImage  = new Image("client/images/OIP.jpg");
-    private final Image docIconImage  = new Image("client/images/OIP.jpg");
-    private final Image homeCabImage  = new Image("client/images/OIP.jpg");
-    private final Image searchIconImage = new Image("client/images/OIP.jpg");
-    /*image array to load all images at a time*/
-    private Image[] imagesArray = {cabinetImage, docIconImage, homeCabImage, searchIconImage};
+    private final Image emojiHappy  = new Image("client/images/emoji1.png");
+    private final Image emojiSad  = new Image("client/images/emoji2.png");
+    private final Image emojiAngry = new Image("client/images/emoji3.png");
 
-    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
+    /*image array to load all images at a time*/
+    private Image[] imagesArray = {emojiHappy, emojiSad, emojiAngry};
+
+//    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
     private ArrayList<Button> button_List = new ArrayList<>();
 
 
@@ -107,6 +107,7 @@ public class GamePageController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
 
         /* create list object */
 
@@ -131,8 +132,6 @@ public class GamePageController implements Initializable {
                         displayImage.setImage(imagesArray[1]);/*setting array image to Second Image*/
                     else if (name.equals("Third Image"))
                         displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
-                    else if (name.equals("Fourth Image"))
-                        displayImage.setImage(imagesArray[3]);/*setting array image to Fourth Image*/
                     setText(name);
                     setGraphic(displayImage);
                 }
@@ -154,7 +153,7 @@ public class GamePageController implements Initializable {
 
         Question_text.setText("foo");
 
-        currentLeaderboard.getItems().addAll(names);
+       // currentLeaderboard.getItems().addAll(names);
         server.send("/app/chat", "foo");
         server.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
