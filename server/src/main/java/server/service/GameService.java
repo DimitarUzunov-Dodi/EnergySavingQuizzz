@@ -27,7 +27,7 @@ public class GameService {
     }
 
 
-    public Game createGame() {
+    public String createGame() {
 
         Game game = new Game();
 
@@ -42,7 +42,7 @@ public class GameService {
         game.setGameCode(code);
         game.setActiveQuestionList(createQuestions());
         activeGames.put(game.getGameCode(), game);
-        return game;
+        return code;
 
     }
 

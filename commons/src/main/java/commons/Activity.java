@@ -100,4 +100,16 @@ public class Activity {
         result = 31 * result + (int) (getImageId() ^ (getImageId() >>> 32));
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "activityId=" + activityId +
+                ", activityText='" + activityText + '\'' +
+                ", value=" + value +
+                ", source='" + source + '\'' +
+                ", imageId=" + imageId +
+                '}';
+    }
+
 }

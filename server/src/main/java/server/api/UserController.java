@@ -12,6 +12,8 @@ import server.database.GameRepository;
 import server.database.UserRepository;
 import commons.Game;
 import server.entities.User;
+import server.entities.Game;
+import commons.User;
 
 import java.util.List;
 import java.util.Optional;

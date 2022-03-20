@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.communication.GameCommunication;
+import client.utils.ServerUtils;
 
 import client.utils.FileUtils;
 import client.utils.GameWebsocketUtils;
@@ -7,9 +9,10 @@ import com.google.inject.Inject;
 
 import commons.Person;
 import commons.Question;
-import commons.QuestionTypeA;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import commons.QuestionTypeA;
+import commons.User;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -26,7 +29,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import commons.Game;
 
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -37,10 +39,15 @@ public class GamePageController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private final GameCommunication gameCommunication;
     private String username;
     private final GameWebsocketUtils server;
     private final MainCtrl mainCtrl;
 
+    private static String gameCode;
+    private static User user;
+    private static int qIndex;
+    private static QuestionTypeA activeQuestion;
 
     private static final int TIME_TO_NEXT_ROUND = 3;
 
@@ -84,6 +91,13 @@ public class GamePageController implements Initializable {
 
 
     @FXML
+    private Text QuestionText;
+    @FXML
+    private Text ActivityText1;
+    @FXML
+    private Text ActivityText2;
+    @FXML
+    private Text ActivityText3;
     private ImageView emoji1;
     @FXML
     private ImageView emoji2;
@@ -103,10 +117,10 @@ public class GamePageController implements Initializable {
 
 
     @Inject
-    public GamePageController(GameWebsocketUtils server, MainCtrl mainCtrl) {
+    public GamePageController(MainCtrl mainCtrl, GameCommunication gameCommunication, GameWebsocketUtils server) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-
+        this.gameCommunication = gameCommunication;
     }
 
     /**
@@ -141,8 +155,18 @@ public class GamePageController implements Initializable {
         button_List.add(button3);
         button_List.add(button4);
 
-        Question_text.setText("foo");
+        gameCode = gameCommunication.startSinglePlayerGame();
 
+        qIndex = 0;
+
+        refreshQuestion();
+
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
         // currentLeaderboard.getItems().addAll(names);
         server.send("/app/chat", "foo");
         server.registerForMessages("/topic/chat", String.class, q -> {
@@ -209,6 +233,10 @@ public class GamePageController implements Initializable {
 
     }
 
+    public static void init(User user1) {
+        user = user1;
+    }
+
     public void InitImages() {
         Windmill.setImage(new Image("client/images/OIP.jpg"));
         MenuButton.setImage(new Image(("client/images/menu.png")));
@@ -260,6 +288,10 @@ public class GamePageController implements Initializable {
 
     }
 
+    public void refreshQuestion() {
+        activeQuestion = gameCommunication.getQuestion(gameCode, qIndex);
+        QuestionText.setText(activeQuestion.displayText());
+    }
     /**
      * When the first emoji is clicked it is sent to the server and also by whom it has been sent
      */
