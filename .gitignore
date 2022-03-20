@@ -42,3 +42,6 @@ out/
 
 ### User Data Files ###
 *.userdata
+
+### Activity bank Files ###
+**/src/main/data/**

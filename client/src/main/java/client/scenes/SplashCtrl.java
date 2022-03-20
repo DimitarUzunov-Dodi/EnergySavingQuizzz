@@ -6,8 +6,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
+import javafx.stage.WindowEvent;
 
-import static client.utils.FileUtils.*;
+import static client.utils.FileUtils.readNickname;
+import static client.utils.FileUtils.writeNickname;
 
 
 public class SplashCtrl {
@@ -26,7 +28,12 @@ public class SplashCtrl {
      * @param event passed by JavaFX by default
      */
     public void quitAction(ActionEvent event) {
-        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+        Stage stage = (Stage)(((Button)event.getSource()).getScene().getWindow());
+        stage.fireEvent(
+        new WindowEvent(
+                stage,
+                WindowEvent.WINDOW_CLOSE_REQUEST
+        ));
     }
 
     /**
@@ -66,7 +73,7 @@ public class SplashCtrl {
     /**
      * Get method for nickname attribute, so nickname can be accessed everywhere by every client function
      * Subject to change, because to the best thing to import SplashCtrl everytime. Maybe we should add function somewhere in common class
-     * @return
+     * @return String representing the nickname
      */
     public String getNickname() {
         return nickname;
@@ -80,4 +87,15 @@ public class SplashCtrl {
         this.nickname = nickname;
     }
 
+    public void onMultiplayerPressed() {
+        mainCtrl.showServerJoin();
+    }
+
+    /**
+     * Function called by admin button when clicked. Changes scene to AdminPage scene.
+     * @param event passed by JavaFX by default
+     */
+    public void adminAction(ActionEvent event){
+        mainCtrl.showAdmin();
+    }
 }

@@ -1,7 +1,7 @@
 package server.database;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import server.entities.Game;
+import commons.Game;
 
 import java.util.Optional;
 

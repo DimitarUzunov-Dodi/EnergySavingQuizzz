@@ -5,7 +5,7 @@ import commons.Question;
 import commons.QuestionTypeA;
 import org.springframework.stereotype.Service;
 import server.database.ActivityRepository;
-import server.entities.Game;
+import commons.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import server.database.GameRepository;
 import server.database.UserRepository;
-import server.entities.Game;
+import commons.Game;
 import server.entities.User;
 
 import java.util.List;

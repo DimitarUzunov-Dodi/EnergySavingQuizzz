@@ -7,6 +7,7 @@ public class QuestionTypeA extends Question {
     private final Activity activity2;
     private final Activity activity3;
 
+
     public QuestionTypeA(Activity activityA, Activity activityB, Activity activityC) {
 
         questionType = 0;
@@ -14,6 +15,11 @@ public class QuestionTypeA extends Question {
         activity2 = activityB;
         activity3 = activityC;
 
+    }
+
+    public String giveText(){
+        String string = "Which one uses the most energy?";
+        return  string;
     }
 
     public int getQuestionType() {
