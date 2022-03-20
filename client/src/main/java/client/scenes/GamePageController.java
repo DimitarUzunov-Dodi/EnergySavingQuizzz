@@ -151,7 +151,7 @@ public class GamePageController implements Initializable {
                     break;
 
             }
-            newEmoji.
+            
             final Image emoji = newEmoji;
 
             currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
