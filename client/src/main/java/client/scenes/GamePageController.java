@@ -5,6 +5,8 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 
 import commons.Person;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -12,10 +14,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -69,6 +73,12 @@ public class GamePageController implements Initializable {
     @FXML
     private Circle emoji1;
 
+    private final Image cabinetImage  = new Image("client/images/OIP.jpg");
+    private final Image docIconImage  = new Image("client/images/OIP.jpg");
+    private final Image homeCabImage  = new Image("client/images/OIP.jpg");
+    private final Image searchIconImage = new Image("client/images/OIP.jpg");
+    /*image array to load all images at a time*/
+    private Image[] imagesArray = {cabinetImage, docIconImage, homeCabImage, searchIconImage};
 
     String[] names = {"foo", "bar", "test"};
     private ArrayList<Button> button_List = new ArrayList<>();
@@ -80,7 +90,6 @@ public class GamePageController implements Initializable {
         this.mainCtrl = mainCtrl;
     }
 
-
     /**
      * initializes user interface components
      *
@@ -89,6 +98,41 @@ public class GamePageController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        /* create list object */
+
+        /* adding items to the list view */
+        ObservableList<String> elements = FXCollections.observableArrayList("Fist Image", "Second Image", "Third Image",
+                "Fourth Image");
+        currentLeaderboard.setItems(elements);
+        /*setting each image to corresponding array index*/
+        currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
+            /*view the image class to display the image*/
+            private ImageView displayImage = new ImageView();
+            @Override
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if (name.equals("Fist Image"))
+                        displayImage.setImage(imagesArray[0]); /*setting array image to First Image*/
+                    else if (name.equals("Second Image"))
+                        displayImage.setImage(imagesArray[1]);/*setting array image to Second Image*/
+                    else if (name.equals("Third Image"))
+                        displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
+                    else if (name.equals("Fourth Image"))
+                        displayImage.setImage(imagesArray[3]);/*setting array image to Fourth Image*/
+                    setText(name);
+                    setGraphic(displayImage);
+                }
+            }
+        });
+        /* creating vertical box to add item objects */
+       // VBox vBox = new VBox(currentLeaderboard);
+        /* creating scene */
+
         InitImages();
         ArrayList<String> list = new ArrayList<>();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
@@ -122,6 +166,7 @@ public class GamePageController implements Initializable {
         Windmill.setImage(new Image("client/images/OIP.jpg"));
         MenuButton.setImage(new Image(("client/images/menu.png")));
     }
+
 
     /**
      * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar
