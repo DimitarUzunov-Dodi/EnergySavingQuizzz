@@ -22,8 +22,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.awt.Image;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -151,12 +149,13 @@ public class GamePageController implements Initializable {
                     break;
 
             }
-            
+
             final Image emoji = newEmoji;
 
             currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
                 /*view the image class to display the image*/
                 private ImageView displayImage = new ImageView();
+
 
                 @Override
                 public void updateItem(String name, boolean empty) {
@@ -165,8 +164,11 @@ public class GamePageController implements Initializable {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        if (name.equals(v.firstName))
+                        if (name.equals(v.firstName)) {
+                            displayImage.setFitHeight(20);
+                            displayImage.setFitWidth(20);
                             displayImage.setImage(emoji); /*setting array image to First Image*/
+                        }
                         setText(name);
                         setGraphic(displayImage);
                     }
