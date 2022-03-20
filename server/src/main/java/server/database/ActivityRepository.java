@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
+
     @Query(
             value = "SELECT * from activity order by RANDOM() limit 1",
             nativeQuery = true

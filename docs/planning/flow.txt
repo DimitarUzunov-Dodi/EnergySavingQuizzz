@@ -1,0 +1,9 @@
+The flow of the application scenes is the following:
+
+	      ┏━> SERVER LEADERBOARD <┓                              (yes, I was bored when I did this)
+ SPLASH ┯━╋━> ADMIN PANEL <┳━━━━━━┛
+	    ↑ ┣━> SETTINGS ━━━━┛<─────────────────────────────────────────────
+	    │ ┣━> (singleplayer) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━>┳<━━━━━━━━━━━━━┿━━━━━━━━━━━< (next round) <━━━━━━━━━━━━━━┓
+	    │ ┗━> (multiplayer) ┳> SERVER JOIN ━> WAITING ROOM ┻> GAME SCREEN ┿> MATCH LEADERBOARD ━> TRANSITION SCREEN ┫
+	    │                   ┡<━━━━━━━━━━━━━━━━< (end of match) <━━━━━━━━━━┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+	    └───────────────────┴<────────< (quit match) <────────────────────┘
