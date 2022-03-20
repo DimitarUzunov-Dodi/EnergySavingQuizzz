@@ -32,3 +32,18 @@
 
 ## Notes (Notetaker Alex)
 
+* gitinspector is okay, dimitar has the least amount of code, alex has the most, try to even it out
+* issues are not properly utilized, alex has too many issues assigned to him
+* restructure the sprints
+* we are behind a bit
+* coding is going well, we have javadoc, testing is lacking
+* we all have merge reviews, try to be more helpful, more detailed gitlab feedback
+* take buddycheck more seriously
+* next time show demo
+* bar doesnt work in demo 
+
+# objectively best team
+
+* no other deadlines apart from agenda and notes
+* merge to main was 2 hours late, from now on try to do it on time
+* have a healthy sleep schedule
