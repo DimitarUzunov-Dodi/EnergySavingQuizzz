@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 public class WebsocketController {
     @MessageMapping("/chat") // app/chat
     @SendTo("/topic/chat")
-    public String sendString(@Payload final String string){
-        return  string;
+    public String sendString(@Payload final String string) {
+        return string;
     }
 
 

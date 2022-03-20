@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
 <GridPane id="pane" prefHeight="400.0" prefWidth="577.0" style="-fx-background-color: C4C4C4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GamePageController">
@@ -42,9 +41,6 @@
             <RowConstraints maxHeight="5.600008392333976" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Circle fx:id="emoji1" fill="#1fff69" onMouseClicked="#emojiPressed" onTouchPressed="#emojiPressed" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="emoji2" fill="#ff371f" radius="13.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" />
-            <Circle fx:id="emoji3" fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" />
             <Button id="MenuButton" maxHeight="-Infinity" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="16.0" prefWidth="35.0" style="-fx-border-radius: 90; -fx-border-width: 1; -fx-background-radius: 90;" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
                <GridPane.margin>
                   <Insets top="5.0" />
@@ -53,6 +49,21 @@
             <ImageView id="MenuButton" fx:id="MenuButton" fitHeight="40.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                <image>
                   <Image url="@../images/menu.png" />
+               </image>
+            </ImageView>
+            <ImageView id="MenuButton" fx:id="emoji1" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emoji1Pressed" pickOnBounds="true" preserveRatio="true" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <image>
+                  <Image url="@../images/emoji1.png" />
+               </image>
+            </ImageView>
+            <ImageView id="MenuButton" fx:id="emoji2" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emoji2Pressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@../images/emoji2.png" />
+               </image>
+            </ImageView>
+            <ImageView id="MenuButton" fx:id="emoji3" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emoji3Pressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+               <image>
+                  <Image url="@../images/emoji3.png" />
                </image>
             </ImageView>
          </children>
