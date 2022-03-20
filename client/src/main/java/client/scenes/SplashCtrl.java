@@ -1,20 +1,25 @@
 package client.scenes;
 
+import com.google.inject.Inject;
+import commons.User;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import com.google.inject.Inject;
 import javafx.stage.WindowEvent;
 
-import static client.utils.FileUtils.*;
+import static client.utils.FileUtils.readNickname;
+import static client.utils.FileUtils.writeNickname;
 
 
 public class SplashCtrl {
 
     private final MainCtrl mainCtrl;
     private String nickname;
+
+    @FXML
+    private Button singlePlayerGameButton;
 
     @Inject
     public SplashCtrl(MainCtrl mainCtrl) {
@@ -44,6 +49,7 @@ public class SplashCtrl {
     }
 
     public void singlePlayerAction(ActionEvent event) {
+        GamePageController.init(new User(null, nickname));
         mainCtrl.showGamePage();
     }
 
