@@ -2,10 +2,12 @@ package client.scenes;
 
 
 import client.utils.FileUtils;
-import client.utils.ServerUtils;
+import client.utils.GameWebsocketUtils;
 import com.google.inject.Inject;
 
 import commons.Person;
+import commons.Question;
+import commons.QuestionTypeA;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -22,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import commons.Game;
 
 
 import java.net.URL;
@@ -35,7 +38,7 @@ public class GamePageController implements Initializable {
     private Scene scene;
     private Parent root;
     private String username;
-    private final ServerUtils server;
+    private final GameWebsocketUtils server;
     private final MainCtrl mainCtrl;
 
 
@@ -47,9 +50,21 @@ public class GamePageController implements Initializable {
     @FXML
     private ImageView Windmill;
 
+
+    @FXML
+    private Text Question_text;
+
     @FXML
     private ProgressBar progressBar;
 
+    @FXML
+    private Text Activity_text1;
+
+    @FXML
+    private Text Activity_text2;
+
+    @FXML
+    private Text Activity_text3;
 
     @FXML
     private ListView<String> currentLeaderboard;
@@ -66,8 +81,7 @@ public class GamePageController implements Initializable {
 
     @FXML
     private Button button4;
-    @FXML
-    private Text Question_text;
+
 
     @FXML
     private ImageView emoji1;
@@ -89,7 +103,7 @@ public class GamePageController implements Initializable {
 
 
     @Inject
-    public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
+    public GamePageController(GameWebsocketUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
 
@@ -154,6 +168,17 @@ public class GamePageController implements Initializable {
         server.send("/app/chat", "foo");
         server.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
+        });
+        server.registerForMessages("game/receive", Game.class, o -> {
+            Question_text.setText("Which one consumes the most amount of energy?");
+            for (Question question : o.getActiveQuestionList()){
+                QuestionTypeA foo =  (QuestionTypeA) question;
+                        Activity_text1.setText(foo.getActivity1().getActivityText());
+                        Activity_text2.setText(foo.getActivity2().getActivityText());
+                        Activity_text3.setText(foo.getActivity3().getActivityText());
+
+            }
+
         });
         server.registerForMessages("/emoji/receive", Person.class, v -> {
             ImageView newEmoji = new ImageView("client/images/emoji1.png");
