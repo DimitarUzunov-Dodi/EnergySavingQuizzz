@@ -17,10 +17,11 @@ public class GameWebsocketHandler extends TextWebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebsocketHandler.class);
 
     private final List<WebSocketSession> webSocketSessionList = new ArrayList<>();
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-       webSocketSessionList.add(session);
-       LOGGER.info("Connection established");
+        webSocketSessionList.add(session);
+        LOGGER.info("Connection established");
     }
 
     @Override

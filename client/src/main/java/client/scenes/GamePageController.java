@@ -1,7 +1,6 @@
 package client.scenes;
 
 
-import client.Entities.GameScreenLeaderboardEntry;
 import client.utils.FileUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
@@ -27,7 +26,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 
@@ -79,16 +77,14 @@ public class GamePageController implements Initializable {
     private ImageView emoji3;
 
 
-
-
-    private final Image emojiHappy  = new Image("client/images/emoji1.png");
-    private final Image emojiSad  = new Image("client/images/emoji2.png");
+    private final Image emojiHappy = new Image("client/images/emoji1.png");
+    private final Image emojiSad = new Image("client/images/emoji2.png");
     private final Image emojiAngry = new Image("client/images/emoji3.png");
 
     /*image array to load all images at a time*/
     private Image[] imagesArray = {emojiHappy, emojiSad, emojiAngry};
 
-//    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
+    //    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
     private ArrayList<Button> button_List = new ArrayList<>();
 
 
@@ -119,6 +115,7 @@ public class GamePageController implements Initializable {
         currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
             /*view the image class to display the image*/
             private ImageView displayImage = new ImageView();
+
             @Override
             public void updateItem(String name, boolean empty) {
                 super.updateItem(name, empty);
@@ -138,7 +135,7 @@ public class GamePageController implements Initializable {
             }
         });
         /* creating vertical box to add item objects */
-       // VBox vBox = new VBox(currentLeaderboard);
+        // VBox vBox = new VBox(currentLeaderboard);
         /* creating scene */
 
         InitImages();
@@ -153,7 +150,7 @@ public class GamePageController implements Initializable {
 
         Question_text.setText("foo");
 
-       // currentLeaderboard.getItems().addAll(names);
+        // currentLeaderboard.getItems().addAll(names);
         server.send("/app/chat", "foo");
         server.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
@@ -166,7 +163,7 @@ public class GamePageController implements Initializable {
 
     }
 
-    public void InitImages(){
+    public void InitImages() {
         Windmill.setImage(new Image("client/images/OIP.jpg"));
         MenuButton.setImage(new Image(("client/images/menu.png")));
         emoji1.setImage(new Image("client/images/emoji1.png"));
@@ -220,25 +217,27 @@ public class GamePageController implements Initializable {
     /**
      * When the first emoji is clicked it is sent to the server and also by whom it has been sent
      */
-    public void emoji1Pressed(){
+    public void emoji1Pressed() {
         username = FileUtils.readNickname();
-        Person emojiInfo = new Person(username,"emoji1");
+        Person emojiInfo = new Person(username, "emoji1");
         server.send("/app/emoji", emojiInfo);
     }
+
     /**
      * When the second emoji is clicked it is sent to the server and also by whom it has been sent
      */
-    public void emoji2Pressed(){
+    public void emoji2Pressed() {
         username = FileUtils.readNickname();
-        Person emojiInfo = new Person(username,"emoji2");
+        Person emojiInfo = new Person(username, "emoji2");
         server.send("/app/emoji", emojiInfo);
     }
+
     /**
      * When the third emoji is clicked it is sent to the server and also by whom it has been sent
      */
-    public void emoji3Pressed(){
+    public void emoji3Pressed() {
         username = FileUtils.readNickname();
-        Person emojiInfo = new Person(username,"emoji3");
+        Person emojiInfo = new Person(username, "emoji3");
         server.send("/app/emoji", emojiInfo);
     }
 

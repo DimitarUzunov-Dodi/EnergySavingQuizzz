@@ -20,13 +20,14 @@ public class EmojiController {
 
     /**
      * sends the appropriate emoji to the clients of all websockets connected
+     *
      * @param emojiInfo
      * @return
      * @throws Exception
      */
     @MessageMapping("/emoji")
     @SendTo("/emoji/receive")
-    public Person sendEmoji(Person emojiInfo) throws Exception{
+    public Person sendEmoji(Person emojiInfo) throws Exception {
 
         if (emojiInfo.lastName.equals("emoji1")) {
             LOGGER.info("Emoji1 send by" + emojiInfo.firstName);

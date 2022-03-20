@@ -21,21 +21,21 @@ public class WebsocketEventListener {
     private SimpMessageSendingOperations sendingOperations;
 
 
-
     @EventListener
-    public void handleWebSocketEventListener(final SessionConnectedEvent event){
+    public void handleWebSocketEventListener(final SessionConnectedEvent event) {
         LOGGER.info("hell yeah");
-        final String string  = "we did it";
+        final String string = "we did it";
 
         sendingOperations.convertAndSend("/game", string);
     }
+
     @EventListener
-    public void handWebSocketDisconnect(final SessionDisconnectEvent event){
+    public void handWebSocketDisconnect(final SessionDisconnectEvent event) {
         final StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         final String username = (String) headerAccessor.getSessionAttributes().get("username");
 
-        final String string  = "we did it";
+        final String string = "we did it";
 
         sendingOperations.convertAndSend("/game", string);
     }
