@@ -1,18 +1,12 @@
 package client.scenes;
 
 import client.communication.GameCommunication;
-import client.utils.ServerUtils;
-
 import client.utils.FileUtils;
 import client.utils.GameWebsocketUtils;
 import com.google.inject.Inject;
-
-import commons.Person;
-import commons.Question;
+import commons.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import commons.QuestionTypeA;
-import commons.User;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -27,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import commons.Game;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -115,6 +108,7 @@ public class GamePageController implements Initializable {
     //    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
     private ArrayList<Button> button_List = new ArrayList<>();
 
+    String[] names = {"foo", "bar", "test"};
 
     @Inject
     public GamePageController(MainCtrl mainCtrl, GameCommunication gameCommunication, GameWebsocketUtils server) {

@@ -73,6 +73,10 @@ public class GameService {
         return activeGames.get(gameCode).getActiveQuestionList().get(qIndex);
     }
 
+    public Game getGame(String gameCode) {
+        return activeGames.get(gameCode);
+    }
+
     public Game removeGame(String gameCode) {
         return activeGames.remove(gameCode);
     }

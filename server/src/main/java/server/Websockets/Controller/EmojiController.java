@@ -34,7 +34,7 @@ public class EmojiController {
         this.random = random;
         this.gameRepository = gameRepository;
         this.gameService = gameService;
-        this.currentGame = GetGame();
+        this.currentGame = getGame();
 
     }
 
@@ -45,10 +45,9 @@ public class EmojiController {
 
     private int PlayersInCurrentGame = 0;
 
-    public Game GetGame(){
-       Game game = gameService.createGame();
-       return game;
-
+    public Game getGame(){
+       String gameCode = gameService.createGame();
+       return gameService.getGame(gameCode);
     }
 
     /**
