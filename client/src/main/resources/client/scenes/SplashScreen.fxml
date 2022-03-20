@@ -40,7 +40,7 @@
                   <Font size="20.0" />
                </font>
                 </Button>
-                <Button id="playButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="230.0" text="Multiplayer" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Button id="playButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#onMultiplayerPressed" prefHeight="100.0" prefWidth="230.0" text="Multiplayer" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets right="10.0" />
                     </GridPane.margin>
