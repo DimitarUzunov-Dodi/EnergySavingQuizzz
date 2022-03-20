@@ -5,7 +5,7 @@ import commons.Question;
 import commons.QuestionTypeA;
 import org.springframework.stereotype.Service;
 import server.database.ActivityRepository;
-import server.entities.Game;
+import commons.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +71,10 @@ public class GameService {
 
     public Question getQuestion(String gameCode, int qIndex) {
         return activeGames.get(gameCode).getActiveQuestionList().get(qIndex);
+    }
+
+    public Game getGame(String gameCode) {
+        return activeGames.get(gameCode);
     }
 
     public Game removeGame(String gameCode) {

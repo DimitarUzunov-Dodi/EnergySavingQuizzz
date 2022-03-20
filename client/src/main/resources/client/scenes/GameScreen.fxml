@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
-<GridPane prefHeight="400.0" prefWidth="577.0" style="-fx-background-color: C4C4C4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GamePageController">
+<GridPane id="pane" prefHeight="400.0" prefWidth="577.0" style="-fx-background-color: C4C4C4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GamePageController">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="55.0" prefWidth="347.1999755859375" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="45.0" prefWidth="253.60002441406243" />
@@ -30,7 +29,7 @@
             <Blend />
          </effect>
       </ListView>
-      <GridPane prefHeight="91.0" prefWidth="130.0" GridPane.columnIndex="1">
+      <GridPane prefHeight="44.0" prefWidth="266.0" GridPane.columnIndex="1">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="111.20001220703125" minWidth="10.0" prefWidth="104.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="139.20001220703125" minWidth="10.0" prefWidth="104.0" />
@@ -38,25 +37,35 @@
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="139.20001220703125" minWidth="10.0" prefWidth="104.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="36.4" minHeight="10.0" prefHeight="32.60001220703125" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="5.600008392333976" minHeight="0.0" prefHeight="3.79998779296875" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.8" minHeight="10.0" prefHeight="40.8" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="5.600008392333976" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Circle fx:id="emoji1" fill="#1fff69" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fx:id="emoji2" fill="#ff371f" radius="13.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" />
-            <Circle fx:id="emoji3" fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" />
-            <Button maxHeight="-Infinity" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="120.0" style="-fx-border-radius: 90; -fx-border-width: 1; -fx-background-radius: 90;" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
-               <graphic>
-                  <ImageView fitHeight="39.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../../../OneDrive/Pictures/menu.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
+            <Button id="MenuButton" maxHeight="-Infinity" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="16.0" prefWidth="35.0" style="-fx-border-radius: 90; -fx-border-width: 1; -fx-background-radius: 90;" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
                <GridPane.margin>
                   <Insets top="5.0" />
                </GridPane.margin>
             </Button>
+            <ImageView id="MenuButton" fx:id="MenuButton" fitHeight="40.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+               <image>
+                  <Image url="@../images/menu.png" />
+               </image>
+            </ImageView>
+            <ImageView id="MenuButton" fx:id="emoji1" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emoji1Pressed" pickOnBounds="true" preserveRatio="true" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+               <image>
+                  <Image url="@../images/emoji1.png" />
+               </image>
+            </ImageView>
+            <ImageView id="MenuButton" fx:id="emoji2" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emoji2Pressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@../images/emoji2.png" />
+               </image>
+            </ImageView>
+            <ImageView id="MenuButton" fx:id="emoji3" fitHeight="40.0" fitWidth="26.0" onMouseClicked="#emoji3Pressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+               <image>
+                  <Image url="@../images/emoji3.png" />
+               </image>
+            </ImageView>
          </children>
       </GridPane>
       <Button mnemonicParsing="false" text="Switch to dummy" />
@@ -88,13 +97,29 @@
                   <Button fx:id="button4" mnemonicParsing="false" style="-fx-background-color: #407897; -fx-pref-width: 50;" text="D" GridPane.columnIndex="3" />
                </children>
             </GridPane>
-            <ImageView fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/OIP.jpg" />
-               </image>
-            </ImageView>
             <Text id="Question_text" fx:id="QuestionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
             <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="500.0" progress="0.0" GridPane.rowIndex="1" />
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ImageView fx:id="Windmill" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/OIP.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text id="Question_text" fx:id="Activity_text1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="Activity_text2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="Activity_text3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
          </children>
       </GridPane>
    </children>

@@ -15,13 +15,17 @@
  */
 package client.utils;
 
+
 import commons.LeaderboardEntry;
 import commons.ScoreRecord;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import org.glassfish.jersey.client.ClientConfig;
 
+
+
 import java.util.List;
+
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -41,6 +45,9 @@ public class ServerUtils {
                 .get(new GenericType<List<LeaderboardEntry>>() {});
     }
 
+
+
+
     /**
      * Retrieve a match leaderboard from the server
      * @return List of player score entries
@@ -57,6 +64,9 @@ public class ServerUtils {
             return null;
         }
     }
+
+
+
 
 /* LEFT HERE FOR REFERENCE
     public void getQuotesTheHardWay() throws IOException {
