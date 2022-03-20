@@ -1,6 +1,7 @@
 package client.scenes;
 
 
+import client.Entities.GameScreenLeaderboardEntry;
 import client.utils.FileUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
@@ -19,11 +20,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 
@@ -50,7 +51,7 @@ public class GamePageController implements Initializable {
 
 
     @FXML
-    private ListView<String> currentLeaderboard;
+    private ListView<GameScreenLeaderboardEntry> currentLeaderboard;
 
 
     @FXML
@@ -78,7 +79,7 @@ public class GamePageController implements Initializable {
 
 
 
-    String[] names = {"foo", "bar", "test"};
+    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
     private ArrayList<Button> button_List = new ArrayList<>();
 
 
@@ -111,16 +112,12 @@ public class GamePageController implements Initializable {
         Question_text.setText("foo");
 
         currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
         server.send("/app/chat", "foo");
         server.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
         });
         server.registerForMessages("/emoji/receive", Person.class, v -> {
+            ImageView newEmoji = new ImageView("client/images/emoji1.png");
             System.out.println(v);
         });
 
