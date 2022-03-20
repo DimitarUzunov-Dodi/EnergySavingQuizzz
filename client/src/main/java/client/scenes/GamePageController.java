@@ -122,32 +122,11 @@ public class GamePageController implements Initializable {
         /* create list object */
 
         /* adding items to the list view */
-        ObservableList<String> elements = FXCollections.observableArrayList("Fist Image", "Second Image", "Third Image",
-                "Fourth Image");
+        ObservableList<String> elements = FXCollections.observableArrayList("Fist ", "Second ", "Third ",
+                "Dodi");
         currentLeaderboard.setItems(elements);
         /*setting each image to corresponding array index*/
-        currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
-            /*view the image class to display the image*/
-            private ImageView displayImage = new ImageView();
 
-            @Override
-            public void updateItem(String name, boolean empty) {
-                super.updateItem(name, empty);
-                if (empty) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    if (name.equals("Fist Image"))
-                        displayImage.setImage(imagesArray[0]); /*setting array image to First Image*/
-                    else if (name.equals("Second Image"))
-                        displayImage.setImage(imagesArray[1]);/*setting array image to Second Image*/
-                    else if (name.equals("Third Image"))
-                        displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
-                    setText(name);
-                    setGraphic(displayImage);
-                }
-            }
-        });
         /* creating vertical box to add item objects */
         // VBox vBox = new VBox(currentLeaderboard);
         /* creating scene */
@@ -181,7 +160,49 @@ public class GamePageController implements Initializable {
 
         });
         server.registerForMessages("/emoji/receive", Person.class, v -> {
-            ImageView newEmoji = new ImageView("client/images/emoji1.png");
+            Image newEmoji = null;
+            switch (v.lastName) {
+
+                case "emoji1":
+                    newEmoji = imagesArray[0];
+                    break;
+                case "emoji2":
+                    newEmoji = imagesArray[1];
+                    break;
+                case "emoji3":
+                    newEmoji = imagesArray[2];
+                    break;
+                default:
+                    break;
+
+            }
+
+            final Image emoji = newEmoji;
+
+            currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
+                /*view the image class to display the image*/
+                private ImageView displayImage = new ImageView();
+
+
+                @Override
+                public void updateItem(String name, boolean empty) {
+                    super.updateItem(name, empty);
+                    if (empty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        if (name.equals(v.firstName)) {
+                            displayImage.setFitHeight(20);
+                            displayImage.setFitWidth(20);
+                            displayImage.setImage(emoji); /*setting array image to First Image*/
+                        }
+                        setText(name);
+                        setGraphic(displayImage);
+                    }
+                }
+            });
+            ImageView displayImage = new ImageView();
+            displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
             System.out.println(v);
         });
 
