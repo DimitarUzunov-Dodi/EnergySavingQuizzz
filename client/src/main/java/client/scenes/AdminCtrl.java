@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
+import client.communication.AdminCommunication;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -12,15 +12,16 @@ import static client.scenes.UserAlert.userAlert;
 
 public class AdminCtrl implements Initializable {
 
-    private final ServerUtils server;
+    private final AdminCommunication server;
     private final MainCtrl mainCtrl;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
     @Inject
-    public AdminCtrl(MainCtrl mainCtrl, ServerUtils server) {
+    public AdminCtrl(MainCtrl mainCtrl, AdminCommunication server) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
@@ -31,7 +32,7 @@ public class AdminCtrl implements Initializable {
      */
     public void restartAction(ActionEvent event){
         try {
-            server.invokeServerRestart();
+            AdminCommunication.invokeServerRestart();
         } catch (RuntimeException e) {
             userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
         }
@@ -43,5 +44,13 @@ public class AdminCtrl implements Initializable {
      */
     public void backToSplashAction(ActionEvent event){
         mainCtrl.showSplashScreen();
+    }
+
+    /**
+     * Function called by button when clicked. Switches to admin activity panel.
+     * @param event passed by JavaFX by default
+     */
+    public void switchToAdminActivityPanel(ActionEvent event){
+        mainCtrl.showAdminActivityPanel();
     }
 }

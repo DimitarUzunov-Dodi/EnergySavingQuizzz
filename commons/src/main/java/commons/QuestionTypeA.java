@@ -2,10 +2,13 @@ package commons;
 
 public class QuestionTypeA extends Question {
 
-    private final int questionType;
-    private final Activity activity1;
-    private final Activity activity2;
-    private final Activity activity3;
+    private int questionType;
+    private Activity activity1;
+    private Activity activity2;
+    private Activity activity3;
+
+    public QuestionTypeA() { }
+
 
     public QuestionTypeA(Activity activityA, Activity activityB, Activity activityC) {
 
@@ -13,7 +16,11 @@ public class QuestionTypeA extends Question {
         activity1 = activityA;
         activity2 = activityB;
         activity3 = activityC;
+    }
 
+    public String giveText(){
+        String string = "Which one uses the most energy?";
+        return  string;
     }
 
     public int getQuestionType() {
@@ -31,4 +38,10 @@ public class QuestionTypeA extends Question {
     public Activity getActivity3() {
         return activity3;
     }
+
+    @Override
+    public String displayText() {
+        return "What is more expensive?";
+    }
+
 }

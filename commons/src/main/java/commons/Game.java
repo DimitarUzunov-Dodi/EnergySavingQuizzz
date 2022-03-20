@@ -1,4 +1,4 @@
-package server.entities;
+package commons;
 
 import commons.Question;
 

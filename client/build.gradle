@@ -1,8 +1,14 @@
 plugins {
     id 'application'
     id("org.openjfx.javafxplugin") version "0.0.11"
+
 }
 
+allprojects {
+	repositories {
+		mavenCentral()
+	}
+}
 application {
     mainClass = 'client.Main'
 }
@@ -14,8 +20,12 @@ javafx {
 
 
 dependencies {
+
 	implementation project(":commons")
-	
+	implementation "javax.websocket:javax.websocket-api:1.1"
+	implementation 'org.springframework:spring-messaging:5.3.16'
+	implementation 'org.springframework:spring-websocket:5.3.16'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket:2.6.4'
 	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.0.3'
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.3'
 	implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '3.0.3'
@@ -23,8 +33,10 @@ dependencies {
 	implementation group: 'jakarta.activation', name: 'jakarta.activation-api', version: '2.0.1'
 	
 	implementation 'com.google.inject:guice:5.1.0'
-	
+
 	implementation 'org.openjfx:javafx-controls:17.0.2'
 	implementation 'org.openjfx:javafx-fxml:17.0.2'
+
+
 	
 }

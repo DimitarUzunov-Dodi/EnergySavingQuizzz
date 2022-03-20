@@ -15,14 +15,17 @@
  */
 package client.utils;
 
+
 import commons.LeaderboardEntry;
 import commons.ScoreRecord;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
-import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
+
+
 import java.util.List;
+
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -42,16 +45,8 @@ public class ServerUtils {
                 .get(new GenericType<List<LeaderboardEntry>>() {});
     }
 
-    /**
-     * Send post request to start the restart procedure of the server
-     * @return
-     */
-    public Response invokeServerRestart() throws RuntimeException {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/restart")
-                .request(APPLICATION_JSON)
-                .post(null);
-    }
+
+
 
     /**
      * Retrieve a match leaderboard from the server
@@ -69,6 +64,9 @@ public class ServerUtils {
             return null;
         }
     }
+
+
+
 
 /* LEFT HERE FOR REFERENCE
     public void getQuotesTheHardWay() throws IOException {

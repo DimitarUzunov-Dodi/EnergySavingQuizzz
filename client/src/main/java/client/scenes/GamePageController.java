@@ -1,8 +1,12 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
+import client.communication.GameCommunication;
+import client.utils.FileUtils;
+import client.utils.GameWebsocketUtils;
 import com.google.inject.Inject;
-
+import commons.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -10,16 +14,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 
 
 public class GamePageController implements Initializable {
@@ -27,16 +32,39 @@ public class GamePageController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private final ServerUtils server;
+    private final GameCommunication gameCommunication;
+    private String username;
+    private final GameWebsocketUtils server;
     private final MainCtrl mainCtrl;
 
-
+    private static String gameCode;
+    private static User user;
+    private static int qIndex;
+    private static QuestionTypeA activeQuestion;
 
     private static final int TIME_TO_NEXT_ROUND = 3;
 
     @FXML
+    private ImageView MenuButton;
+
+    @FXML
+    private ImageView Windmill;
+
+
+    @FXML
+    private Text Question_text;
+
+    @FXML
     private ProgressBar progressBar;
 
+    @FXML
+    private Text Activity_text1;
+
+    @FXML
+    private Text Activity_text2;
+
+    @FXML
+    private Text Activity_text3;
 
     @FXML
     private ListView<String> currentLeaderboard;
@@ -53,37 +81,80 @@ public class GamePageController implements Initializable {
 
     @FXML
     private Button button4;
+
+
     @FXML
-    private Text Question_text;
+    private Text QuestionText;
+    @FXML
+    private Text ActivityText1;
+    @FXML
+    private Text ActivityText2;
+    @FXML
+    private Text ActivityText3;
+    @FXML
+    private ImageView emoji1;
+    @FXML
+    private ImageView emoji2;
+    @FXML
+    private ImageView emoji3;
 
 
+    private final Image emojiHappy = new Image("client/images/emoji1.png");
+    private final Image emojiSad = new Image("client/images/emoji2.png");
+    private final Image emojiAngry = new Image("client/images/emoji3.png");
 
-    String[] names = {"foo", "bar", "test"};
+    /*image array to load all images at a time*/
+    private Image[] imagesArray = {emojiHappy, emojiSad, emojiAngry};
+
+    //    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
     private ArrayList<Button> button_List = new ArrayList<>();
 
+    String[] names = {"foo", "bar", "test"};
 
     @Inject
-    public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
+    public GamePageController(MainCtrl mainCtrl, GameCommunication gameCommunication, GameWebsocketUtils server) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.gameCommunication = gameCommunication;
     }
 
     /**
      * initializes user interface components
+     *
      * @param location
      * @param resources
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+        /* create list object */
+
+        /* adding items to the list view */
+        ObservableList<String> elements = FXCollections.observableArrayList("Fist ", "Second ", "Third ",
+                "Dodi");
+        currentLeaderboard.setItems(elements);
+        /*setting each image to corresponding array index*/
+
+        /* creating vertical box to add item objects */
+        // VBox vBox = new VBox(currentLeaderboard);
+        /* creating scene */
+
+        InitImages();
+        ArrayList<String> list = new ArrayList<>();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
         progressBar.setProgress(0);
-       // Question_text = new Text("foo");
+        // Question_text = new Text("foo");
         button_List.add(button1);
         button_List.add(button2);
         button_List.add(button3);
         button_List.add(button4);
 
-        Question_text.setText("foo");
+        gameCode = gameCommunication.startSinglePlayerGame();
+
+        qIndex = 0;
+
+        refreshQuestion();
 
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
@@ -91,7 +162,85 @@ public class GamePageController implements Initializable {
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
+        // currentLeaderboard.getItems().addAll(names);
+        server.send("/app/chat", "foo");
+        server.registerForMessages("/topic/chat", String.class, q -> {
+            list.add(q);
+        });
+        server.registerForMessages("game/receive", Game.class, o -> {
+            Question_text.setText("Which one consumes the most amount of energy?");
+            for (Question question : o.getActiveQuestionList()){
+                QuestionTypeA foo =  (QuestionTypeA) question;
+                        Activity_text1.setText(foo.getActivity1().getActivityText());
+                        Activity_text2.setText(foo.getActivity2().getActivityText());
+                        Activity_text3.setText(foo.getActivity3().getActivityText());
+
+            }
+
+        });
+        server.registerForMessages("/emoji/receive", Person.class, v -> {
+            Image newEmoji = null;
+            switch (v.lastName) {
+
+                case "emoji1":
+                    newEmoji = imagesArray[0];
+                    break;
+                case "emoji2":
+                    newEmoji = imagesArray[1];
+                    break;
+                case "emoji3":
+                    newEmoji = imagesArray[2];
+                    break;
+                default:
+                    break;
+
+            }
+
+            final Image emoji = newEmoji;
+
+            currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
+                /*view the image class to display the image*/
+                private ImageView displayImage = new ImageView();
+
+
+                @Override
+                public void updateItem(String name, boolean empty) {
+                    super.updateItem(name, empty);
+                    if (empty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        if (name.equals(v.firstName)) {
+                            displayImage.setFitHeight(20);
+                            displayImage.setFitWidth(20);
+                            displayImage.setImage(emoji); /*setting array image to First Image*/
+                        }
+                        setText(name);
+                        setGraphic(displayImage);
+                    }
+                }
+            });
+            ImageView displayImage = new ImageView();
+            displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
+            System.out.println(v);
+        });
+
+
     }
+
+    public static void init(User user1) {
+        user = user1;
+    }
+
+    public void InitImages() {
+        Windmill.setImage(new Image("client/images/OIP.jpg"));
+        MenuButton.setImage(new Image(("client/images/menu.png")));
+        emoji1.setImage(new Image("client/images/emoji1.png"));
+        emoji2.setImage(new Image("client/images/emoji2.png"));
+        emoji3.setImage(new Image("client/images/emoji3.png"));
+
+    }
+
 
     /**
      * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar
@@ -104,7 +253,7 @@ public class GamePageController implements Initializable {
                     @Override
                     protected Integer call() {
                         int i;
-                        for(i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
+                        for (i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
                             updateProgress(i, TIME_TO_NEXT_ROUND * 100);
                             try {
                                 Thread.sleep(10);
@@ -117,6 +266,9 @@ public class GamePageController implements Initializable {
                 };
             }
         };
+
+
+
 /*
         // Next Round Transition
         countDownThread.setOnSucceeded(event -> {
@@ -129,6 +281,37 @@ public class GamePageController implements Initializable {
 
         // TODO "uses unchecked or unsafe operations"
 
+    }
+
+    public void refreshQuestion() {
+        activeQuestion = gameCommunication.getQuestion(gameCode, qIndex);
+        QuestionText.setText(activeQuestion.displayText());
+    }
+    /**
+     * When the first emoji is clicked it is sent to the server and also by whom it has been sent
+     */
+    public void emoji1Pressed() {
+        username = FileUtils.readNickname();
+        Person emojiInfo = new Person(username, "emoji1");
+        server.send("/app/emoji", emojiInfo);
+    }
+
+    /**
+     * When the second emoji is clicked it is sent to the server and also by whom it has been sent
+     */
+    public void emoji2Pressed() {
+        username = FileUtils.readNickname();
+        Person emojiInfo = new Person(username, "emoji2");
+        server.send("/app/emoji", emojiInfo);
+    }
+
+    /**
+     * When the third emoji is clicked it is sent to the server and also by whom it has been sent
+     */
+    public void emoji3Pressed() {
+        username = FileUtils.readNickname();
+        Person emojiInfo = new Person(username, "emoji3");
+        server.send("/app/emoji", emojiInfo);
     }
 
 
