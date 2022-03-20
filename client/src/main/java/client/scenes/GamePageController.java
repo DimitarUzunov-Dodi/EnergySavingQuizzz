@@ -91,6 +91,7 @@ public class GamePageController implements Initializable {
     private Text ActivityText2;
     @FXML
     private Text ActivityText3;
+    @FXML
     private ImageView emoji1;
     @FXML
     private ImageView emoji2;
