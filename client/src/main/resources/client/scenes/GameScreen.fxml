@@ -93,7 +93,7 @@
                   <Image url="@../images/OIP.jpg" />
                </image>
             </ImageView>
-            <Text id="Question_text" fx:id="Question_text" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
+            <Text id="Question_text" fx:id="QuestionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
             <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="500.0" progress="0.0" GridPane.rowIndex="1" />
          </children>
       </GridPane>

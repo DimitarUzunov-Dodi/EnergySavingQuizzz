@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import server.database.GameRepository;
 import server.database.UserRepository;
 import server.entities.Game;
-import server.entities.User;
+import commons.User;
 
 import java.util.List;
 import java.util.Optional;

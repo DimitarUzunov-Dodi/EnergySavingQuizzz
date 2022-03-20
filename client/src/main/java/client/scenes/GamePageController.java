@@ -1,8 +1,10 @@
 package client.scenes;
 
+import client.communication.GameCommunication;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-
+import commons.QuestionTypeA;
+import commons.User;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -14,7 +16,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,9 +29,13 @@ public class GamePageController implements Initializable {
     private Scene scene;
     private Parent root;
     private final ServerUtils server;
+    private final GameCommunication gameCommunication;
     private final MainCtrl mainCtrl;
 
-
+    private static String gameCode;
+    private static User user;
+    private static int qIndex;
+    private static QuestionTypeA activeQuestion;
 
     private static final int TIME_TO_NEXT_ROUND = 3;
 
@@ -54,18 +59,24 @@ public class GamePageController implements Initializable {
     @FXML
     private Button button4;
     @FXML
-    private Text Question_text;
-
+    private Text QuestionText;
+    @FXML
+    private Text ActivityText1;
+    @FXML
+    private Text ActivityText2;
+    @FXML
+    private Text ActivityText3;
 
 
     String[] names = {"foo", "bar", "test"};
-    private ArrayList<Button> button_List = new ArrayList<>();
+    private final ArrayList<Button> button_List = new ArrayList<>();
 
 
     @Inject
-    public GamePageController(ServerUtils server, MainCtrl mainCtrl) {
+    public GamePageController(ServerUtils server, MainCtrl mainCtrl, GameCommunication gameCommunication) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.gameCommunication = gameCommunication;
     }
 
     /**
@@ -83,7 +94,11 @@ public class GamePageController implements Initializable {
         button_List.add(button3);
         button_List.add(button4);
 
-        Question_text.setText("foo");
+        gameCode = gameCommunication.startSinglePlayerGame();
+
+        qIndex = 0;
+
+        refreshQuestion();
 
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
@@ -91,6 +106,10 @@ public class GamePageController implements Initializable {
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
+    }
+
+    public static void init(User user1) {
+        user = user1;
     }
 
     /**
@@ -131,5 +150,9 @@ public class GamePageController implements Initializable {
 
     }
 
+    public void refreshQuestion() {
+        activeQuestion = gameCommunication.getQuestion(gameCode, qIndex);
+        QuestionText.setText(activeQuestion.displayText());
+    }
 
 }
