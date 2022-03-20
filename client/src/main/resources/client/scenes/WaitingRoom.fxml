@@ -21,7 +21,7 @@
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="22.0" percentHeight="15.0" valignment="CENTER" vgrow="NEVER" />
     </rowConstraints>
     <children>
-        <Text id="title" boundsType="VISUAL" fill="#f2c914" stroke="BLACK" strokeType="OUTSIDE" text="Leaderboard" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="503.142578125" GridPane.columnSpan="2147483647">
+        <Text id="title" boundsType="VISUAL" fill="#f2c914" stroke="BLACK" strokeType="OUTSIDE" text="Waiting Room" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="503.142578125" GridPane.columnSpan="2147483647">
             <font>
                 <Font name="Consolas Bold" size="42.0" />
             </font>
@@ -36,12 +36,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Back" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackButton" text="Back" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <font>
                   <Font name="Consolas Bold" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start" textAlignment="CENTER" underline="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <Button fx:id="startButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onStartButton" text="Start" textAlignment="CENTER" underline="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <font>
                   <Font name="Consolas Bold" size="20.0" />
                </font>

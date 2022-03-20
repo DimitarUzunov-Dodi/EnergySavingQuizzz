@@ -2,6 +2,8 @@ package commons;
 
 import javax.persistence.*;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Entity
 @Table(name = "activity")
 public class Activity {

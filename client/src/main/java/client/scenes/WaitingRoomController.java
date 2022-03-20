@@ -27,7 +27,11 @@ public class WaitingRoomController {
     }
 
     public void onBackButton() {
-        // TODO: close websockets connection
+        mainCtrl.showServerJoin();
+    }
+
+    public void onStartButton() {
+        mainCtrl.showGamePage();
     }
     
 }

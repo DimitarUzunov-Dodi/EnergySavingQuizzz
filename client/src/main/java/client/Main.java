@@ -65,7 +65,7 @@ public class Main extends Application {
             }
         });
 
-        mainCtrl.initialize(primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage, joinPage, adminActivityPanel, adminActivityDetails, activityImage);
+        mainCtrl.initialize(FXML, primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage, joinPage, adminActivityPanel, adminActivityDetails, activityImage);
     }
 
 }

@@ -33,7 +33,7 @@
             <Font name="Consolas Bold" size="24.0" />
          </font>
       </Button>
-      <Button fx:id="creatPrivateButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Create private game" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Button fx:id="creatPrivateButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCreatePrivate" text="Create private game" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
             <Font name="Consolas Bold" size="24.0" />
          </font>
@@ -48,7 +48,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="joinPrivateButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text=" Join private game " textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <Button fx:id="joinPrivateButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onJoinPrivate" text=" Join private game " textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <font>
                   <Font name="Consolas Bold" size="24.0" />
                </font>
@@ -60,7 +60,7 @@
             </TextField>
          </children>
       </GridPane>
-      <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Back" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+      <Button fx:id="backButton" onAction="#onBackButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Back" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <font>
             <Font name="Consolas Bold" size="20.0" />
          </font>
