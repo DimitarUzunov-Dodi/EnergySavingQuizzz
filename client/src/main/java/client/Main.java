@@ -2,30 +2,44 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
-
-import client.scenes.*;
 import com.google.inject.Injector;
-
-import client.scenes.SettingsCtrl;
-import client.scenes.SplashCtrl;
-import client.scenes.ServerLeaderboardCtrl;
 
 import client.scenes.MainCtrl;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setOnCloseRequest(e -> {
+            Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            quitAlert.setTitle("Quit");
+            quitAlert.setHeaderText("Are you sure you want to quit?");
+            Optional<ButtonType> result = quitAlert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK)
+                primaryStage.close();
+            else
+                e.consume();
+        });
+
+        MainCtrl mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        mainCtrl.start(INJECTOR); // give control to mainCtrl
+    }
+
+    /*
+    private static final Injector INJECTOR = ;
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     public static void main(String[] args) throws URISyntaxException, IOException {
@@ -34,6 +48,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        /*
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
         var gamePage = FXML.load(GamePageController.class, "client", "scenes", "GameScreen.fxml");
@@ -67,5 +82,5 @@ public class Main extends Application {
 
         mainCtrl.initialize(FXML, primaryStage, splash, settings, serverLeaderboard, gamePage, dummyPage, loading, matchLeaderboard, adminPage, joinPage, adminActivityPanel, adminActivityDetails, activityImage);
     }
-
+    */
 }
