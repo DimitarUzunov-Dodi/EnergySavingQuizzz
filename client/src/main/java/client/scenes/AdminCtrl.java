@@ -1,36 +1,32 @@
 package client.scenes;
 
+import client.MyFXML;
 import client.communication.AdminCommunication;
+import client.utils.SceneController;
 import com.google.inject.Inject;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import static client.utils.UserAlert.userAlert;
 
-import static client.scenes.UserAlert.userAlert;
+public class AdminCtrl extends SceneController {
 
-public class AdminCtrl implements Initializable {
-
-    private final AdminCommunication server;
-    private final MainCtrl mainCtrl;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    /**
+     * Basic constructor
+     * @param myFXML handled by INJECTOR
+     */
+    @Inject
+    private AdminCtrl(MyFXML myFXML) {
+        super(myFXML);
     }
 
-    @Inject
-    public AdminCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+    @Override
+    public void show() {
+        // nothing to do in this case
     }
 
     /**
      * Function called by button when clicked. Invokes server's restart
-     * @param event passed by JavaFX by default
      */
-    public void restartAction(ActionEvent event){
+    protected void restartAction(){
         try {
             AdminCommunication.invokeServerRestart();
         } catch (RuntimeException e) {
@@ -40,17 +36,15 @@ public class AdminCtrl implements Initializable {
 
     /**
      * Function called by button when clicked. Returns to the Splashscreen.
-     * @param event passed by JavaFX by default
      */
-    public void backToSplashAction(ActionEvent event){
-        mainCtrl.showSplashScreen();
+    protected void backToSplashAction(){
+        myFXML.showScene(SplashCtrl.class);
     }
 
     /**
      * Function called by button when clicked. Switches to admin activity panel.
-     * @param event passed by JavaFX by default
      */
-    public void switchToAdminActivityPanel(ActionEvent event){
-        mainCtrl.showAdminActivityPanel();
+    protected void switchToAdminActivityPanel(){
+        myFXML.showScene(AdminActivityCtrl.class);
     }
 }

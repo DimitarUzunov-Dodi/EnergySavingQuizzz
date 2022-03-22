@@ -32,7 +32,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button id="playButton" fx:id="singlePlayerGameButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#singlePlayerAction" prefHeight="100.0" prefWidth="120.0" text="Singleplayer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Button id="playButton" fx:id="singleplayerButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#singlePlayerAction" prefHeight="100.0" prefWidth="120.0" text="Singleplayer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets left="10.0" />
                     </GridPane.margin>
@@ -40,7 +40,7 @@
                   <Font size="20.0" />
                </font>
                 </Button>
-                <Button id="playButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#onMultiplayerPressed" prefHeight="100.0" prefWidth="230.0" text="Multiplayer" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Button id="playButton" fx:id="multiplayerButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#onMultiplayerPressed" prefHeight="100.0" prefWidth="230.0" text="Multiplayer" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets right="10.0" />
                     </GridPane.margin>
@@ -62,7 +62,7 @@
                 <RowConstraints percentHeight="50.0" />
             </rowConstraints>
             <children>
-                <Button id="utilsButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#quitAction" prefHeight="40.0" prefWidth="500.0" scaleShape="false" text="Quit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                <Button id="utilsButton" fx:id="quitButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#quitAction" prefHeight="40.0" prefWidth="500.0" scaleShape="false" text="Quit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
@@ -70,7 +70,7 @@
                   <Font size="20.0" />
                </font>
                 </Button>
-                <Button id="utilsButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#settingsAction" prefHeight="40.0" prefWidth="500.0" text="Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
+                <Button id="utilsButton" fx:id="settingsButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#settingsAction" prefHeight="40.0" prefWidth="500.0" text="Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
@@ -78,7 +78,7 @@
                   <Font size="20.0" />
                </font>
                 </Button>
-            <Button id="utilsButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#adminAction" prefHeight="40.0" prefWidth="500.0" text="Admin panel" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button id="utilsButton" fx:id="adminButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#adminAction" prefHeight="40.0" prefWidth="500.0" text="Admin panel" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font size="20.0" />
                </font>
@@ -106,7 +106,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField id="nicknameField" alignment="CENTER" onKeyTyped="#saveNickname" prefWidth="424.0" promptText="Your name" style="-fx-background-color: transparent;" GridPane.columnIndex="1">
+                        <TextField id="nicknameField" fx:id="usernameText" alignment="CENTER" onKeyTyped="#saveNickname" prefWidth="424.0" promptText="Your name" style="-fx-background-color: transparent;" GridPane.columnIndex="1">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font></TextField>

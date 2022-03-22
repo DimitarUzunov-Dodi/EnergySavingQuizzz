@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static client.scenes.UserAlert.userAlert;
+import static client.utils.UserAlert.userAlert;
 
 public class AdminActivityCtrl implements Initializable {
     private final MainCtrl mainCtrl;

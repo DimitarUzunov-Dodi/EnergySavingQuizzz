@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static client.scenes.UserAlert.userAlert;
+import static client.utils.UserAlert.userAlert;
 
 public class AdminActivityDetailsCtrl implements Initializable {
     private final MainCtrl mainCtrl;

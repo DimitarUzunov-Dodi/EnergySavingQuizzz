@@ -1,33 +1,52 @@
 package client.utils;
 
+import client.MyFXML;
+import com.google.inject.Inject;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  * Abstract class that forms the basis of a scene controller
  */
 public abstract class SceneController {
-    private Scene scene;
+    protected Scene scene = null;
+    protected final MyFXML myFXML;
 
     /**
-     * Constructor that initializes the scene member.
-     * Super this when making more complex constructors.
-     * @param scene The associated scene
+     * Basic constructor
+     * @param myFXML handled by INJECTOR
      */
-    public SceneController(Scene scene) {
-        this.scene = scene;
+    protected SceneController(MyFXML myFXML) {
+        this.myFXML = myFXML;
     }
 
     /**
-     * Function that is called whenever this controller is given control.
-     * e.g.: when the scene is shown on the primary stage
+     * Function that is called by other classes to hand control flow to this controller.
+     * Override this function to refresh scene content and add extra functionality.
+     * Make sure to call showScene() to actually show the scene on the current stage.
      */
-    public abstract void onShow();
+    public abstract void show();
 
+    /**
+     * Get the scene that this controller belongs to.
+     * @return the scene
+     */
     public Scene getScene() {
         return scene;
     }
 
+    /**
+     * Set the scene that this controller belongs to.
+     * @param scene the scene
+     */
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+    /**
+     * Shows this controller's scene on the stage it currently sits.
+     */
+    protected void showScene() {
+        ((Stage)scene.getWindow()).setScene(scene);
     }
 }

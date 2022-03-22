@@ -6,7 +6,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
-import static client.scenes.UserAlert.userAlert;
+import static client.utils.UserAlert.userAlert;
 import static client.utils.FileUtils.readNickname;
 
 public class LoadingController {

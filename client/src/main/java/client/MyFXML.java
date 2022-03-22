@@ -3,6 +3,7 @@ package client;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import client.scenes.MainCtrl;
 import client.utils.SceneController;
 import com.google.inject.Injector;
 
@@ -14,19 +15,22 @@ import javafx.util.Callback;
 
 public class MyFXML {
 
-    private Injector injector;
+    private final Injector injector;
 
+    /**
+     * Basic constructor
+     * @param injector the injector that handles the controllers
+     */
     public MyFXML(Injector injector) {
         this.injector = injector;
     }
 
     /**
-     * Loads the javafx scene and returns an instance of its controller.
-     * This function can be used to dynamically load pages individually .
+     * Loads the javafx scene and assigns it to the proper controller instance.
      * @param filename Name of the .fxml file
-     * @return An instance of a SceneController that holds a reference to the Scene
+     * @return Reference to the instance of a SceneController that holds a reference of the freshly loaded Scene
      */
-    public <T extends SceneController> T loadScene(String filename) {
+    private <T extends SceneController> T loadScene(String filename) {
         try {
             var loader = new FXMLLoader(MyFXML.class.getClassLoader().getResource(filename), null, null, new MyFactory(), StandardCharsets.UTF_8);
             T ctrl = loader.getController();
@@ -38,6 +42,30 @@ public class MyFXML {
         }
     }
 
+    /**
+     * Get a reference of the specified scene controller
+     * @param ctrl Type of the desired controller
+     * @return Reference of the (singleton) instance of that specific controller type.
+     */
+    public <T extends SceneController> T get(Class<T> ctrl) {
+        T c = injector.getInstance(ctrl);
+        if(c.getScene() == null)
+            // could also be implemented with a map<class, string> TODO: discuss with the team
+            return loadScene(ctrl.getName().replace("Ctrl", ".fxml"));
+        return c;
+    }
+
+    /**
+     * Call SceneController.show() on a controller
+     * @param ctrl Type of the controller
+     */
+    public <T extends SceneController> void showScene(Class<T> ctrl) {
+        get(ctrl).show();
+    }
+
+    /**
+     * Wraps the injector for ease of use
+     */
     private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
         @Override
         @SuppressWarnings("rawtypes")

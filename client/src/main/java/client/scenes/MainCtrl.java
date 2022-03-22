@@ -2,18 +2,56 @@ package client.scenes;
 
 import client.MyFXML;
 import client.utils.SceneController;
-import commons.Activity;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
-import java.util.Objects;
+import java.util.Optional;
 
-import static client.scenes.UserAlert.userAlert;
+/**
+ * Contains the entry point for the user interface.
+ */
+public final class MainCtrl {
+    private final MyFXML myFXML;
+    private final Stage primaryStage;
 
-public class MainCtrl {
+    // used by many scenes (maybe do getters/setters)
+    public static String username = null;
+    public static String currentGameID = null;
 
+    /**
+     * Normal constructor
+     * @param primaryStage The primary stage of the application
+     * @param INJECTOR The injector that handles the controllers
+     */
+    @Inject
+    private MainCtrl(Stage primaryStage, Injector INJECTOR) {
+        this.primaryStage = primaryStage;
+        myFXML = new MyFXML(INJECTOR);
+    }
+
+    /**
+     * Start the application GUI
+     */
+    public void start() {
+        // set quit pop-up
+        primaryStage.setOnCloseRequest(e -> {
+            Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            quitAlert.setTitle("Quit");
+            quitAlert.setHeaderText("Are you sure you want to quit?");
+            Optional<ButtonType> result = quitAlert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK)
+                primaryStage.close();
+            else
+                e.consume();
+        });
+        primaryStage.show(); // make app window visible
+        myFXML.showScene(SplashCtrl.class); // same as myFXML.get(SplashCtrl.class).showScene();
+    }
+
+/*
     private Stage primaryStage;
     private MyFXML FXML;
 
@@ -131,9 +169,6 @@ public class MainCtrl {
         primaryStage.setScene(settings);
     }
 
-    /**
-     * Display server leaderboard and refresh table
-     */
     public void showServerLeaderboard() {
         primaryStage.setTitle("Server Leaderboard");
         primaryStage.setScene(serverLeaderboardScn);
@@ -155,9 +190,6 @@ public class MainCtrl {
       //  add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
-    /**
-     * Display game screen
-     */
     public void showGamePage() {
         primaryStage.setTitle("gamePage");
         primaryStage.setScene(gamePage);
@@ -166,9 +198,6 @@ public class MainCtrl {
         //add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
-    /**
-     * Display loading screen
-     */
     public void showLoadingScreen() {
         primaryStage.setTitle("Get Ready!");
         primaryStage.setScene(loading);
@@ -181,9 +210,6 @@ public class MainCtrl {
         return this.splash;
     }
 
-    /**
-     * Display admin panel screen
-     */
     public void showAdmin() {
         primaryStage.setTitle("Admin page");
         primaryStage.setScene(adminPageScene);
@@ -198,18 +224,12 @@ public class MainCtrl {
         primaryStage.setScene(new Scene(room.getValue())); // also calls 'initialize' (I think)
     }
 
-    /**
-     * Display admin panel for managing the activities
-     */
     public void showAdminActivityPanel() {
         primaryStage.setTitle("Activity panel");
         primaryStage.setScene(adminActivityPanelScreen);
         adminActivityCtrl.refresh();
     }
 
-    /**
-     *  Display admin panel for details od the selected activity
-     */
     public void showAdminActivityDetails(Activity selected) {
         primaryStage.setTitle("Activity details");
         try {
@@ -226,4 +246,5 @@ public class MainCtrl {
         primaryStage.setScene(imageScene);
         this.imageCtrl.showImage(selected.getImageId());
     }
+*/
 }
