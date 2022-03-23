@@ -4,6 +4,7 @@ import client.MyFXML;
 import client.communication.AdminCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import javafx.fxml.FXML;
 
 import static client.utils.UserAlert.userAlert;
 
@@ -26,6 +27,7 @@ public class AdminCtrl extends SceneController {
     /**
      * Function called by button when clicked. Invokes server's restart
      */
+    @FXML
     protected void restartAction(){
         try {
             AdminCommunication.invokeServerRestart();
@@ -37,6 +39,7 @@ public class AdminCtrl extends SceneController {
     /**
      * Function called by button when clicked. Returns to the Splashscreen.
      */
+    @FXML
     protected void backToSplashAction(){
         myFXML.showScene(SplashCtrl.class);
     }
@@ -44,6 +47,7 @@ public class AdminCtrl extends SceneController {
     /**
      * Function called by button when clicked. Switches to admin activity panel.
      */
+    @FXML
     protected void switchToAdminActivityPanel(){
         myFXML.showScene(AdminActivityCtrl.class);
     }

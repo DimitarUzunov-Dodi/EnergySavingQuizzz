@@ -64,6 +64,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      * Function called by button when clicked. Switches to main admin question panel.
      * @param event passed by JavaFX by default
      */
+    @FXML
     protected void switchToActivityPanel(ActionEvent event){
         myFXML.showScene(AdminCtrl.class);
     }
@@ -90,6 +91,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      * It checks if activity was changed and if so sends a PUT request to the server
      * to change and existing record of that activity
      */
+    @FXML
     protected void confirmAction(ActionEvent event) {
         Activity constructed;
         try {

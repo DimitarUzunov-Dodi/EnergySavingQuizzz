@@ -60,6 +60,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      * Function called by button when clicked. Switches to main admin panel.
      * @param event passed by JavaFX by default
      */
+    @FXML
     protected void switchToAdminPanel(ActionEvent event){
         myFXML.showScene(AdminCtrl.class);
     }
@@ -67,6 +68,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Method refreshes the list of activities in admin panel
      */
+    @FXML
     protected void refresh() {
         new Thread(() -> {
             System.out.println("Refreshing activities table...");
@@ -86,6 +88,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      * Adds a dummy activity with fixed values:
      *
      */
+    @FXML
     protected void add() {
         AdminCommunication.addTestingActivity();
     }
@@ -93,6 +96,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Deletes all available activities on the server
      */
+    @FXML
     protected void deleteAllActivities() {
         Stage thisStage = (Stage) activityTable.getScene().getWindow();
         Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -111,6 +115,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Switches a window to editing mode, so you can change activity details
      */
+    @FXML
     protected void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
         myFXML.get(AdminActivityDetailsCtrl.class).customShow(selected);
@@ -119,6 +124,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Switches a window to imageview mode, so you can check the image associated with that activity
      */
+    @FXML
     protected void image() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
         myFXML.get(ActivityImageCtrl.class).customShow(selected);
@@ -127,6 +133,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Loads activities from the archive based on jsons there
      */
+    @FXML
     protected void load(){
         new Thread(() -> {
             System.out.println("Loading activities...");

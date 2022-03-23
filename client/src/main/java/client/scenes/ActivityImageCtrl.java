@@ -35,6 +35,7 @@ public class ActivityImageCtrl extends SceneController {
      * Method that shows the scene with details about selected activity
      * @param selected activity which details will be shown
      */
+    @FXML
     public void customShow(Activity selected) {
         showImage(selected.getImageId());
         showScene();
@@ -44,6 +45,7 @@ public class ActivityImageCtrl extends SceneController {
      * Method that shows the scene with image with the given imageId
      * @param imageId id of the image that corresponds to the database record
      */
+    @FXML
     private void showImage(long imageId) {
         imageView.setImage(ActivityImageCommunication.getImageFromId(imageId));
     }
@@ -52,6 +54,7 @@ public class ActivityImageCtrl extends SceneController {
      * Function called by button when clicked. Switches to main admin question panel.
      * @param event passed by JavaFX by default
      */
+    @FXML
     protected void switchToActivityPanel(ActionEvent event){
         myFXML.showScene(AdminCtrl.class);
     }
