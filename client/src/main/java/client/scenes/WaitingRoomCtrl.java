@@ -33,14 +33,16 @@ public class WaitingRoomCtrl extends SceneController {
     /**
      * Called on user pressing 'Back' button, sends user to Multiplayer
      */
-    protected void onBackButton() {
+    @FXML
+    private void onBackButton() {
         myFXML.showScene(MultiplayerCtrl.class);
     }
 
     /**
      * Called on user pressing 'Start' button, sends user to GamePage
      */
-    protected void onStartButton() {
+    @FXML
+    private void onStartButton() {
         // TODO: start match ( either here or in GamePageController.show() )
         myFXML.showScene(GamePageController.class);
     }

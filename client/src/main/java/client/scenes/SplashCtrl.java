@@ -37,7 +37,8 @@ public class SplashCtrl extends SceneController {
     /**
      * Function called by quit button when clicked. Quits the application
      */
-    protected void quitAction() {
+    @FXML
+    private void quitAction() {
         Stage stage = (Stage)scene.getWindow(); // this is how you get the current Stage btw
         quitButton.getScene().getWindow().fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
@@ -45,14 +46,16 @@ public class SplashCtrl extends SceneController {
     /**
      * Function called by settings button when clicked. Changes scene to Settings scene.
      */
-    protected void settingsAction() {
+    @FXML
+    private void settingsAction() {
         myFXML.showScene(SettingsCtrl.class);
     }
 
     /**
      * Called on user pressing 'Singleplayer' button, send user to GamePage
      */
-    protected void singlePlayerAction() {
+    @FXML
+    private void singlePlayerAction() {
         myFXML.showScene(GamePageController.class);
         /* left here for reference - delete later
         GamePageController.init(new User(null, nickname));
@@ -71,7 +74,8 @@ public class SplashCtrl extends SceneController {
      * Function saves nickname automatically when nickname TextField is changed
      * Nickname is stored according to pathToUserData
      */
-    protected void saveNickname() {
+    @FXML
+    private void saveNickname() {
         username = usernameText.getText();
         writeNickname(username);
     }
@@ -79,14 +83,16 @@ public class SplashCtrl extends SceneController {
     /**
      * Called on user pressing 'Multiplayer' button, sends user to Multiplayer
      */
-    protected void onMultiplayerPressed() {
+    @FXML
+    private void onMultiplayerPressed() {
         myFXML.showScene(MultiplayerCtrl.class);
     }
 
     /**
      * Function called by admin button when clicked. Changes scene to AdminPage scene.
      */
-    protected void adminAction(){
+    @FXML
+    private void adminAction(){
         myFXML.showScene(AdminCtrl.class);
     }
 }

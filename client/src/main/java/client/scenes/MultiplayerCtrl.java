@@ -32,7 +32,8 @@ public class MultiplayerCtrl extends SceneController {
      * Called on user pressing 'Join Public Match' button.
      * Sends the user to the current public waiting room.
      */
-    protected void onJoinPublic() {
+    @FXML
+    private void onJoinPublic() {
         currentGameID = "get waiting public game id"; // TODO: Implement auto-gen games
         myFXML.showScene(WaitingRoomCtrl.class);
     }
@@ -41,17 +42,19 @@ public class MultiplayerCtrl extends SceneController {
      * Called on user pressing 'Join Private Game'
      * Sends the user to the desired waiting room if it exists.
      */
-    protected void onJoinPrivate() {
+    @FXML
+    private void onJoinPrivate() {
         // TODO: Check the game id first
         currentGameID = gameCodeField.getText();
         myFXML.showScene(WaitingRoomCtrl.class);
     }
 
     /**
-     * Called on user pressing 'Create Private Game' buttton.
+     * Called on user pressing 'Create Private Game' button.
      * Creates a new match and sends the player to it's waiting room.
      */
-    protected void onCreatePrivate() {
+    @FXML
+    private void onCreatePrivate() {
         currentGameID = "generate new private game id";
         myFXML.showScene(WaitingRoomCtrl.class);
         UserAlert.userAlert("INFO", "Game code: " + currentGameID,
@@ -62,7 +65,8 @@ public class MultiplayerCtrl extends SceneController {
      * Called on user pressing the 'Back' button.
      * Sends the user to the Splash Screen.
      */
-    protected void onBackButton() {
+    @FXML
+    private void onBackButton() {
         myFXML.showScene(SplashCtrl.class);
     }
 }

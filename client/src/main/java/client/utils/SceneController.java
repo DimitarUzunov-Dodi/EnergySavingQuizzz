@@ -16,6 +16,7 @@ public abstract class SceneController {
      * Basic constructor
      * @param myFXML handled by INJECTOR
      */
+    @Inject
     protected SceneController(MyFXML myFXML) {
         this.myFXML = myFXML;
     }

@@ -1,8 +1,7 @@
 package client.scenes;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
+import client.MyFXML;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -12,16 +11,16 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class MatchLeaderboardCtrl implements Initializable {
+import java.util.ArrayList;
 
-    private final MainCtrl mainCtrl;
-    private final ServerUtils server;
+import static client.scenes.MainCtrl.currentGameID;
 
-    private ObservableList<ScoreRecord> data;
+public class MatchLeaderboardCtrl extends SceneController {
+
+    private final ObservableList<ScoreRecord> data;
 
     @FXML
     private TableView<ScoreRecord> table;
@@ -30,23 +29,31 @@ public class MatchLeaderboardCtrl implements Initializable {
     @FXML
     private TableColumn<ScoreRecord, String> colScore;
 
+    /**
+     * Basic constructor
+     * @param myFXML handled by INJECTOR
+     */
     @Inject
-    public MatchLeaderboardCtrl(MainCtrl mainCtrl, ServerUtils server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+    protected MatchLeaderboardCtrl(MyFXML myFXML) {
+        super(myFXML);
+        colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().nickname));
+        colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score+" points"));
+        data = FXCollections.observableList(new ArrayList<>());
+        table.setItems(data);
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().nickname));
-        colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score+" points"));
-    }
-
-    public void refresh(String gameCode) {
+    public void show() {
         new Thread(() -> {
-            var data = server.getMatchLeaderboard(gameCode);
-            if(data != null)
-                table.setItems(FXCollections.observableList(data));
+            var l = ServerUtils.getMatchLeaderboard(currentGameID);
+            if(l == null)
+                System.out.println("WARNING: null ScoreRecord list fetched from the server");
+            else {
+                data.removeAll();
+                data.addAll(l);
+                table.refresh();
+            }
         }).start();
+        showScene();
     }
 }

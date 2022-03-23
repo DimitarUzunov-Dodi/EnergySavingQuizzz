@@ -13,10 +13,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.util.ArrayList;
+
 public class ServerLeaderboardCtrl extends SceneController {
 
-    private final ServerUtils serverUtil;
-	private ObservableList<LeaderboardEntry> data;
+	private final ObservableList<LeaderboardEntry> data;
 
     @FXML
     private TableView<LeaderboardEntry> table;
@@ -30,22 +31,28 @@ public class ServerLeaderboardCtrl extends SceneController {
     /**
      * Constructor used by INJECTOR
      * @param myFXML handled by INJECTOR
-     * @param serverUtil handled by INJECTOR
      */
-    private ServerLeaderboardCtrl(MyFXML myFXML, ServerUtils serverUtil) {
+    private ServerLeaderboardCtrl(MyFXML myFXML) {
         super(myFXML);
-        this.serverUtil = serverUtil;
         colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
         colGamesPlayed.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().gamesPlayed.toString()+" games played"));
         colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score.toString()+" points"));
+        data = FXCollections.observableList(new ArrayList<>());
+        table.setItems(data);
     }
 
     @Override
     public void show() {
         // load contents async
         new Thread(() -> {
-            data = FXCollections.observableList(serverUtil.getServerLeaderboard());
-            table.setItems(data);
+            var l = ServerUtils.getServerLeaderboard();
+            if(l == null)
+                System.out.println("WARNING: null ScoreRecord list fetched from the server");
+            else {
+                data.removeAll();
+                data.addAll(l);
+                table.refresh();
+            }
         }).start();
         showScene();
     }
@@ -53,7 +60,8 @@ public class ServerLeaderboardCtrl extends SceneController {
     /**
      * Called on user pressing 'Back' button, sends user to Splash
      */
-    protected void onBackButton() {
+    @FXML
+    private void onBackButton() {
         myFXML.showScene(SplashCtrl.class);
     }
 }

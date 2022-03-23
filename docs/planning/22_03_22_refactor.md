@@ -24,10 +24,11 @@ I encourage (and by that I mean I really insist you do that) everyone to take th
 * All fxml files should be named `<scene_name>.java`. (must be the same <scene_name> as the controller)
 * Only make attributes and methods `public` when they are needed/called from another class.
 * Fxml elements should be referenced by declaring an `@FXML private foo;` attribute in the controller and an `fx:id="foo"` in the fxml resource. (pls no weird stuff like scene.lookup("#button"))
-* Methods for fxml button actions and other such elements should be `protected`.
+* Methods for fxml button actions and other such elements should be `@FXML private`.
 * Methods and attributes that are only used internally should be `private`.
 * Functions that load/refresh page content should be called in the public `show()` method.
 * If you want to display another scene and pass control to it do `myFXML.showScene(<T>)` so that everything refreshes normally. (that's the new mainCtrl.showXXX())
+* Utility classes should be kept static as mush as possible, otherwise add them to the @Inject constructor of your class if you need them.
 
 You can analyze the classes I've already worked on and also look at the implementation of `MyFXML` an `MainCtrl` for more details as they are fully commented and documented.
 
