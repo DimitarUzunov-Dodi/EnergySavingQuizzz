@@ -46,14 +46,14 @@ public class SplashCtrl extends SceneController {
      * Function called by settings button when clicked. Changes scene to Settings scene.
      */
     protected void settingsAction() {
-        myFXML.showScene(SettingsCtrl.class);
+        //myFXML.showScene(SettingsCtrl.class);
     }
 
     /**
      * Called on user pressing 'Singleplayer' button, send user to GamePage
      */
     protected void singlePlayerAction() {
-        myFXML.showScene(GamePageController.class);
+        //myFXML.showScene(GamePageController.class);
         /* left here for reference - delete later
         GamePageController.init(new User(null, nickname));
         mainCtrl.showGamePage(); */

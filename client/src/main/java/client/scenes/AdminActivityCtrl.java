@@ -1,7 +1,9 @@
 package client.scenes;
 
+import client.MyFXML;
 import client.communication.AdminCommunication;
 import client.utils.ActivityBankUtils;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,9 +25,7 @@ import java.util.ResourceBundle;
 
 import static client.utils.UserAlert.userAlert;
 
-public class AdminActivityCtrl implements Initializable {
-    private final MainCtrl mainCtrl;
-    private final AdminCommunication server;
+public class AdminActivityCtrl extends SceneController implements Initializable {
 
     private ObservableList <Activity> data;
 
@@ -39,9 +39,14 @@ public class AdminActivityCtrl implements Initializable {
     private TableColumn<Activity, String> colActivityValue;
 
     @Inject
-    public AdminActivityCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+    private AdminActivityCtrl(MyFXML myFXML) {
+        super(myFXML);
+    }
+
+    @Override
+    public void show() {
+        refresh();
+        showScene();
     }
 
     @Override
@@ -55,8 +60,8 @@ public class AdminActivityCtrl implements Initializable {
      * Function called by button when clicked. Switches to main admin panel.
      * @param event passed by JavaFX by default
      */
-    public void switchToAdminPanel(ActionEvent event){
-        mainCtrl.showAdmin();
+    protected void switchToAdminPanel(ActionEvent event){
+        myFXML.showScene(AdminCtrl.class);
     }
 
     /**
@@ -108,12 +113,12 @@ public class AdminActivityCtrl implements Initializable {
      */
     public void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        mainCtrl.showAdminActivityDetails(selected);
+        myFXML.get(AdminActivityDetailsCtrl.class).customShow(selected);
     }
 
     public void image() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        mainCtrl.showActivityImage(selected);
+        myFXML.get(ActivityImageCtrl.class).customShow(selected);
     }
 
     /**

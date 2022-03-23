@@ -1,6 +1,8 @@
 package client.scenes;
 
+import client.MyFXML;
 import client.communication.AdminCommunication;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
 import javafx.event.ActionEvent;
@@ -14,9 +16,7 @@ import java.util.ResourceBundle;
 
 import static client.utils.UserAlert.userAlert;
 
-public class AdminActivityDetailsCtrl implements Initializable {
-    private final MainCtrl mainCtrl;
-    private final AdminCommunication server;
+public class AdminActivityDetailsCtrl extends SceneController implements Initializable {
     private Activity selectedActivity;
 
     @FXML
@@ -35,10 +35,17 @@ public class AdminActivityDetailsCtrl implements Initializable {
     private TextField imageIdField;
 
     @Inject
-    public AdminActivityDetailsCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
-        this.selectedActivity = null;
+    public AdminActivityDetailsCtrl(MyFXML myFXML) {
+        super(myFXML);
+    }
+
+    @Override
+    public void show() {
+    }
+
+    public void customShow(Activity selected) {
+        setActivity(selected);
+        showScene();
     }
 
     @Override
@@ -51,7 +58,7 @@ public class AdminActivityDetailsCtrl implements Initializable {
      * @param event passed by JavaFX by default
      */
     public void switchToActivityPanel(ActionEvent event){
-        mainCtrl.showAdminActivityPanel();
+        myFXML.showScene(AdminCtrl.class);
     }
 
     /**
@@ -85,7 +92,7 @@ public class AdminActivityDetailsCtrl implements Initializable {
             return;
         }
         if(this.selectedActivity.equals(constructed)) {
-            mainCtrl.showAdminActivityPanel();
+            myFXML.showScene(AdminActivityCtrl.class);
         } else {
             try {
                 AdminCommunication.editActivity(selectedActivity.getActivityId(), constructed);
@@ -93,7 +100,7 @@ public class AdminActivityDetailsCtrl implements Initializable {
                 userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
                 return;
             }
-            mainCtrl.showAdminActivityPanel();
+            myFXML.showScene(AdminActivityCtrl.class);
         }
     }
 }
