@@ -22,7 +22,7 @@ public class MyModule implements Module {
         binder.bind(ServerLeaderboardCtrl.class).in(Scopes.SINGLETON);
         binder.bind(SettingsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(SplashCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(WaitingRoomController.class).in(Scopes.SINGLETON);
+        binder.bind(WaitingRoomCtrl.class).in(Scopes.SINGLETON);
         // TODO: add necessary utils in here
     }
 }

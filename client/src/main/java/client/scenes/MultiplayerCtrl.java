@@ -25,7 +25,7 @@ public class MultiplayerCtrl extends SceneController {
 
     @Override
     public void show() {
-        // noting to do here
+        showScene();
     }
 
     /**
@@ -34,7 +34,7 @@ public class MultiplayerCtrl extends SceneController {
      */
     protected void onJoinPublic() {
         currentGameID = "get waiting public game id"; // TODO: Implement auto-gen games
-        myFXML.showScene(WaitingRoomController.class);
+        myFXML.showScene(WaitingRoomCtrl.class);
     }
 
     /**
@@ -44,7 +44,7 @@ public class MultiplayerCtrl extends SceneController {
     protected void onJoinPrivate() {
         // TODO: Check the game id first
         currentGameID = gameCodeField.getText();
-        myFXML.showScene(WaitingRoomController.class);
+        myFXML.showScene(WaitingRoomCtrl.class);
     }
 
     /**
@@ -53,7 +53,7 @@ public class MultiplayerCtrl extends SceneController {
      */
     protected void onCreatePrivate() {
         currentGameID = "generate new private game id";
-        myFXML.showScene(WaitingRoomController.class);
+        myFXML.showScene(WaitingRoomCtrl.class);
         UserAlert.userAlert("INFO", "Game code: " + currentGameID,
                     "Share this with the people you want to play with.");
     }

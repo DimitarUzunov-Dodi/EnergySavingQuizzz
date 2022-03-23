@@ -1,9 +1,7 @@
 package client.scenes;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.google.inject.Inject;
+import client.MyFXML;
+import client.utils.SceneController;
 
 import client.utils.ServerUtils;
 import commons.LeaderboardEntry;
@@ -12,15 +10,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class ServerLeaderboardCtrl implements Initializable {
+public class ServerLeaderboardCtrl extends SceneController {
 
-    private final MainCtrl mainCtrl;
-	private final ServerUtils server;
-
+    private final ServerUtils serverUtil;
 	private ObservableList<LeaderboardEntry> data;
 
     @FXML
@@ -32,29 +27,33 @@ public class ServerLeaderboardCtrl implements Initializable {
     @FXML
     private TableColumn<LeaderboardEntry, String> colScore;
 
-    @Inject
-    public ServerLeaderboardCtrl(MainCtrl mainCtrl, ServerUtils server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    /**
+     * Constructor used by INJECTOR
+     * @param myFXML handled by INJECTOR
+     * @param serverUtil handled by INJECTOR
+     */
+    private ServerLeaderboardCtrl(MyFXML myFXML, ServerUtils serverUtil) {
+        super(myFXML);
+        this.serverUtil = serverUtil;
         colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
         colGamesPlayed.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().gamesPlayed.toString()+" games played"));
         colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score.toString()+" points"));
     }
 
-    public void refresh() {
+    @Override
+    public void show() {
+        // load contents async
         new Thread(() -> {
-            System.out.println("Refreshing server leaderboard table...");
-            data = FXCollections.observableList(server.getServerLeaderboard());
+            data = FXCollections.observableList(serverUtil.getServerLeaderboard());
             table.setItems(data);
-            System.out.println("Populated table with "+data.size()+" entries.");
         }).start();
+        showScene();
     }
 
-    public void onBackButton() {
-        mainCtrl.showSplashScreen();
+    /**
+     * Called on user pressing 'Back' button, sends user to Splash
+     */
+    protected void onBackButton() {
+        myFXML.showScene(SplashCtrl.class);
     }
 }

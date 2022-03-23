@@ -20,7 +20,7 @@ public class AdminCtrl extends SceneController {
 
     @Override
     public void show() {
-        // nothing to do in this case
+        showScene();
     }
 
     /**

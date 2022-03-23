@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.MyFXML;
-import client.utils.SceneController;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import javafx.scene.control.Alert;
@@ -220,7 +219,7 @@ public final class MainCtrl {
     }
 
     public void showWaitingRoom(String gameID) {
-        var room = loadPage(WaitingRoomController.class, "WaitingRoom.fxml");
+        var room = loadPage(WaitingRoomCtrl.class, "WaitingRoom.fxml");
         primaryStage.setScene(new Scene(room.getValue())); // also calls 'initialize' (I think)
     }
 
