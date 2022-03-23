@@ -1,6 +1,8 @@
 package client.scenes;
 
+import client.MyFXML;
 import client.communication.AdminCommunication;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
 import javafx.event.ActionEvent;
@@ -14,9 +16,7 @@ import java.util.ResourceBundle;
 
 import static client.utils.UserAlert.userAlert;
 
-public class AdminActivityDetailsCtrl implements Initializable {
-    private final MainCtrl mainCtrl;
-    private final AdminCommunication server;
+public class AdminActivityDetailsCtrl extends SceneController implements Initializable {
     private Activity selectedActivity;
 
     @FXML
@@ -35,10 +35,8 @@ public class AdminActivityDetailsCtrl implements Initializable {
     private TextField imageIdField;
 
     @Inject
-    public AdminActivityDetailsCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
-        this.selectedActivity = null;
+    public AdminActivityDetailsCtrl(MyFXML myFXML) {
+        super(myFXML);
     }
 
     @Override
@@ -47,18 +45,35 @@ public class AdminActivityDetailsCtrl implements Initializable {
     }
 
     /**
+     * Please use customShow(Activity selected) method to switch to this scene
+     */
+    @Override
+    public void show() {
+    }
+
+    /**
+     * Method that shows the scene with details about selected activity
+     * @param selected activity which details will be shown
+     */
+    public void customShow(Activity selected) {
+        setActivity(selected);
+        showScene();
+    }
+
+    /**
      * Function called by button when clicked. Switches to main admin question panel.
      * @param event passed by JavaFX by default
      */
-    public void switchToActivityPanel(ActionEvent event){
-        mainCtrl.showAdminActivityPanel();
+    @FXML
+    protected void switchToActivityPanel(ActionEvent event){
+        myFXML.showScene(AdminCtrl.class);
     }
 
     /**
      * Set selected activity
      * @param selected Activity that was selected in table view earlier
      */
-    public void setActivity(Activity selected) throws NullPointerException{
+    private void setActivity(Activity selected) throws NullPointerException{
         if(!Objects.isNull(selected)) {
             this.selectedActivity = selected;
             idField.setText(selected.getActivityId() + "");
@@ -76,7 +91,8 @@ public class AdminActivityDetailsCtrl implements Initializable {
      * It checks if activity was changed and if so sends a PUT request to the server
      * to change and existing record of that activity
      */
-    public void confirmAction(ActionEvent event) {
+    @FXML
+    protected void confirmAction(ActionEvent event) {
         Activity constructed;
         try {
             constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Long.parseLong(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));
@@ -85,7 +101,7 @@ public class AdminActivityDetailsCtrl implements Initializable {
             return;
         }
         if(this.selectedActivity.equals(constructed)) {
-            mainCtrl.showAdminActivityPanel();
+            myFXML.showScene(AdminActivityCtrl.class);
         } else {
             try {
                 AdminCommunication.editActivity(selectedActivity.getActivityId(), constructed);
@@ -93,7 +109,7 @@ public class AdminActivityDetailsCtrl implements Initializable {
                 userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
                 return;
             }
-            mainCtrl.showAdminActivityPanel();
+            myFXML.showScene(AdminActivityCtrl.class);
         }
     }
 }

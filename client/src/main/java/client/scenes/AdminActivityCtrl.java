@@ -1,7 +1,9 @@
 package client.scenes;
 
+import client.MyFXML;
 import client.communication.AdminCommunication;
 import client.utils.ActivityBankUtils;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,9 +25,7 @@ import java.util.ResourceBundle;
 
 import static client.utils.UserAlert.userAlert;
 
-public class AdminActivityCtrl implements Initializable {
-    private final MainCtrl mainCtrl;
-    private final AdminCommunication server;
+public class AdminActivityCtrl extends SceneController implements Initializable {
 
     private ObservableList <Activity> data;
 
@@ -39,9 +39,14 @@ public class AdminActivityCtrl implements Initializable {
     private TableColumn<Activity, String> colActivityValue;
 
     @Inject
-    public AdminActivityCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+    private AdminActivityCtrl(MyFXML myFXML) {
+        super(myFXML);
+    }
+
+    @Override
+    public void show() {
+        refresh();
+        showScene();
     }
 
     @Override
@@ -55,14 +60,16 @@ public class AdminActivityCtrl implements Initializable {
      * Function called by button when clicked. Switches to main admin panel.
      * @param event passed by JavaFX by default
      */
-    public void switchToAdminPanel(ActionEvent event){
-        mainCtrl.showAdmin();
+    @FXML
+    protected void switchToAdminPanel(ActionEvent event){
+        myFXML.showScene(AdminCtrl.class);
     }
 
     /**
      * Method refreshes the list of activities in admin panel
      */
-    public void refresh() {
+    @FXML
+    protected void refresh() {
         new Thread(() -> {
             System.out.println("Refreshing activities table...");
             try {
@@ -81,14 +88,16 @@ public class AdminActivityCtrl implements Initializable {
      * Adds a dummy activity with fixed values:
      *
      */
-    public void add() {
+    @FXML
+    protected void add() {
         AdminCommunication.addTestingActivity();
     }
 
     /**
      * Deletes all available activities on the server
      */
-    public void deleteAllActivities() {
+    @FXML
+    protected void deleteAllActivities() {
         Stage thisStage = (Stage) activityTable.getScene().getWindow();
         Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
         quitAlert.setTitle("Quit");
@@ -106,20 +115,26 @@ public class AdminActivityCtrl implements Initializable {
     /**
      * Switches a window to editing mode, so you can change activity details
      */
-    public void edit() {
+    @FXML
+    protected void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        mainCtrl.showAdminActivityDetails(selected);
+        myFXML.get(AdminActivityDetailsCtrl.class).customShow(selected);
     }
 
-    public void image() {
+    /**
+     * Switches a window to imageview mode, so you can check the image associated with that activity
+     */
+    @FXML
+    protected void image() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        mainCtrl.showActivityImage(selected);
+        myFXML.get(ActivityImageCtrl.class).customShow(selected);
     }
 
     /**
      * Loads activities from the archive based on jsons there
      */
-    public void load(){
+    @FXML
+    protected void load(){
         new Thread(() -> {
             System.out.println("Loading activities...");
             try {
