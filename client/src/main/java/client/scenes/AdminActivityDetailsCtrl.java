@@ -40,24 +40,31 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
     }
 
     @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    /**
+     * Please use customShow(Activity selected) method to switch to this scene
+     */
+    @Override
     public void show() {
     }
 
+    /**
+     * Method that shows the scene with details about selected activity
+     * @param selected activity which details will be shown
+     */
     public void customShow(Activity selected) {
         setActivity(selected);
         showScene();
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     /**
      * Function called by button when clicked. Switches to main admin question panel.
      * @param event passed by JavaFX by default
      */
-    public void switchToActivityPanel(ActionEvent event){
+    protected void switchToActivityPanel(ActionEvent event){
         myFXML.showScene(AdminCtrl.class);
     }
 
@@ -65,7 +72,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      * Set selected activity
      * @param selected Activity that was selected in table view earlier
      */
-    public void setActivity(Activity selected) throws NullPointerException{
+    private void setActivity(Activity selected) throws NullPointerException{
         if(!Objects.isNull(selected)) {
             this.selectedActivity = selected;
             idField.setText(selected.getActivityId() + "");
@@ -83,7 +90,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      * It checks if activity was changed and if so sends a PUT request to the server
      * to change and existing record of that activity
      */
-    public void confirmAction(ActionEvent event) {
+    protected void confirmAction(ActionEvent event) {
         Activity constructed;
         try {
             constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Long.parseLong(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));

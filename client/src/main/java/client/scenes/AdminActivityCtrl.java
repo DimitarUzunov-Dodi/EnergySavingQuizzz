@@ -67,7 +67,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Method refreshes the list of activities in admin panel
      */
-    public void refresh() {
+    protected void refresh() {
         new Thread(() -> {
             System.out.println("Refreshing activities table...");
             try {
@@ -86,14 +86,14 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      * Adds a dummy activity with fixed values:
      *
      */
-    public void add() {
+    protected void add() {
         AdminCommunication.addTestingActivity();
     }
 
     /**
      * Deletes all available activities on the server
      */
-    public void deleteAllActivities() {
+    protected void deleteAllActivities() {
         Stage thisStage = (Stage) activityTable.getScene().getWindow();
         Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
         quitAlert.setTitle("Quit");
@@ -111,12 +111,15 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Switches a window to editing mode, so you can change activity details
      */
-    public void edit() {
+    protected void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
         myFXML.get(AdminActivityDetailsCtrl.class).customShow(selected);
     }
 
-    public void image() {
+    /**
+     * Switches a window to imageview mode, so you can check the image associated with that activity
+     */
+    protected void image() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
         myFXML.get(ActivityImageCtrl.class).customShow(selected);
     }
@@ -124,7 +127,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     /**
      * Loads activities from the archive based on jsons there
      */
-    public void load(){
+    protected void load(){
         new Thread(() -> {
             System.out.println("Loading activities...");
             try {

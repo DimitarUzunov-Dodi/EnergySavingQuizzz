@@ -46,7 +46,7 @@ public class SplashCtrl extends SceneController {
      * Function called by settings button when clicked. Changes scene to Settings scene.
      */
     protected void settingsAction() {
-        //myFXML.showScene(SettingsCtrl.class);
+        myFXML.showScene(SettingsCtrl.class);
     }
 
     /**
