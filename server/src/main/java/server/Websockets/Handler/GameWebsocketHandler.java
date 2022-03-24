@@ -18,7 +18,8 @@ public class GameWebsocketHandler extends TextWebSocketHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebsocketHandler.class);
     private int playersInLatestGame = 0;
-    private final HashMap<String,ArrayList<WebSocketSession>> webSocketSessionList = new HashMap<String,ArrayList<WebSocketSession>>();
+    private final HashMap<String,ArrayList<WebSocketSession>> webSocketSessionList =
+        new HashMap<String,ArrayList<WebSocketSession>>();
 
 
 
