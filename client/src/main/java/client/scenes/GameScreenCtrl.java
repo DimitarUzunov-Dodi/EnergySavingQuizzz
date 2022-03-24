@@ -6,8 +6,6 @@
 package client.scenes;
 
 import client.MyFXML;
-import client.communication.GameCommunication;
-import client.utils.WebsocketUtils;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -17,7 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-
+import client.communication.GameCommunication;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -172,7 +170,7 @@ public class GameScreenCtrl extends SceneController {
     }
 
     public void refreshQuestion() {
-        activeQuestion = GameCommunication.getQuestion(gameCode, qIndex);
+        activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
         QuestionText.setText(activeQuestion.displayText());
     }
     /**
@@ -181,7 +179,7 @@ public class GameScreenCtrl extends SceneController {
     public void emoji1Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji1");
-        WebsocketUtils.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji", emojiInfo);
     }
 
     /**
@@ -190,7 +188,7 @@ public class GameScreenCtrl extends SceneController {
     public void emoji2Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji2");
-        WebsocketUtils.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji", emojiInfo);
     }
 
     /**
@@ -199,7 +197,7 @@ public class GameScreenCtrl extends SceneController {
     public void emoji3Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji3");
-        WebsocketUtils.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji", emojiInfo);
     }
 
 
@@ -227,7 +225,7 @@ public class GameScreenCtrl extends SceneController {
         button_List.add(button3);
         button_List.add(button4);
 
-        gameCode = GameCommunication.startSinglePlayerGame();
+        gameCode = client.communication.GameCommunication.startSinglePlayerGame();
 
         qIndex = 0;
 
@@ -240,11 +238,11 @@ public class GameScreenCtrl extends SceneController {
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         // currentLeaderboard.getItems().addAll(names);
-        WebsocketUtils.send("/app/chat", "foo");
-        WebsocketUtils.registerForMessages("/topic/chat", String.class, q -> {
+        GameCommunication.send("/app/chat", "foo");
+        GameCommunication.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
         });
-        WebsocketUtils.registerForMessages("game/receive", Game.class, o -> {
+        GameCommunication.registerForMessages("game/receive", Game.class, o -> {
             Question_text.setText("Which one consumes the most amount of energy?");
             for (Question question : o.getActiveQuestionList()){
                 QuestionTypeA foo =  (QuestionTypeA) question;
@@ -255,7 +253,7 @@ public class GameScreenCtrl extends SceneController {
             }
 
         });
-        WebsocketUtils.registerForMessages("/emoji/receive", Person.class, v -> {
+        GameCommunication.registerForMessages("/emoji/receive", Person.class, v -> {
             Image newEmoji = null;
             switch (v.lastName) {
 

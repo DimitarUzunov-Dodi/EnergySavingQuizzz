@@ -56,7 +56,7 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void singlePlayerAction() {
-        myFXML.showScene(GamePageController.class);
+        myFXML.showScene(GameScreenCtrl.class);
     }
 
     /**
