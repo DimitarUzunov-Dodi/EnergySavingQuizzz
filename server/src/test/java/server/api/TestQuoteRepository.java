@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package server.api;
 
+import commons.Quote;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
-
-import commons.Quote;
 import server.database.QuoteRepository;
 
 public class TestQuoteRepository implements QuoteRepository {
@@ -36,18 +35,6 @@ public class TestQuoteRepository implements QuoteRepository {
 
     private void call(String name) {
         calledMethods.add(name);
-    }
-
-    @Override
-    public List<Quote> findAll() {
-        calledMethods.add("findAll");
-        return quotes;
-    }
-
-    @Override
-    public List<Quote> findAll(Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
@@ -81,12 +68,6 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<Quote> entities) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void deleteAllByIdInBatch(Iterable<Long> ids) {
         // TODO Auto-generated method stub
 
@@ -94,6 +75,12 @@ public class TestQuoteRepository implements QuoteRepository {
 
     @Override
     public void deleteAllInBatch() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void deleteAllInBatch(Iterable<Quote> entities) {
         // TODO Auto-generated method stub
 
     }
@@ -115,24 +102,6 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public <S extends Quote> List<S> findAll(Example<S> example) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Quote> List<S> findAll(Example<S> example, Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Page<Quote> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public <S extends Quote> S save(S entity) {
         call("save");
         entity.id = (long) quotes.size();
@@ -150,11 +119,6 @@ public class TestQuoteRepository implements QuoteRepository {
     public boolean existsById(Long id) {
         call("existsById");
         return find(id).isPresent();
-    }
-
-    @Override
-    public long count() {
-        return quotes.size();
     }
 
     @Override
@@ -200,9 +164,44 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
+    public <S extends Quote> List<S> findAll(Example<S> example) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Quote> findAll() {
+        calledMethods.add("findAll");
+        return quotes;
+    }
+
+    @Override
+    public List<Quote> findAll(Sort sort) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public <S extends Quote> List<S> findAll(Example<S> example, Sort sort) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Page<Quote> findAll(Pageable pageable) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public <S extends Quote> long count(Example<S> example) {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public long count() {
+        return quotes.size();
     }
 
     @Override
@@ -212,7 +211,8 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public <S extends Quote, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Quote, R> R findBy(Example<S> example,
+                                         Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
     }
