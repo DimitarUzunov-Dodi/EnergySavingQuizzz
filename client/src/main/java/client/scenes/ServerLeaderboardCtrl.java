@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.MyFXML;
+import client.communication.AdminCommunication;
 import client.utils.SceneController;
 
 import client.utils.ServerUtils;
@@ -14,6 +15,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static client.utils.UserAlert.userAlert;
 
 public class ServerLeaderboardCtrl extends SceneController {
 
@@ -45,13 +49,13 @@ public class ServerLeaderboardCtrl extends SceneController {
     public void show() {
         // load contents async
         new Thread(() -> {
-            var l = ServerUtils.getServerLeaderboard();
-            if(l == null)
-                System.out.println("WARNING: null ScoreRecord list fetched from the server");
-            else {
+            try {
+                List<LeaderboardEntry> list = ServerUtils.getServerLeaderboard();
                 data.removeAll();
-                data.addAll(l);
-                table.refresh();
+                data.addAll(list);
+                table.refresh(); // might be removed
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }).start();
         showScene();

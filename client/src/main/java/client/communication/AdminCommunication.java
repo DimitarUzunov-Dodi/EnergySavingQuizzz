@@ -12,10 +12,9 @@ import org.glassfish.jersey.client.ClientConfig;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static client.utils.ServerUtils.serverAddress;
 
 public class AdminCommunication {
-
-    private static final String SERVER = "http://localhost:8080/";
 
     /**
      * Send POST request to start the restart procedure of the server
@@ -24,7 +23,7 @@ public class AdminCommunication {
      */
     public static Response invokeServerRestart() throws RuntimeException {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/restart")
+                .target(serverAddress).path("/api/admin/restart")
                 .request(APPLICATION_JSON)
                 .post(null);
     }
@@ -36,9 +35,9 @@ public class AdminCommunication {
      */
     public static List<Activity> getAllActivities() throws RuntimeException {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/activity")
+                .target(serverAddress).path("/api/admin/activity")
                 .request(APPLICATION_JSON)
-                .get(new GenericType<List<Activity>>() {});
+                .get(new GenericType<>() {});
     }
 
     /**
@@ -65,7 +64,7 @@ public class AdminCommunication {
      */
     public static Response deleteActivities() throws RuntimeException {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/activity/delete/all")
+                .target(serverAddress).path("/api/admin/activity/delete/all")
                 .request(APPLICATION_JSON)
                 .delete();
     }
@@ -80,7 +79,7 @@ public class AdminCommunication {
     public static Response editActivity(long activityId, Activity constructed) throws RuntimeException {
         System.out.println("Sending entity");
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/activity/edit/" + Long.toString(activityId))
+                .target(serverAddress).path("/api/admin/activity/edit/" + activityId)
                 .request(APPLICATION_JSON)
                 .put(Entity.entity(constructed, APPLICATION_JSON));
     }
@@ -95,7 +94,7 @@ public class AdminCommunication {
     public static Response addActivityBankEntry(ActivityBankEntry constructed, long imageId) throws RuntimeException {
         System.out.println("Sending entity");
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/activity/add")
+                .target(serverAddress).path("/api/admin/activity/add")
                 .queryParam("imageId", Long.toString(imageId))
                 .request(APPLICATION_JSON)
                 .post(Entity.entity(constructed, APPLICATION_JSON));
@@ -110,7 +109,7 @@ public class AdminCommunication {
     public static Response addActivityImage(ActivityImage activityImage) throws RuntimeException {
         System.out.println("Sending an image");
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/admin/activity/add/image")
+                .target(serverAddress).path("/api/admin/activity/add/image")
                 .request(APPLICATION_JSON)
                 .post(Entity.entity(activityImage, APPLICATION_JSON));
     }

@@ -9,7 +9,7 @@ public class MyModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(ActivityImageCtrl.class).in(Scopes.SINGLETON);
+        // controllers
         binder.bind(AdminActivityCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminActivityDetailsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminActivityDetailsCtrl.class).in(Scopes.SINGLETON);
@@ -23,6 +23,7 @@ public class MyModule implements Module {
         binder.bind(SettingsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(SplashCtrl.class).in(Scopes.SINGLETON);
         binder.bind(WaitingRoomCtrl.class).in(Scopes.SINGLETON);
-        // TODO: add necessary utils in here
+        // other
+
     }
 }

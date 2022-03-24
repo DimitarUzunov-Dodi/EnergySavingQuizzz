@@ -12,42 +12,40 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    public static String serverAddress;
 
     /**
      * Retrieve the all-time leaderboard from the server
      * @return List of server leaderboard entries
      */
-    public static List<LeaderboardEntry> getServerLeaderboard() {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/leaderboard")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<LeaderboardEntry>>() {});
+    public static List<LeaderboardEntry> getServerLeaderboard() throws RuntimeException {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(serverAddress).path("/api/leaderboard")
+                    .request(APPLICATION_JSON)
+                    .get(new GenericType<>() {});
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Cannot get server leaderboard!");
+        }
+
     }
-
-
-
 
     /**
      * Retrieve a match leaderboard from the server
      * @return List of player score entries
      */
-    public static List<ScoreRecord> getMatchLeaderboard(String gameCode) {
+    public static List<ScoreRecord> getMatchLeaderboard(String gameCode)  throws RuntimeException{
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/user/score/"+gameCode)
+                    .target(serverAddress).path("/api/user/score/" + gameCode)
                     .request(APPLICATION_JSON)
-                    .accept(APPLICATION_JSON)
-                    .get(new GenericType<List<ScoreRecord>>() {});
+                    .get(new GenericType<>() {});
         } catch (Exception e) {
-            System.err.println("getMatchLeaderboard: "+e);
-            return null;
+            e.printStackTrace();
+            throw new RuntimeException("Cannot get server leaderboard!");
         }
     }
-
-
-
 
 /* LEFT HERE FOR REFERENCE
     public void getQuotesTheHardWay() throws IOException {

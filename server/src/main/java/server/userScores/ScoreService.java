@@ -2,6 +2,7 @@ package server.userScores;
 
 import commons.ScoreRecord;
 import org.springframework.stereotype.Service;
+import server.database.ScoreRecordRepository;
 
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ public class ScoreService {
 
     private final ScoreRecordRepository scoreRecordRepository;
 
-    public ScoreService(server.userScores.ScoreRecordRepository scoreRecordRepository) {
+    public ScoreService(ScoreRecordRepository scoreRecordRepository) {
         this.scoreRecordRepository = scoreRecordRepository;
     }
 

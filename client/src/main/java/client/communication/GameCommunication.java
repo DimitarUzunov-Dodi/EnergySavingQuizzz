@@ -4,7 +4,6 @@ import commons.QuestionTypeA;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import java.lang.reflect.Type;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -16,33 +15,27 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static client.utils.ServerUtils.serverAddress;
 
 public class GameCommunication {
 
-    private static final String SERVER = "http://localhost:8080/";
+    private static StompSession session;
 
-
-
-    private static StompSession session = connect("ws://localhost:8080/game");
-
-    private static StompSession connect(String url) {
+    private static StompSession connect(String url) throws IllegalStateException{
+        session = connect(serverAddress);
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
         try {
             return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
-        } catch (ExecutionException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new IllegalStateException();
         }
-        throw new IllegalStateException();
-
     }
 
     public static <T> void  registerForMessages(String dest, Class<T> type, Consumer<T> consumer){
         session.subscribe(dest, new StompFrameHandler() {
-
             @Override
             public Type getPayloadType(StompHeaders headers) {
                 return type;
@@ -61,16 +54,15 @@ public class GameCommunication {
     }
     public static String startSinglePlayerGame(){
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path(String.format("api/game/new"))
+                .target(serverAddress).path("/api/game/new")
                 .request(APPLICATION_JSON)
-                .get(new GenericType<String>() {});
+                .get(new GenericType<>() {});
     }
 
     public static QuestionTypeA getQuestion(String gameCode, int qIndex) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path(String.format("api/game/getq/%s/%d", gameCode, qIndex))
+                .target(serverAddress).path(String.format("/api/game/getq/%s/%d", gameCode, qIndex))
                 .request(APPLICATION_JSON)
-                .get(new GenericType<QuestionTypeA>() {});
+                .get(new GenericType<>() {});
     }
-
 }
