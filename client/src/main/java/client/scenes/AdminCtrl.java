@@ -40,7 +40,7 @@ public class AdminCtrl extends SceneController {
      * Function called by button when clicked. Returns to the Splashscreen.
      */
     @FXML
-    private void backToSplashAction(){
+    private void backToSplashAction() {
         myFxml.showScene(SplashCtrl.class);
     }
 
@@ -48,7 +48,7 @@ public class AdminCtrl extends SceneController {
      * Function called by button when clicked. Switches to admin activity panel.
      */
     @FXML
-    private void switchToAdminActivityPanel(){
+    private void switchToAdminActivityPanel() {
         myFxml.showScene(AdminActivityCtrl.class);
     }
 }
