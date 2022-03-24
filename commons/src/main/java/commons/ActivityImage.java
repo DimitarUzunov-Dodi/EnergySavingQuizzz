@@ -1,8 +1,17 @@
 package commons;
 
-import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "activity_images")
@@ -49,8 +58,12 @@ public class ActivityImage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ActivityImage that = (ActivityImage) o;
         return imageId == that.imageId && Arrays.equals(imageData, that.imageData);
     }
@@ -64,9 +77,9 @@ public class ActivityImage {
 
     @Override
     public String toString() {
-        return "ActivityImage{" +
-                "imageId=" + imageId +
-                ", imageData=" + Arrays.toString(imageData) +
-                '}';
+        return "ActivityImage{"
+                + "imageId=" + imageId
+                + ", imageData=" + Arrays.toString(imageData)
+                + '}';
     }
 }
