@@ -1,44 +1,48 @@
 package client.scenes;
 
+import client.MyFXML;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 import static client.utils.UserAlert.userAlert;
 import static client.utils.FileUtils.readNickname;
 
-public class LoadingController {
-    private final MainCtrl mainCtrl;
+public class LoadingCtrl extends SceneController {
     private static final int TIME_TO_NEXT_ROUND = 3;
 
+    @FXML
     private ProgressBar progressBar;
-    private Label username, score;
+
+    @FXML
+    private Label username;
+
+    @FXML
+    private Label score;
 
     @Inject
-    public LoadingController(MainCtrl mainCtrl) {
-        this.mainCtrl = mainCtrl;
+    private LoadingCtrl(MyFXML myFXML) {
+        super(myFXML);
     }
 
-    /**
-     * Initialize UI components, load username and score
-     */
-    public void init() {
-        progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
-        username = (Label) mainCtrl.getCurrentScene().lookup("#username");
-        score = (Label) mainCtrl.getCurrentScene().lookup("#score");
-
+    @Override
+    public void show() {
         progressBar.setProgress(0);
 
         loadUsername();
         loadScore();
+
+        countDown();
     }
 
     /**
      * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar
      */
-    public void countDown() {
+    private void countDown() {
         final Service<Integer> countDownThread = new Service<>() {
             @Override
             protected Task<Integer> createTask() {
