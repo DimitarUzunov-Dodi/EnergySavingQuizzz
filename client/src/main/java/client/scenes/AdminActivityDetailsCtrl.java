@@ -1,20 +1,19 @@
 package client.scenes;
 
+import static client.utils.UserAlert.userAlert;
+
 import client.MyFXML;
 import client.communication.AdminCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-
-import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
-
-import static client.utils.UserAlert.userAlert;
 
 public class AdminActivityDetailsCtrl extends SceneController implements Initializable {
     private Activity selectedActivity;
@@ -35,8 +34,8 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
     private TextField imageIdField;
 
     @Inject
-    public AdminActivityDetailsCtrl(MyFXML myFXML) {
-        super(myFXML);
+    public AdminActivityDetailsCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     @Override
@@ -45,14 +44,14 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
     }
 
     /**
-     * Please use customShow(Activity selected) method to switch to this scene
+     * Please use customShow(Activity selected) method to switch to this scene.
      */
     @Override
     public void show() {
     }
 
     /**
-     * Method that shows the scene with details about selected activity
+     * Method that shows the scene with details about selected activity.
      * @param selected activity which details will be shown
      */
     public void customShow(Activity selected) {
@@ -65,16 +64,16 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      * @param event passed by JavaFX by default
      */
     @FXML
-    private void switchToActivityPanel(ActionEvent event){
+    private void switchToActivityPanel(ActionEvent event) {
         myFXML.showScene(AdminActivityCtrl.class);
     }
 
     /**
-     * Set selected activity
+     * Set selected activity.
      * @param selected Activity that was selected in table view earlier
      */
-    private void setActivity(Activity selected) throws NullPointerException{
-        if(!Objects.isNull(selected)) {
+    private void setActivity(Activity selected) throws NullPointerException {
+        if (!Objects.isNull(selected)) {
             this.selectedActivity = selected;
             idField.setText(selected.getActivityId() + "");
             activityTextField.setText(selected.getActivityText());
@@ -95,21 +94,31 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
     private void confirmAction(ActionEvent event) {
         Activity constructed;
         try {
-            constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Long.parseLong(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));
-        } catch (NumberFormatException exception){
-            userAlert("ERROR", "Bad format", "Text fields with numbers are inputted incorrectly.");
+            constructed = new Activity(
+                    Long.parseLong(idField.getText()),
+                    activityTextField.getText(),
+                    Long.parseLong(valueField.getText()),
+                    sourceField.getText(),
+                    Long.parseLong(imageIdField.getText())
+            );
+        } catch (NumberFormatException exception) {
+            userAlert(
+                    "ERROR",
+                    "Bad format",
+                    "Text fields with numbers are inputted incorrectly.");
             return;
         }
-        if(this.selectedActivity.equals(constructed)) {
-            myFXML.showScene(AdminActivityCtrl.class);
-        } else {
+        if (!this.selectedActivity.equals(constructed)) {
             try {
                 AdminCommunication.editActivity(selectedActivity.getActivityId(), constructed);
             } catch (RuntimeException e) {
-                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+                userAlert(
+                        "ERROR",
+                        "Connection failed",
+                        "Client was unable to connect to the server");
                 return;
             }
-            myFXML.showScene(AdminActivityCtrl.class);
         }
+        myFXML.showScene(AdminActivityCtrl.class);
     }
 }
