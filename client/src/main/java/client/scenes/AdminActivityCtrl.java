@@ -45,15 +45,16 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
 
     @Override
     public void show() {
+        colActivityId.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getActivityId()+""));
+        colActivityText.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getActivityText()));
+        colActivityValue.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getValue()+""));
         refresh();
         showScene();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        colActivityId.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getActivityId()+""));
-        colActivityText.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getActivityText()));
-        colActivityValue.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getValue()+""));
+
     }
 
     /**
@@ -98,14 +99,15 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      */
     @FXML
     protected void deleteAllActivities() {
-        Stage thisStage = (Stage) activityTable.getScene().getWindow();
         Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
         quitAlert.setTitle("Quit");
         quitAlert.setHeaderText("Are you sure you want to delete all activities?");
         Optional<ButtonType> result = quitAlert.showAndWait();
         if(result.get() == ButtonType.OK) {
             try {
-                AdminCommunication.deleteActivities();
+                new Thread(() ->{
+                    AdminCommunication.deleteActivities();
+                }).start();
             } catch (RuntimeException e) {
                 userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
             }
