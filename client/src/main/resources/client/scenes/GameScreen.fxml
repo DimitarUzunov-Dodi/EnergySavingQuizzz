@@ -46,7 +46,7 @@
                   <Insets top="5.0" />
                </GridPane.margin>
             </Button>
-            <ImageView id="MenuButton" fx:id="MenuButton" fitHeight="40.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+            <ImageView id="MenuButton" fx:id="menuButton" fitHeight="40.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                <image>
                   <Image url="@../images/menu.png" />
                </image>
@@ -110,7 +110,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="Windmill" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="windmill" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/OIP.jpg" />
                      </image>

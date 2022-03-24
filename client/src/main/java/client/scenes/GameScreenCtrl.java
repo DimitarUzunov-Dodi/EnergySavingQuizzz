@@ -5,7 +5,12 @@ import client.communication.GameCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Game;
+import commons.Person;
+import commons.Question;
+import commons.QuestionTypeA;
+import commons.User;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -19,7 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
+
 
 
 public class GameScreenCtrl extends SceneController {
@@ -35,14 +40,14 @@ public class GameScreenCtrl extends SceneController {
     private static final int TIME_TO_NEXT_ROUND = 3;
 
     @FXML
-    private ImageView MenuButton;
+    private ImageView menuButton;
 
     @FXML
-    private ImageView Windmill;
+    private ImageView windmill;
 
 
     @FXML
-    private Text questionText;
+    private Text QuestionText;
 
     @FXML
     private ProgressBar progressBar;
@@ -72,6 +77,14 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private Button button4;
 
+    @FXML
+    private Text questionText;
+    @FXML
+    private Text ActivityText1;
+    @FXML
+    private Text ActivityText2;
+    @FXML
+    private Text ActivityText3;
     @FXML
     private ImageView emoji1;
     @FXML
@@ -106,8 +119,8 @@ public class GameScreenCtrl extends SceneController {
     }
 
     public void InitImages() {
-        Windmill.setImage(new Image("client/images/OIP.jpg"));
-        MenuButton.setImage(new Image(("client/images/menu.png")));
+        windmill.setImage(new Image("client/images/OIP.jpg"));
+        menuButton.setImage(new Image(("client/images/menu.png")));
         emoji1.setImage(new Image("client/images/emoji1.png"));
         emoji2.setImage(new Image("client/images/emoji2.png"));
         emoji3.setImage(new Image("client/images/emoji3.png"));
@@ -278,7 +291,10 @@ public class GameScreenCtrl extends SceneController {
                         if (name.equals(v.firstName)) {
                             displayImage.setFitHeight(20);
                             displayImage.setFitWidth(20);
-                            displayImage.setImage(emoji); /*setting array image to First Image*/
+                            displayImage.setImage(emoji);
+                          //  displayImage.setFitWidth(0.1);
+
+
                         }
                         setText(name);
                         setGraphic(displayImage);
@@ -286,11 +302,14 @@ public class GameScreenCtrl extends SceneController {
                 }
             });
             ImageView displayImage = new ImageView();
-            displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
+            displayImage.setImage(imagesArray[2]);
             System.out.println(v);
         });
 
         countDown();
         showScene();
     }
-}
+
+
+
+    }
