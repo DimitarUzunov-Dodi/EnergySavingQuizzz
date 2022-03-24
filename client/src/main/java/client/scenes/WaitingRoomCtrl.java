@@ -14,12 +14,12 @@ public class WaitingRoomCtrl extends SceneController {
     private ListView<String> listView;
 
     /**
-     * Basic constructor
-     * @param myFXML handled by INJECTOR
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
      */
     @Inject
-    private WaitingRoomCtrl(MyFXML myFXML) {
-        super(myFXML);
+    private WaitingRoomCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class WaitingRoomCtrl extends SceneController {
     }
 
     /**
-     * Called on user pressing 'Back' button, sends user to Multiplayer
+     * Called on user pressing 'Back' button, sends user to Multiplayer.
      */
     @FXML
     private void onBackButton() {
@@ -39,7 +39,7 @@ public class WaitingRoomCtrl extends SceneController {
     }
 
     /**
-     * Called on user pressing 'Start' button, sends user to GamePage
+     * Called on user pressing 'Start' button, sends user to GamePage.
      */
     @FXML
     private void onStartButton() {
