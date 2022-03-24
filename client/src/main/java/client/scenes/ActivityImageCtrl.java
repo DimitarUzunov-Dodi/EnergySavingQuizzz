@@ -16,7 +16,7 @@ public class ActivityImageCtrl extends SceneController {
     private ImageView imageView;
 
     /**
-     * Basic constructor
+     * Basic constructor.
      * @param myFXML handled by INJECTOR
      */
     @Inject
@@ -25,14 +25,14 @@ public class ActivityImageCtrl extends SceneController {
     }
 
     /**
-     * Please use customShow(Activity selected) method to switch to this scene
+     * Please use customShow(Activity selected) method to switch to this scene.
      */
     @Override
     public void show() {
     }
 
     /**
-     * Method that shows the scene with details about selected activity
+     * Method that shows the scene with details about selected activity.
      * @param selected activity which details will be shown
      */
     @FXML
@@ -42,7 +42,7 @@ public class ActivityImageCtrl extends SceneController {
     }
 
     /**
-     * Method that shows the scene with image with the given imageId
+     * Method that shows the scene with image with the given imageId.
      * @param imageId id of the image that corresponds to the database record
      */
     @FXML

@@ -1,4 +1,4 @@
-package server.Websockets.Controller;
+package server.websockets.controller;
 
 
 import org.slf4j.Logger;
@@ -19,7 +19,10 @@ public class WebsocketEventListener {
     @Autowired
     private SimpMessageSendingOperations sendingOperations;
 
-
+    /**
+     * method that handles client connection.
+     * @param event Event that happens when client connects
+     */
     @EventListener
     public void handleWebSocketEventListener(final SessionConnectedEvent event) {
         LOGGER.info("hell yeah");
@@ -28,6 +31,10 @@ public class WebsocketEventListener {
         sendingOperations.convertAndSend("/game", string);
     }
 
+    /**
+     * method that handles client disconnecting.
+     * @param event Event that happens when client disconnects
+     */
     @EventListener
     public void handWebSocketDisconnect(final SessionDisconnectEvent event) {
         final StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());

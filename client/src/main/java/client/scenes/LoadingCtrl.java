@@ -1,5 +1,8 @@
 package client.scenes;
 
+import static client.utils.FileUtils.readNickname;
+import static client.utils.UserAlert.userAlert;
+
 import client.MyFXML;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -8,9 +11,6 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-
-import static client.utils.FileUtils.readNickname;
-import static client.utils.UserAlert.userAlert;
 
 public class LoadingCtrl extends SceneController {
     private static final int TIME_TO_NEXT_ROUND = 3;
@@ -40,7 +40,7 @@ public class LoadingCtrl extends SceneController {
     }
 
     /**
-     * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar
+     * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar.
      */
     private void countDown() {
         final Service<Integer> countDownThread = new Service<>() {
@@ -50,7 +50,7 @@ public class LoadingCtrl extends SceneController {
                     @Override
                     protected Integer call() {
                         int i;
-                        for(i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
+                        for (i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
                             updateProgress(i, TIME_TO_NEXT_ROUND * 100);
                             try {
                                 Thread.sleep(10);
@@ -78,7 +78,7 @@ public class LoadingCtrl extends SceneController {
     }
 
     /**
-     * Load username to the label
+     * Load username to the label.
      */
     private void loadUsername() {
         String nickname = readNickname();
@@ -86,7 +86,7 @@ public class LoadingCtrl extends SceneController {
     }
 
     /**
-     * Load score to the label
+     * Load score to the label.
      */
     private void loadScore() {
         // TODO

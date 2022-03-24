@@ -1,22 +1,22 @@
 package client.scenes;
 
+import static client.utils.UserAlert.userAlert;
+
 import client.MyFXML;
 import client.communication.AdminCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 
-import static client.utils.UserAlert.userAlert;
-
 public class AdminCtrl extends SceneController {
 
     /**
-     * Basic constructor
-     * @param myFXML handled by INJECTOR
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
      */
     @Inject
-    private AdminCtrl(MyFXML myFXML) {
-        super(myFXML);
+    private AdminCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     @Override
@@ -25,10 +25,10 @@ public class AdminCtrl extends SceneController {
     }
 
     /**
-     * Function called by button when clicked. Invokes server's restart
+     * Function called by button when clicked. Invokes server's restart.
      */
     @FXML
-    private void restartAction(){
+    private void restartAction() {
         try {
             AdminCommunication.invokeServerRestart();
         } catch (RuntimeException e) {
