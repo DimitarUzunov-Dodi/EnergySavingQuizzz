@@ -38,6 +38,7 @@ public class MyFXML {
         try {
             var loader = new FXMLLoader(url, null, null, new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
+            System.out.println("<>" + parent.toString());
             T ctrl = loader.getController();
             ctrl.setScene(new Scene(parent));
             return ctrl;
@@ -56,8 +57,8 @@ public class MyFXML {
         T c = injector.getInstance(ctrl);
         if(c.getScene() == null) {
             String file = ctrl.getSimpleName().replace("Ctrl", ".fxml");
-            Path path = Path.of("", "client", "scenes", file);
-            return loadScene(MyFXML.class.getClassLoader().getResource(path.toString()));
+            String  path = Path.of("", "client", "scenes", file).toString();
+            return loadScene(MyFXML.class.getClassLoader().getResource(path));
         }
         return c;
     }

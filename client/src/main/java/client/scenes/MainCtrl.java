@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -14,7 +15,6 @@ import java.util.Optional;
  */
 public final class MainCtrl {
     private final MyFXML myFXML;
-    private final Stage primaryStage;
 
     // used by many scenes (maybe do getters/setters)
     public static String username = null;
@@ -22,12 +22,10 @@ public final class MainCtrl {
 
     /**
      * Normal constructor
-     * @param primaryStage The primary stage of the application
      * @param INJECTOR The injector that handles the controllers
      */
     @Inject
-    private MainCtrl(Stage primaryStage, Injector INJECTOR) {
-        this.primaryStage = primaryStage;
+    private MainCtrl(Injector INJECTOR) {
         myFXML = new MyFXML(INJECTOR);
     }
 
@@ -36,17 +34,20 @@ public final class MainCtrl {
      */
     public void start() {
         // set quit pop-up
-        primaryStage.setOnCloseRequest(e -> {
+        Main.primaryStage.setOnCloseRequest(e -> {
             Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
             quitAlert.setTitle("Quit");
             quitAlert.setHeaderText("Are you sure you want to quit?");
             Optional<ButtonType> result = quitAlert.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK)
-                primaryStage.close();
+                Main.primaryStage.close();
             else
                 e.consume();
         });
+        Main.primaryStage.setMinWidth(800);
+        Main.primaryStage.setMinHeight(600);
+        Main.primaryStage.show(); // make app window visible
+
         myFXML.showScene(SplashCtrl.class);
-        primaryStage.show(); // make app window visible
     }
 }
