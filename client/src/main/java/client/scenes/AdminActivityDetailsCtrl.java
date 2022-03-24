@@ -65,7 +65,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      * @param event passed by JavaFX by default
      */
     @FXML
-    protected void switchToActivityPanel(ActionEvent event){
+    private void switchToActivityPanel(ActionEvent event){
         myFXML.showScene(AdminCtrl.class);
     }
 
@@ -92,7 +92,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      * to change and existing record of that activity
      */
     @FXML
-    protected void confirmAction(ActionEvent event) {
+    private void confirmAction(ActionEvent event) {
         Activity constructed;
         try {
             constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Long.parseLong(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));

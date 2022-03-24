@@ -55,7 +55,7 @@ public class ActivityImageCtrl extends SceneController {
      * @param event passed by JavaFX by default
      */
     @FXML
-    protected void switchToActivityPanel(ActionEvent event){
+    private void switchToActivityPanel(ActionEvent event){
         myFXML.showScene(AdminCtrl.class);
     }
 }

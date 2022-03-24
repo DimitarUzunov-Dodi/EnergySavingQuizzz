@@ -31,7 +31,7 @@ public class AdminController {
         return ResponseEntity.ok("Restarted successfully");
     }
 
-    @GetMapping(value = "/activity")
+    @GetMapping(value = "/activity/all")
     public ResponseEntity<List<Activity>> getAllActivities() {
         return  ResponseEntity.ok(repo.findAll());
     }
@@ -53,7 +53,7 @@ public class AdminController {
         return ResponseEntity.ok("Added entity successfully");
     }
 
-    @DeleteMapping(value = "/activity/deleteAll")
+    @DeleteMapping(value = "/activity/delete/all")
     public ResponseEntity<String> deleteAllActivities() {
         System.out.println("Deleting all activities");
         repo.deleteAll();
@@ -61,7 +61,7 @@ public class AdminController {
         return ResponseEntity.ok("Deleted all entities successfully");
     }
 
-    @PostMapping(value = "/activity/edit/{activityId}")
+    @PutMapping(value = "/activity/edit/{activityId}")
     public ResponseEntity<String> editActivity(@PathVariable String activityId, @RequestBody Activity newActivity) {
         System.out.println("Editing activity " + activityId);
         repo.save(newActivity);

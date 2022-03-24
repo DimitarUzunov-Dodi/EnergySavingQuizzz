@@ -6,6 +6,7 @@ import client.utils.ActivityBankUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,7 +63,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      * @param event passed by JavaFX by default
      */
     @FXML
-    protected void switchToAdminPanel(ActionEvent event){
+    private void switchToAdminPanel(ActionEvent event){
         myFXML.showScene(AdminCtrl.class);
     }
 
@@ -70,7 +71,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      * Method refreshes the list of activities in admin panel
      */
     @FXML
-    protected void refresh() {
+    private void refresh() {
         new Thread(() -> {
             System.out.println("Refreshing activities table...");
             try {
@@ -90,15 +91,15 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      *
      */
     @FXML
-    protected void add() {
-        AdminCommunication.addTestingActivity();
+    private void add() {
+        // AdminCommunication.addTestingActivity();
     }
 
     /**
      * Deletes all available activities on the server
      */
     @FXML
-    protected void deleteAllActivities() {
+    private void deleteAllActivities() {
         Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
         quitAlert.setTitle("Quit");
         quitAlert.setHeaderText("Are you sure you want to delete all activities?");
@@ -118,7 +119,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      * Switches a window to editing mode, so you can change activity details
      */
     @FXML
-    protected void edit() {
+    private void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
         myFXML.get(AdminActivityDetailsCtrl.class).customShow(selected);
     }
@@ -127,27 +128,28 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      * Switches a window to imageview mode, so you can check the image associated with that activity
      */
     @FXML
-    protected void image() {
+    private void image() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
         myFXML.get(ActivityImageCtrl.class).customShow(selected);
     }
 
     /**
-     * Loads activities from the archive based on jsons there
+     * Loads activities from the archive based on json there
      */
     @FXML
-    protected void load(){
+    private void load(){
         new Thread(() -> {
             System.out.println("Loading activities...");
             try {
                 ActivityBankUtils.unzipActivityBank();
             } catch (IOException exception) {
                 exception.printStackTrace();
-                // userAlert("ERROR", "Unable to load archive", "Error occurred while trying to read an archive");
+                Platform.runLater(() -> userAlert("ERROR", "Unable to load archive", "Error occurred while trying to read an archive"));
             }
             try {
                 ActivityBankUtils.jsonToActivityBankEntry();
             } catch (IOException exception) {
+                Platform.runLater(() -> userAlert("ERROR", "Unable to load data from json", "Error occurred while trying to read a json"));
                 exception.printStackTrace();
             }
         }).start();
