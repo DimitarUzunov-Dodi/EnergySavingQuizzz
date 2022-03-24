@@ -11,14 +11,14 @@ public class GameCommunication {
 
     private static final String SERVER = "http://localhost:8080/";
 
-    public String startSinglePlayerGame(){
+    public static String startSinglePlayerGame(){
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path(String.format("api/game/new"))
                 .request(APPLICATION_JSON)
                 .get(new GenericType<String>() {});
     }
 
-    public QuestionTypeA getQuestion(String gameCode, int qIndex) {
+    public static QuestionTypeA getQuestion(String gameCode, int qIndex) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path(String.format("api/game/getq/%s/%d", gameCode, qIndex))
                 .request(APPLICATION_JSON)

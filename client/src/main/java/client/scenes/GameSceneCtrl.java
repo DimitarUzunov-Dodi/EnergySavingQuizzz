@@ -1,8 +1,15 @@
+
+
+
+
+
 package client.scenes;
 
+import client.MyFXML;
 import client.communication.GameCommunication;
+import client.utils.WebsocketUtils;
 import client.utils.FileUtils;
-import client.utils.GameWebsocketUtils;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.*;
 import javafx.collections.FXCollections;
@@ -10,9 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -20,22 +25,14 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 
-public class GamePageController implements Initializable {
+public class GameSceneCtrl extends SceneController {
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-    private final GameCommunication gameCommunication;
     private String username;
-    private final GameWebsocketUtils server;
-    private final MainCtrl mainCtrl;
+
 
     private static String gameCode;
     private static User user;
@@ -112,121 +109,12 @@ public class GamePageController implements Initializable {
     String[] names = {"foo", "bar", "test"};
 
     @Inject
-    public GamePageController(MainCtrl mainCtrl, GameCommunication gameCommunication, GameWebsocketUtils server) {
-        this.server = server;
-        this.mainCtrl = mainCtrl;
-        this.gameCommunication = gameCommunication;
+    public GameSceneCtrl(MyFXML myFXML) {
+        super(myFXML);
     }
 
-    /**
-     * initializes user interface components
-     *
-     * @param location
-     * @param resources
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
 
 
-        /* create list object */
-
-        /* adding items to the list view */
-        ObservableList<String> elements = FXCollections.observableArrayList("Fist ", "Second ", "Third ",
-                "Dodi");
-        currentLeaderboard.setItems(elements);
-        /*setting each image to corresponding array index*/
-
-        /* creating vertical box to add item objects */
-        // VBox vBox = new VBox(currentLeaderboard);
-        /* creating scene */
-
-        InitImages();
-        ArrayList<String> list = new ArrayList<>();
-        //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
-        progressBar.setProgress(0);
-        // Question_text = new Text("foo");
-        button_List.add(button1);
-        button_List.add(button2);
-        button_List.add(button3);
-        button_List.add(button4);
-
-        gameCode = gameCommunication.startSinglePlayerGame();
-
-        qIndex = 0;
-
-        refreshQuestion();
-
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        currentLeaderboard.getItems().addAll(names);
-        // currentLeaderboard.getItems().addAll(names);
-        server.send("/app/chat", "foo");
-        server.registerForMessages("/topic/chat", String.class, q -> {
-            list.add(q);
-        });
-        server.registerForMessages("game/receive", Game.class, o -> {
-            Question_text.setText("Which one consumes the most amount of energy?");
-            for (Question question : o.getActiveQuestionList()){
-                QuestionTypeA foo =  (QuestionTypeA) question;
-                        Activity_text1.setText(foo.getActivity1().getActivityText());
-                        Activity_text2.setText(foo.getActivity2().getActivityText());
-                        Activity_text3.setText(foo.getActivity3().getActivityText());
-
-            }
-
-        });
-        server.registerForMessages("/emoji/receive", Person.class, v -> {
-            Image newEmoji = null;
-            switch (v.lastName) {
-
-                case "emoji1":
-                    newEmoji = imagesArray[0];
-                    break;
-                case "emoji2":
-                    newEmoji = imagesArray[1];
-                    break;
-                case "emoji3":
-                    newEmoji = imagesArray[2];
-                    break;
-                default:
-                    break;
-
-            }
-
-            final Image emoji = newEmoji;
-
-            currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
-                /*view the image class to display the image*/
-                private ImageView displayImage = new ImageView();
-
-
-                @Override
-                public void updateItem(String name, boolean empty) {
-                    super.updateItem(name, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        if (name.equals(v.firstName)) {
-                            displayImage.setFitHeight(20);
-                            displayImage.setFitWidth(20);
-                            displayImage.setImage(emoji); /*setting array image to First Image*/
-                        }
-                        setText(name);
-                        setGraphic(displayImage);
-                    }
-                }
-            });
-            ImageView displayImage = new ImageView();
-            displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
-            System.out.println(v);
-        });
-
-
-    }
 
     public static void init(User user1) {
         user = user1;
@@ -284,7 +172,7 @@ public class GamePageController implements Initializable {
     }
 
     public void refreshQuestion() {
-        activeQuestion = gameCommunication.getQuestion(gameCode, qIndex);
+        activeQuestion = GameCommunication.getQuestion(gameCode, qIndex);
         QuestionText.setText(activeQuestion.displayText());
     }
     /**
@@ -293,7 +181,7 @@ public class GamePageController implements Initializable {
     public void emoji1Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji1");
-        server.send("/app/emoji", emojiInfo);
+        WebsocketUtils.send("/app/emoji", emojiInfo);
     }
 
     /**
@@ -302,7 +190,7 @@ public class GamePageController implements Initializable {
     public void emoji2Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji2");
-        server.send("/app/emoji", emojiInfo);
+        WebsocketUtils.send("/app/emoji", emojiInfo);
     }
 
     /**
@@ -311,8 +199,110 @@ public class GamePageController implements Initializable {
     public void emoji3Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji3");
-        server.send("/app/emoji", emojiInfo);
+        WebsocketUtils.send("/app/emoji", emojiInfo);
     }
 
 
+    @Override
+    public void show() {
+        /* create list object */
+
+        /* adding items to the list view */
+        ObservableList<String> elements = FXCollections.observableArrayList("Fist ", "Second ", "Third ",
+            "Dodi");
+        currentLeaderboard.setItems(elements);
+        /*setting each image to corresponding array index*/
+
+        /* creating vertical box to add item objects */
+        // VBox vBox = new VBox(currentLeaderboard);
+        /* creating scene */
+
+        InitImages();
+        ArrayList<String> list = new ArrayList<>();
+        //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
+        progressBar.setProgress(0);
+        // Question_text = new Text("foo");
+        button_List.add(button1);
+        button_List.add(button2);
+        button_List.add(button3);
+        button_List.add(button4);
+
+        gameCode = GameCommunication.startSinglePlayerGame();
+
+        qIndex = 0;
+
+        refreshQuestion();
+
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        currentLeaderboard.getItems().addAll(names);
+        // currentLeaderboard.getItems().addAll(names);
+        WebsocketUtils.send("/app/chat", "foo");
+        WebsocketUtils.registerForMessages("/topic/chat", String.class, q -> {
+            list.add(q);
+        });
+        WebsocketUtils.registerForMessages("game/receive", Game.class, o -> {
+            Question_text.setText("Which one consumes the most amount of energy?");
+            for (Question question : o.getActiveQuestionList()){
+                QuestionTypeA foo =  (QuestionTypeA) question;
+                Activity_text1.setText(foo.getActivity1().getActivityText());
+                Activity_text2.setText(foo.getActivity2().getActivityText());
+                Activity_text3.setText(foo.getActivity3().getActivityText());
+
+            }
+
+        });
+        WebsocketUtils.registerForMessages("/emoji/receive", Person.class, v -> {
+            Image newEmoji = null;
+            switch (v.lastName) {
+
+                case "emoji1":
+                    newEmoji = imagesArray[0];
+                    break;
+                case "emoji2":
+                    newEmoji = imagesArray[1];
+                    break;
+                case "emoji3":
+                    newEmoji = imagesArray[2];
+                    break;
+                default:
+                    break;
+
+            }
+
+            final Image emoji = newEmoji;
+
+            currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
+                /*view the image class to display the image*/
+                private ImageView displayImage = new ImageView();
+
+
+                @Override
+                public void updateItem(String name, boolean empty) {
+                    super.updateItem(name, empty);
+                    if (empty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        if (name.equals(v.firstName)) {
+                            displayImage.setFitHeight(20);
+                            displayImage.setFitWidth(20);
+                            displayImage.setImage(emoji); /*setting array image to First Image*/
+                        }
+                        setText(name);
+                        setGraphic(displayImage);
+                    }
+                }
+            });
+            ImageView displayImage = new ImageView();
+            displayImage.setImage(imagesArray[2]);/*setting array image to Third Image*/
+            System.out.println(v);
+        });
+
+
+        showScene();
+    }
 }

@@ -12,13 +12,13 @@ import java.lang.reflect.Type;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
-public class GameWebsocketUtils {
+public class WebsocketUtils {
 
     private static final String SERVER = "http://localhost:8080/";
 
-    private StompSession session = connect("ws://localhost:8080/game");
+    private static StompSession session = connect("ws://localhost:8080/game");
 
-    private StompSession connect(String url) {
+    private static StompSession connect(String url) {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
@@ -33,7 +33,7 @@ public class GameWebsocketUtils {
 
     }
 
-    public <T> void  registerForMessages(String dest, Class<T> type, Consumer<T> consumer){
+    public static <T> void  registerForMessages(String dest, Class<T> type, Consumer<T> consumer){
         session.subscribe(dest, new StompFrameHandler() {
 
             @Override
@@ -49,7 +49,8 @@ public class GameWebsocketUtils {
         });
     }
 
-    public void send(String dest, Object o){
+    public static void send(String dest, Object o){
         session.send(dest, o);
     }
 }
+
