@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import server.database.GameRepository;
 import server.database.UserRepository;
 import commons.User;
 
@@ -15,8 +14,6 @@ public class UserControllerTest {
 
     @MockBean
     private transient UserRepository userRepository;
-    @MockBean
-    private transient GameRepository gameRepository;
     @Autowired
     private transient MockMvc mockMvc;
 

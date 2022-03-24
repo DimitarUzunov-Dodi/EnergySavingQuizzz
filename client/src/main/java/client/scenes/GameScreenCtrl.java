@@ -42,19 +42,19 @@ public class GameScreenCtrl extends SceneController {
 
 
     @FXML
-    private Text Question_text;
+    private Text questionText;
 
     @FXML
     private ProgressBar progressBar;
 
     @FXML
-    private Text Activity_text1;
+    private Text activityText1;
 
     @FXML
-    private Text Activity_text2;
+    private Text activityText2;
 
     @FXML
-    private Text Activity_text3;
+    private Text activityText3;
 
     @FXML
     private ListView<String> currentLeaderboard;
@@ -72,15 +72,6 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private Button button4;
 
-
-    @FXML
-    private Text QuestionText;
-    @FXML
-    private Text ActivityText1;
-    @FXML
-    private Text ActivityText2;
-    @FXML
-    private Text ActivityText3;
     @FXML
     private ImageView emoji1;
     @FXML
@@ -96,8 +87,9 @@ public class GameScreenCtrl extends SceneController {
     /*image array to load all images at a time*/
     private final Image[] imagesArray = {emojiHappy, emojiSad, emojiAngry};
 
-    //    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
-    private ArrayList<Button> button_List = new ArrayList<>();
+    //    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),
+    //    new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
+    private ArrayList<Button> buttonList = new ArrayList<>();
 
     String[] names = {"foo", "bar", "test"};
 
@@ -166,7 +158,7 @@ public class GameScreenCtrl extends SceneController {
 
     public void refreshQuestion() {
         activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
-        QuestionText.setText(activeQuestion.displayText());
+        questionText.setText(activeQuestion.displayText());
     }
     /**
      * When the first emoji is clicked it is sent to the server and also by whom it has been sent
@@ -218,10 +210,10 @@ public class GameScreenCtrl extends SceneController {
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
         progressBar.setProgress(0);
         // Question_text = new Text("foo");
-        button_List.add(button1);
-        button_List.add(button2);
-        button_List.add(button3);
-        button_List.add(button4);
+       buttonList.add(button1);
+       buttonList.add(button2);
+       buttonList.add(button3);
+       buttonList.add(button4);
 
         gameCode = client.communication.GameCommunication.startSinglePlayerGame();
 
@@ -241,12 +233,12 @@ public class GameScreenCtrl extends SceneController {
             list.add(q);
         });
         GameCommunication.registerForMessages("game/receive", Game.class, o -> {
-            Question_text.setText("Which one consumes the most amount of energy?");
+            questionText.setText("Which one consumes the most amount of energy?");
             for (Question question : o.getActiveQuestionList()){
                 QuestionTypeA foo =  (QuestionTypeA) question;
-                Activity_text1.setText(foo.getActivity1().getActivityText());
-                Activity_text2.setText(foo.getActivity2().getActivityText());
-                Activity_text3.setText(foo.getActivity3().getActivityText());
+                activityText1.setText(foo.getActivity1().getActivityText());
+                activityText2.setText(foo.getActivity2().getActivityText());
+                activityText3.setText(foo.getActivity3().getActivityText());
 
             }
 

@@ -97,7 +97,7 @@
                   <Button fx:id="button4" mnemonicParsing="false" style="-fx-background-color: #407897; -fx-pref-width: 50;" text="D" GridPane.columnIndex="3" />
                </children>
             </GridPane>
-            <Text id="Question_text" fx:id="QuestionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
+            <Text id="Question_text" fx:id="questionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
             <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="500.0" progress="0.0" GridPane.rowIndex="1" />
             <GridPane>
               <columnConstraints>
@@ -115,9 +115,9 @@
                         <Image url="@../images/OIP.jpg" />
                      </image>
                   </ImageView>
-                  <Text id="Question_text" fx:id="Activity_text1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
-                  <Text id="Question_text" fx:id="Activity_text2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text id="Question_text" fx:id="Activity_text3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>

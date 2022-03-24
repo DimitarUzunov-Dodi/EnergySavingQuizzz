@@ -1,8 +1,13 @@
 package client.communication;
 
+import static client.utils.ServerUtils.serverAddress;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+
 import commons.QuestionTypeA;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
+import java.lang.reflect.Type;
+import java.util.function.Consumer;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -11,12 +16,6 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
-
-import java.lang.reflect.Type;
-import java.util.function.Consumer;
-
-import static client.utils.ServerUtils.serverAddress;
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class GameCommunication {
 
@@ -53,16 +52,29 @@ public class GameCommunication {
         session.send(dest, o);
     }
 
-    public static String startSinglePlayerGame(){
+    /**
+     *  Communication method for starting a new game.
+     *
+     * @return The game code of the newly created game.
+     */
+    public static String startSinglePlayerGame() {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress).path("/api/game/new")
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
     }
 
-    public static QuestionTypeA getQuestion(String gameCode, int qIndex) {
+    /**
+     *  Communication method for getting a question.
+     *
+     * @param gameCode Specify the game code for which to get questions
+     * @param questionIndex The question io get out of 20
+     * @return The question entity
+     */
+    public static QuestionTypeA getQuestion(String gameCode, int questionIndex) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(serverAddress).path(String.format("/api/game/getq/%s/%d", gameCode, qIndex))
+                .target(serverAddress)
+                .path(String.format("/api/game/getq/%s/%d", gameCode, questionIndex))
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
     }

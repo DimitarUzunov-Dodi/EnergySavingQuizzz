@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import server.database.GameRepository;
 import server.service.GameService;
 
 import java.util.Random;
@@ -23,15 +22,12 @@ public class EmojiController {
     @Autowired
     private final Random random;
     @Autowired
-    private final GameRepository gameRepository;
-    @Autowired
     private final GameService gameService;
 
     private Game currentGame;
 
-    public EmojiController(Random random, GameRepository gameRepository, GameService gameService){
+    public EmojiController(Random random, GameService gameService){
         this.random = random;
-        this.gameRepository = gameRepository;
         this.gameService = gameService;
         this.currentGame = getGame();
 

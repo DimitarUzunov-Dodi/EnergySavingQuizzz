@@ -21,6 +21,12 @@ public class User {
 
     }
 
+    /**
+     *  Constructor.
+     *
+     * @param gameCode unique game code
+     * @param username unique username
+     */
     public User(String gameCode, String username) {
         this.gameCode = gameCode;
         this.username = username;

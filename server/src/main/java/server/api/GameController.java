@@ -1,12 +1,14 @@
 package server.api;
 
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import server.database.GameRepository;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.service.GameService;
-
-import java.util.Random;
 
 @RestController
 @RequestMapping("/api/game")
@@ -14,8 +16,6 @@ public class GameController {
 
     @Autowired
     private final Random random;
-    @Autowired
-    private final GameRepository gameRepository;
     @Autowired
     private final GameService gameService;
 
@@ -25,9 +25,8 @@ public class GameController {
      * @param random Random instance for game code generation
      * @param gameRepository Game Repository
      */
-    public GameController(Random random, GameRepository gameRepository, GameService gameService) {
+    public GameController(Random random, GameService gameService) {
         this.random = random;
-        this.gameRepository = gameRepository;
         this.gameService = gameService;
     }
 
@@ -38,7 +37,7 @@ public class GameController {
      * @return The saved game
      */
     @GetMapping("/new")
-    public ResponseEntity<?> createGame () {
+    public ResponseEntity<?> createGame() {
         return ResponseEntity.ok()
                 .body(gameService.createGame());
     }
@@ -52,23 +51,31 @@ public class GameController {
     @DeleteMapping("/end/{gameCode}")
     public ResponseEntity<?>  endGame(@PathVariable String gameCode) {
 
-        if (gameService.doesGameExist(gameCode))
+        if (gameService.doesGameExist(gameCode)) {
             return ResponseEntity
                     .badRequest()
                     .body("Game not found!");
-        else {
+        } else {
             return ResponseEntity.ok(gameService.removeGame(gameCode));
         }
     }
 
+    /**
+     *  Get question from list of generated ones.
+     *
+     * @param gameCode The game code for the specific game
+     * @param questionIndex The index of the wanted question
+     * @return The question entity
+     */
     @GetMapping("/getq/{gameCode}/{qIndex}")
-    public ResponseEntity<?> getQuestion(@PathVariable String gameCode, @PathVariable int qIndex) {
-        if (!gameService.doesGameExist(gameCode))
+    public ResponseEntity<?> getQuestion(@PathVariable String gameCode,
+                                         @PathVariable int questionIndex) {
+        if (!gameService.doesGameExist(gameCode)) {
             return ResponseEntity
                     .badRequest()
                     .body("Game not found!");
-        else {
-                return ResponseEntity.ok(gameService.getQuestion(gameCode, qIndex));
+        } else {
+            return ResponseEntity.ok(gameService.getQuestion(gameCode, questionIndex));
         }
     }
 
