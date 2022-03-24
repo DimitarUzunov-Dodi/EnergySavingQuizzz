@@ -38,6 +38,7 @@
     <module name="SuppressWarningsFilter"/>
 
     <module name="TreeWalker">
+        <module name="UnusedImports" />
         <module name="SuppressionCommentFilter"/>
         <module name="SuppressWarningsHolder"/>
         <module name="SuppressWarnings">
