@@ -75,7 +75,7 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void saveNickname() {
-        username = usernameText.getText();
+        username = usernameText.getText().strip();
         writeNickname(username);
     }
 
