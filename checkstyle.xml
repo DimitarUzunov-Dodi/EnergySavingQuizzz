@@ -38,6 +38,7 @@
     <module name="SuppressWarningsFilter"/>
 
     <module name="TreeWalker">
+        <module name="SuppressionCommentFilter"/>
         <module name="SuppressWarningsHolder"/>
         <module name="SuppressWarnings">
             <property name="id" value="checkstyle:suppresswarnings"/>

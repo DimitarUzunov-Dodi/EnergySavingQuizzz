@@ -1,4 +1,4 @@
-package client.Entities;
+package client.entities;
 
 import javafx.scene.image.ImageView;
 
@@ -16,10 +16,10 @@ public class GameScreenLeaderboardEntry {
 
     @Override
     public String toString() {
-//        if(emoji.equals(null)){
-//            return username;
-//        }
-        return  username ;//+ " " + emoji;
+        if (emoji.equals(null)) {
+            return username;
+        }
+        return  username; //+ " " + emoji
     }
 
     public void setEmoji(ImageView emoji) {

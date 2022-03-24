@@ -35,7 +35,7 @@ public class MyFXML {
      * Loads the javafx scene and assigns it to the proper controller instance.
      * @param url URL of the resource
      * @return Reference to the instance of a SceneController that holds a
-     * reference of the freshly loaded Scene
+     *      reference of the freshly loaded Scene
      */
     private <T extends SceneController> T loadScene(URL url) {
         try {

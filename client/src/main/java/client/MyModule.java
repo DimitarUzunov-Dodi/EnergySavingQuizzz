@@ -1,6 +1,8 @@
 package client;
 
+//CHECKSTYLE:OFF
 import client.scenes.*;
+//CHECKSTYLE:ON
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
