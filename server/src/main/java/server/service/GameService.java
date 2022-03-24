@@ -4,10 +4,12 @@ import commons.Activity;
 import commons.Game;
 import commons.Question;
 import commons.QuestionTypeA;
+import commons.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import server.database.ActivityRepository;
 
@@ -91,6 +93,28 @@ public class GameService {
 
     public Game getGame(String gameCode) {
         return activeGames.get(gameCode);
+    }
+
+    /**
+     * Checks if an username with the given name is already in that game.
+     *
+     * @param gameCode The game
+     * @param username The name
+     * @return boolean
+     */
+    public boolean isUsernamePresent(String gameCode, String username) {
+        return activeGames.get(gameCode).getUserList().stream()
+                .map(x -> x.getUsername())
+                .collect(Collectors.toList())
+                .contains(username);
+    }
+
+    public void joinGame(String gameCode, String username) {
+        activeGames.get(gameCode).getUserList().add(new User(username));
+    }
+
+    public List<User> getUsers(String gameCode) {
+        return activeGames.get(gameCode).getUserList();
     }
 
     public Game removeGame(String gameCode) {

@@ -23,7 +23,7 @@ public class GameController {
      * Constructor for the GameController class.
      *
      * @param random Random instance for game code generation
-     * @param gameRepository Game Repository
+     * @param gameService Service
      */
     public GameController(Random random, GameService gameService) {
         this.random = random;
@@ -76,6 +76,23 @@ public class GameController {
                     .body("Game not found!");
         } else {
             return ResponseEntity.ok(gameService.getQuestion(gameCode, questionIndex));
+        }
+    }
+
+    /**
+     * Gets all the users in a game.
+     *
+     * @param gameCode The unique gameCode
+     * @return List of users
+     */
+    @GetMapping("/getUsers/{gameCode}")
+    public ResponseEntity<?> getUsersInGame(@PathVariable String gameCode) {
+        if (!gameService.doesGameExist(gameCode)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Game not found!");
+        } else {
+            return ResponseEntity.ok(gameService.getUsers(gameCode));
         }
     }
 
