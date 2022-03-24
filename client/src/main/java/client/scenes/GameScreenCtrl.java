@@ -29,7 +29,7 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 
-public class GameSceneCtrl extends SceneController {
+public class GameScreenCtrl extends SceneController {
 
     private String username;
 
@@ -101,7 +101,7 @@ public class GameSceneCtrl extends SceneController {
     private final Image emojiAngry = new Image("client/images/emoji3.png");
 
     /*image array to load all images at a time*/
-    private Image[] imagesArray = {emojiHappy, emojiSad, emojiAngry};
+    private final Image[] imagesArray = {emojiHappy, emojiSad, emojiAngry};
 
     //    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
     private ArrayList<Button> button_List = new ArrayList<>();
@@ -109,7 +109,7 @@ public class GameSceneCtrl extends SceneController {
     String[] names = {"foo", "bar", "test"};
 
     @Inject
-    public GameSceneCtrl(MyFXML myFXML) {
+    public GameScreenCtrl(MyFXML myFXML) {
         super(myFXML);
     }
 
@@ -302,7 +302,7 @@ public class GameSceneCtrl extends SceneController {
             System.out.println(v);
         });
 
-
+        countDown();
         showScene();
     }
 }

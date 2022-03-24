@@ -14,7 +14,7 @@ public class MyModule implements Module {
         binder.bind(AdminActivityDetailsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminActivityDetailsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(GamePageController.class).in(Scopes.SINGLETON);
+        binder.bind(GameScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(LoadingController.class).in(Scopes.SINGLETON);
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(MatchLeaderboardCtrl.class).in(Scopes.SINGLETON);
