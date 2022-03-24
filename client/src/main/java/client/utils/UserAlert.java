@@ -4,9 +4,9 @@ import javafx.scene.control.Alert;
 
 public class UserAlert {
     /**
-     * This function is used for creating Error, Info and Warning alerts. They have text and only one button
-     * that closes appeared window
-     * @param type - Alert type INFO for information alert, ERROR for error alert and WARN for warning alert
+     * This function is used for creating Error, Info and Warning alerts.
+     * They have text and only one button that closes appeared window
+     * @param type - Alert type INFO - information alert, ERROR - error alert, WARN - warning alert
      * @param header - String that will appear as the header text of the alert
      * @param message - String that will appear in context field of the alert
      */
