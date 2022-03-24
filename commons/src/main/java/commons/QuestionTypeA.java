@@ -11,8 +11,13 @@ public class QuestionTypeA extends Question {
 
     }
 
+    /**
+     * Basic constructor for a question.
+     * @param activityA first activity that will be used
+     * @param activityB second activity that will be used
+     * @param activityC third activity that will be used
+     */
     public QuestionTypeA(Activity activityA, Activity activityB, Activity activityC) {
-
         questionType = 0;
         activity1 = activityA;
         activity2 = activityB;
