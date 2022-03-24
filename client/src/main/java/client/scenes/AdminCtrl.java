@@ -41,7 +41,7 @@ public class AdminCtrl extends SceneController {
      */
     @FXML
     private void backToSplashAction(){
-        myFXML.showScene(SplashCtrl.class);
+        myFxml.showScene(SplashCtrl.class);
     }
 
     /**
@@ -49,6 +49,6 @@ public class AdminCtrl extends SceneController {
      */
     @FXML
     private void switchToAdminActivityPanel(){
-        myFXML.showScene(AdminActivityCtrl.class);
+        myFxml.showScene(AdminActivityCtrl.class);
     }
 }

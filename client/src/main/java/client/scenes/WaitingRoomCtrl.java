@@ -35,7 +35,7 @@ public class WaitingRoomCtrl extends SceneController {
      */
     @FXML
     private void onBackButton() {
-        myFXML.showScene(MultiplayerCtrl.class);
+        myFxml.showScene(MultiplayerCtrl.class);
     }
 
     /**
@@ -44,7 +44,7 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onStartButton() {
         // TODO: start match ( either here or in GamePageController.show() )
-        myFXML.showScene(GameScreenCtrl.class);
+        myFxml.showScene(GameScreenCtrl.class);
     }
     
 }

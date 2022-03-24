@@ -4,32 +4,31 @@ import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-
-import java.util.Optional;
 
 /**
  * Contains the entry point for the user interface.
  */
 public final class MainCtrl {
-    private final MyFXML myFXML;
+    private final MyFXML myFxml;
 
     // used by many scenes (maybe do getters/setters)
     public static String username = null;
     public static String currentGameID = null;
 
     /**
-     * Normal constructor
-     * @param INJECTOR The injector that handles the controllers
+     * Normal constructor.
+     * @param injector The injector that handles the controllers
      */
     @Inject
-    private MainCtrl(Injector INJECTOR) {
-        myFXML = new MyFXML(INJECTOR);
+    private MainCtrl(Injector injector) {
+        myFxml = new MyFXML(injector);
     }
 
     /**
-     * Start the application GUI
+     * Start the application GUI.
      */
     public void start() {
         // set quit pop-up
@@ -38,15 +37,16 @@ public final class MainCtrl {
             quitAlert.setTitle("Quit");
             quitAlert.setHeaderText("Are you sure you want to quit?");
             Optional<ButtonType> result = quitAlert.showAndWait();
-            if(result.isPresent() && result.get() == ButtonType.OK)
+            if (result.isPresent() && result.get() == ButtonType.OK) {
                 Main.primaryStage.close();
-            else
+            } else {
                 e.consume();
+            }
         });
         Main.primaryStage.setMinWidth(800);
         Main.primaryStage.setMinHeight(600);
 
-        myFXML.showScene(SplashCtrl.class);
+        myFxml.showScene(SplashCtrl.class);
         Main.primaryStage.show(); // make app window visible
     }
 }

@@ -1,5 +1,7 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.currentGameID;
+
 import client.MyFXML;
 import client.utils.SceneController;
 import client.utils.UserAlert;
@@ -7,20 +9,18 @@ import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-import static client.scenes.MainCtrl.currentGameID;
-
 public class MultiplayerCtrl extends SceneController {
 
     @FXML
     private TextField gameCodeField;
 
     /**
-     * Basic constructor
-     * @param myFXML handled by INJECTOR
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
      */
     @Inject
-    private MultiplayerCtrl(MyFXML myFXML) {
-        super(myFXML);
+    private MultiplayerCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     @Override
@@ -35,18 +35,18 @@ public class MultiplayerCtrl extends SceneController {
     @FXML
     private void onJoinPublic() {
         currentGameID = "get waiting public game id"; // TODO: Implement auto-gen games
-        myFXML.showScene(WaitingRoomCtrl.class);
+        myFxml.showScene(WaitingRoomCtrl.class);
     }
 
     /**
-     * Called on user pressing 'Join Private Game'
+     * Called on user pressing 'Join Private Game'.
      * Sends the user to the desired waiting room if it exists.
      */
     @FXML
     private void onJoinPrivate() {
         // TODO: Check the game id first
         currentGameID = gameCodeField.getText();
-        myFXML.showScene(WaitingRoomCtrl.class);
+        myFxml.showScene(WaitingRoomCtrl.class);
     }
 
     /**
@@ -56,7 +56,7 @@ public class MultiplayerCtrl extends SceneController {
     @FXML
     private void onCreatePrivate() {
         currentGameID = "generate new private game id";
-        myFXML.showScene(WaitingRoomCtrl.class);
+        myFxml.showScene(WaitingRoomCtrl.class);
         UserAlert.userAlert("INFO", "Game code: " + currentGameID,
                     "Share this with the people you want to play with.");
     }
@@ -67,6 +67,6 @@ public class MultiplayerCtrl extends SceneController {
      */
     @FXML
     private void onBackButton() {
-        myFXML.showScene(SplashCtrl.class);
+        myFxml.showScene(SplashCtrl.class);
     }
 }

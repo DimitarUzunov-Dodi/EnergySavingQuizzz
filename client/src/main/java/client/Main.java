@@ -1,12 +1,12 @@
 package client;
 
+import static com.google.inject.Guice.createInjector;
+
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import static com.google.inject.Guice.createInjector;
 
 public class Main extends Application {
 
@@ -14,7 +14,7 @@ public class Main extends Application {
     public static Stage primaryStage;
 
     /**
-     * Program entry point
+     * Program entry point.
      * @param args Command line arguments
      */
     public static void main(String[] args) {
@@ -22,7 +22,7 @@ public class Main extends Application {
     }
 
     /**
-     * Start the JavaFX application
+     * Start the JavaFX application.
      * @param primaryStage the primary stage (window) of the application
      */
     @Override

@@ -68,7 +68,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
      */
     @FXML
     private void switchToAdminPanel(ActionEvent event) {
-        myFXML.showScene(AdminCtrl.class);
+        myFxml.showScene(AdminCtrl.class);
     }
 
     /**
@@ -131,7 +131,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     @FXML
     private void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        myFXML.get(AdminActivityDetailsCtrl.class).customShow(selected);
+        myFxml.get(AdminActivityDetailsCtrl.class).customShow(selected);
     }
 
     /**
@@ -140,7 +140,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
     @FXML
     private void image() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        myFXML.get(ActivityImageCtrl.class).customShow(selected);
+        myFxml.get(ActivityImageCtrl.class).customShow(selected);
     }
 
     /**

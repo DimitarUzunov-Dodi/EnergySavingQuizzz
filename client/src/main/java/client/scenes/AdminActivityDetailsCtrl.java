@@ -65,7 +65,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      */
     @FXML
     private void switchToActivityPanel(ActionEvent event) {
-        myFXML.showScene(AdminActivityCtrl.class);
+        myFxml.showScene(AdminActivityCtrl.class);
     }
 
     /**
@@ -119,6 +119,6 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
                 return;
             }
         }
-        myFXML.showScene(AdminActivityCtrl.class);
+        myFxml.showScene(AdminActivityCtrl.class);
     }
 }

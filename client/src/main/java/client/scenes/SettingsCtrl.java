@@ -26,6 +26,6 @@ public class SettingsCtrl extends SceneController {
      */
     @FXML
     private void adminAction(){
-        myFXML.showScene(AdminCtrl.class);
+        myFxml.showScene(AdminCtrl.class);
     }
 }

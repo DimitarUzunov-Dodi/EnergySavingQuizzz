@@ -49,7 +49,7 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void settingsAction() {
-        myFXML.showScene(SettingsCtrl.class);
+        myFxml.showScene(SettingsCtrl.class);
     }
 
     /**
@@ -57,7 +57,7 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void singlePlayerAction() {
-        myFXML.showScene(GameScreenCtrl.class);
+        myFxml.showScene(GameScreenCtrl.class);
     }
 
     /**
@@ -83,7 +83,7 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void onMultiplayerPressed() {
-        myFXML.showScene(MultiplayerCtrl.class);
+        myFxml.showScene(MultiplayerCtrl.class);
     }
 
     /**
@@ -91,6 +91,6 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void adminAction(){
-        myFXML.showScene(AdminCtrl.class);
+        myFxml.showScene(AdminCtrl.class);
     }
 }

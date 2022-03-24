@@ -3,6 +3,10 @@ package client;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,17 +14,16 @@ import javafx.util.Builder;
 import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-
+/**
+ * JavaFX helper class.
+ */
+@SuppressWarnings("checkstyle:abbreviationaswordinname")
 public class MyFXML {
 
     private final Injector injector;
 
     /**
-     * Basic constructor
+     * Basic constructor.
      * @param injector the injector that handles the controllers
      */
     @Inject
@@ -31,7 +34,8 @@ public class MyFXML {
     /**
      * Loads the javafx scene and assigns it to the proper controller instance.
      * @param url URL of the resource
-     * @return Reference to the instance of a SceneController that holds a reference of the freshly loaded Scene
+     * @return Reference to the instance of a SceneController that holds a
+     * reference of the freshly loaded Scene
      */
     private <T extends SceneController> T loadScene(URL url) {
         try {
@@ -47,13 +51,13 @@ public class MyFXML {
     }
 
     /**
-     * Get a reference of the specified scene controller
+     * Get a reference of the specified scene controller.
      * @param ctrl Type of the desired controller
      * @return Reference of the (singleton) instance of that specific controller type.
      */
     public <T extends SceneController> T get(Class<T> ctrl) {
         T c = injector.getInstance(ctrl);
-        if(c.getScene() == null) {
+        if (c.getScene() == null) {
             String file = ctrl.getSimpleName().replace("Ctrl", ".fxml");
             String  path = Path.of("", "client", "scenes", file).toString();
             return loadScene(MyFXML.class.getClassLoader().getResource(path));
@@ -62,7 +66,7 @@ public class MyFXML {
     }
 
     /**
-     * Call SceneController.show() on a controller
+     * Call SceneController.show() on a controller.
      * @param ctrl Type of the controller
      */
     public <T extends SceneController> void showScene(Class<T> ctrl) {
@@ -70,7 +74,7 @@ public class MyFXML {
     }
 
     /**
-     * Wraps the injector for ease of use
+     * Wraps the injector for ease of use.
      */
     private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
         @Override

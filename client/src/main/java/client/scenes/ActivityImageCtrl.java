@@ -56,6 +56,6 @@ public class ActivityImageCtrl extends SceneController {
      */
     @FXML
     private void switchToActivityPanel(ActionEvent event){
-        myFXML.showScene(AdminCtrl.class);
+        myFxml.showScene(AdminCtrl.class);
     }
 }

@@ -6,19 +6,19 @@ import com.google.inject.Inject;
 import javafx.scene.Scene;
 
 /**
- * Abstract class that forms the basis of a scene controller
+ * Abstract class that forms the basis of a scene controller.
  */
 public abstract class SceneController {
     protected Scene scene = null;
-    protected final MyFXML myFXML;
+    protected final MyFXML myFxml;
 
     /**
-     * Basic constructor
-     * @param myFXML handled by INJECTOR
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
      */
     @Inject
-    protected SceneController(MyFXML myFXML) {
-        this.myFXML = myFXML;
+    protected SceneController(MyFXML myFxml) {
+        this.myFxml = myFxml;
     }
 
     /**

@@ -1,20 +1,19 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.currentGameID;
+
 import client.MyFXML;
 import client.utils.SceneController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.ScoreRecord;
+import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
-import java.util.ArrayList;
-
-import static client.scenes.MainCtrl.currentGameID;
 
 public class MatchLeaderboardCtrl extends SceneController {
 
@@ -28,14 +27,14 @@ public class MatchLeaderboardCtrl extends SceneController {
     private TableColumn<ScoreRecord, String> colScore;
 
     /**
-     * Basic constructor
-     * @param myFXML handled by INJECTOR
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
      */
     @Inject
-    protected MatchLeaderboardCtrl(MyFXML myFXML) {
-        super(myFXML);
+    protected MatchLeaderboardCtrl(MyFXML myFxml) {
+        super(myFxml);
         colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().nickname));
-        colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score+" points"));
+        colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score + " points"));
         data = FXCollections.observableList(new ArrayList<>());
         table.setItems(data);
     }
@@ -44,9 +43,9 @@ public class MatchLeaderboardCtrl extends SceneController {
     public void show() {
         new Thread(() -> {
             var l = ServerUtils.getMatchLeaderboard(currentGameID);
-            if(l == null)
+            if (l == null) {
                 System.out.println("WARNING: null ScoreRecord list fetched from the server");
-            else {
+            } else {
                 data.removeAll();
                 data.addAll(l);
                 table.refresh();
