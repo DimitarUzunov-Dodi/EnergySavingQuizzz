@@ -29,7 +29,8 @@ public class GameCommunication {
      * @param properties Properties that we want to send to server
      * @throws IllegalStateException IllegalStateException
      */
-    public static void connect(String url, HashMap<String, Object> properties) throws IllegalStateException {
+    public static void connect(String url, HashMap<String, Object> properties)
+        throws IllegalStateException {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
