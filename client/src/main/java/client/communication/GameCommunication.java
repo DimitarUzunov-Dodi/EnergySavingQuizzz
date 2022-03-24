@@ -21,13 +21,12 @@ public class GameCommunication {
 
     private static StompSession session;
 
-    private static StompSession connect(String url) throws IllegalStateException{
-        session = connect(serverAddress);
+    public static void connect(String url) throws IllegalStateException{
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
         try {
-            return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
+        session = stomp.connect(serverAddress.replace("http", "ws")+"/game", new StompSessionHandlerAdapter() {}).get();
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException();

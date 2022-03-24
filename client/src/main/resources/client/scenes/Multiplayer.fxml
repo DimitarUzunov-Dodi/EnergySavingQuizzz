@@ -60,7 +60,7 @@
             </TextField>
          </children>
       </GridPane>
-      <Button fx:id="backButton" onAction="#onBackButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Back" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+      <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackButton" text="Back" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <font>
             <Font name="Consolas Bold" size="20.0" />
          </font>

@@ -79,7 +79,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
                 activityTable.setItems(data);
                 System.out.println("Populated table with "+data.size()+" entries.");
             } catch (RuntimeException e) {
-                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+                Platform.runLater(() -> userAlert("ERROR", "Connection failed", "Client was unable to connect to the server"));
             }
         }).start();
     }
@@ -108,7 +108,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
             try {
                 new Thread(AdminCommunication::deleteActivities).start();
             } catch (RuntimeException e) {
-                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+                Platform.runLater(() -> userAlert("ERROR", "Connection failed", "Client was unable to connect to the server"));
             }
         }
     }

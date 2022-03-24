@@ -35,7 +35,7 @@ public class AdminCommunication {
      */
     public static List<Activity> getAllActivities() throws RuntimeException {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(serverAddress).path("/api/admin/activity")
+                .target(serverAddress).path("/api/admin/activity/all")
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
     }

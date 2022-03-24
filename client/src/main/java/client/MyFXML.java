@@ -38,7 +38,6 @@ public class MyFXML {
         try {
             var loader = new FXMLLoader(url, null, null, new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
-            System.out.println("<>" + parent.toString());
             T ctrl = loader.getController();
             ctrl.setScene(new Scene(parent));
             return ctrl;

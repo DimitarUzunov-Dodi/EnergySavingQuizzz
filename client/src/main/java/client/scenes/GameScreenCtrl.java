@@ -203,6 +203,9 @@ public class GameScreenCtrl extends SceneController {
 
     @Override
     public void show() {
+        // connect via websockets
+        GameCommunication.connect("unused_atm");
+
         /* create list object */
 
         /* adding items to the list view */
