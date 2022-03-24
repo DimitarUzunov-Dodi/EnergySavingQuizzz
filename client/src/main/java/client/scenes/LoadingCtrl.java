@@ -9,8 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
-import static client.utils.UserAlert.userAlert;
 import static client.utils.FileUtils.readNickname;
+import static client.utils.UserAlert.userAlert;
 
 public class LoadingCtrl extends SceneController {
     private static final int TIME_TO_NEXT_ROUND = 3;

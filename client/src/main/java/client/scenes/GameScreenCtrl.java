@@ -1,11 +1,7 @@
-
-
-
-
-
 package client.scenes;
 
 import client.MyFXML;
+import client.communication.GameCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -15,7 +11,6 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import client.communication.GameCommunication;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;

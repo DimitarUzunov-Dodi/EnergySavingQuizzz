@@ -2,10 +2,8 @@ package client.scenes;
 
 import client.MyFXML;
 import client.utils.SceneController;
-import com.google.inject.Inject;
-
 import client.utils.ServerUtils;
-
+import com.google.inject.Inject;
 import commons.ScoreRecord;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

@@ -7,8 +7,8 @@ import com.google.inject.Inject;
 import commons.Activity;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.Objects;

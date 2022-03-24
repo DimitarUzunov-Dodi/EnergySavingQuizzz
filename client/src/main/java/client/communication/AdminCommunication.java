@@ -11,8 +11,8 @@ import org.glassfish.jersey.client.ClientConfig;
 
 import java.util.List;
 
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static client.utils.ServerUtils.serverAddress;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class AdminCommunication {
 

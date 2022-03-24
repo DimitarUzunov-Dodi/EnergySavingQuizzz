@@ -5,7 +5,6 @@ import jakarta.ws.rs.client.ClientBuilder;
 import javafx.scene.image.Image;
 import org.glassfish.jersey.client.ClientConfig;
 
-
 import java.util.Objects;
 
 import static client.utils.ActivityImageUtils.imageFromByteArray;
