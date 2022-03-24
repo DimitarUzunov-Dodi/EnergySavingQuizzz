@@ -31,7 +31,7 @@ public class UserController {
      * @return ResponseEntity
      */
     @PutMapping("/join/{gameCode}/{username}")
-    public ResponseEntity<?> joinGame(@PathVariable String gameCode,
+    public ResponseEntity<String> joinGame(@PathVariable String gameCode,
                                        @PathVariable String username) {
         if (!(gameService.doesGameExist(gameCode))) {
             return ResponseEntity

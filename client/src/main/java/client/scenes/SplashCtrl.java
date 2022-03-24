@@ -3,9 +3,11 @@ package client.scenes;
 import static client.scenes.MainCtrl.username;
 import static client.utils.FileUtils.readNickname;
 import static client.utils.FileUtils.writeNickname;
+import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
 import client.utils.SceneController;
+import client.utils.UserAlert;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -66,7 +68,7 @@ public class SplashCtrl extends SceneController {
      */
     private void initTextField() {
         username = readNickname();
-        usernameText.setText(MainCtrl.username);
+        usernameText.setText(username);
     }
 
     /**
@@ -76,7 +78,13 @@ public class SplashCtrl extends SceneController {
     @FXML
     private void saveNickname() {
         username = usernameText.getText().strip();
-        writeNickname(username);
+        try {
+            writeNickname(username);
+        } catch (IllegalArgumentException e) {
+            username = username.substring(0, 20);
+            usernameText.setText(username);
+            userAlert("WARN", "Username is too long", "Username can be less no more than 20 characters");
+        }
     }
 
     /**

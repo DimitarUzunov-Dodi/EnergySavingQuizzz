@@ -1,11 +1,16 @@
 package client.scenes;
 
 import static client.scenes.MainCtrl.currentGameID;
+import static client.scenes.MainCtrl.username;
+import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
+import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import client.utils.UserAlert;
 import com.google.inject.Inject;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -45,8 +50,20 @@ public class MultiplayerCtrl extends SceneController {
     @FXML
     private void onJoinPrivate() {
         // TODO: Check the game id first
-        currentGameID = gameCodeField.getText();
-        myFxml.showScene(WaitingRoomCtrl.class);
+        currentGameID = gameCodeField.getText().trim();
+        joinGame();
+    }
+
+    private void joinGame() {
+        Response joinResponse = WaitingRoomCommunication.joinGame(currentGameID, username);
+        int statusCode = joinResponse.getStatus();
+        if (statusCode == 200) {
+            myFxml.get(WaitingRoomCtrl.class).customShow(currentGameID);
+        } else if(statusCode == 400){
+            userAlert("ERROR", "Username is already taken", "Username already in use in this game!");
+        } else if(statusCode == 404) {
+            userAlert("ERROR", "No such game", "No game found with this game code!");
+        }
     }
 
     /**
@@ -55,10 +72,8 @@ public class MultiplayerCtrl extends SceneController {
      */
     @FXML
     private void onCreatePrivate() {
-        currentGameID = "generate new private game id";
-        myFxml.showScene(WaitingRoomCtrl.class);
-        UserAlert.userAlert("INFO", "Game code: " + currentGameID,
-                    "Share this with the people you want to play with.");
+        currentGameID = WaitingRoomCommunication.createNewGame();
+        joinGame();
     }
 
     /**
