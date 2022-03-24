@@ -25,8 +25,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 
-
-
 public class GameScreenCtrl extends SceneController {
 
     private String username;
@@ -45,9 +43,6 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView windmill;
 
-
-    @FXML
-    private Text QuestionText;
 
     @FXML
     private ProgressBar progressBar;
@@ -79,12 +74,7 @@ public class GameScreenCtrl extends SceneController {
 
     @FXML
     private Text questionText;
-    @FXML
-    private Text ActivityText1;
-    @FXML
-    private Text ActivityText2;
-    @FXML
-    private Text ActivityText3;
+
     @FXML
     private ImageView emoji1;
     @FXML
@@ -107,18 +97,18 @@ public class GameScreenCtrl extends SceneController {
     String[] names = {"foo", "bar", "test"};
 
     @Inject
-    public GameScreenCtrl(MyFXML myFXML) {
-        super(myFXML);
+    public GameScreenCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
-
-
-
 
     public static void init(User user1) {
         user = user1;
     }
 
-    public void InitImages() {
+    /**
+     * Initialises the images for the game screen.
+     */
+    public void initImages() {
         windmill.setImage(new Image("client/images/OIP.jpg"));
         menuButton.setImage(new Image(("client/images/menu.png")));
         emoji1.setImage(new Image("client/images/emoji1.png"));
@@ -129,7 +119,7 @@ public class GameScreenCtrl extends SceneController {
 
 
     /**
-     * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar
+     * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar.
      */
     public void countDown() {
         final Service<Integer> countDownThread = new Service<>() {
@@ -154,18 +144,8 @@ public class GameScreenCtrl extends SceneController {
         };
 
 
-
-/*
-        // Next Round Transition
-        countDownThread.setOnSucceeded(event -> {
-            userAlert("INFO", "Next Round", "Next Round Start");
-        });
-*/
-        // bind thread to progress bar and start it
         progressBar.progressProperty().bind(countDownThread.progressProperty());
         countDownThread.start();
-
-        // TODO "uses unchecked or unsafe operations"
 
     }
 
@@ -173,8 +153,9 @@ public class GameScreenCtrl extends SceneController {
         activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
         questionText.setText(activeQuestion.displayText());
     }
+
     /**
-     * When the first emoji is clicked it is sent to the server and also by whom it has been sent
+     * When the first emoji is clicked it is sent to the server and also by whom it has been sent.
      */
     public void emoji1Pressed() {
         username = FileUtils.readNickname();
@@ -183,7 +164,7 @@ public class GameScreenCtrl extends SceneController {
     }
 
     /**
-     * When the second emoji is clicked it is sent to the server and also by whom it has been sent
+     * When the second emoji is clicked it is sent to the server and also by whom it has been sent.
      */
     public void emoji2Pressed() {
         username = FileUtils.readNickname();
@@ -192,7 +173,7 @@ public class GameScreenCtrl extends SceneController {
     }
 
     /**
-     * When the third emoji is clicked it is sent to the server and also by whom it has been sent
+     * When the third emoji is clicked it is sent to the server and also by whom it has been sent.
      */
     public void emoji3Pressed() {
         username = FileUtils.readNickname();
@@ -209,8 +190,8 @@ public class GameScreenCtrl extends SceneController {
         /* create list object */
 
         /* adding items to the list view */
-        ObservableList<String> elements = FXCollections.observableArrayList("Fist ", "Second ", "Third ",
-            "Dodi");
+        ObservableList<String> elements = FXCollections.observableArrayList("Fist ", "Second ",
+                "Dodi");
         currentLeaderboard.setItems(elements);
         /*setting each image to corresponding array index*/
 
@@ -218,15 +199,14 @@ public class GameScreenCtrl extends SceneController {
         // VBox vBox = new VBox(currentLeaderboard);
         /* creating scene */
 
-        InitImages();
-        ArrayList<String> list = new ArrayList<>();
+        initImages();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
         progressBar.setProgress(0);
         // Question_text = new Text("foo");
-       buttonList.add(button1);
-       buttonList.add(button2);
-       buttonList.add(button3);
-       buttonList.add(button4);
+        buttonList.add(button1);
+        buttonList.add(button2);
+        buttonList.add(button3);
+        buttonList.add(button4);
 
         gameCode = client.communication.GameCommunication.startSinglePlayerGame();
 
@@ -240,15 +220,16 @@ public class GameScreenCtrl extends SceneController {
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
-        // currentLeaderboard.getItems().addAll(names);
+
+        ArrayList<String> list = new ArrayList<>();
         GameCommunication.send("/app/chat", "foo");
         GameCommunication.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
         });
         GameCommunication.registerForMessages("game/receive", Game.class, o -> {
             questionText.setText("Which one consumes the most amount of energy?");
-            for (Question question : o.getActiveQuestionList()){
-                QuestionTypeA foo =  (QuestionTypeA) question;
+            for (Question question : o.getActiveQuestionList()) {
+                QuestionTypeA foo = (QuestionTypeA) question;
                 activityText1.setText(foo.getActivity1().getActivityText());
                 activityText2.setText(foo.getActivity2().getActivityText());
                 activityText3.setText(foo.getActivity3().getActivityText());
@@ -292,7 +273,7 @@ public class GameScreenCtrl extends SceneController {
                             displayImage.setFitHeight(20);
                             displayImage.setFitWidth(20);
                             displayImage.setImage(emoji);
-                          //  displayImage.setFitWidth(0.1);
+                            //  displayImage.setFitWidth(0.1);
 
 
                         }
@@ -311,5 +292,4 @@ public class GameScreenCtrl extends SceneController {
     }
 
 
-
-    }
+}
