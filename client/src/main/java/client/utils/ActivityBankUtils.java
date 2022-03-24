@@ -101,7 +101,7 @@ public class ActivityBankUtils {
 
         long imageId;
         for (ActivityBankEntry entry : activityBankEntryList) {
-            imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImage_path());
+            imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImagePath());
             AdminCommunication.addActivityBankEntry(entry, imageId);
         }
     }

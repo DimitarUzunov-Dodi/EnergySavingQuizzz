@@ -73,7 +73,7 @@ public class AdminController {
         System.out.println("Adding new activity bank entry");
         Activity translatedActivity = new Activity(
                 newActivity.getTitle(),
-                newActivity.getConsumption_in_wh(),
+                newActivity.getConsumptionInWh(),
                 newActivity.getSource(),
                 Long.parseLong(imageId));
         repo.save(translatedActivity);
