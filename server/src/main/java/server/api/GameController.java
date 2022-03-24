@@ -67,7 +67,7 @@ public class GameController {
      * @param questionIndex The index of the wanted question
      * @return The question entity
      */
-    @GetMapping("/getq/{gameCode}/{qIndex}")
+    @GetMapping("/getq/{gameCode}/{questionIndex}")
     public ResponseEntity<?> getQuestion(@PathVariable String gameCode,
                                          @PathVariable int questionIndex) {
         if (!gameService.doesGameExist(gameCode)) {
