@@ -1,7 +1,7 @@
 package client.utils;
 
-import commons.ServerLeaderboardEntry;
 import commons.ScoreRecord;
+import commons.ServerLeaderboardEntry;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import org.glassfish.jersey.client.ClientConfig;

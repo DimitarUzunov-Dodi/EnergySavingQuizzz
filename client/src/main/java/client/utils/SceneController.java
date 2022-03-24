@@ -4,7 +4,6 @@ import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 /**
  * Abstract class that forms the basis of a scene controller

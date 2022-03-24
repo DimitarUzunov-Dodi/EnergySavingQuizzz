@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.stage.Stage;
 
 import java.util.Optional;
 

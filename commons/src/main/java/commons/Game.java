@@ -1,7 +1,5 @@
 package commons;
 
-import commons.Question;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;

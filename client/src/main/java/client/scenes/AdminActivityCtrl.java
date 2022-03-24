@@ -17,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -152,5 +151,4 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
             }
         }).start();
     }
-
 }
