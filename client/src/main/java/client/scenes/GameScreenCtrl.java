@@ -4,6 +4,7 @@ import client.MyFXML;
 import client.communication.GameCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
+import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Game;
 import commons.Person;
@@ -11,6 +12,7 @@ import commons.Question;
 import commons.QuestionTypeA;
 import commons.User;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -184,8 +186,9 @@ public class GameScreenCtrl extends SceneController {
 
     @Override
     public void show() {
+        HashMap<String, Object> properties = new HashMap<>();
         // connect via websockets
-        GameCommunication.connect("unused_atm");
+        GameCommunication.connect(ServerUtils.serverAddress, properties);
 
         /* create list object */
 

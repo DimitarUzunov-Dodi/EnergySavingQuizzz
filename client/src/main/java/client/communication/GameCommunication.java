@@ -7,6 +7,7 @@ import commons.QuestionTypeA;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.function.Consumer;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -25,12 +26,15 @@ public class GameCommunication {
     /**
      * Method that connects the client to the websocket session.
      * @param url Url to connect to
+     * @param properties Properties that we want to send to server
      * @throws IllegalStateException IllegalStateException
      */
-    public static void connect(String url) throws IllegalStateException {
+    public static void connect(String url, HashMap<String, Object> properties) throws IllegalStateException {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
+
+        client.setUserProperties(properties);
 
         try {
             session = stomp.connect(serverAddress.replace("http", "ws") + "/game",

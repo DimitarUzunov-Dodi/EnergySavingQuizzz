@@ -1,7 +1,9 @@
 package server.websockets.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -16,14 +18,14 @@ public class GameWebsocketHandler extends TextWebSocketHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebsocketHandler.class);
     private int playersInLatestGame = 0;
-    private final List<WebSocketSession> webSocketSessionList = new ArrayList<>();
+    private final HashMap<String,ArrayList<WebSocketSession>> webSocketSessionList = new HashMap<String,ArrayList<WebSocketSession>>();
 
 
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
-        webSocketSessionList.add(session);
+        Map<String, Object> properties = session.getAttributes();
+        webSocketSessionList.put(session.getId(), new ArrayList<WebSocketSession>());
 
 
 
