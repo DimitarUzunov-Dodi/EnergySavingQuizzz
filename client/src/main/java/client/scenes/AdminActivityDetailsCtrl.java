@@ -66,7 +66,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
      */
     @FXML
     private void switchToActivityPanel(ActionEvent event){
-        myFXML.showScene(AdminCtrl.class);
+        myFXML.showScene(AdminActivityCtrl.class);
     }
 
     /**
