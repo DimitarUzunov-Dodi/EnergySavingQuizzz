@@ -1,13 +1,16 @@
 package client;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
-import client.scenes.MainCtrl;
 import client.utils.SceneController;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.util.Builder;
 import javafx.util.BuilderFactory;
@@ -21,20 +24,22 @@ public class MyFXML {
      * Basic constructor
      * @param injector the injector that handles the controllers
      */
+    @Inject
     public MyFXML(Injector injector) {
         this.injector = injector;
     }
 
     /**
      * Loads the javafx scene and assigns it to the proper controller instance.
-     * @param filename Name of the .fxml file
+     * @param url URL of the resource
      * @return Reference to the instance of a SceneController that holds a reference of the freshly loaded Scene
      */
-    private <T extends SceneController> T loadScene(String filename) {
+    private <T extends SceneController> T loadScene(URL url) {
         try {
-            var loader = new FXMLLoader(MyFXML.class.getClassLoader().getResource(filename), null, null, new MyFactory(), StandardCharsets.UTF_8);
+            var loader = new FXMLLoader(url, null, null, new MyFactory(), StandardCharsets.UTF_8);
+            Parent parent = loader.load();
             T ctrl = loader.getController();
-            ctrl.setScene(new Scene(loader.load()));
+            ctrl.setScene(new Scene(parent));
             return ctrl;
         } catch (IOException e) {
             System.out.println("IO error while loading fxml:\n" + e);
@@ -49,8 +54,11 @@ public class MyFXML {
      */
     public <T extends SceneController> T get(Class<T> ctrl) {
         T c = injector.getInstance(ctrl);
-        if(c.getScene() == null)
-            return loadScene(ctrl.getName().replace("Ctrl", ".fxml"));
+        if(c.getScene() == null) {
+            String file = ctrl.getSimpleName().replace("Ctrl", ".fxml");
+            Path path = Path.of("", "client", "scenes", file);
+            return loadScene(MyFXML.class.getClassLoader().getResource(path.toString()));
+        }
         return c;
     }
 

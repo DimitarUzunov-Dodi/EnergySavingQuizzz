@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * A class for storing a server leaderboard entry
  */
 @Entity
-public class LeaderboardEntry {
+public class ServerLeaderboardEntry {
 
     @Id
     public String username;
@@ -21,7 +21,7 @@ public class LeaderboardEntry {
     public Integer score;
 
     @SuppressWarnings("unused")
-    private LeaderboardEntry() {
+    private ServerLeaderboardEntry() {
         // for object mappers
     }
 
@@ -31,7 +31,7 @@ public class LeaderboardEntry {
      * @param gamesPlayed nr of games played
      * @param score highest score
      */
-    public LeaderboardEntry(String username, Integer gamesPlayed, Integer score) {
+    public ServerLeaderboardEntry(String username, Integer gamesPlayed, Integer score) {
         this.username = username;
         this.gamesPlayed = gamesPlayed;
         this.score = score;

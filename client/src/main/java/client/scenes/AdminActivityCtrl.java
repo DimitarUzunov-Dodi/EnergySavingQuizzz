@@ -106,9 +106,7 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
         Optional<ButtonType> result = quitAlert.showAndWait();
         if(result.get() == ButtonType.OK) {
             try {
-                new Thread(() ->{
-                    AdminCommunication.deleteActivities();
-                }).start();
+                new Thread(AdminCommunication::deleteActivities).start();
             } catch (RuntimeException e) {
                 userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
             }

@@ -2,8 +2,8 @@ package server.database;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import commons.LeaderboardEntry;
+import commons.ServerLeaderboardEntry;
 
-public interface LeaderboardRepository extends JpaRepository<LeaderboardEntry, Long> {
+public interface LeaderboardRepository extends JpaRepository<ServerLeaderboardEntry, Long> {
     // TODO: get data from DB
 }

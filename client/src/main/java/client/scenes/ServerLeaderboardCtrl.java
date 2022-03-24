@@ -1,11 +1,11 @@
 package client.scenes;
 
 import client.MyFXML;
-import client.communication.AdminCommunication;
 import client.utils.SceneController;
 
 import client.utils.ServerUtils;
-import commons.LeaderboardEntry;
+import com.google.inject.Inject;
+import commons.ServerLeaderboardEntry;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,25 +17,24 @@ import javafx.scene.control.TableView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static client.utils.UserAlert.userAlert;
-
 public class ServerLeaderboardCtrl extends SceneController {
 
-	private final ObservableList<LeaderboardEntry> data;
+	private final ObservableList<ServerLeaderboardEntry> data;
 
     @FXML
-    private TableView<LeaderboardEntry> table;
+    private TableView<ServerLeaderboardEntry> table;
     @FXML
-    private TableColumn<LeaderboardEntry, String> colUsername;
+    private TableColumn<ServerLeaderboardEntry, String> colUsername;
     @FXML
-    private TableColumn<LeaderboardEntry, String> colGamesPlayed;
+    private TableColumn<ServerLeaderboardEntry, String> colGamesPlayed;
     @FXML
-    private TableColumn<LeaderboardEntry, String> colScore;
+    private TableColumn<ServerLeaderboardEntry, String> colScore;
 
     /**
      * Constructor used by INJECTOR
      * @param myFXML handled by INJECTOR
      */
+    @Inject
     private ServerLeaderboardCtrl(MyFXML myFXML) {
         super(myFXML);
         colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
@@ -50,7 +49,7 @@ public class ServerLeaderboardCtrl extends SceneController {
         // load contents async
         new Thread(() -> {
             try {
-                List<LeaderboardEntry> list = ServerUtils.getServerLeaderboard();
+                List<ServerLeaderboardEntry> list = ServerUtils.getServerLeaderboard();
                 data.removeAll();
                 data.addAll(list);
                 table.refresh(); // might be removed

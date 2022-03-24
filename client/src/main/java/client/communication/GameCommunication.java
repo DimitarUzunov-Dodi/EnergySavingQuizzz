@@ -52,6 +52,7 @@ public class GameCommunication {
     public static void send(String dest, Object o){
         session.send(dest, o);
     }
+
     public static String startSinglePlayerGame(){
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress).path("/api/game/new")

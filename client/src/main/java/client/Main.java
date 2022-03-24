@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
+    public static Stage primaryStage;
 
     /**
      * Program entry point
@@ -28,6 +29,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        Main.primaryStage = primaryStage;
         ServerUtils.serverAddress = getParameters().getNamed().getOrDefault("server", "http://localhost:8080");
         MainCtrl mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.start(); // give control to mainCtrl

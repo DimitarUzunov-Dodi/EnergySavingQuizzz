@@ -1,6 +1,6 @@
 package server.api;
 
-import commons.LeaderboardEntry;
+import commons.ServerLeaderboardEntry;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class LeaderboardController {
      * @return list of all entries
      */
     @GetMapping("/")
-    public List<LeaderboardEntry> getServerLeaderboard() {
+    public List<ServerLeaderboardEntry> getServerLeaderboard() {
         return repo.findAll();
     }
 
@@ -39,12 +39,12 @@ public class LeaderboardController {
      * @return HTTP 200 with a leaderboard entry if ok, error code otherwise
      */
     @GetMapping("/{username}")
-    public ResponseEntity<LeaderboardEntry> getEntryByUsername(@PathVariable("username") String username) {
+    public ResponseEntity<ServerLeaderboardEntry> getEntryByUsername(@PathVariable("username") String username) {
         if (username == null || username.equals(""))
             return ResponseEntity.badRequest().build();
 
-        Example<LeaderboardEntry> example = Example.of(new LeaderboardEntry(username, null, null));
-        Optional<LeaderboardEntry> entry = repo.findOne(example);
+        Example<ServerLeaderboardEntry> example = Example.of(new ServerLeaderboardEntry(username, null, null));
+        Optional<ServerLeaderboardEntry> entry = repo.findOne(example);
 
         if(entry.isPresent()) {
             return ResponseEntity.ok(entry.get());
@@ -61,12 +61,12 @@ public class LeaderboardController {
      * @return HTTP 201 if all updated existing, 202 if created new entry, error code otherwise
      */
     @PutMapping("/{username}")
-    public ResponseEntity<LeaderboardEntry> updateEntry(@PathVariable String username, @RequestBody Integer score, @RequestBody Integer gamesPlayed) {
+    public ResponseEntity<ServerLeaderboardEntry> updateEntry(@PathVariable String username, @RequestBody Integer score, @RequestBody Integer gamesPlayed) {
         if (username == null || username.isEmpty() || score == null || gamesPlayed == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        Example<LeaderboardEntry> example = Example.of(new LeaderboardEntry(username, null, null));
+        Example<ServerLeaderboardEntry> example = Example.of(new ServerLeaderboardEntry(username, null, null));
         var found = repo.findOne(example);
         if(found.isPresent()) {
             found.get().setScore(score);
@@ -74,7 +74,7 @@ public class LeaderboardController {
             return ResponseEntity.accepted().body(repo.save(found.get()));
         }
         else {
-            LeaderboardEntry e = new LeaderboardEntry(username, gamesPlayed, score);
+            ServerLeaderboardEntry e = new ServerLeaderboardEntry(username, gamesPlayed, score);
             return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(e));
         }
     }

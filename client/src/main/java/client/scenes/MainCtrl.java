@@ -46,7 +46,7 @@ public final class MainCtrl {
             else
                 e.consume();
         });
+        myFXML.showScene(SplashCtrl.class);
         primaryStage.show(); // make app window visible
-        myFXML.showScene(SplashCtrl.class); // same as myFXML.get(SplashCtrl.class).showScene();
     }
 }

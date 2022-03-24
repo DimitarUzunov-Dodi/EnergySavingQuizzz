@@ -1,5 +1,6 @@
 package client.utils;
 
+import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
 import javafx.scene.Scene;
@@ -48,6 +49,6 @@ public abstract class SceneController {
      * Shows this controller's scene on the stage it currently sits.
      */
     protected void showScene() {
-        ((Stage)scene.getWindow()).setScene(scene);
+        Main.primaryStage.setScene(scene);
     }
 }

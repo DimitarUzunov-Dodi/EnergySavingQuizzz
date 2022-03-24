@@ -1,6 +1,6 @@
 package client.utils;
 
-import commons.LeaderboardEntry;
+import commons.ServerLeaderboardEntry;
 import commons.ScoreRecord;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
@@ -18,7 +18,7 @@ public class ServerUtils {
      * Retrieve the all-time leaderboard from the server
      * @return List of server leaderboard entries
      */
-    public static List<LeaderboardEntry> getServerLeaderboard() throws RuntimeException {
+    public static List<ServerLeaderboardEntry> getServerLeaderboard() throws RuntimeException {
         try {
             return ClientBuilder.newClient(new ClientConfig())
                     .target(serverAddress).path("/api/leaderboard")
