@@ -1,5 +1,9 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.username;
+import static client.utils.FileUtils.readNickname;
+import static client.utils.FileUtils.writeNickname;
+
 import client.MyFXML;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -9,10 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import static client.scenes.MainCtrl.username;
-import static client.utils.FileUtils.readNickname;
-import static client.utils.FileUtils.writeNickname;
-
 public class SplashCtrl extends SceneController {
 
     @FXML
@@ -21,7 +21,7 @@ public class SplashCtrl extends SceneController {
     private TextField usernameText;
 
     /**
-     * Basic constructor
+     * Basic constructor.
      * @param myFXML handled by INJECTOR
      */
     @Inject
@@ -36,12 +36,13 @@ public class SplashCtrl extends SceneController {
     }
 
     /**
-     * Function called by quit button when clicked. Quits the application
+     * Function called by quit button when clicked. Quits the application.
      */
     @FXML
     private void quitAction() {
         Stage stage = (Stage)scene.getWindow(); // this is how you get the current Stage btw
-        quitButton.getScene().getWindow().fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+        quitButton.getScene().getWindow().fireEvent(
+                new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     /**
@@ -53,7 +54,7 @@ public class SplashCtrl extends SceneController {
     }
 
     /**
-     * Called on user pressing 'Singleplayer' button, send user to GamePage
+     * Called on user pressing 'Singleplayer' button, send user to GamePage.
      */
     @FXML
     private void singlePlayerAction() {
@@ -61,7 +62,7 @@ public class SplashCtrl extends SceneController {
     }
 
     /**
-     * Function initializes nickname TextField in SplashScreen scene
+     * Function initializes nickname TextField in SplashScreen scene.
      */
     private void initTextField() {
         username = readNickname();
@@ -69,8 +70,8 @@ public class SplashCtrl extends SceneController {
     }
 
     /**
-     * Function saves nickname automatically when nickname TextField is changed
-     * Nickname is stored according to pathToUserData
+     * Function saves nickname automatically when nickname TextField is changed.
+     * Nickname is stored according to pathToUserData.
      */
     @FXML
     private void saveNickname() {
@@ -79,7 +80,7 @@ public class SplashCtrl extends SceneController {
     }
 
     /**
-     * Called on user pressing 'Multiplayer' button, sends user to Multiplayer
+     * Called on user pressing 'Multiplayer' button, sends user to Multiplayer.
      */
     @FXML
     private void onMultiplayerPressed() {
@@ -90,7 +91,7 @@ public class SplashCtrl extends SceneController {
      * Function called by admin button when clicked. Changes scene to AdminPage scene.
      */
     @FXML
-    private void adminAction(){
+    private void adminAction() {
         myFXML.showScene(AdminCtrl.class);
     }
 }
