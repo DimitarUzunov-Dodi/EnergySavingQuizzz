@@ -1,4 +1,4 @@
-package server.userScores;
+package server.service;
 
 import commons.ScoreRecord;
 import org.springframework.stereotype.Service;
