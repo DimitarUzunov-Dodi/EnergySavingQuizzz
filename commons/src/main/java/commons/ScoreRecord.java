@@ -1,16 +1,15 @@
 package commons;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-
 /**
- * A class for using the Score of a given user
+ * A class for using the Score of a given user.
  */
 @Entity
 public class ScoreRecord {
@@ -28,7 +27,7 @@ public class ScoreRecord {
     }
 
     /**
-     * sets the user's score to the given value
+     * sets the user's score to the given value.
      *
      * @param score int
      */
@@ -37,9 +36,9 @@ public class ScoreRecord {
     }
 
     /**
-     * gets the user's score
+     * gets the user's score.
      *
-     * @return
+     * @return Returns the score.
      */
     public int getScore() {
         return score;
