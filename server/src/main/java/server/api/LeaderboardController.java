@@ -6,7 +6,12 @@ import java.util.Optional;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.database.LeaderboardRepository;
 
 @RestController
@@ -38,18 +43,20 @@ public class LeaderboardController {
      * @return HTTP 200 with a leaderboard entry if ok, error code otherwise
      */
     @GetMapping("/{username}")
-    public ResponseEntity<ServerLeaderboardEntry> getEntryByUsername(@PathVariable("username") String username) {
-        if (username == null || username.equals(""))
+    public ResponseEntity<ServerLeaderboardEntry>
+        getEntryByUsername(@PathVariable("username") String username) {
+        if (username == null || username.equals("")) {
             return ResponseEntity.badRequest().build();
+        }
 
-        Example<ServerLeaderboardEntry> example = Example.of(new ServerLeaderboardEntry(username, null, null));
+        var example = Example.of(new ServerLeaderboardEntry(username, null, null));
         Optional<ServerLeaderboardEntry> entry = repo.findOne(example);
 
-        if(entry.isPresent()) {
+        if (entry.isPresent()) {
             return ResponseEntity.ok(entry.get());
-        }
-        else
+        } else {
             return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -60,19 +67,20 @@ public class LeaderboardController {
      * @return HTTP 201 if all updated existing, 202 if created new entry, error code otherwise
      */
     @PutMapping("/{username}")
-    public ResponseEntity<ServerLeaderboardEntry> updateEntry(@PathVariable String username, @RequestBody Integer score, @RequestBody Integer gamesPlayed) {
+    public ResponseEntity<ServerLeaderboardEntry> updateEntry(@PathVariable String username,
+                    @RequestBody Integer score,
+                    @RequestBody Integer gamesPlayed) {
         if (username == null || username.isEmpty() || score == null || gamesPlayed == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        Example<ServerLeaderboardEntry> example = Example.of(new ServerLeaderboardEntry(username, null, null));
+        var example = Example.of(new ServerLeaderboardEntry(username, null, null));
         var found = repo.findOne(example);
         if (found.isPresent()) {
             found.get().setScore(score);
             found.get().setGamesPlayed(gamesPlayed);
             return ResponseEntity.accepted().body(repo.save(found.get()));
-        }
-        else {
+        } else {
             ServerLeaderboardEntry e = new ServerLeaderboardEntry(username, gamesPlayed, score);
             return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(e));
         }
