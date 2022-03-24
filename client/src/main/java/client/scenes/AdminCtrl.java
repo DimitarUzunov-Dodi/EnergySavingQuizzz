@@ -1,36 +1,34 @@
 package client.scenes;
 
+import static client.utils.UserAlert.userAlert;
+
+import client.MyFXML;
 import client.communication.AdminCommunication;
+import client.utils.SceneController;
 import com.google.inject.Inject;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXML;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+public class AdminCtrl extends SceneController {
 
-import static client.scenes.UserAlert.userAlert;
-
-public class AdminCtrl implements Initializable {
-
-    private final AdminCommunication server;
-    private final MainCtrl mainCtrl;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    /**
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
+     */
+    @Inject
+    private AdminCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
-    @Inject
-    public AdminCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+    @Override
+    public void show() {
+        showScene();
     }
 
     /**
-     * Function called by button when clicked. Invokes server's restart
-     * @param event passed by JavaFX by default
+     * Function called by button when clicked. Invokes server's restart.
      */
-    public void restartAction(ActionEvent event){
+    @FXML
+    private void restartAction() {
         try {
             AdminCommunication.invokeServerRestart();
         } catch (RuntimeException e) {
@@ -40,17 +38,17 @@ public class AdminCtrl implements Initializable {
 
     /**
      * Function called by button when clicked. Returns to the Splashscreen.
-     * @param event passed by JavaFX by default
      */
-    public void backToSplashAction(ActionEvent event){
-        mainCtrl.showSplashScreen();
+    @FXML
+    private void backToSplashAction() {
+        myFxml.showScene(SplashCtrl.class);
     }
 
     /**
      * Function called by button when clicked. Switches to admin activity panel.
-     * @param event passed by JavaFX by default
      */
-    public void switchToAdminActivityPanel(ActionEvent event){
-        mainCtrl.showAdminActivityPanel();
+    @FXML
+    private void switchToAdminActivityPanel() {
+        myFxml.showScene(AdminActivityCtrl.class);
     }
 }

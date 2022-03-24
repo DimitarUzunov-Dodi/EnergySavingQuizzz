@@ -1,4 +1,4 @@
-package server.userScores;
+package server.database;
 
 import commons.ScoreRecord;
 import org.springframework.data.jpa.repository.JpaRepository;

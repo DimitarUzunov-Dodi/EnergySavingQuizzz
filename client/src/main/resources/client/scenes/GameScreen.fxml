@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane id="pane" prefHeight="400.0" prefWidth="577.0" style="-fx-background-color: C4C4C4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GamePageController">
+<GridPane id="pane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: C4C4C4;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.GameScreenCtrl">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="55.0" prefWidth="347.1999755859375" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="45.0" prefWidth="253.60002441406243" />
@@ -46,7 +46,7 @@
                   <Insets top="5.0" />
                </GridPane.margin>
             </Button>
-            <ImageView id="MenuButton" fx:id="MenuButton" fitHeight="40.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+            <ImageView id="MenuButton" fx:id="menuButton" fitHeight="40.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                <image>
                   <Image url="@../images/menu.png" />
                </image>
@@ -97,7 +97,7 @@
                   <Button fx:id="button4" mnemonicParsing="false" style="-fx-background-color: #407897; -fx-pref-width: 50;" text="D" GridPane.columnIndex="3" />
                </children>
             </GridPane>
-            <Text id="Question_text" fx:id="QuestionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
+            <Text id="questionText" fx:id="questionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="2" />
             <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="500.0" progress="0.0" GridPane.rowIndex="1" />
             <GridPane>
               <columnConstraints>
@@ -110,14 +110,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="Windmill" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="windmill" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/OIP.jpg" />
                      </image>
                   </ImageView>
-                  <Text id="Question_text" fx:id="Activity_text1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
-                  <Text id="Question_text" fx:id="Activity_text2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text id="Question_text" fx:id="Activity_text3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>

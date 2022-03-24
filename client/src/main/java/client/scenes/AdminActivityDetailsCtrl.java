@@ -1,22 +1,21 @@
 package client.scenes;
 
+import static client.utils.UserAlert.userAlert;
+
+import client.MyFXML;
 import client.communication.AdminCommunication;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.fxml.Initializable;
-
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 
-import static client.scenes.UserAlert.userAlert;
-
-public class AdminActivityDetailsCtrl implements Initializable {
-    private final MainCtrl mainCtrl;
-    private final AdminCommunication server;
+public class AdminActivityDetailsCtrl extends SceneController implements Initializable {
     private Activity selectedActivity;
 
     @FXML
@@ -35,10 +34,8 @@ public class AdminActivityDetailsCtrl implements Initializable {
     private TextField imageIdField;
 
     @Inject
-    public AdminActivityDetailsCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
-        this.selectedActivity = null;
+    public AdminActivityDetailsCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     @Override
@@ -47,19 +44,36 @@ public class AdminActivityDetailsCtrl implements Initializable {
     }
 
     /**
-     * Function called by button when clicked. Switches to main admin question panel.
-     * @param event passed by JavaFX by default
+     * Please use customShow(Activity selected) method to switch to this scene.
      */
-    public void switchToActivityPanel(ActionEvent event){
-        mainCtrl.showAdminActivityPanel();
+    @Override
+    public void show() {
     }
 
     /**
-     * Set selected activity
+     * Method that shows the scene with details about selected activity.
+     * @param selected activity which details will be shown
+     */
+    public void customShow(Activity selected) {
+        setActivity(selected);
+        showScene();
+    }
+
+    /**
+     * Function called by button when clicked. Switches to main admin question panel.
+     * @param event passed by JavaFX by default
+     */
+    @FXML
+    private void switchToActivityPanel(ActionEvent event) {
+        myFxml.showScene(AdminActivityCtrl.class);
+    }
+
+    /**
+     * Set selected activity.
      * @param selected Activity that was selected in table view earlier
      */
-    public void setActivity(Activity selected) throws NullPointerException{
-        if(!Objects.isNull(selected)) {
+    private void setActivity(Activity selected) throws NullPointerException {
+        if (!Objects.isNull(selected)) {
             this.selectedActivity = selected;
             idField.setText(selected.getActivityId() + "");
             activityTextField.setText(selected.getActivityText());
@@ -76,24 +90,35 @@ public class AdminActivityDetailsCtrl implements Initializable {
      * It checks if activity was changed and if so sends a PUT request to the server
      * to change and existing record of that activity
      */
-    public void confirmAction(ActionEvent event) {
+    @FXML
+    private void confirmAction(ActionEvent event) {
         Activity constructed;
         try {
-            constructed = new Activity(Long.parseLong(idField.getText()), activityTextField.getText(), Long.parseLong(valueField.getText()), sourceField.getText(), Long.parseLong(imageIdField.getText()));
-        } catch (NumberFormatException exception){
-            userAlert("ERROR", "Bad format", "Text fields with numbers are inputted incorrectly.");
+            constructed = new Activity(
+                    Long.parseLong(idField.getText()),
+                    activityTextField.getText(),
+                    Long.parseLong(valueField.getText()),
+                    sourceField.getText(),
+                    Long.parseLong(imageIdField.getText())
+            );
+        } catch (NumberFormatException exception) {
+            userAlert(
+                    "ERROR",
+                    "Bad format",
+                    "Text fields with numbers are inputted incorrectly.");
             return;
         }
-        if(this.selectedActivity.equals(constructed)) {
-            mainCtrl.showAdminActivityPanel();
-        } else {
+        if (!this.selectedActivity.equals(constructed)) {
             try {
                 AdminCommunication.editActivity(selectedActivity.getActivityId(), constructed);
             } catch (RuntimeException e) {
-                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+                userAlert(
+                        "ERROR",
+                        "Connection failed",
+                        "Client was unable to connect to the server");
                 return;
             }
-            mainCtrl.showAdminActivityPanel();
         }
+        myFxml.showScene(AdminActivityCtrl.class);
     }
 }

@@ -7,18 +7,24 @@ public class QuestionTypeA extends Question {
     private Activity activity2;
     private Activity activity3;
 
-    public QuestionTypeA() { }
+    public QuestionTypeA() {
 
+    }
 
+    /**
+     * Basic constructor for a question.
+     * @param activityA first activity that will be used
+     * @param activityB second activity that will be used
+     * @param activityC third activity that will be used
+     */
     public QuestionTypeA(Activity activityA, Activity activityB, Activity activityC) {
-
         questionType = 0;
         activity1 = activityA;
         activity2 = activityB;
         activity3 = activityC;
     }
 
-    public String giveText(){
+    public String giveText() {
         String string = "Which one uses the most energy?";
         return  string;
     }

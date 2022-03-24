@@ -1,11 +1,10 @@
 package commons;
 
-import commons.Question;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-import java.util.List;
 
 @Entity
 public class Game {
@@ -14,9 +13,23 @@ public class Game {
     private String gameCode;
     @Transient
     private List<Question> activeQuestionList;
+    @Transient
+    private List<User> userList;
 
     public Game() {
+        userList = new ArrayList<User>();
+    }
 
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    public void addUser(User user) {
+        userList.add(user);
     }
 
     public String getGameCode() {

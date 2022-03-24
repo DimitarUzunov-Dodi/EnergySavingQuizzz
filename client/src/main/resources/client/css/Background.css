@@ -1,3 +1,4 @@
+/* this is the reference example for styling the background */
 #pane{
     -fx-background-image: url("../images/background_lightning.png");
     -fx-background-repeat: repeat;

@@ -1,119 +1,50 @@
 package server.api;
 
-import commons.Game;
-import commons.ScoreRecord;
-import commons.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import server.database.GameRepository;
-import server.database.UserRepository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import server.service.GameService;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
-    private final GameRepository gameRepository;
-    @Autowired
-    private final UserRepository userRepository;
+    private final GameService gameService;
 
     /**
      * Constructor for the UserController class.
-     *
-     * @param gameRepository Game Repository
-     * @param userRepository User Repository
+     * @param gameService Game Service
      */
-    public UserController(GameRepository gameRepository, UserRepository userRepository) {
-        this.gameRepository = gameRepository;
-        this.userRepository = userRepository;
+    public UserController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     /**
-     * Saves an user to the database when they join a new game.
+     * Adds an user to the user list of a game.
      *
-     * @param gameCode Unique identifier for each game
-     * @param username Unique username
-     * @return The saved entity or a bad request in case of an error.
+     * @param gameCode gamecode
+     * @param username username
+     * @return ResponseEntity
      */
-    @PostMapping("/join/{gameCode}/{username}")
+    @PutMapping("/join/{gameCode}/{username}")
     public ResponseEntity<?> joinGame(@PathVariable String gameCode,
-                                      @PathVariable String username) {
-        Optional<Game> game = gameRepository.findById(gameCode);
-        if (game.isEmpty())
+                                       @PathVariable String username) {
+        if (!(gameService.doesGameExist(gameCode))) {
             return ResponseEntity
                     .badRequest()
                     .body("No game found with this game code!");
-        else {
-            Optional<User> user = userRepository.findByGameCodeAndUsername(gameCode, username) ;
-            if (user.isPresent())
-                return ResponseEntity
-                        .badRequest()
-                        .body("Username already in use in this game! Please change it and try again!");
-            else {
-                User user1 = new User(gameCode, username);
-
-                User saved = userRepository.save(user1);
-                return ResponseEntity.ok()
-                        .body(saved);
-            }
-        }
-    }
-
-    /**
-     * Updates an user's score when they answer a question correctly.
-     *
-     * @param gameCode Unique identifier for each game
-     * @return Response entity possibly containing a list of ScoreRecords
-     */
-    @GetMapping("/score/{gameCode}")
-    public ResponseEntity<List<ScoreRecord>> getLeaderboard(@PathVariable String gameCode) {
-        if(gameCode == null || gameCode.isEmpty())
-            return ResponseEntity.badRequest().build();
-
-        Optional<Game> game = gameRepository.findById(gameCode);
-        if (game.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        Optional<List<User>> entries = userRepository.findAllByGameCode(gameCode);
-        if (entries.isEmpty())
-            return ResponseEntity.noContent().build();
-
-        return ResponseEntity.ok().body(
-                entries.get()
-                .stream().map(e -> new ScoreRecord(e.getUsername(), e.getScore()))
-                .collect(Collectors.toList())
-        );
-    }
-
-    @GetMapping("/score/{gameCode}/{username}/{newScore}")
-    public ResponseEntity<?> updateScore(@PathVariable String gameCode,
-                                         @PathVariable String username, @PathVariable int newScore) {
-        Optional<Game> game = gameRepository.findById(gameCode);
-        if (game.isEmpty())
+        } else if (gameService.isUsernamePresent(gameCode, username)) {
             return ResponseEntity
                     .badRequest()
-                    .body("No game found with this game code!");
-        else {
-            Optional<User> user = userRepository.findByGameCodeAndUsername(gameCode, username) ;
-            if (user.isEmpty())
-                return ResponseEntity
-                        .badRequest()
-                        .body("No such user found!");
-            else {
-                User user1 = userRepository.findByGameCodeAndUsername(gameCode, username)
-                        .get();
-                user1.setScore(newScore);
-
-                User saved = userRepository.save(user1);
-                return ResponseEntity.ok()
-                        .body(saved);
-            }
+                    .body("Username already in use in this game!");
+        } else {
+            gameService.joinGame(gameCode, username);
+            return ResponseEntity.ok()
+                    .build();
         }
     }
 

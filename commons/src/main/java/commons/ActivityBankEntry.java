@@ -2,25 +2,25 @@ package commons;
 
 public class ActivityBankEntry {
     private String id;
-    private String image_path;
+    private String imagePath;
     private String title;
-    private long consumption_in_wh;
+    private long consumptionInWh;
     private String source;
 
     public String getId() {
         return id;
     }
 
-    public String getImage_path() {
-        return image_path;
+    public String getImagePath() {
+        return imagePath;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public long getConsumption_in_wh() {
-        return consumption_in_wh;
+    public long getConsumptionInWh() {
+        return consumptionInWh;
     }
 
     public String getSource() {

@@ -1,106 +1,97 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.username;
+import static client.utils.FileUtils.readNickname;
+import static client.utils.FileUtils.writeNickname;
+
+import client.MyFXML;
+import client.utils.SceneController;
 import com.google.inject.Inject;
-import commons.User;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import static client.utils.FileUtils.readNickname;
-import static client.utils.FileUtils.writeNickname;
-
-
-public class SplashCtrl {
-
-    private final MainCtrl mainCtrl;
-    private String nickname;
+public class SplashCtrl extends SceneController {
 
     @FXML
-    private Button singlePlayerGameButton;
+    private Button quitButton;
+    @FXML
+    private TextField usernameText;
 
+    /**
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
+     */
     @Inject
-    public SplashCtrl(MainCtrl mainCtrl) {
-        this.mainCtrl = mainCtrl;
-        this.nickname = "";
+    private SplashCtrl(MyFXML myFxml) {
+        super(myFxml);
+    }
+
+    @Override
+    public void show() {
+        initTextField();
+        showScene(); // display the scene on the primaryStage
     }
 
     /**
-     * Function called by quit button when clicked. Quits the application
-     * @param event passed by JavaFX by default
+     * Function called by quit button when clicked. Quits the application.
      */
-    public void quitAction(ActionEvent event) {
-        Stage stage = (Stage)(((Button)event.getSource()).getScene().getWindow());
-        stage.fireEvent(
-        new WindowEvent(
-                stage,
-                WindowEvent.WINDOW_CLOSE_REQUEST
-        ));
+    @FXML
+    private void quitAction() {
+        Stage stage = (Stage)scene.getWindow(); // this is how you get the current Stage btw
+        quitButton.getScene().getWindow().fireEvent(
+                new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     /**
      * Function called by settings button when clicked. Changes scene to Settings scene.
-     * @param event passed by JavaFX by default
      */
-    public void settingsAction(ActionEvent event) {
-        mainCtrl.showSettingsScreen();
-    }
-
-    public void singlePlayerAction(ActionEvent event) {
-        GamePageController.init(new User(null, nickname));
-        mainCtrl.showGamePage();
+    @FXML
+    private void settingsAction() {
+        myFxml.showScene(SettingsCtrl.class);
     }
 
     /**
-     * Function initializes nickname TextField in SplashScreen scene
+     * Called on user pressing 'Singleplayer' button, send user to GamePage.
      */
-    public void initTextField() {
-        TextField usernameField = (TextField) mainCtrl.getSplashScreenScene().lookup("#nicknameField");
-
-        String username = readNickname();
-        usernameField.setText(username);
-        this.setNickname(username);
+    @FXML
+    private void singlePlayerAction() {
+        myFxml.showScene(GameScreenCtrl.class);
     }
 
     /**
-     * Function saves nickname automatically when nickname TextField is changed
-     * Nickname is stored according to pathToUserData
+     * Function initializes nickname TextField in SplashScreen scene.
      */
-    public void saveNickname() {
-        TextField usernameField = (TextField) mainCtrl.getSplashScreenScene().lookup("#nicknameField");
-        String nicknameString = usernameField.getText();
-
-        writeNickname(nicknameString);
+    private void initTextField() {
+        username = readNickname();
+        usernameText.setText(MainCtrl.username);
     }
 
     /**
-     * Get method for nickname attribute, so nickname can be accessed everywhere by every client function
-     * Subject to change, because to the best thing to import SplashCtrl everytime. Maybe we should add function somewhere in common class
-     * @return String representing the nickname
+     * Function saves nickname automatically when nickname TextField is changed.
+     * Nickname is stored according to pathToUserData.
      */
-    public String getNickname() {
-        return nickname;
+    @FXML
+    private void saveNickname() {
+        username = usernameText.getText().strip();
+        writeNickname(username);
     }
 
     /**
-     * Set method for nickname attribute
-     * @param nickname String value which is going to be assigned to nickname class attribute but will not be saved in file
+     * Called on user pressing 'Multiplayer' button, sends user to Multiplayer.
      */
-    private void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void onMultiplayerPressed() {
-        mainCtrl.showServerJoin();
+    @FXML
+    private void onMultiplayerPressed() {
+        myFxml.showScene(MultiplayerCtrl.class);
     }
 
     /**
      * Function called by admin button when clicked. Changes scene to AdminPage scene.
-     * @param event passed by JavaFX by default
      */
-    public void adminAction(ActionEvent event){
-        mainCtrl.showAdmin();
+    @FXML
+    private void adminAction() {
+        myFxml.showScene(AdminCtrl.class);
     }
 }

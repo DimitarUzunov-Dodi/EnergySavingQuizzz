@@ -1,0 +1,22 @@
+#background{
+    -fx-background-image: url("../images/background_lightning.png");
+    -fx-background-repeat: repeat;
+    -fx-background-position: top left;
+    -fx-min-height: 500;
+}
+
+#playButton {
+    -fx-color: #FFE600;
+}
+
+#playButton:hover{
+    -fx-color: #00FF00;
+}
+
+#utilsButton {
+    -fx-color: #7389A4B5;
+}
+
+#utilsButton:hover{
+    -fx-color: #00FF00;
+}

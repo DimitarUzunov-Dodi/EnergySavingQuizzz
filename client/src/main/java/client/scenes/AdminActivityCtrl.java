@@ -1,9 +1,18 @@
 package client.scenes;
 
+import static client.utils.UserAlert.userAlert;
+
+import client.MyFXML;
 import client.communication.AdminCommunication;
 import client.utils.ActivityBankUtils;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,20 +23,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
+public class AdminActivityCtrl extends SceneController implements Initializable {
 
-import static client.scenes.UserAlert.userAlert;
-
-public class AdminActivityCtrl implements Initializable {
-    private final MainCtrl mainCtrl;
-    private final AdminCommunication server;
-
-    private ObservableList <Activity> data;
+    private ObservableList<Activity> data;
 
     @FXML
     private TableView<Activity> activityTable;
@@ -39,101 +38,138 @@ public class AdminActivityCtrl implements Initializable {
     private TableColumn<Activity, String> colActivityValue;
 
     @Inject
-    public AdminActivityCtrl(MainCtrl mainCtrl, AdminCommunication server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+    private AdminActivityCtrl(MyFXML myFxml) {
+        super(myFxml);
+    }
+
+    @Override
+    public void show() {
+        colActivityId.setCellValueFactory(
+                q -> new SimpleStringProperty(q.getValue().getActivityId() + "")
+        );
+        colActivityText.setCellValueFactory(
+                q -> new SimpleStringProperty(q.getValue().getActivityText())
+        );
+        colActivityValue.setCellValueFactory(
+                q -> new SimpleStringProperty(q.getValue().getValue() + "")
+        );
+        refresh();
+        showScene();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        colActivityId.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getActivityId()+""));
-        colActivityText.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getActivityText()));
-        colActivityValue.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getValue()+""));
+
     }
 
     /**
      * Function called by button when clicked. Switches to main admin panel.
      * @param event passed by JavaFX by default
      */
-    public void switchToAdminPanel(ActionEvent event){
-        mainCtrl.showAdmin();
+    @FXML
+    private void switchToAdminPanel(ActionEvent event) {
+        myFxml.showScene(AdminCtrl.class);
     }
 
     /**
-     * Method refreshes the list of activities in admin panel
+     * Method refreshes the list of activities in admin panel.
      */
-    public void refresh() {
+    @FXML
+    private void refresh() {
         new Thread(() -> {
             System.out.println("Refreshing activities table...");
             try {
                 data = FXCollections.observableList(AdminCommunication.getAllActivities());
                 activityTable.setItems(data);
-                System.out.println("Populated table with "+data.size()+" entries.");
+                System.out.println("Populated table with " + data.size() + " entries.");
             } catch (RuntimeException e) {
-                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+                Platform.runLater(
+                        () -> userAlert(
+                                "ERROR",
+                                "Connection failed",
+                                "Client was unable to connect to the server"));
             }
         }).start();
     }
 
     /**
-     * FOR MANUAL TESTING PURPOSES ONLY
+     * FOR MANUAL TESTING PURPOSES ONLY.
      * (It's still available in the admin panel)
      * Adds a dummy activity with fixed values:
      *
      */
-    public void add() {
-        AdminCommunication.addTestingActivity();
+    @FXML
+    private void add() {
+        // AdminCommunication.addTestingActivity();
     }
 
     /**
-     * Deletes all available activities on the server
+     * Deletes all available activities on the server.
      */
-    public void deleteAllActivities() {
-        Stage thisStage = (Stage) activityTable.getScene().getWindow();
+    @FXML
+    private void deleteAllActivities() {
         Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
         quitAlert.setTitle("Quit");
         quitAlert.setHeaderText("Are you sure you want to delete all activities?");
         Optional<ButtonType> result = quitAlert.showAndWait();
-        if(result.get() == ButtonType.OK) {
+        if (result.get() == ButtonType.OK) {
             try {
-                AdminCommunication.deleteActivities();
+                new Thread(AdminCommunication::deleteActivities).start();
             } catch (RuntimeException e) {
-                userAlert("ERROR", "Connection failed", "Client was unable to connect to the server");
+                Platform.runLater(
+                        () -> userAlert(
+                                "ERROR",
+                                "Connection failed",
+                                "Client was unable to connect to the server"));
             }
         }
     }
 
     /**
-     * Switches a window to editing mode, so you can change activity details
+     * Switches a window to editing mode, so you can change activity details.
      */
-    public void edit() {
+    @FXML
+    private void edit() {
         Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        mainCtrl.showAdminActivityDetails(selected);
-    }
-
-    public void image() {
-        Activity selected = activityTable.getSelectionModel().getSelectedItem();
-        mainCtrl.showActivityImage(selected);
+        myFxml.get(AdminActivityDetailsCtrl.class).customShow(selected);
     }
 
     /**
-     * Loads activities from the archive based on jsons there
+     * Switches a window to imageview mode, so you can check the image associated with activity.
      */
-    public void load(){
+    @FXML
+    private void image() {
+        Activity selected = activityTable.getSelectionModel().getSelectedItem();
+        myFxml.get(ActivityImageCtrl.class).customShow(selected);
+    }
+
+    /**
+     * Loads activities from the archive based on json there.
+     */
+    @FXML
+    private void load() {
         new Thread(() -> {
             System.out.println("Loading activities...");
             try {
                 ActivityBankUtils.unzipActivityBank();
             } catch (IOException exception) {
                 exception.printStackTrace();
-                // userAlert("ERROR", "Unable to load archive", "Error occurred while trying to read an archive");
+                Platform.runLater(
+                        () -> userAlert(
+                            "ERROR",
+                            "Unable to load archive",
+                            "Error occurred while trying to read an archive"));
             }
             try {
                 ActivityBankUtils.jsonToActivityBankEntry();
             } catch (IOException exception) {
+                Platform.runLater(
+                        () -> userAlert(
+                                "ERROR",
+                                "Unable to load data from json",
+                                "Error occurred while trying to read a json"));
                 exception.printStackTrace();
             }
         }).start();
     }
-
 }

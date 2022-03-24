@@ -1,14 +1,14 @@
 package client.utils;
 
-import org.junit.jupiter.api.Test;
+import static client.utils.FileUtils.readNickname;
+import static client.utils.FileUtils.writeNickname;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static client.utils.FileUtils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class FileUtilsTest {
 
@@ -30,7 +30,7 @@ class FileUtilsTest {
                 "+^%*$#&)()(+=~@"
         ));
 
-        for(String nickname : nicknames) {
+        for (String nickname : nicknames) {
             writeNickname(testUserData, nickname);
             assertEquals(nickname, readNickname(testUserData));
         }

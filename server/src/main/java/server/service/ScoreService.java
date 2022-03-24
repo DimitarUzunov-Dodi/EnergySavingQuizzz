@@ -1,24 +1,24 @@
-package server.userScores;
+package server.service;
 
 import commons.ScoreRecord;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+import org.springframework.stereotype.Service;
+import server.database.ScoreRecordRepository;
 
 @Service
 public class ScoreService {
 
     private final ScoreRecordRepository scoreRecordRepository;
 
-    public ScoreService(server.userScores.ScoreRecordRepository scoreRecordRepository) {
+    public ScoreService(ScoreRecordRepository scoreRecordRepository) {
         this.scoreRecordRepository = scoreRecordRepository;
     }
 
     /**
-     * adds the score to the user in the database
+     * adds the score to the user in the database.
      *
-     * @param nickname
-     * @param score
+     * @param nickname The name of the user
+     * @param score the score of the user
      */
     void addScore(String nickname, int score) {
 

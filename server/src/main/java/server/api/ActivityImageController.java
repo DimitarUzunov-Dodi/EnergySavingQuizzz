@@ -13,13 +13,13 @@ import server.database.ActivityImagesRepository;
 public class ActivityImageController {
     private ActivityImagesRepository imageRepo;
 
-     public ActivityImageController(ActivityImagesRepository imageRepo) {
-         this.imageRepo = imageRepo;
-     }
+    public ActivityImageController(ActivityImagesRepository imageRepo) {
+        this.imageRepo = imageRepo;
+    }
 
 
-     @GetMapping(value = "/getImage/{imageId}")
-     public ResponseEntity<ActivityImage> getImage(@PathVariable String imageId) {
-         return ResponseEntity.ok(imageRepo.findById(Long.parseLong(imageId)).get());
-     }
+    @GetMapping(value = "/getImage/{imageId}")
+    public ResponseEntity<ActivityImage> getImage(@PathVariable String imageId) {
+        return ResponseEntity.ok(imageRepo.findById(Long.parseLong(imageId)).get());
+    }
 }
