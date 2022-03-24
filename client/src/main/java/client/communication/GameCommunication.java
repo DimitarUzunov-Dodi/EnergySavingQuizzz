@@ -21,19 +21,34 @@ public class GameCommunication {
 
     private static StompSession session;
 
-    public static void connect(String url) throws IllegalStateException{
+
+    /**
+     * Method that connects the client to the websocket session.
+     * @param url Url to connect to
+     * @throws IllegalStateException IllegalStateException
+     */
+    public static void connect(String url) throws IllegalStateException {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
+
         try {
-        session = stomp.connect(serverAddress.replace("http", "ws")+"/game", new StompSessionHandlerAdapter() {}).get();
+            session = stomp.connect(serverAddress.replace("http", "ws") + "/game",
+                new StompSessionHandlerAdapter() {}).get();
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException();
         }
     }
 
-    public static <T> void  registerForMessages(String dest, Class<T> type, Consumer<T> consumer){
+    /**
+     * subscribes the client to channels to receive objects from the server.
+     * @param dest destination to subscribe to
+     * @param type class to receive
+     * @param consumer consumer that handles receiving the class
+     * @param <T> the class
+     */
+    public static <T> void  registerForMessages(String dest, Class<T> type, Consumer<T> consumer) {
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -48,7 +63,7 @@ public class GameCommunication {
         });
     }
 
-    public static void send(String dest, Object o){
+    public static void send(String dest, Object o) {
         session.send(dest, o);
     }
 
