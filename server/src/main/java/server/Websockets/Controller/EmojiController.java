@@ -1,10 +1,11 @@
 
 
-package server.Websockets.Controller;
+package server.websockets.controller;
 
 
 import commons.Game;
 import commons.Person;
+import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import server.service.GameService;
 
-import java.util.Random;
 
 
 @Controller
@@ -26,7 +26,12 @@ public class EmojiController {
 
     private Game currentGame;
 
-    public EmojiController(Random random, GameService gameService){
+    /**
+     * Constructor for the EmojiController.
+     * @param random the required random
+     * @param gameService the Gameservice to retrieve game creation methods from
+     */
+    public EmojiController(Random random, GameService gameService) {
         this.random = random;
         this.gameService = gameService;
         this.currentGame = getGame();
@@ -38,35 +43,35 @@ public class EmojiController {
 
 
 
-    private int PlayersInCurrentGame = 0;
+    private int playersInCurrentGame = 0;
 
-    public Game getGame(){
-       String gameCode = gameService.createGame();
-       return gameService.getGame(gameCode);
+    public Game getGame() {
+        String gameCode = gameService.createGame();
+        return gameService.getGame(gameCode);
     }
 
     /**
-     * sends the appropriate emoji to the clients of all websockets connected
+     * sends the appropriate emoji to the clients of all websockets connected.
      *
-     * @return
-     * @throws Exception
+     * @return the retrieved game
+     * @throws Exception Exception
      */
     @MessageMapping("/game")
     @SendTo("/game/receive")
     public Game sendGame() throws Exception {
 
-        PlayersInCurrentGame++;
+        playersInCurrentGame++;
         return currentGame;
 
     }
 
 
     /**
-     * sends the appropriate emoji to the clients of all websockets connected
+     * sends the appropriate emoji to the clients of all websockets connected.
      *
-     * @param emojiInfo
-     * @return
-     * @throws Exception
+     * @param emojiInfo the recieved emoji
+     * @return the sent emoji
+     * @throws Exception Exception
      */
     @MessageMapping("/emoji")
     @SendTo("/emoji/receive")

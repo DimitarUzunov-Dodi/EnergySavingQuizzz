@@ -1,4 +1,4 @@
-package server.Websockets.Controller;
+package server.websockets.controller;
 
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
