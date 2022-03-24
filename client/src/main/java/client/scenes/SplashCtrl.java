@@ -22,11 +22,11 @@ public class SplashCtrl extends SceneController {
 
     /**
      * Basic constructor.
-     * @param myFXML handled by INJECTOR
+     * @param myFxml handled by INJECTOR
      */
     @Inject
-    private SplashCtrl(MyFXML myFXML) {
-        super(myFXML);
+    private SplashCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SplashCtrl extends SceneController {
      * Function called by admin button when clicked. Changes scene to AdminPage scene.
      */
     @FXML
-    private void adminAction(){
+    private void adminAction() {
         myFxml.showScene(AdminCtrl.class);
     }
 }

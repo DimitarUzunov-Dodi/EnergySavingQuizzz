@@ -107,7 +107,7 @@ public class ActivityBankUtils {
     }
 
     /**
-     * Uploads image to a database and returns id of an image
+     * Uploads image to a database and returns id of an image.
      * @param path - path to image(for tranformation into byte[]).
      * @return id of the image saved into an image db
      */

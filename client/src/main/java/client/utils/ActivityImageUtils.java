@@ -1,11 +1,11 @@
 package client.utils;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 

@@ -25,8 +25,8 @@ public class LoadingCtrl extends SceneController {
     private Label score;
 
     @Inject
-    private LoadingCtrl(MyFXML myFXML) {
-        super(myFXML);
+    private LoadingCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     @Override

@@ -23,8 +23,7 @@ public class ActivityImageCommunication {
         try {
             byte[] imageData = getActivityImage(imageId).getImageData();
             return imageFromByteArray(imageData);
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             return new Image(Objects.requireNonNull(
                     ActivityImageCommunication.class.getResource("../images/default-image.png"))

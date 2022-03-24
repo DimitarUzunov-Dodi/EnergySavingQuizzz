@@ -17,11 +17,11 @@ public class ActivityImageCtrl extends SceneController {
 
     /**
      * Basic constructor.
-     * @param myFXML handled by INJECTOR
+     * @param myFxml handled by INJECTOR
      */
     @Inject
-    private ActivityImageCtrl(MyFXML myFXML) {
-        super(myFXML);
+    private ActivityImageCtrl(MyFXML myFxml) {
+        super(myFxml);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ActivityImageCtrl extends SceneController {
      * @param event passed by JavaFX by default
      */
     @FXML
-    private void switchToActivityPanel(ActionEvent event){
+    private void switchToActivityPanel(ActionEvent event) {
         myFxml.showScene(AdminCtrl.class);
     }
 }
