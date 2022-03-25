@@ -1,6 +1,7 @@
 package client.scenes;
 
 import static client.scenes.MainCtrl.currentGameID;
+import static client.scenes.MainCtrl.username;
 
 import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
@@ -37,6 +38,18 @@ public class WaitingRoomCtrl extends SceneController {
     @Override
     public void show() {
         setGameCode(currentGameID);
+        WaitingRoomCommunication.registerForUserListUpdates(username, currentGameID,
+                u -> {
+                    Platform.runLater(() -> {
+                        playerList.add(u.getUsername());
+                    });
+                },
+                u -> {
+                    Platform.runLater(() -> {
+                        playerList.remove(u.getUsername());
+                    });
+                }
+        );
         playerList = FXCollections.observableList(
                 WaitingRoomCommunication.getAllUsers(currentGameID)
                         .stream()
@@ -44,11 +57,6 @@ public class WaitingRoomCtrl extends SceneController {
                                 u -> u.getUsername())
                         .collect(Collectors.toList()));
         listView.setItems(playerList);
-        WaitingRoomCommunication.registerForUserListUpdates(currentGameID, u -> {
-            Platform.runLater(() -> {
-                playerList.add(u.getUsername());
-            });
-        });
         showScene();
     }
 
@@ -66,6 +74,7 @@ public class WaitingRoomCtrl extends SceneController {
      */
     @FXML
     private void onBackButton() {
+        WaitingRoomCommunication.leaveGame(currentGameID, username);
         myFxml.showScene(MultiplayerCtrl.class);
     }
 

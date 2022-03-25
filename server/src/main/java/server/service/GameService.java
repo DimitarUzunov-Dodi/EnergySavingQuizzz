@@ -113,6 +113,18 @@ public class GameService {
         activeGames.get(gameCode).getUserList().add(new User(username));
     }
 
+    /**
+     * Method handles leave from the game.
+     * @param gameCode game to leave
+     * @param username username of the user that leaves
+     */
+    public void leaveGame(String gameCode, String username) {
+        activeGames.get(gameCode).removeUser(new User(username));
+        if (getUsers(gameCode).size() == 0) {
+            activeGames.remove(gameCode);
+        }
+    }
+
     public List<User> getUsers(String gameCode) {
         return activeGames.get(gameCode).getUserList();
     }

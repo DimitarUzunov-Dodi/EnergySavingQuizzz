@@ -34,7 +34,7 @@ public class EmojiController {
     public EmojiController(Random random, GameService gameService) {
         this.random = random;
         this.gameService = gameService;
-        this.currentGame = getGame();
+        //this.currentGame = getGame();
 
     }
 

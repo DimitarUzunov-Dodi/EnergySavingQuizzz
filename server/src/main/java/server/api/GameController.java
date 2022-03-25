@@ -38,6 +38,7 @@ public class GameController {
      */
     @GetMapping("/new")
     public ResponseEntity<?> createGame() {
+        System.out.println("ACTIVATED TO CREATE NEW GAME");
         return ResponseEntity.ok()
                 .body(gameService.createGame());
     }

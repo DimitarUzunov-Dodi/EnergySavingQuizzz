@@ -76,6 +76,7 @@ public class MultiplayerCtrl extends SceneController {
     @FXML
     private void onCreatePrivate() {
         currentGameID = WaitingRoomCommunication.createNewGame();
+        gameCodeField.setText(currentGameID);
         joinGame();
     }
 

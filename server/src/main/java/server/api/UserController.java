@@ -20,7 +20,7 @@ import server.service.GameService;
 @RequestMapping("/api/user")
 public class UserController {
 
-    public Map<Object, Pair<Consumer<User>, String>> listeners = new HashMap<>();
+    public Map<Object, Pair<Consumer<Pair<User, String>>, String>> listeners = new HashMap<>();
 
     @Autowired
     private final GameService gameService;
@@ -45,17 +45,47 @@ public class UserController {
                                        @PathVariable String username) {
         if (!(gameService.doesGameExist(gameCode))) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.NOT_FOUND)
                     .body("No game found with this game code!");
         } else if (gameService.isUsernamePresent(gameCode, username)) {
             return ResponseEntity
-                    .badRequest()
+                    .status(HttpStatus.BAD_REQUEST)
                     .body("Username already in use in this game!");
         } else {
             gameService.joinGame(gameCode, username);
             listeners.forEach((k, l) -> {
                 if (l.getSecond().equals(gameCode)) {
-                    l.getFirst().accept(new User(username));
+                    l.getFirst().accept(Pair.of(new User(username), "ADD"));
+                }
+            });
+            return ResponseEntity.ok()
+                    .build();
+        }
+    }
+
+    /**
+     * Adds an user to the user list of a game.
+     *
+     * @param gameCode gamecode
+     * @param username username
+     * @return ResponseEntity
+     */
+    @PutMapping("/leave/{gameCode}/{username}")
+    public ResponseEntity<String> leaveGame(@PathVariable String gameCode,
+                                           @PathVariable String username) {
+        if (!(gameService.doesGameExist(gameCode))) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("No game found with this game code!");
+        } else if (!gameService.isUsernamePresent(gameCode, username)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("No such user in selected game!");
+        } else {
+            gameService.leaveGame(gameCode, username);
+            listeners.forEach((k, l) -> {
+                if (l.getSecond().equals(gameCode)) {
+                    l.getFirst().accept(Pair.of(new User(username), "REMOVE"));
                 }
             });
             return ResponseEntity.ok()
@@ -75,10 +105,13 @@ public class UserController {
                 5000L, noContent);
 
         var key = new Object();
-        listeners.put(key, Pair.of(
-                u -> {
-                    result.setResult(ResponseEntity.ok(u));
-                }, gameCode));
+        listeners.put(key, Pair.of(p -> {
+            if (p.getSecond().equals("ADD")) {
+                result.setResult(ResponseEntity.ok(p.getFirst()));
+            } else if ((p.getSecond().equals("REMOVE"))) {
+                result.setResult(ResponseEntity.status(HttpStatus.GONE).body(p.getFirst()));
+            }
+        }, gameCode));
         result.onCompletion(() -> {
             listeners.remove(key);
         });

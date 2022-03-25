@@ -2,6 +2,7 @@ package commons;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -30,6 +31,16 @@ public class Game {
 
     public void addUser(User user) {
         userList.add(user);
+    }
+
+    /**
+     * Method removes from the game user with a given username.
+     * @param user user object whose name will remove
+     */
+    public void removeUser(User user) {
+        userList = userList.stream()
+                .filter(u -> !u.getUsername().equals(user.getUsername()))
+                .collect(Collectors.toList());
     }
 
     public String getGameCode() {

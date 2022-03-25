@@ -41,8 +41,8 @@ public class WaitingRoomCommunication {
     }
 
     /**
-     * Send PUT request to the server to get list of available activities on the server.
-     * @return list of Activity entities retrieved from the server
+     * Send PUT request to the server to initiate joining to certain game.
+     * @return response from the server
      * @throws RuntimeException when unable to connect to the server
      */
     public static Response joinGame(String gameCode, String username) throws RuntimeException {
@@ -52,18 +52,20 @@ public class WaitingRoomCommunication {
                 .put(Entity.json(""));
     }
 
-    private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+    private static ExecutorService pollingThread = Executors.newSingleThreadExecutor();
+    private static String currentGameID;
 
     /**
      * Send GET request to the server to create a new game.
      * @return String that contains six-digit game code.
      * @throws RuntimeException when unable to connect to the server
      */
-    public static void registerForUserListUpdates(String gameCode, Consumer<User> consumer)
+    public static void registerForUserListUpdates(String username, String gameCode,
+                                                  Consumer<User> adder, Consumer<User> remover)
             throws RuntimeException {
-        EXEC.submit(() -> {
-            while (!Thread.interrupted()) {
-                System.out.println("Polling goes on");
+        currentGameID = gameCode;
+        pollingThread.execute(() -> {
+            while (currentGameID == gameCode) {
                 var res = ClientBuilder.newClient(new ClientConfig())
                         .target(serverAddress).path("/api/user/updates/" + gameCode)
                         .request(APPLICATION_JSON)
@@ -73,13 +75,32 @@ public class WaitingRoomCommunication {
                     continue;
                 }
                 var u = res.readEntity(User.class);
-                consumer.accept(u);
+                if (res.getStatus() == 410) {
+                    remover.accept(u);
+                    continue;
+                } else {
+                    if (!u.getUsername().equals(username)) {
+                        adder.accept(u);
+                    }
+                }
             }
         });
     }
 
     public static void stop() {
-        EXEC.shutdownNow();
+        pollingThread.shutdownNow();
+    }
+
+    /**
+     * Send DELETE request to the server to leave the game, if user was connected to it.
+     * @return server responser
+     * @throws RuntimeException when unable to connect to the server
+     */
+    public static Response leaveGame(String gameCode, String username) throws RuntimeException {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress).path("/api/user/leave/" + gameCode + "/" + username)
+                .request(APPLICATION_JSON)
+                .put(Entity.json(""));
     }
 
 }
