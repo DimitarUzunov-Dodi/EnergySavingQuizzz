@@ -38,6 +38,7 @@ public class GameController {
      */
     @GetMapping("/new")
     public ResponseEntity<?> createGame() {
+        System.out.println("ACTIVATED TO CREATE NEW GAME");
         return ResponseEntity.ok()
                 .body(gameService.createGame());
     }
@@ -94,6 +95,16 @@ public class GameController {
         } else {
             return ResponseEntity.ok(gameService.getUsers(gameCode));
         }
+    }
+
+    /**
+     * GET mapping that gets gamecode of a public game.
+     *
+     * @return ResponseEntity
+     */
+    @GetMapping("/get/public")
+    public ResponseEntity<?> getPublicCode() {
+        return ResponseEntity.ok().body(gameService.getCurrentPublicGame());
     }
 
 }
