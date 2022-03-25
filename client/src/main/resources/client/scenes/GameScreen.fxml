@@ -110,14 +110,24 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="windmill" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="image1" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/OIP.jpg" />
                      </image>
                   </ImageView>
-                  <Text id="Question_text" fx:id="activityText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.rowIndex="1" />
-                  <Text id="Question_text" fx:id="activityText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text id="Question_text" fx:id="activityText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText1" boundsType="LOGICAL_VERTICAL_CENTER" strokeType="INSIDE" strokeWidth="0.0" text="Text" wrappingWidth="147.7367286682129" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="146.93669509887695" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text id="Question_text" fx:id="activityText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="145.3367042541504" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ImageView fx:id="image2" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                     <image>
+                        <Image url="@../images/OIP.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="image3" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                     <image>
+                        <Image url="@../images/OIP.jpg" />
+                     </image>
+                  </ImageView>
                </children>
             </GridPane>
          </children>

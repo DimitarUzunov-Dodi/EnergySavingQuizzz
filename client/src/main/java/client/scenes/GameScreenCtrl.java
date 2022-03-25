@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.MyFXML;
+import client.communication.ActivityImageCommunication;
 import client.communication.GameCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
@@ -43,7 +44,15 @@ public class GameScreenCtrl extends SceneController {
     private ImageView menuButton;
 
     @FXML
-    private ImageView windmill;
+    private ImageView image1;
+
+    @FXML
+    private ImageView image2;
+
+
+    @FXML
+    private ImageView image3;
+
 
 
     @FXML
@@ -84,6 +93,7 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView emoji3;
 
+    private int correctAnswer;
 
     private final Image emojiHappy = new Image("client/images/emoji1.png");
     private final Image emojiSad = new Image("client/images/emoji2.png");
@@ -111,7 +121,7 @@ public class GameScreenCtrl extends SceneController {
      * Initialises the images for the game screen.
      */
     public void initImages() {
-        windmill.setImage(new Image("client/images/OIP.jpg"));
+        //windmill.setImage(new Image("client/images/OIP.jpg"));
         menuButton.setImage(new Image(("client/images/menu.png")));
         emoji1.setImage(new Image("client/images/emoji1.png"));
         emoji2.setImage(new Image("client/images/emoji2.png"));
@@ -131,7 +141,7 @@ public class GameScreenCtrl extends SceneController {
                     @Override
                     protected Integer call() {
                         int i;
-                        for (i = 0; i < TIME_TO_NEXT_ROUND * 100; i++) {
+                        for (i = TIME_TO_NEXT_ROUND * 100; i > 0; i--) {
                             updateProgress(i, TIME_TO_NEXT_ROUND * 100);
                             try {
                                 Thread.sleep(10);
@@ -151,10 +161,66 @@ public class GameScreenCtrl extends SceneController {
 
     }
 
+/**
+ * cool loading bar
+    public void countDown() {
+        final Service<Integer> countDownThread = new Service<>() {
+            @Override
+            protected Task<Integer> createTask() {
+                return new Task<Integer>() {
+                    @Override
+                    protected Integer call() {
+                        int i;
+                        for (i = 0; i > TIME_TO_NEXT_ROUND * 100; i--) {
+                            updateProgress(i, TIME_TO_NEXT_ROUND * 100);
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return i;
+                    }
+                };
+            }
+        };
+
+
+        progressBar.progressProperty().bind(countDownThread.progressProperty());
+        countDownThread.start();
+
+    }
+
+    **/
+
     public void refreshQuestion() {
         activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
         questionText.setText(activeQuestion.displayText());
+        activityText1.setText(activeQuestion.getActivity1().getActivityText());
+        activityText2.setText(activeQuestion.getActivity2().getActivityText());
+        activityText3.setText(activeQuestion.getActivity3().getActivityText());
+        long energyConsumption1 = activeQuestion.getActivity1().getValue();
+        long energyConsumption2 = activeQuestion.getActivity2().getValue();
+        long energyConsumption3 = activeQuestion.getActivity3().getValue();
+        long[] consumptions = {energyConsumption1, energyConsumption2, energyConsumption3};
+        image1.setImage(ActivityImageCommunication.getImageFromId(activeQuestion.getActivity1().getImageId()));
+        image2.setImage(ActivityImageCommunication.getImageFromId(activeQuestion.getActivity2().getImageId()));
+        image3.setImage(ActivityImageCommunication.getImageFromId(activeQuestion.getActivity3().getImageId()));
+        int i = -1;
+        long biggest = -1;
+        for (long consumption: consumptions){
+            i++;
+            if (consumption > biggest){
+                biggest = consumption;
+                correctAnswer = i;
+            }
+        }
+
+
     }
+
+
+
 
     /**
      * When the first emoji is clicked it is sent to the server and also by whom it has been sent.
@@ -165,6 +231,23 @@ public class GameScreenCtrl extends SceneController {
         GameCommunication.send("/app/emoji", emojiInfo);
     }
 
+    public void answerApressed(){
+        if(correctAnswer == 0) {
+            // TODO give points
+        }
+    }
+
+    public void answerBpressed(){
+        if(correctAnswer == 1) {
+            // TODO give points
+        }
+    }
+
+    public void answerCpressed(){
+        if(correctAnswer == 2) {
+            // TODO give points
+        }
+    }
     /**
      * When the second emoji is clicked it is sent to the server and also by whom it has been sent.
      */
@@ -204,7 +287,7 @@ public class GameScreenCtrl extends SceneController {
 
         initImages();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
-        progressBar.setProgress(0);
+        progressBar.setProgress(1F);
         // Question_text = new Text("foo");
         buttonList.add(button1);
         buttonList.add(button2);
@@ -215,7 +298,7 @@ public class GameScreenCtrl extends SceneController {
 
         qIndex = 0;
 
-        refreshQuestion();
+
 
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
@@ -289,7 +372,7 @@ public class GameScreenCtrl extends SceneController {
             displayImage.setImage(imagesArray[2]);
             System.out.println(v);
         });
-
+        refreshQuestion();
         countDown();
         showScene();
     }
