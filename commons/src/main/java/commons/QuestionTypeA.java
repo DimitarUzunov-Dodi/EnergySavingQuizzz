@@ -1,14 +1,16 @@
 package commons;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class QuestionTypeA extends Question {
 
-    private int questionType;
+    private final int questionType;
     private Activity activity1;
     private Activity activity2;
     private Activity activity3;
 
     public QuestionTypeA() {
-
+        questionType = 0;
     }
 
     /**
@@ -47,7 +49,17 @@ public class QuestionTypeA extends Question {
 
     @Override
     public String displayText() {
-        return "What is more expensive?";
+        return "Which activity uses the most energy?";
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("questionType", questionType)
+                .append("activity1", activity1)
+                .append("activity2", activity2)
+                .append("activity3", activity3)
+                .append("/n")
+                .toString();
+    }
 }
