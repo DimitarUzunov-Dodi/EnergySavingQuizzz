@@ -9,7 +9,10 @@ import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import jakarta.ws.rs.core.Response;
+import java.util.Optional;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 
 public class MultiplayerCtrl extends SceneController {
@@ -37,8 +40,8 @@ public class MultiplayerCtrl extends SceneController {
      */
     @FXML
     private void onJoinPublic() {
-        currentGameID = "get waiting public game id"; // TODO: Implement auto-gen games
-        myFxml.showScene(WaitingRoomCtrl.class);
+        currentGameID = WaitingRoomCommunication.getPublicCode();
+        joinGame();
     }
 
     /**
@@ -61,16 +64,16 @@ public class MultiplayerCtrl extends SceneController {
                     "ERROR",
                     "Username is already taken",
                     "Username already in use in this game!");
-        } else if (statusCode == 404) {
-            userAlert(
-                    "ERROR",
-                    "No such game",
-                    "No game found with this game code!");
-        } else if (statusCode == 418) {
-            userAlert(
-                    "ERROR",
-                    "Room is closed",
-                    "It is no longer possible to join this room!");
+        } else if (statusCode == 404 || statusCode == 418) {
+            Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            quitAlert.setTitle("Oops");
+            quitAlert.setHeaderText(
+                    "It is no longer possible to join this room. "
+                            + "Would you like to join a public game?");
+            Optional<ButtonType> result = quitAlert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                onJoinPublic();
+            }
         }
     }
 

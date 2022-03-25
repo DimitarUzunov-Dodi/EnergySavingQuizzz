@@ -17,6 +17,7 @@ import server.database.ActivityRepository;
 public class GameService {
 
     private HashMap<String, Game> activeGames;
+    private String currentPublicGame;
     private final Random random;
 
     private final ActivityRepository activityRepository;
@@ -31,6 +32,7 @@ public class GameService {
         this.activeGames = new HashMap<String, Game>();
         this.activityRepository = activityRepository;
         this.random = random;
+        this.currentPublicGame = createGame();
     }
 
     /**
@@ -137,7 +139,19 @@ public class GameService {
         return activeGames.get(gameCode).hasStarted();
     }
 
+    /**
+     * Method closes the room, so it's become impossible to join it.
+     * In case of room being public a new public room is created.
+     * @param gameCode code of the room to close
+     */
     public void closeRoom(String gameCode) {
         activeGames.get(gameCode).setStarted(true);
+        if (this.currentPublicGame.equals(gameCode)) {
+            this.currentPublicGame = createGame();
+        }
+    }
+
+    public String getCurrentPublicGame() {
+        return currentPublicGame;
     }
 }

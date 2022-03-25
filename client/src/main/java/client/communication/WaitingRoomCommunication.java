@@ -1,5 +1,6 @@
 package client.communication;
 
+import static client.scenes.MainCtrl.currentGameID;
 import static client.utils.ServerUtils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -50,6 +51,18 @@ public class WaitingRoomCommunication {
                 .target(serverAddress).path("/api/user/join/" + gameCode + "/" + username)
                 .request(APPLICATION_JSON)
                 .put(Entity.json(""));
+    }
+
+    /**
+     * Send PUT request to the server to initiate joining to public game.
+     * @return response from the server
+     * @throws RuntimeException when unable to connect to the server
+     */
+    public static String getPublicCode() throws RuntimeException {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress).path("/api/game/get/public")
+                .request(APPLICATION_JSON)
+                .get(new GenericType<String>() {});
     }
 
     private static ExecutorService pollingThread = Executors.newSingleThreadExecutor();

@@ -97,4 +97,14 @@ public class GameController {
         }
     }
 
+    /**
+     * GET mapping that gets gamecode of a public game.
+     *
+     * @return ResponseEntity
+     */
+    @GetMapping("/get/public")
+    public ResponseEntity<?> getPublicCode() {
+        return ResponseEntity.ok().body(gameService.getCurrentPublicGame());
+    }
+
 }
