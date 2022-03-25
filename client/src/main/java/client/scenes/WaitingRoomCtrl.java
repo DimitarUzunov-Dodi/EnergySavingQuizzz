@@ -6,7 +6,7 @@ import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
-import commons.User;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +16,9 @@ import javafx.scene.text.Text;
 
 public class WaitingRoomCtrl extends SceneController {
 
-    private ObservableList<User> playerList;
+    private ObservableList<String> playerList;
     @FXML
-    private ListView<User> listView;
+    private ListView<String> listView;
     @FXML
     private Text gameCodeLabel;
 
@@ -37,12 +37,17 @@ public class WaitingRoomCtrl extends SceneController {
     @Override
     public void show() {
         setGameCode(currentGameID);
-        playerList = FXCollections.observableList(WaitingRoomCommunication.getAllUsers(currentGameID));
+        playerList = FXCollections.observableList(
+                WaitingRoomCommunication.getAllUsers(currentGameID)
+                        .stream()
+                        .map(
+                                u -> u.getUsername())
+                        .collect(Collectors.toList()));
         listView.setItems(playerList);
         WaitingRoomCommunication.registerForUserListUpdates(currentGameID, u -> {
-                    Platform.runLater(() -> {
-                        playerList.add(u);
-                    });
+            Platform.runLater(() -> {
+                playerList.add(u.getUsername());
+            });
         });
         showScene();
     }
@@ -52,7 +57,7 @@ public class WaitingRoomCtrl extends SceneController {
      * so players can see game code.
      * @param gameCode game code of te selected game
      */
-    private void setGameCode(String gameCode){
+    private void setGameCode(String gameCode) {
         gameCodeLabel.setText("Game code: " + gameCode);
     }
 

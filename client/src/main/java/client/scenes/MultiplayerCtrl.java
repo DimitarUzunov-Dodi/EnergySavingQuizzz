@@ -7,9 +7,7 @@ import static client.utils.UserAlert.userAlert;
 import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
-import client.utils.UserAlert;
 import com.google.inject.Inject;
-import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -58,10 +56,16 @@ public class MultiplayerCtrl extends SceneController {
         int statusCode = joinResponse.getStatus();
         if (statusCode == 200) {
             myFxml.showScene(WaitingRoomCtrl.class);
-        } else if(statusCode == 400){
-            userAlert("ERROR", "Username is already taken", "Username already in use in this game!");
-        } else if(statusCode == 404) {
-            userAlert("ERROR", "No such game", "No game found with this game code!");
+        } else if (statusCode == 400) {
+            userAlert(
+                    "ERROR",
+                    "Username is already taken",
+                    "Username already in use in this game!");
+        } else if (statusCode == 404) {
+            userAlert(
+                    "ERROR",
+                    "No such game",
+                    "No game found with this game code!");
         }
     }
 

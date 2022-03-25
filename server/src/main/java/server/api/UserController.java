@@ -1,17 +1,20 @@
 package server.api;
 
 import commons.User;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.service.GameService;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/user")
@@ -51,19 +54,25 @@ public class UserController {
         } else {
             gameService.joinGame(gameCode, username);
             listeners.forEach((k, l) -> {
-                if(l.getSecond().equals(gameCode))
+                if (l.getSecond().equals(gameCode)) {
                     l.getFirst().accept(new User(username));
+                }
             });
             return ResponseEntity.ok()
                     .build();
         }
     }
 
+    /**
+     * GET mapping that activates long-polling for client.
+     * @param gameCode code is used to know from where to get data
+     * @return DeferredResultResponseEntityUser
+     */
     @GetMapping("/updates/{gameCode}")
     public DeferredResult<ResponseEntity<User>> getUserListUpdates(@PathVariable String gameCode) {
-        System.out.println("Triggered");
         var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        DeferredResult<ResponseEntity<User>> result = new DeferredResult<ResponseEntity<User>>(5000L, noContent);
+        DeferredResult<ResponseEntity<User>> result = new DeferredResult<ResponseEntity<User>>(
+                5000L, noContent);
 
         var key = new Object();
         listeners.put(key, Pair.of(

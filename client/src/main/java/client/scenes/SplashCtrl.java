@@ -7,7 +7,6 @@ import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
 import client.utils.SceneController;
-import client.utils.UserAlert;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -83,7 +82,10 @@ public class SplashCtrl extends SceneController {
         } catch (IllegalArgumentException e) {
             username = username.substring(0, 20);
             usernameText.setText(username);
-            userAlert("WARN", "Username is too long", "Username can be less no more than 20 characters");
+            userAlert(
+                    "WARN",
+                    "Username is too long",
+                    "Username can be less no more than 20 characters");
         }
     }
 

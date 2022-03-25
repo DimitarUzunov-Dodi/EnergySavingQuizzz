@@ -1,7 +1,7 @@
 package client.utils;
 
-import static client.utils.UserAlert.userAlert;
 import static client.scenes.MainCtrl.username;
+import static client.utils.UserAlert.userAlert;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,9 +21,10 @@ public class FileUtils {
      * Default function to saving nickname to a defaultUserData file.
      * @param nicknameString - nickname
      */
-    public static void writeNickname(String nicknameString) throws IllegalArgumentException{
-        if(nicknameString.length() > 20)
+    public static void writeNickname(String nicknameString) throws IllegalArgumentException {
+        if (nicknameString.length() > 20) {
             throw new IllegalArgumentException();
+        }
         username = nicknameString;
         writeNickname(defaultUserData, nicknameString);
     }
