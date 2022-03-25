@@ -65,17 +65,21 @@ public class GameService {
      */
     public List<Question> createQuestions() {
         // to be edited once new question types are added
-        // todo replace with for loop for all 20 qs
+
         int questionType = random.nextInt(1);
         List<Question> questionList = new ArrayList<Question>();
         Question question;
 
         switch (questionType) {
             case 0:
-                List<Activity> activityList = new ArrayList<>(activityRepository.getThreeRandom());
-                question = new QuestionTypeA(activityList.get(0),
+                for (int i = 0;i < 20; i++) {
+                    List<Activity> activityList =
+                        new ArrayList<>(activityRepository.getThreeRandom());
+                    question = new QuestionTypeA(activityList.get(0),
                         activityList.get(1), activityList.get(2));
-                questionList.add(question);
+                    questionList.add(question);
+                }
+
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + questionType);
