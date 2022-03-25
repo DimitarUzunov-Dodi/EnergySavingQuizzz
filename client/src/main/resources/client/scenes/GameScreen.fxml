@@ -68,7 +68,6 @@
             </ImageView>
          </children>
       </GridPane>
-      <Button mnemonicParsing="false" text="Switch to dummy" />
       <GridPane GridPane.rowIndex="1">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -91,9 +90,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="button1" mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="A" />
-                  <Button fx:id="button2" mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="B" GridPane.columnIndex="1" />
-                  <Button fx:id="button3" mnemonicParsing="false" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="C" GridPane.columnIndex="2" />
+                  <Button fx:id="button1" mnemonicParsing="false" onAction="#answerApressed" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="A" />
+                  <Button fx:id="button2" mnemonicParsing="false" onAction="#answerBpressed" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="B" GridPane.columnIndex="1" />
+                  <Button fx:id="button3" mnemonicParsing="false" onAction="#answerCpressed" style="-fx-pref-width: 50; -fx-background-color: #407897;" text="C" GridPane.columnIndex="2" />
                   <Button fx:id="button4" mnemonicParsing="false" style="-fx-background-color: #407897; -fx-pref-width: 50;" text="D" GridPane.columnIndex="3" />
                </children>
             </GridPane>

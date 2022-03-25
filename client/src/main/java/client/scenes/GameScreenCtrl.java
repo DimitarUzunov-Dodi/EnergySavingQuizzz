@@ -161,40 +161,12 @@ public class GameScreenCtrl extends SceneController {
 
     }
 
-/**
- * cool loading bar
-    public void countDown() {
-        final Service<Integer> countDownThread = new Service<>() {
-            @Override
-            protected Task<Integer> createTask() {
-                return new Task<Integer>() {
-                    @Override
-                    protected Integer call() {
-                        int i;
-                        for (i = 0; i > TIME_TO_NEXT_ROUND * 100; i--) {
-                            updateProgress(i, TIME_TO_NEXT_ROUND * 100);
-                            try {
-                                Thread.sleep(10);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        return i;
-                    }
-                };
-            }
-        };
-
-
-        progressBar.progressProperty().bind(countDownThread.progressProperty());
-        countDownThread.start();
-
-    }
-
-    **/
-
+    /**
+     * refreshes the question.
+     */
     public void refreshQuestion() {
         activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
+        qIndex++;
         questionText.setText(activeQuestion.displayText());
         activityText1.setText(activeQuestion.getActivity1().getActivityText());
         activityText2.setText(activeQuestion.getActivity2().getActivityText());
@@ -202,19 +174,23 @@ public class GameScreenCtrl extends SceneController {
         long energyConsumption1 = activeQuestion.getActivity1().getValue();
         long energyConsumption2 = activeQuestion.getActivity2().getValue();
         long energyConsumption3 = activeQuestion.getActivity3().getValue();
-        long[] consumptions = {energyConsumption1, energyConsumption2, energyConsumption3};
-        image1.setImage(ActivityImageCommunication.getImageFromId(activeQuestion.getActivity1().getImageId()));
-        image2.setImage(ActivityImageCommunication.getImageFromId(activeQuestion.getActivity2().getImageId()));
-        image3.setImage(ActivityImageCommunication.getImageFromId(activeQuestion.getActivity3().getImageId()));
+        final long[] consumptions = {energyConsumption1, energyConsumption2, energyConsumption3};
+        image1.setImage(ActivityImageCommunication.getImageFromId(
+            activeQuestion.getActivity1().getImageId()));
+        image2.setImage(ActivityImageCommunication.getImageFromId(
+            activeQuestion.getActivity2().getImageId()));
+        image3.setImage(ActivityImageCommunication.getImageFromId(
+            activeQuestion.getActivity3().getImageId()));
         int i = -1;
         long biggest = -1;
-        for (long consumption: consumptions){
+        for (long consumption: consumptions) {
             i++;
-            if (consumption > biggest){
+            if (consumption > biggest) {
                 biggest = consumption;
                 correctAnswer = i;
             }
         }
+        System.out.println(correctAnswer);
 
 
     }
@@ -231,23 +207,49 @@ public class GameScreenCtrl extends SceneController {
         GameCommunication.send("/app/emoji", emojiInfo);
     }
 
-    public void answerApressed(){
-        if(correctAnswer == 0) {
-            // TODO give points
+    /**
+     * method to call when answer A is pressed.
+     */
+    public void answerApressed() {
+        if (correctAnswer == 0) {
+            awardPoints();
+        } else {
+            System.out.print("dumbass");
         }
     }
 
-    public void answerBpressed(){
-        if(correctAnswer == 1) {
-            // TODO give points
+    /**
+     * method to call when answer B is pressed.
+     */
+    public void answerBpressed() {
+        if (correctAnswer == 1) {
+            awardPoints();
+        } else {
+            System.out.print("dumbass");
         }
     }
 
-    public void answerCpressed(){
-        if(correctAnswer == 2) {
-            // TODO give points
+    /**
+     * method to call when answer C is pressed.
+     */
+    public void answerCpressed() {
+        if (correctAnswer == 2) {
+            awardPoints();
+        } else {
+            System.out.print("dumbass");
         }
     }
+
+    /**
+     * method to award points to client.
+     */
+    public void awardPoints() {
+        // TODO award points
+
+
+        refreshQuestion();
+    }
+
     /**
      * When the second emoji is clicked it is sent to the server and also by whom it has been sent.
      */
@@ -270,6 +272,7 @@ public class GameScreenCtrl extends SceneController {
     @Override
     public void show() {
         HashMap<String, Object> properties = new HashMap<>();
+        properties.put("gameID", -1); // should be MainCtrl.currentGameID once it is not null
         // connect via websockets
         GameCommunication.connect(ServerUtils.serverAddress, properties);
 

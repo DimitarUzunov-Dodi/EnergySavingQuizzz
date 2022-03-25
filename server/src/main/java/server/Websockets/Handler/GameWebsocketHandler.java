@@ -17,15 +17,15 @@ public class GameWebsocketHandler extends TextWebSocketHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebsocketHandler.class);
     private int playersInLatestGame = 0;
-    private final HashMap<String,ArrayList<WebSocketSession>> webSocketSessionList =
-        new HashMap<String,ArrayList<WebSocketSession>>();
+    private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
+        new HashMap<String,HashMap<String, HashMap<String, Object>>>();
 
 
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         Map<String, Object> properties = session.getAttributes();
-        webSocketSessionList.put(session.getId(), new ArrayList<WebSocketSession>());
+        webSocketSessionList.put(session.getId(), new HashMap<String, HashMap<String, Object>>());
 
 
 
