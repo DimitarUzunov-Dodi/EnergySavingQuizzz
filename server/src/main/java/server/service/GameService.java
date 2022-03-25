@@ -72,8 +72,9 @@ public class GameService {
 
         switch (questionType) {
             case 0:
-                for (int i = 0;i < 20; i++){
-                    List<Activity> activityList = new ArrayList<>(activityRepository.getThreeRandom());
+                for (int i = 0;i < 20; i++) {
+                    List<Activity> activityList =
+                        new ArrayList<>(activityRepository.getThreeRandom());
                     question = new QuestionTypeA(activityList.get(0),
                         activityList.get(1), activityList.get(2));
                     questionList.add(question);
