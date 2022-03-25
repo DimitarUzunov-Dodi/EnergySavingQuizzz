@@ -66,6 +66,11 @@ public class MultiplayerCtrl extends SceneController {
                     "ERROR",
                     "No such game",
                     "No game found with this game code!");
+        } else if (statusCode == 418) {
+            userAlert(
+                    "ERROR",
+                    "Room is closed",
+                    "It is no longer possible to join this room!");
         }
     }
 

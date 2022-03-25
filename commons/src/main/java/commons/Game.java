@@ -17,8 +17,11 @@ public class Game {
     @Transient
     private List<User> userList;
 
+    private boolean started;
+
     public Game() {
         userList = new ArrayList<User>();
+        started = false;
     }
 
     public List<User> getUserList() {
@@ -58,5 +61,13 @@ public class Game {
 
     public void setActiveQuestionList(List<Question> activeQuestionList) {
         this.activeQuestionList = activeQuestionList;
+    }
+
+    public boolean hasStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }

@@ -61,7 +61,8 @@ public class WaitingRoomCommunication {
      * @throws RuntimeException when unable to connect to the server
      */
     public static void registerForUserListUpdates(String username, String gameCode,
-                                                  Consumer<User> adder, Consumer<User> remover)
+                                                  Consumer<User> adder, Consumer<User> remover,
+                                                  Consumer<Object> startHandler)
             throws RuntimeException {
         currentGameID = gameCode;
         pollingThread.execute(() -> {
@@ -72,6 +73,10 @@ public class WaitingRoomCommunication {
                         .accept(APPLICATION_JSON)
                         .get(Response.class);
                 if (res.getStatus() == 204) {
+                    continue;
+                }
+                if (res.getStatus() == 418) {
+                    startHandler.accept(null);
                     continue;
                 }
                 var u = res.readEntity(User.class);
@@ -88,6 +93,7 @@ public class WaitingRoomCommunication {
     }
 
     public static void stop() {
+        currentGameID = "";
         pollingThread.shutdownNow();
     }
 
@@ -100,7 +106,19 @@ public class WaitingRoomCommunication {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress).path("/api/user/leave/" + gameCode + "/" + username)
                 .request(APPLICATION_JSON)
-                .put(Entity.json(""));
+                .delete();
+    }
+
+    /**
+     * Send POST request to the server to leave the game, if user was connected to it.
+     * @return server responser
+     * @throws RuntimeException when unable to connect to the server
+     */
+    public static Response startGame(String gameCode) throws RuntimeException {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress).path("/api/user/start/" + gameCode)
+                .request(APPLICATION_JSON)
+                .post(Entity.json(""));
     }
 
 }

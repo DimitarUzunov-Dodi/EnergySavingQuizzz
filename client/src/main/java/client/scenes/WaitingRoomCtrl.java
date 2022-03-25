@@ -22,6 +22,8 @@ public class WaitingRoomCtrl extends SceneController {
     private ListView<String> listView;
     @FXML
     private Text gameCodeLabel;
+    @FXML
+    private Text playersLabel;
 
     /**
      * Basic constructor.
@@ -42,12 +44,18 @@ public class WaitingRoomCtrl extends SceneController {
                 u -> {
                     Platform.runLater(() -> {
                         playerList.add(u.getUsername());
+                        playersLabel.setText(playerList.size() + " players");
                     });
                 },
                 u -> {
                     Platform.runLater(() -> {
                         playerList.remove(u.getUsername());
+                        playersLabel.setText(playerList.size() + " players");
                     });
+                },
+                o -> {
+                    System.out.println("STARTED GAME");
+                    // TODO: Game start action
                 }
         );
         playerList = FXCollections.observableList(
@@ -57,6 +65,7 @@ public class WaitingRoomCtrl extends SceneController {
                                 u -> u.getUsername())
                         .collect(Collectors.toList()));
         listView.setItems(playerList);
+        playersLabel.setText(playerList.size() + " players");
         showScene();
     }
 
@@ -83,8 +92,7 @@ public class WaitingRoomCtrl extends SceneController {
      */
     @FXML
     private void onStartButton() {
-        // TODO: start match ( either here or in GamePageController.show() )
-        myFxml.showScene(GameScreenCtrl.class);
+        WaitingRoomCommunication.startGame(currentGameID);
     }
     
 }

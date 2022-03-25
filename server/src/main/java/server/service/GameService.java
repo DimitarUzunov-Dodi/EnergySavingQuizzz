@@ -132,4 +132,12 @@ public class GameService {
     public Game removeGame(String gameCode) {
         return activeGames.remove(gameCode);
     }
+
+    public boolean isAllowedToJoin(String gameCode) {
+        return activeGames.get(gameCode).hasStarted();
+    }
+
+    public void closeRoom(String gameCode) {
+        activeGames.get(gameCode).setStarted(true);
+    }
 }
