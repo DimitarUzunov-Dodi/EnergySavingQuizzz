@@ -1,9 +1,14 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.currentGameID;
+
 import client.MyFXML;
+import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
-import commons.Activity;
+import commons.User;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -11,10 +16,9 @@ import javafx.scene.text.Text;
 
 public class WaitingRoomCtrl extends SceneController {
 
-    private String gameCode;
-    private ObservableList<String> playerList;
+    private ObservableList<User> playerList;
     @FXML
-    private ListView<String> listView;
+    private ListView<User> listView;
     @FXML
     private Text gameCodeLabel;
 
@@ -28,23 +32,19 @@ public class WaitingRoomCtrl extends SceneController {
     }
 
     /**
-     * Please use customShow(Activity selected) method to switch to this scene.
+     * Please use customShow(String gameCode) method to switch to this scene.
      */
     @Override
     public void show() {
+        setGameCode(currentGameID);
+        playerList = FXCollections.observableList(WaitingRoomCommunication.getAllUsers(currentGameID));
         listView.setItems(playerList);
-        // TODO: init websockets connection and get player list
-        listView.refresh(); // may not be necessary depending on how we update playerList
+        WaitingRoomCommunication.registerForUserListUpdates(currentGameID, u -> {
+                    Platform.runLater(() -> {
+                        playerList.add(u);
+                    });
+        });
         showScene();
-    }
-
-    /**
-     * Method that shows the scene with details about selected game.
-     * @param gameCode game code of te selected game
-     */
-    public void customShow(String gameCode) {
-        setGameCode(gameCode);
-        show();
     }
 
     /**
@@ -53,7 +53,6 @@ public class WaitingRoomCtrl extends SceneController {
      * @param gameCode game code of te selected game
      */
     private void setGameCode(String gameCode){
-        this.gameCode = gameCode;
         gameCodeLabel.setText("Game code: " + gameCode);
     }
 

@@ -49,7 +49,6 @@ public class MultiplayerCtrl extends SceneController {
      */
     @FXML
     private void onJoinPrivate() {
-        // TODO: Check the game id first
         currentGameID = gameCodeField.getText().trim();
         joinGame();
     }
@@ -58,7 +57,7 @@ public class MultiplayerCtrl extends SceneController {
         Response joinResponse = WaitingRoomCommunication.joinGame(currentGameID, username);
         int statusCode = joinResponse.getStatus();
         if (statusCode == 200) {
-            myFxml.get(WaitingRoomCtrl.class).customShow(currentGameID);
+            myFxml.showScene(WaitingRoomCtrl.class);
         } else if(statusCode == 400){
             userAlert("ERROR", "Username is already taken", "Username already in use in this game!");
         } else if(statusCode == 404) {
