@@ -7,11 +7,8 @@ import client.utils.FileUtils;
 import client.utils.SceneController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Game;
-import commons.Person;
-import commons.Question;
-import commons.QuestionTypeA;
-import commons.User;
+import commons.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.FXCollections;
@@ -38,7 +35,7 @@ public class GameScreenCtrl extends SceneController {
     private static String gameCode;
     private static User user;
     private static int qIndex;
-    private static QuestionTypeA activeQuestion;
+    private Question activeQuestion;
 
     private static final int TIME_TO_NEXT_ROUND = 3;
 
@@ -142,11 +139,13 @@ public class GameScreenCtrl extends SceneController {
 
         switch (activeQuestion.getQuestionType()) {
             case 0:
-                myFxml.get(QuestionTypeAComponentCtrl.class).setActiveQuestion(activeQuestion);
-                myFxml.get(QuestionTypeAComponentCtrl.class).show();
+                myFxml.get(QuestionTypeAComponentCtrl.class).loadComponent((QuestionTypeA) activeQuestion);
 
                 break;
+            case 1:
+                myFxml.get(QuestionTypeBComponentCtrl.class).loadComponent((QuestionTypeB) activeQuestion);
 
+                break;
             default:
 
                 break;

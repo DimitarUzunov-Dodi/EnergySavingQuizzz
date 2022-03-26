@@ -21,37 +21,24 @@ public class QuestionTypeAComponentCtrl extends SceneController {
 
     @FXML
     private StackPane questionTypeAPane;
-
     @FXML
     private ImageView image1;
-
     @FXML
     private ImageView image2;
-
     @FXML
     private ImageView image3;
-
     @FXML
     private Text activityText1;
-
     @FXML
     private Text activityText2;
-
     @FXML
     private Text activityText3;
-
     @FXML
     private Button button1;
-
     @FXML
     private Button button2;
-
     @FXML
     private Button button3;
-
-    @FXML
-    private Button button4;
-
     @FXML
     private Text questionText;
 
@@ -72,7 +59,6 @@ public class QuestionTypeAComponentCtrl extends SceneController {
         buttonList.add(button1);
         buttonList.add(button2);
         buttonList.add(button3);
-        buttonList.add(button4);
 
         questionText.setText(activeQuestion.displayText());
         activityText1.setText(activeQuestion.getActivity1().getActivityText());
@@ -100,14 +86,15 @@ public class QuestionTypeAComponentCtrl extends SceneController {
         System.out.println(correctAnswer);
     }
 
-    public void setActiveQuestion(QuestionTypeA activeQuestion) {
+    public void loadComponent(QuestionTypeA activeQuestion) {
         this.activeQuestion = activeQuestion;
+        show();
     }
 
     /**
      * method to call when answer A is pressed.
      */
-    public void answerApressed() {
+    public void answerAPressed() {
         if (correctAnswer == 0) {
             myFxml.get(GameScreenCtrl.class).awardPoints();
         } else {
@@ -118,7 +105,7 @@ public class QuestionTypeAComponentCtrl extends SceneController {
     /**
      * method to call when answer B is pressed.
      */
-    public void answerBpressed() {
+    public void answerBPressed() {
         if (correctAnswer == 1) {
             myFxml.get(GameScreenCtrl.class).awardPoints();
         } else {
@@ -129,7 +116,7 @@ public class QuestionTypeAComponentCtrl extends SceneController {
     /**
      * method to call when answer C is pressed.
      */
-    public void answerCpressed() {
+    public void answerCPressed() {
         if (correctAnswer == 2) {
             myFxml.get(GameScreenCtrl.class).awardPoints();
         } else {
