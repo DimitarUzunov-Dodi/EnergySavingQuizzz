@@ -4,13 +4,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class QuestionTypeA extends Question {
 
-    private final int questionType;
+    private int questionType;
     private Activity activity1;
     private Activity activity2;
     private Activity activity3;
 
     public QuestionTypeA() {
-        questionType = 0;
     }
 
     /**
@@ -29,6 +28,22 @@ public class QuestionTypeA extends Question {
     public String giveText() {
         String string = "Which one uses the most energy?";
         return  string;
+    }
+
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
+    }
+
+    public void setActivity1(Activity activity1) {
+        this.activity1 = activity1;
+    }
+
+    public void setActivity2(Activity activity2) {
+        this.activity2 = activity2;
+    }
+
+    public void setActivity3(Activity activity3) {
+        this.activity3 = activity3;
     }
 
     public int getQuestionType() {

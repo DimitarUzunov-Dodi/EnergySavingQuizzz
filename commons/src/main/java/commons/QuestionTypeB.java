@@ -4,10 +4,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class QuestionTypeB extends Question {
 
-    private final int questionType;
-    private final Activity activity;
-    private final long answer2;
-    private final long answer3;
+    private int questionType;
+    private Activity activity;
+    private long answer2;
+    private long answer3;
+
+    public QuestionTypeB() {
+    }
 
     /**
      * Constructor.
@@ -18,6 +21,22 @@ public class QuestionTypeB extends Question {
         this.activity = activity;
         answer2 = (long) (activity.getValue() * 0.75);
         answer3 = (long) (activity.getValue() * 1.25);
+    }
+
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void setAnswer2(long answer2) {
+        this.answer2 = answer2;
+    }
+
+    public void setAnswer3(long answer3) {
+        this.answer3 = answer3;
     }
 
     public int getQuestionType() {

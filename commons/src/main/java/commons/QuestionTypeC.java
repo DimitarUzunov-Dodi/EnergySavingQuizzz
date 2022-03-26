@@ -4,11 +4,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class QuestionTypeC extends Question {
 
-    private final int questionType;
-    private final Activity displayActivity;
-    private final Activity activityCorrect;
-    private final Activity activity1;
-    private final Activity activity2;
+    private int questionType;
+    private Activity displayActivity;
+    private Activity activityCorrect;
+    private Activity activity1;
+    private Activity activity2;
+
+    public QuestionTypeC() {
+    }
 
     /**
      * Constructor.
@@ -23,6 +26,26 @@ public class QuestionTypeC extends Question {
         this.displayActivity = displayActivity;
         this.activityCorrect = activityCorrect;
         this.activity1 = activity1;
+        this.activity2 = activity2;
+    }
+
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
+    }
+
+    public void setDisplayActivity(Activity displayActivity) {
+        this.displayActivity = displayActivity;
+    }
+
+    public void setActivityCorrect(Activity activityCorrect) {
+        this.activityCorrect = activityCorrect;
+    }
+
+    public void setActivity1(Activity activity1) {
+        this.activity1 = activity1;
+    }
+
+    public void setActivity2(Activity activity2) {
         this.activity2 = activity2;
     }
 

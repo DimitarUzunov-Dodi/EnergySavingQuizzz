@@ -4,8 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class QuestionTypeD extends Question {
 
-    private final int questionType;
-    private final Activity activity;
+    private int questionType;
+    private Activity activity;
 
     /**
      * Constructor.
@@ -13,6 +13,14 @@ public class QuestionTypeD extends Question {
      */
     public QuestionTypeD(Activity activity) {
         this.questionType = 3;
+        this.activity = activity;
+    }
+
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
+    }
+
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
