@@ -6,10 +6,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import client.communication.AdminCommunication;
+import commons.ActivityImage;
 import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 
 public class ActivityImageUtils {
+
+    private static final String pathToResources = "./src/main/resources/client/images/";
+    private static final String defaultImageName = "default-image.png";
 
     /**
      * Transforms images to byte arrays.
@@ -85,5 +91,20 @@ public class ActivityImageUtils {
         }
 
         throw new ImageNotSupportedException("Wrong image extension!");
+    }
+
+    /**
+     * Uploads image to a database and returns id of an image.
+     * @param path - path to image(for tranformation into byte[]).
+     * @return id of the image saved into an image db
+     */
+    public static long uploadImage(String path) throws CorruptImageException, ImageNotSupportedException, IOException {
+        return AdminCommunication
+                .addActivityImage(new ActivityImage(imageToByteArray(path)))
+                .readEntity(Long.class);
+    }
+
+    public static long uploadDefaultImage() throws CorruptImageException, ImageNotSupportedException, IOException {
+        return uploadImage(pathToResources + defaultImageName);
     }
 }
