@@ -193,7 +193,7 @@ public class GameScreenCtrl extends SceneController {
             }
         }
         countDown();
- //       System.out.println(correctAnswer);
+        //System.out.println(correctAnswer);
 
 
     }
@@ -304,8 +304,6 @@ public class GameScreenCtrl extends SceneController {
 
         qIndex = 0;
 
-
-
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
@@ -315,9 +313,7 @@ public class GameScreenCtrl extends SceneController {
 
         ArrayList<String> list = new ArrayList<>();
         GameCommunication.send("/app/chat", "foo");
-        GameCommunication.registerForMessages("/topic/chat", String.class, q -> {
-            list.add(q);
-        });
+        GameCommunication.registerForMessages("/topic/chat", String.class, list::add);
         GameCommunication.registerForMessages("game/receive", Game.class, o -> {
             questionText.setText("Which one consumes the most amount of energy?");
             for (Question question : o.getActiveQuestionList()) {
@@ -325,7 +321,6 @@ public class GameScreenCtrl extends SceneController {
                 activityText1.setText(foo.getActivity1().getActivityText());
                 activityText2.setText(foo.getActivity2().getActivityText());
                 activityText3.setText(foo.getActivity3().getActivityText());
-
             }
 
         });
@@ -344,14 +339,13 @@ public class GameScreenCtrl extends SceneController {
                     break;
                 default:
                     break;
-
             }
 
             final Image emoji = newEmoji;
 
             currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
                 /*view the image class to display the image*/
-                private ImageView displayImage = new ImageView();
+                private final ImageView displayImage = new ImageView();
 
 
                 @Override
@@ -366,8 +360,6 @@ public class GameScreenCtrl extends SceneController {
                             displayImage.setFitWidth(20);
                             displayImage.setImage(emoji);
                             //  displayImage.setFitWidth(0.1);
-
-
                         }
                         setText(name);
                         setGraphic(displayImage);
@@ -382,6 +374,4 @@ public class GameScreenCtrl extends SceneController {
 
         showScene();
     }
-
-
 }
