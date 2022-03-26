@@ -1,6 +1,7 @@
 package client.communication;
 
 import static client.scenes.MainCtrl.currentGameID;
+import static client.scenes.MainCtrl.username;
 import static client.utils.ServerUtils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -105,7 +106,12 @@ public class WaitingRoomCommunication {
         });
     }
 
+    /**
+     * Method called when application is closing.
+     * So we make sure to leave a game, if user was in it and stop the polling
+     */
     public static void stop() {
+        WaitingRoomCommunication.leaveGame(currentGameID, username);
         currentGameID = "";
         pollingThread.shutdownNow();
     }
