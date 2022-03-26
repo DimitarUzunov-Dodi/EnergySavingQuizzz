@@ -1,6 +1,6 @@
 
 
-package server.websockets.Controller;
+package server.websockets.controller;
 
 
 import commons.Game;
@@ -76,12 +76,23 @@ public class EmojiController {
 
     }
 
-
+    /**
+     * puts the user in a hashmap.
+     * @param gameID the ID used to identify the game
+     * @param username the name of the user
+     * @param properties any properties that we want to associate with the user
+     * @return the properties associated with the user
+     * @throws Exception Exception
+     */
     @MessageMapping("/game/{gameID}/{username}")
     @SendTo("/game/receive/{gameID}/{username}")
-    public HashMap<String, Object> userConfig(@DestinationVariable String gameID, @DestinationVariable String username, HashMap<String, Object> properties) throws Exception {
+    public HashMap<String, Object> userConfig(
+        @DestinationVariable String gameID, @DestinationVariable String username,
+                                              HashMap<String, Object> properties)
+        throws Exception {
         HashMap<String, Object> inner = properties;
-        HashMap<String, HashMap<String, Object>> middle = new HashMap<String, HashMap<String, Object>>();
+        HashMap<String, HashMap<String, Object>> middle =
+            new HashMap<String, HashMap<String, Object>>();
         middle.put(username, properties);
         HashMap<String, HashMap<String, HashMap<String, Object>>> outer =
             new HashMap<String, HashMap<String, HashMap<String, Object>>>();
@@ -107,7 +118,9 @@ public class EmojiController {
      */
     @MessageMapping("/emoji/{gameID}/{username}")
     @SendTo("/emoji/receive/{gameID}")
-    public Person sendEmoji(@DestinationVariable String gameID, @DestinationVariable String username, Person emojiInfo) throws Exception {
+    public Person sendEmoji(
+        @DestinationVariable String gameID, @DestinationVariable String username,
+        Person emojiInfo) throws Exception {
 
         System.out.println(gameID);
         System.out.println(gameID);
