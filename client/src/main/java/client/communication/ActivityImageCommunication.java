@@ -1,8 +1,8 @@
 package client.communication;
 
 import static client.utils.ActivityImageUtils.imageFromByteArray;
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static client.utils.ServerUtils.serverAddress;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.ActivityImage;
 import jakarta.ws.rs.client.ClientBuilder;

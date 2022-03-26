@@ -10,7 +10,6 @@ import client.utils.ImageNotSupportedException;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -151,8 +150,7 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
                         "Cannot load this file as an image. Choose another file");
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             userAlert("WARN", "No file was chosen",
                     "The image was not changed!");
         }
