@@ -22,9 +22,9 @@ import server.database.ActivityRepository;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private ActivityRepository repo;
+    private final ActivityRepository repo;
 
-    private ActivityImagesRepository imageRepo;
+    private final ActivityImagesRepository imageRepo;
 
     public AdminController(ActivityRepository repo, ActivityImagesRepository imageRepo) {
         this.repo = repo;

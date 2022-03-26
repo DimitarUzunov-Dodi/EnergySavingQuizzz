@@ -5,7 +5,7 @@ import client.communication.ActivityImageCommunication;
 import client.communication.GameCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
-import client.utils.ServerUtils;
+import client.communication.LeaderboardCommunication;
 import com.google.inject.Inject;
 import commons.Person;
 import commons.QuestionTypeA;
@@ -275,6 +275,13 @@ public class GameScreenCtrl extends SceneController {
             + MainCtrl.username, emojiInfo);
     }
 
+    /**
+     * Called when the menuButton is pressed.
+     */
+    @FXML
+    private void onMenuButton() {
+        myFxml.showScene(SettingsCtrl.class);
+    }
 
     @Override
     public void show() {
@@ -282,7 +289,7 @@ public class GameScreenCtrl extends SceneController {
         properties.put("currentGameID", MainCtrl.currentGameID);
         properties.put("username", MainCtrl.username);
         // connect via websockets
-        GameCommunication.connect(ServerUtils.serverAddress, properties);
+        GameCommunication.connect(LeaderboardCommunication.serverAddress, properties);
 
         /* create list object */
 
@@ -298,7 +305,7 @@ public class GameScreenCtrl extends SceneController {
 
         initImages();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
-        progressBar.setProgress(1F);
+        //progressBar.setProgress(1F);
         // Question_text = new Text("foo");
         buttonList.add(button1);
         buttonList.add(button2);
