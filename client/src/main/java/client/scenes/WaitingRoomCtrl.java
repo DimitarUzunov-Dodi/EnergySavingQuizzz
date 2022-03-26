@@ -93,6 +93,7 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onStartButton() {
         WaitingRoomCommunication.startGame(currentGameID);
+        myFxml.showScene(GameScreenCtrl.class);
     }
     
 }

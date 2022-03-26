@@ -9,22 +9,19 @@ import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class AdminActivityCtrl extends SceneController implements Initializable {
+public class AdminActivityCtrl extends SceneController {
 
     private ObservableList<Activity> data;
 
@@ -55,11 +52,6 @@ public class AdminActivityCtrl extends SceneController implements Initializable 
         );
         refresh();
         showScene();
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     /**

@@ -165,6 +165,8 @@ public class GameScreenCtrl extends SceneController {
      * refreshes the question.
      */
     public void refreshQuestion() {
+        // TODO: place this in the right place when answer checking is implemented
+        myFxml.showScene(MatchLeaderboardCtrl.class);
         activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
         qIndex++;
         questionText.setText(activeQuestion.displayText());

@@ -12,16 +12,13 @@ import com.google.inject.Inject;
 import commons.Activity;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
-public class AdminActivityDetailsCtrl extends SceneController implements Initializable {
+public class AdminActivityDetailsCtrl extends SceneController {
     private Activity selectedActivity;
 
     private FileChooser fileChooser;
@@ -44,11 +41,6 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
     @Inject
     public AdminActivityDetailsCtrl(MyFXML myFxml) {
         super(myFxml);
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     /**

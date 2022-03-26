@@ -2,29 +2,35 @@ package client.scenes;
 
 import static client.scenes.MainCtrl.currentGameID;
 
+import client.Main;
 import client.MyFXML;
+import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
-import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.ScoreRecord;
+import commons.User;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class MatchLeaderboardCtrl extends SceneController {
 
-    private final ObservableList<ScoreRecord> data;
+    private final ObservableList<User> data;
 
     @FXML
-    private TableView<ScoreRecord> table;
+    private TableView<User> table;
     @FXML
-    private TableColumn<ScoreRecord, String> colUsername;
+    private TableColumn<User, String> colUsername;
     @FXML
-    private TableColumn<ScoreRecord, String> colScore;
+    private TableColumn<User, String> colScore;
+    @FXML
+    private ProgressBar progressBar;
 
     /**
      * Basic constructor.
@@ -33,24 +39,65 @@ public class MatchLeaderboardCtrl extends SceneController {
     @Inject
     protected MatchLeaderboardCtrl(MyFXML myFxml) {
         super(myFxml);
-        colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().nickname));
-        colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score + " points"));
         data = FXCollections.observableList(new ArrayList<>());
-        table.setItems(data);
     }
 
+    /**
+     * Shows the match leaderboard for 2 seconds and then switches back to GameScreen.
+     * The transition at the end does NOT call GameScreenCtrl.show() !
+     */
     @Override
     public void show() {
         new Thread(() -> {
-            var l = ServerUtils.getMatchLeaderboard(currentGameID);
+            var l = WaitingRoomCommunication.getAllUsers(currentGameID);
             if (l == null) {
-                System.out.println("WARNING: null ScoreRecord list fetched from the server");
+                System.out.println("WARNING: null User list fetched from the server");
             } else {
-                data.removeAll();
+                data.remove(0, data.size());
                 data.addAll(l);
-                table.refresh();
             }
         }).start();
+
+        colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getUsername()));
+        colScore.setCellValueFactory(q -> new SimpleStringProperty(
+                q.getValue().getScore() + " points"));
+        table.setItems(data);
+
+        countDown();
+
         showScene();
     }
+
+    private void countDown() {
+        final Service<Integer> countDownThread = new Service<>() {
+            @Override
+            protected Task<Integer> createTask() {
+                return new Task<Integer>() {
+                    @Override
+                    protected Integer call() {
+                        int i;
+                        for (i = 0; i < 180; i++) {
+                            updateProgress(i, 180);
+                            try {
+                                Thread.sleep(20);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return i;
+                    }
+                };
+            }
+        };
+
+        // Next Round Transition
+        countDownThread.setOnSucceeded(event -> {
+            Main.primaryStage.setScene(myFxml.get(GameScreenCtrl.class).getScene());
+        });
+
+        // bind thread to progress bar and start it
+        progressBar.progressProperty().bind(countDownThread.progressProperty());
+        countDownThread.start();
+    }
+
 }
