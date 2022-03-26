@@ -1,7 +1,7 @@
 package client.communication;
 
+import static client.communication.LeaderboardCommunication.serverAddress;
 import static client.utils.ActivityImageUtils.imageFromByteArray;
-import static client.utils.ServerUtils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.ActivityImage;
