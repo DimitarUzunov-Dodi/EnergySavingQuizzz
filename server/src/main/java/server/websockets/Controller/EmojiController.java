@@ -5,6 +5,7 @@ package server.websockets.Controller;
 
 import commons.Game;
 import commons.Person;
+import java.util.HashMap;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,13 @@ public class EmojiController {
     private final GameService gameService;
 
     private Game currentGame;
+
+    private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
+
+
+
+        new HashMap<String,HashMap<String, HashMap<String, Object>>>();
+
 
     /**
      * Constructor for the EmojiController.
@@ -69,6 +77,25 @@ public class EmojiController {
     }
 
 
+    @MessageMapping("/game/{gameID}/{username}")
+    @SendTo("/game/receive/{gameID}/{username}")
+    public HashMap<String, Object> userConfig(@DestinationVariable String gameID, @DestinationVariable String username, HashMap<String, Object> properties) throws Exception {
+        HashMap<String, Object> inner = properties;
+        HashMap<String, HashMap<String, Object>> middle = new HashMap<String, HashMap<String, Object>>();
+        middle.put(username, properties);
+        HashMap<String, HashMap<String, HashMap<String, Object>>> outer =
+            new HashMap<String, HashMap<String, HashMap<String, Object>>>();
+        webSocketSessionList.put(gameID, middle);
+
+        System.out.println(gameID);
+        System.out.println(gameID);
+        LOGGER.info(gameID);
+        System.out.println("fuuuuuck");
+        LOGGER.info("fcucucucucu");
+        LOGGER.info(webSocketSessionList.toString());
+        return properties;
+
+    }
 
 
     /**
@@ -79,8 +106,9 @@ public class EmojiController {
      * @throws Exception Exception
      */
     @MessageMapping("/emoji/{gameID}/{username}")
-    @SendTo("/emoji/receive/{gameID}/{username}" )
+    @SendTo("/emoji/receive/{gameID}")
     public Person sendEmoji(@DestinationVariable String gameID, @DestinationVariable String username, Person emojiInfo) throws Exception {
+
         System.out.println(gameID);
         System.out.println(gameID);
         LOGGER.info(gameID);

@@ -14,6 +14,7 @@ import commons.QuestionTypeA;
 import commons.User;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -329,8 +330,9 @@ public class GameScreenCtrl extends SceneController {
             }
 
         }); **/
-        GameCommunication.registerForMessages("/emoji/receive/" + MainCtrl.currentGameID + "/" + MainCtrl.username, Person.class, v -> {
+        GameCommunication.registerForMessages("/emoji/receive/" + MainCtrl.currentGameID, Person.class, v -> {
             Image newEmoji = null;
+            System.out.println("communication");
             switch (v.lastName) {
 
                 case "emoji1":
@@ -346,6 +348,9 @@ public class GameScreenCtrl extends SceneController {
                     break;
 
             }
+
+
+
 
             final Image emoji = newEmoji;
 
@@ -378,6 +383,16 @@ public class GameScreenCtrl extends SceneController {
             displayImage.setImage(imagesArray[2]);
             System.out.println(v);
         });
+        GameCommunication.registerForMessages("/game/receive/" + MainCtrl.currentGameID,
+            Map.class , o -> {
+
+            System.out.println(o.toString());
+            System.out.println("foo");
+            } );
+        HashMap<String, Object> userProperties = new HashMap<String, Object>();
+        userProperties.put("currentGameID", MainCtrl.currentGameID);
+        userProperties.put("username", MainCtrl.username);
+        GameCommunication.send("/app/game/" + MainCtrl.currentGameID + "/" + MainCtrl.username, userProperties);
         refreshQuestion();
 
         showScene();

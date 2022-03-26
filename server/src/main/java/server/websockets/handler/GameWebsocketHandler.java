@@ -19,6 +19,7 @@ public class GameWebsocketHandler implements WebSocketHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameWebsocketHandler.class);
     private int playersInLatestGame = 0;
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
+
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
 
 
