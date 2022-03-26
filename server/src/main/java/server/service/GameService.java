@@ -81,6 +81,9 @@ public class GameService {
 
             switch (questionType) {
                 case 0:
+                case 1:
+                case 2:
+                case 3:
                     List<Activity> activityList =
                             new ArrayList<>(activityRepository.getThreeRandom());
                     question = new QuestionTypeA(activityList.get(0),
@@ -88,6 +91,7 @@ public class GameService {
                     questionList.add(question);
 
                     break;
+                    /*
                 case 1:
                     question = new QuestionTypeB(activityRepository.getOneRandom().get());
                     questionList.add(question);
@@ -108,6 +112,7 @@ public class GameService {
                     questionList.add(question);
 
                     break;
+                     */
 
                 default:
                     throw new IllegalStateException("Unexpected value: " + questionType);
