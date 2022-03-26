@@ -1,8 +1,9 @@
-#pane{
+/* light theme stylesheet */
+
+#background{
     -fx-background-image: url("../images/background_lightning.png");
     -fx-background-repeat: repeat;
     -fx-background-position: top left;
-    -fx-min-height: 500;
 }
 
 #playButton {

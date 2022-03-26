@@ -1,11 +1,13 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.currentGameID;
 import static client.scenes.MainCtrl.username;
 import static client.utils.FileUtils.readNickname;
 import static client.utils.FileUtils.writeNickname;
 import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
+import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -59,6 +61,9 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void singlePlayerAction() {
+        currentGameID = WaitingRoomCommunication.createNewGame();
+        // may throw exceptions, but it's unlikely
+        WaitingRoomCommunication.joinGame(currentGameID, username);
         myFxml.showScene(GameScreenCtrl.class);
     }
 
