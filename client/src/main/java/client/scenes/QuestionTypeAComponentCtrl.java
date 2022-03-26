@@ -1,9 +1,9 @@
 package client.scenes;
 
 import client.MyFXML;
+import client.communication.ActivityImageCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
-import commons.Question;
 import commons.QuestionTypeA;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -73,6 +73,31 @@ public class QuestionTypeAComponentCtrl extends SceneController {
         buttonList.add(button2);
         buttonList.add(button3);
         buttonList.add(button4);
+
+        questionText.setText(activeQuestion.displayText());
+        activityText1.setText(activeQuestion.getActivity1().getActivityText());
+        activityText2.setText(activeQuestion.getActivity2().getActivityText());
+        activityText3.setText(activeQuestion.getActivity3().getActivityText());
+        long energyConsumption1 = activeQuestion.getActivity1().getValue();
+        long energyConsumption2 = activeQuestion.getActivity2().getValue();
+        long energyConsumption3 = activeQuestion.getActivity3().getValue();
+        final long[] consumptions = {energyConsumption1, energyConsumption2, energyConsumption3};
+        image1.setImage(ActivityImageCommunication.getImageFromId(
+                activeQuestion.getActivity1().getImageId()));
+        image2.setImage(ActivityImageCommunication.getImageFromId(
+                activeQuestion.getActivity2().getImageId()));
+        image3.setImage(ActivityImageCommunication.getImageFromId(
+                activeQuestion.getActivity3().getImageId()));
+        int i = -1;
+        long biggest = -1;
+        for (long consumption: consumptions) {
+            i++;
+            if (consumption > biggest) {
+                biggest = consumption;
+                correctAnswer = i;
+            }
+        }
+        System.out.println(correctAnswer);
     }
 
     public void setActiveQuestion(QuestionTypeA activeQuestion) {
