@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.MyFXML;
 import client.utils.SceneController;
+import com.google.inject.Inject;
 import commons.Question;
 import commons.QuestionTypeA;
 import javafx.fxml.FXML;
@@ -54,6 +55,7 @@ public class QuestionTypeAComponentCtrl extends SceneController {
     @FXML
     private Text questionText;
 
+    @Inject
     /**
      * Basic constructor.
      *
