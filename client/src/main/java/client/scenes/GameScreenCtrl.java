@@ -3,17 +3,16 @@ package client.scenes;
 import client.MyFXML;
 import client.communication.ActivityImageCommunication;
 import client.communication.GameCommunication;
+import client.communication.LeaderboardCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
-import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Game;
 import commons.Person;
-import commons.Question;
 import commons.QuestionTypeA;
 import commons.User;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -167,7 +166,8 @@ public class GameScreenCtrl extends SceneController {
     public void refreshQuestion() {
         // TODO: place this in the right place when answer checking is implemented
         myFxml.showScene(MatchLeaderboardCtrl.class);
-        activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
+        activeQuestion = client.communication.GameCommunication
+            .getQuestion(MainCtrl.currentGameID, qIndex);
         qIndex++;
         questionText.setText(activeQuestion.displayText());
         activityText1.setText(activeQuestion.getActivity1().getActivityText());
@@ -192,7 +192,7 @@ public class GameScreenCtrl extends SceneController {
                 correctAnswer = i;
             }
         }
-        System.out.println(correctAnswer);
+        countDown();
 
 
     }
@@ -206,7 +206,9 @@ public class GameScreenCtrl extends SceneController {
     public void emoji1Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji1");
-        GameCommunication.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji/" + MainCtrl.currentGameID
+            +
+            "/" + MainCtrl.username, emojiInfo);
     }
 
     /**
@@ -258,7 +260,9 @@ public class GameScreenCtrl extends SceneController {
     public void emoji2Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji2");
-        GameCommunication.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji/" + MainCtrl.currentGameID
+            +
+            "/" + MainCtrl.username, emojiInfo);
     }
 
     /**
@@ -267,16 +271,25 @@ public class GameScreenCtrl extends SceneController {
     public void emoji3Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji3");
-        GameCommunication.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji/" + MainCtrl.currentGameID + "/"
+            + MainCtrl.username, emojiInfo);
     }
 
+    /**
+     * Called when the menuButton is pressed.
+     */
+    @FXML
+    private void onMenuButton() {
+        myFxml.showScene(SettingsCtrl.class);
+    }
 
     @Override
     public void show() {
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("gameID", -1); // should be MainCtrl.currentGameID once it is not null
+        properties.put("currentGameID", MainCtrl.currentGameID);
+        properties.put("username", MainCtrl.username);
         // connect via websockets
-        GameCommunication.connect(ServerUtils.serverAddress, properties);
+        GameCommunication.connect(LeaderboardCommunication.serverAddress, properties);
 
         /* create list object */
 
@@ -292,18 +305,16 @@ public class GameScreenCtrl extends SceneController {
 
         initImages();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
-        progressBar.setProgress(1F);
+        //progressBar.setProgress(1F);
         // Question_text = new Text("foo");
         buttonList.add(button1);
         buttonList.add(button2);
         buttonList.add(button3);
         buttonList.add(button4);
 
-        gameCode = client.communication.GameCommunication.startSinglePlayerGame();
+        // gameCode = client.communication.GameCommunication.startSinglePlayerGame();
 
         qIndex = 0;
-
-
 
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
@@ -313,74 +324,72 @@ public class GameScreenCtrl extends SceneController {
         currentLeaderboard.getItems().addAll(names);
 
         ArrayList<String> list = new ArrayList<>();
-        GameCommunication.send("/app/chat", "foo");
-        GameCommunication.registerForMessages("/topic/chat", String.class, q -> {
-            list.add(q);
-        });
-        GameCommunication.registerForMessages("game/receive", Game.class, o -> {
-            questionText.setText("Which one consumes the most amount of energy?");
-            for (Question question : o.getActiveQuestionList()) {
-                QuestionTypeA foo = (QuestionTypeA) question;
-                activityText1.setText(foo.getActivity1().getActivityText());
-                activityText2.setText(foo.getActivity2().getActivityText());
-                activityText3.setText(foo.getActivity3().getActivityText());
+        GameCommunication.registerForMessages("/emoji/receive/"
+            + MainCtrl.currentGameID, Person.class, v -> {
 
-            }
+                Image newEmoji = null;
+                System.out.println("communication");
+                switch (v.lastName) {
 
-        });
-        GameCommunication.registerForMessages("/emoji/receive", Person.class, v -> {
-            Image newEmoji = null;
-            switch (v.lastName) {
+                    case "emoji1":
+                        newEmoji = imagesArray[0];
+                        break;
+                    case "emoji2":
+                        newEmoji = imagesArray[1];
+                        break;
+                    case "emoji3":
+                        newEmoji = imagesArray[2];
+                        break;
 
-                case "emoji1":
-                    newEmoji = imagesArray[0];
-                    break;
-                case "emoji2":
-                    newEmoji = imagesArray[1];
-                    break;
-                case "emoji3":
-                    newEmoji = imagesArray[2];
-                    break;
-                default:
-                    break;
+                    default:
+                        break;
 
-            }
-
-            final Image emoji = newEmoji;
-
-            currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
-                /*view the image class to display the image*/
-                private ImageView displayImage = new ImageView();
-
-
-                @Override
-                public void updateItem(String name, boolean empty) {
-                    super.updateItem(name, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        if (name.equals(v.firstName)) {
-                            displayImage.setFitHeight(20);
-                            displayImage.setFitWidth(20);
-                            displayImage.setImage(emoji);
-                            //  displayImage.setFitWidth(0.1);
-
-
-                        }
-                        setText(name);
-                        setGraphic(displayImage);
-                    }
                 }
+
+                final Image emoji = newEmoji;
+
+                currentLeaderboard.setCellFactory(param -> new ListCell<String>() {
+                    /*view the image class to display the image*/
+                    private ImageView displayImage = new ImageView();
+
+
+                    @Override
+                public void updateItem(String name, boolean empty) {
+                        super.updateItem(name, empty);
+                        if (empty) {
+                            setText(null);
+                            setGraphic(null);
+                        }   else {
+                            if (name.equals(v.firstName)) {
+                                displayImage.setFitHeight(20);
+                                displayImage.setFitWidth(20);
+                                displayImage.setImage(emoji);
+                                //  displayImage.setFitWidth(0.1);
+
+
+                            }
+                            setText(name);
+                            setGraphic(displayImage);
+                        }
+                    }
+                });
+                ImageView displayImage = new ImageView();
+                displayImage.setImage(imagesArray[2]);
+                System.out.println(v);
             });
-            ImageView displayImage = new ImageView();
-            displayImage.setImage(imagesArray[2]);
-            System.out.println(v);
-        });
+        GameCommunication.registerForMessages("/game/receive/" + MainCtrl.currentGameID,
+            Map.class,o -> {
+
+                System.out.println(o.toString());
+                System.out.println("foo");
+            });
+        HashMap<String, Object> userProperties = new HashMap<String, Object>();
+        userProperties.put("currentGameID", MainCtrl.currentGameID);
+        userProperties.put("username", MainCtrl.username);
+        GameCommunication.send("/app/game/" + MainCtrl.currentGameID + "/"
+            + MainCtrl.username, userProperties);
         refreshQuestion();
-        countDown();
+
         showScene();
     }
-
-
 }

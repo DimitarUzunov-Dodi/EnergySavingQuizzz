@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
 
 public class MatchLeaderboardCtrl extends SceneController {
 
@@ -31,6 +32,8 @@ public class MatchLeaderboardCtrl extends SceneController {
     private TableColumn<User, String> colScore;
     @FXML
     private ProgressBar progressBar;
+    @FXML
+    private Text readyText;
 
     /**
      * Basic constructor.
@@ -50,9 +53,7 @@ public class MatchLeaderboardCtrl extends SceneController {
     public void show() {
         new Thread(() -> {
             var l = WaitingRoomCommunication.getAllUsers(currentGameID);
-            if (l == null) {
-                System.out.println("WARNING: null User list fetched from the server");
-            } else {
+            if (l != null) {
                 data.remove(0, data.size());
                 data.addAll(l);
             }
@@ -63,6 +64,8 @@ public class MatchLeaderboardCtrl extends SceneController {
                 q.getValue().getScore() + " points"));
         table.setItems(data);
 
+        table.setVisible(true);
+        readyText.setVisible(false);
         countDown();
 
         showScene();
@@ -76,10 +79,14 @@ public class MatchLeaderboardCtrl extends SceneController {
                     @Override
                     protected Integer call() {
                         int i;
-                        for (i = 0; i < 180; i++) {
-                            updateProgress(i, 180);
+                        for (i = 0; i < 225; i++) {
+                            updateProgress(225 - i, 225);
+                            if (i == 170) {
+                                readyText.setVisible(true);
+                                table.setVisible(false);
+                            }
                             try {
-                                Thread.sleep(20);
+                                Thread.sleep(16);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

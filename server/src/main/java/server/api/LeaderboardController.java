@@ -4,6 +4,7 @@ import commons.ServerLeaderboardEntry;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class LeaderboardController {
      */
     @GetMapping("/")
     public List<ServerLeaderboardEntry> getServerLeaderboard() {
-        return repo.findAll();
+        return repo.findAll(Sort.by("score"));
     }
 
     /**
@@ -62,27 +63,25 @@ public class LeaderboardController {
     /**
      * Add/Update an entry.
      * @param username entry username
-     * @param score entry score
-     * @param gamesPlayed entry gamesPlayed
+     * @param delta object containing the delta values to be applied to the respective db record
      * @return HTTP 201 if all updated existing, 202 if created new entry, error code otherwise
      */
     @PutMapping("/{username}")
     public ResponseEntity<ServerLeaderboardEntry> updateEntry(@PathVariable String username,
-                    @RequestBody Integer score,
-                    @RequestBody Integer gamesPlayed) {
-        if (username == null || username.isEmpty() || score == null || gamesPlayed == null) {
+                    @RequestBody ServerLeaderboardEntry delta) {
+        if (delta == null) {
             return ResponseEntity.badRequest().build();
         }
 
         var example = Example.of(new ServerLeaderboardEntry(username, null, null));
         var found = repo.findOne(example);
         if (found.isPresent()) {
-            found.get().setScore(score);
-            found.get().setGamesPlayed(gamesPlayed);
+            var entry = found.get();
+            entry.score += delta.score;
+            entry.gamesPlayed += delta.gamesPlayed;
             return ResponseEntity.accepted().body(repo.save(found.get()));
         } else {
-            ServerLeaderboardEntry e = new ServerLeaderboardEntry(username, gamesPlayed, score);
-            return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(e));
+            return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(delta));
         }
     }
 }
