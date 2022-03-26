@@ -190,7 +190,8 @@ public class GameScreenCtrl extends SceneController {
                 correctAnswer = i;
             }
         }
-        System.out.println(correctAnswer);
+        countDown();
+ //       System.out.println(correctAnswer);
 
 
     }
@@ -376,7 +377,7 @@ public class GameScreenCtrl extends SceneController {
             System.out.println(v);
         });
         refreshQuestion();
-        countDown();
+
         showScene();
     }
 
