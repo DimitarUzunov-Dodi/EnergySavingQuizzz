@@ -19,12 +19,14 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 
@@ -43,48 +45,21 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView menuButton;
 
-    @FXML
-    private ImageView image1;
 
     @FXML
-    private ImageView image2;
-
-
-    @FXML
-    private ImageView image3;
-
+    private StackPane questionHolder;
 
 
     @FXML
     private ProgressBar progressBar;
 
-    @FXML
-    private Text activityText1;
 
-    @FXML
-    private Text activityText2;
-
-    @FXML
-    private Text activityText3;
 
     @FXML
     private ListView<String> currentLeaderboard;
 
 
-    @FXML
-    private Button button1;
 
-    @FXML
-    private Button button2;
-
-    @FXML
-    private Button button3;
-
-    @FXML
-    private Button button4;
-
-    @FXML
-    private Text questionText;
 
     @FXML
     private ImageView emoji1;
@@ -92,8 +67,6 @@ public class GameScreenCtrl extends SceneController {
     private ImageView emoji2;
     @FXML
     private ImageView emoji3;
-
-    private int correctAnswer;
 
     private final Image emojiHappy = new Image("client/images/emoji1.png");
     private final Image emojiSad = new Image("client/images/emoji2.png");
@@ -104,7 +77,6 @@ public class GameScreenCtrl extends SceneController {
 
     //    GameScreenLeaderboardEntry[] names = {new GameScreenLeaderboardEntry("Dodi"),
     //    new GameScreenLeaderboardEntry("John"),new GameScreenLeaderboardEntry("boom")};
-    private ArrayList<Button> buttonList = new ArrayList<>();
 
     String[] names = {"foo", "bar", "test"};
 
@@ -167,30 +139,18 @@ public class GameScreenCtrl extends SceneController {
     public void refreshQuestion() {
         activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
         qIndex++;
-        questionText.setText(activeQuestion.displayText());
-        activityText1.setText(activeQuestion.getActivity1().getActivityText());
-        activityText2.setText(activeQuestion.getActivity2().getActivityText());
-        activityText3.setText(activeQuestion.getActivity3().getActivityText());
-        long energyConsumption1 = activeQuestion.getActivity1().getValue();
-        long energyConsumption2 = activeQuestion.getActivity2().getValue();
-        long energyConsumption3 = activeQuestion.getActivity3().getValue();
-        final long[] consumptions = {energyConsumption1, energyConsumption2, energyConsumption3};
-        image1.setImage(ActivityImageCommunication.getImageFromId(
-            activeQuestion.getActivity1().getImageId()));
-        image2.setImage(ActivityImageCommunication.getImageFromId(
-            activeQuestion.getActivity2().getImageId()));
-        image3.setImage(ActivityImageCommunication.getImageFromId(
-            activeQuestion.getActivity3().getImageId()));
-        int i = -1;
-        long biggest = -1;
-        for (long consumption: consumptions) {
-            i++;
-            if (consumption > biggest) {
-                biggest = consumption;
-                correctAnswer = i;
-            }
+
+        switch (activeQuestion.getQuestionType()) {
+            case 0:
+                myFxml.get(QuestionTypeAComponentCtrl.class).setActiveQuestion(activeQuestion);
+                myFxml.get(QuestionTypeAComponentCtrl.class).show();
+
+                break;
+
+            default:
+
+                break;
         }
-        System.out.println(correctAnswer);
 
 
     }
@@ -205,39 +165,6 @@ public class GameScreenCtrl extends SceneController {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji1");
         GameCommunication.send("/app/emoji", emojiInfo);
-    }
-
-    /**
-     * method to call when answer A is pressed.
-     */
-    public void answerApressed() {
-        if (correctAnswer == 0) {
-            awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
-    }
-
-    /**
-     * method to call when answer B is pressed.
-     */
-    public void answerBpressed() {
-        if (correctAnswer == 1) {
-            awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
-    }
-
-    /**
-     * method to call when answer C is pressed.
-     */
-    public void answerCpressed() {
-        if (correctAnswer == 2) {
-            awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
     }
 
     /**
@@ -292,10 +219,6 @@ public class GameScreenCtrl extends SceneController {
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
         progressBar.setProgress(1F);
         // Question_text = new Text("foo");
-        buttonList.add(button1);
-        buttonList.add(button2);
-        buttonList.add(button3);
-        buttonList.add(button4);
 
         gameCode = client.communication.GameCommunication.startSinglePlayerGame();
 
@@ -315,6 +238,7 @@ public class GameScreenCtrl extends SceneController {
         GameCommunication.registerForMessages("/topic/chat", String.class, q -> {
             list.add(q);
         });
+        /*
         GameCommunication.registerForMessages("game/receive", Game.class, o -> {
             questionText.setText("Which one consumes the most amount of energy?");
             for (Question question : o.getActiveQuestionList()) {
@@ -326,6 +250,7 @@ public class GameScreenCtrl extends SceneController {
             }
 
         });
+        */
         GameCommunication.registerForMessages("/emoji/receive", Person.class, v -> {
             Image newEmoji = null;
             switch (v.lastName) {
@@ -380,5 +305,8 @@ public class GameScreenCtrl extends SceneController {
         showScene();
     }
 
+    public void showQuestion(Node node) {
+        questionHolder.getChildren().setAll(node);
+    }
 
 }
