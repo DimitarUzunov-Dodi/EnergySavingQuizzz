@@ -2,8 +2,8 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.MainCtrl;
 import client.communication.LeaderboardCommunication;
+import client.scenes.MainCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;

@@ -31,7 +31,7 @@ public class LeaderboardCommunication {
     }
 
     /**
-     * Add/Update a leaderboard record
+     * Add/Update a leaderboard record.
      * @param username player username
      * @param games number of games played since last update from the db
      * @param score score earned since last update from the db
@@ -40,8 +40,9 @@ public class LeaderboardCommunication {
     public static void updateServerLeaderboard(String username, int games, int score)
             throws RuntimeException {
         System.out.println("+ <" + username + ", " + games + ", " + score + ">");
-        if (username == null || username.isEmpty())
+        if (username == null || username.isEmpty()) {
             throw new RuntimeException("Invalid username");
+        }
         try {
             ServerLeaderboardEntry entry = new ServerLeaderboardEntry(username, games, score);
             ClientBuilder.newClient(new ClientConfig())

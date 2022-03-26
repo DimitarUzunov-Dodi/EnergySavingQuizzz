@@ -1,14 +1,12 @@
 package client.scenes;
 
 import client.MyFXML;
-import client.utils.SceneController;
 import client.communication.LeaderboardCommunication;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.ServerLeaderboardEntry;
-
 import java.util.Comparator;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -47,7 +45,8 @@ public class ServerLeaderboardCtrl extends SceneController {
             try {
                 List<ServerLeaderboardEntry> list = LeaderboardCommunication.getServerLeaderboard();
                 Platform.runLater(() -> {
-                    colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
+                    colUsername.setCellValueFactory(q -> new SimpleStringProperty(
+                            q.getValue().username));
                     colGamesPlayed.setCellValueFactory(q -> new SimpleIntegerProperty(
                             q.getValue().gamesPlayed).asObject());
                     colScore.setCellValueFactory(q -> new SimpleIntegerProperty(

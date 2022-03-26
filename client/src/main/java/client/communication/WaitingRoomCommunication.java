@@ -1,7 +1,7 @@
 package client.communication;
 
-import static client.scenes.MainCtrl.username;
 import static client.communication.LeaderboardCommunication.serverAddress;
+import static client.scenes.MainCtrl.username;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.User;
