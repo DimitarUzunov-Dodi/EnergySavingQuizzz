@@ -9,6 +9,7 @@ import static client.utils.UserAlert.userAlert;
 import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
+import client.utils.UserAlert;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -61,7 +62,13 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void singlePlayerAction() {
-        currentGameID = WaitingRoomCommunication.createNewGame();
+        try {
+            currentGameID = WaitingRoomCommunication.createNewGame();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            UserAlert.userAlert("WARN", "Cannot connect ot server",
+                    "Check your connection and try again.");
+        }
         // may throw exceptions, but it's unlikely
         WaitingRoomCommunication.joinGame(currentGameID, username);
         myFxml.showScene(GameScreenCtrl.class);

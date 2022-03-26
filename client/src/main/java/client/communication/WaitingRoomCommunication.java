@@ -10,6 +10,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -70,7 +71,6 @@ public class WaitingRoomCommunication {
 
     /**
      * Send GET request to the server to create a new game.
-     * @return String that contains six-digit game code.
      * @throws RuntimeException when unable to connect to the server
      */
     public static void registerForUserListUpdates(String username, String gameCode,
@@ -79,7 +79,7 @@ public class WaitingRoomCommunication {
             throws RuntimeException {
         currentGameID = gameCode;
         pollingThread.execute(() -> {
-            while (currentGameID == gameCode) {
+            while (Objects.equals(currentGameID, gameCode)) {
                 var res = ClientBuilder.newClient(new ClientConfig())
                         .target(serverAddress).path("/api/user/updates/" + gameCode)
                         .request(APPLICATION_JSON)
@@ -110,7 +110,13 @@ public class WaitingRoomCommunication {
      * So we make sure to leave a game, if user was in it and stop the polling
      */
     public static void stop() {
-        WaitingRoomCommunication.leaveGame(currentGameID, username);
+        try {
+            if (currentGameID != null) {
+                WaitingRoomCommunication.leaveGame(currentGameID, username);
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
         currentGameID = "";
         pollingThread.shutdownNow();
     }
