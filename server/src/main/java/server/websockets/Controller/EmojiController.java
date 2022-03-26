@@ -1,6 +1,6 @@
 
 
-package server.websockets.controller;
+package server.websockets.Controller;
 
 
 import commons.Game;
@@ -9,6 +9,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,8 @@ public class EmojiController {
 
     }
 
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(EmojiController.class);
     private static final String SERVER = "http://localhost:8080/";
 
@@ -66,6 +69,8 @@ public class EmojiController {
     }
 
 
+
+
     /**
      * sends the appropriate emoji to the clients of all websockets connected.
      *
@@ -73,10 +78,12 @@ public class EmojiController {
      * @return the sent emoji
      * @throws Exception Exception
      */
-    @MessageMapping("/emoji")
-    @SendTo("/emoji/receive")
-    public Person sendEmoji(Person emojiInfo) throws Exception {
-
+    @MessageMapping("/emoji/{gameID}/{username}")
+    @SendTo("/emoji/receive/{gameID}/{username}" )
+    public Person sendEmoji(@DestinationVariable String gameID, @DestinationVariable String username, Person emojiInfo) throws Exception {
+        System.out.println(gameID);
+        LOGGER.info(gameID);
+        System.out.println("fuck");
         if (emojiInfo.lastName.equals("emoji1")) {
             LOGGER.info("Emoji1 send by" + emojiInfo.firstName);
         }
@@ -84,7 +91,7 @@ public class EmojiController {
             LOGGER.info("Emoji2 send by" + emojiInfo.firstName);
         }
         if (emojiInfo.lastName.equals("emoji3")) {
-            LOGGER.info("Emoji2 send by" + emojiInfo.firstName);
+            LOGGER.info("Emoji3 send by" + emojiInfo.firstName);
         }
         return emojiInfo;
 

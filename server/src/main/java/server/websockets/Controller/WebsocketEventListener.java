@@ -1,4 +1,4 @@
-package server.websockets.controller;
+package server.websockets.Controller;
 
 
 import org.slf4j.Logger;

@@ -165,7 +165,7 @@ public class GameScreenCtrl extends SceneController {
      * refreshes the question.
      */
     public void refreshQuestion() {
-        activeQuestion = client.communication.GameCommunication.getQuestion(gameCode, qIndex);
+        activeQuestion = client.communication.GameCommunication.getQuestion(MainCtrl.currentGameID, qIndex);
         qIndex++;
         questionText.setText(activeQuestion.displayText());
         activityText1.setText(activeQuestion.getActivity1().getActivityText());
@@ -205,7 +205,7 @@ public class GameScreenCtrl extends SceneController {
     public void emoji1Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji1");
-        GameCommunication.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji/" + MainCtrl.currentGameID + "/" + MainCtrl.username, emojiInfo);
     }
 
     /**
@@ -257,7 +257,7 @@ public class GameScreenCtrl extends SceneController {
     public void emoji2Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji2");
-        GameCommunication.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji/" + MainCtrl.currentGameID + "/" + MainCtrl.username, emojiInfo);
     }
 
     /**
@@ -266,14 +266,15 @@ public class GameScreenCtrl extends SceneController {
     public void emoji3Pressed() {
         username = FileUtils.readNickname();
         Person emojiInfo = new Person(username, "emoji3");
-        GameCommunication.send("/app/emoji", emojiInfo);
+        GameCommunication.send("/app/emoji/" + MainCtrl.currentGameID + "/" + MainCtrl.username, emojiInfo);
     }
 
 
     @Override
     public void show() {
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("gameID", -1); // should be MainCtrl.currentGameID once it is not null
+        properties.put("currentGameID", MainCtrl.currentGameID); // should be MainCtrl.currentGameID once it is not null
+        properties.put("username", MainCtrl.username);
         // connect via websockets
         GameCommunication.connect(ServerUtils.serverAddress, properties);
 
@@ -298,7 +299,7 @@ public class GameScreenCtrl extends SceneController {
         buttonList.add(button3);
         buttonList.add(button4);
 
-        gameCode = client.communication.GameCommunication.startSinglePlayerGame();
+        // gameCode = client.communication.GameCommunication.startSinglePlayerGame();
 
         qIndex = 0;
 
@@ -312,11 +313,12 @@ public class GameScreenCtrl extends SceneController {
         currentLeaderboard.getItems().addAll(names);
 
         ArrayList<String> list = new ArrayList<>();
-        GameCommunication.send("/app/chat", "foo");
-        GameCommunication.registerForMessages("/topic/chat", String.class, q -> {
+      //  GameCommunication.send(String.format("/app/chat/%s" + MainCtrl.currentGameID), "foo");
+       /** GameCommunication.registerForMessages(String.format("/topic/chat/%s" + MainCtrl.currentGameID), String.class, q -> {
             list.add(q);
         });
-        GameCommunication.registerForMessages("game/receive", Game.class, o -> {
+        **/
+       /** GameCommunication.registerForMessages("game/receive", Game.class, o -> {
             questionText.setText("Which one consumes the most amount of energy?");
             for (Question question : o.getActiveQuestionList()) {
                 QuestionTypeA foo = (QuestionTypeA) question;
@@ -326,8 +328,8 @@ public class GameScreenCtrl extends SceneController {
 
             }
 
-        });
-        GameCommunication.registerForMessages("/emoji/receive", Person.class, v -> {
+        }); **/
+        GameCommunication.registerForMessages("/emoji/receive/" + MainCtrl.currentGameID + "/" + MainCtrl.username, Person.class, v -> {
             Image newEmoji = null;
             switch (v.lastName) {
 
