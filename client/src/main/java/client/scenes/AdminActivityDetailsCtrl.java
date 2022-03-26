@@ -7,15 +7,12 @@ import client.communication.AdminCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-public class AdminActivityDetailsCtrl extends SceneController implements Initializable {
+public class AdminActivityDetailsCtrl extends SceneController {
     private Activity selectedActivity;
 
     @FXML
@@ -36,11 +33,6 @@ public class AdminActivityDetailsCtrl extends SceneController implements Initial
     @Inject
     public AdminActivityDetailsCtrl(MyFXML myFxml) {
         super(myFxml);
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     /**

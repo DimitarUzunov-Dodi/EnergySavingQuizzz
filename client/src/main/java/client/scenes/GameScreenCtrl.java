@@ -164,6 +164,8 @@ public class GameScreenCtrl extends SceneController {
      * refreshes the question.
      */
     public void refreshQuestion() {
+        // TODO: place this in the right place when answer checking is implemented
+        myFxml.showScene(MatchLeaderboardCtrl.class);
         activeQuestion = client.communication.GameCommunication
             .getQuestion(MainCtrl.currentGameID, qIndex);
         qIndex++;
@@ -191,7 +193,6 @@ public class GameScreenCtrl extends SceneController {
             }
         }
         countDown();
-
 
 
     }
@@ -308,8 +309,6 @@ public class GameScreenCtrl extends SceneController {
 
         qIndex = 0;
 
-
-
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
@@ -318,8 +317,6 @@ public class GameScreenCtrl extends SceneController {
         currentLeaderboard.getItems().addAll(names);
 
         ArrayList<String> list = new ArrayList<>();
-
-
         GameCommunication.registerForMessages("/emoji/receive/"
             + MainCtrl.currentGameID, Person.class, v -> {
 
@@ -341,9 +338,6 @@ public class GameScreenCtrl extends SceneController {
                         break;
 
                 }
-
-
-
 
                 final Image emoji = newEmoji;
 
@@ -391,6 +385,4 @@ public class GameScreenCtrl extends SceneController {
 
         showScene();
     }
-
-
 }
