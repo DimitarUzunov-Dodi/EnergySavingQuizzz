@@ -82,6 +82,7 @@ public class EmojiController {
     @SendTo("/emoji/receive/{gameID}/{username}" )
     public Person sendEmoji(@DestinationVariable String gameID, @DestinationVariable String username, Person emojiInfo) throws Exception {
         System.out.println(gameID);
+        System.out.println(gameID);
         LOGGER.info(gameID);
         System.out.println("fuck");
         if (emojiInfo.lastName.equals("emoji1")) {
