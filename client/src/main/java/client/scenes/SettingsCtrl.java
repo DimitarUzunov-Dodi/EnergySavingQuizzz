@@ -5,11 +5,11 @@ import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-
-import java.util.EventListener;
+import javafx.scene.layout.GridPane;
 
 public class SettingsCtrl extends SceneController {
+    @FXML
+    GridPane background;
     @FXML
     Button colourModeButton;
 
@@ -34,11 +34,12 @@ public class SettingsCtrl extends SceneController {
     private void adminAction() {
         myFxml.showScene(AdminCtrl.class);
     }
+
     /**
-     * Function called by Back to Mani menu button when clicked. Changes scene to SplashScreen scene.
+     * Function called by Back to MainMenu button when clicked. Changes scene to SplashScreen scene.
      */
     @FXML
-    private void SplashAction() {
+    private void splashAction() {
         myFxml.showScene(SplashCtrl.class);
     }
 
@@ -46,11 +47,15 @@ public class SettingsCtrl extends SceneController {
      * Function called by admin button when clicked. Changes scene to AdminPage scene.
      */
     @FXML
-    private void ChangeColourModeAction() {
-        if(colourModeButton.getText().equals("Dark Mode")){
+    private void changeColourModeAction() {
+        if (colourModeButton.getText().equals("Dark Mode")) {
             colourModeButton.setText("Light Mode");
-        }else{
+
+
+        } else {
             colourModeButton.setText("Dark Mode");
+
+
         }
 
 

@@ -1,7 +1,7 @@
 /* dark theme stylesheet */
 
 #background{
-    -fx-background-image: url("../images/background_lightning_dark.png");
+    -fx-background-image: url("../images/background_lightning_dark_mode.png");
     -fx-background-repeat: repeat;
     -fx-background-position: top left;
 }

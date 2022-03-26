@@ -14,6 +14,7 @@ import commons.QuestionTypeA;
 import commons.User;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -52,7 +53,6 @@ public class GameScreenCtrl extends SceneController {
 
     @FXML
     private ImageView image3;
-
 
 
     @FXML
@@ -178,14 +178,14 @@ public class GameScreenCtrl extends SceneController {
         long energyConsumption3 = activeQuestion.getActivity3().getValue();
         final long[] consumptions = {energyConsumption1, energyConsumption2, energyConsumption3};
         image1.setImage(ActivityImageCommunication.getImageFromId(
-            activeQuestion.getActivity1().getImageId()));
+                activeQuestion.getActivity1().getImageId()));
         image2.setImage(ActivityImageCommunication.getImageFromId(
-            activeQuestion.getActivity2().getImageId()));
+                activeQuestion.getActivity2().getImageId()));
         image3.setImage(ActivityImageCommunication.getImageFromId(
-            activeQuestion.getActivity3().getImageId()));
+                activeQuestion.getActivity3().getImageId()));
         int i = -1;
         long biggest = -1;
-        for (long consumption: consumptions) {
+        for (long consumption : consumptions) {
             i++;
             if (consumption > biggest) {
                 biggest = consumption;
@@ -196,8 +196,6 @@ public class GameScreenCtrl extends SceneController {
 
 
     }
-
-
 
 
     /**
@@ -304,7 +302,6 @@ public class GameScreenCtrl extends SceneController {
         qIndex = 0;
 
 
-
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
         currentLeaderboard.getItems().addAll(names);
@@ -364,7 +361,16 @@ public class GameScreenCtrl extends SceneController {
                             displayImage.setFitHeight(20);
                             displayImage.setFitWidth(20);
                             displayImage.setImage(emoji);
-                            //  displayImage.setFitWidth(0.1);
+
+                            Timer timer = new Timer();
+
+                            timer.schedule(new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    displayImage.setFitWidth(0.1);
+                                    displayImage.setImage(null);
+                                    }
+                                }, 3000);
 
 
                         }

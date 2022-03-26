@@ -1,6 +1,0 @@
-/* this is the reference example for styling the background */
-#pane{
-    -fx-background-image: url("../images/background_lightning_dark_mode.png");
-    -fx-background-repeat: repeat;
-    -fx-background-position: top left;
-}
