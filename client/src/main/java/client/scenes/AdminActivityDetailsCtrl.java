@@ -1,19 +1,27 @@
 package client.scenes;
 
+import static client.utils.ActivityImageUtils.uploadImage;
 import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
 import client.communication.AdminCommunication;
+import client.utils.CorruptImageException;
+import client.utils.ImageNotSupportedException;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 
 public class AdminActivityDetailsCtrl extends SceneController {
     private Activity selectedActivity;
+
+    private FileChooser fileChooser;
 
     @FXML
     private TextField idField;
@@ -72,6 +80,12 @@ public class AdminActivityDetailsCtrl extends SceneController {
             valueField.setText(selected.getValue() + "");
             sourceField.setText(selected.getSource());
             imageIdField.setText(selected.getImageId() + "");
+
+            fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("IMAGE FILES", "*.jpg", "*.png", "*.gif"),
+                    new FileChooser.ExtensionFilter("ALL FILES", "*.*")
+            );
         } else {
             throw new NullPointerException();
         }
@@ -112,5 +126,25 @@ public class AdminActivityDetailsCtrl extends SceneController {
             }
         }
         myFxml.showScene(AdminActivityCtrl.class);
+    }
+
+    @FXML
+    private void pickImage(ActionEvent event) {
+        File newImage = fileChooser.showOpenDialog(this.getScene().getWindow());
+        if (newImage != null) {
+            try {
+                long imageId = uploadImage(newImage.getPath());
+                imageIdField.setText(String.valueOf(imageId));
+                userAlert("INFO", "Image was changed",
+                        "Confirm the action to save the changes!");
+            } catch (CorruptImageException | ImageNotSupportedException | IOException e) {
+                userAlert("ERROR", "Wrong Image File",
+                        "Cannot load this file as an image. Choose another file");
+                e.printStackTrace();
+            }
+        } else {
+            userAlert("WARN", "No file was chosen",
+                    "The image was not changed!");
+        }
     }
 }

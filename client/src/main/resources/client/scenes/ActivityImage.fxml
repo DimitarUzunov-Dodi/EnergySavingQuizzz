@@ -16,6 +16,6 @@
         </rowConstraints>
         <children>
             <Button id="backButton" mnemonicParsing="false" onAction="#switchToActivityPanel" text="Back" GridPane.rowIndex="1" />
-            <ImageView id="imageView" fitHeight="500.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <ImageView fx:id="imageView" fitHeight="500.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
         </children>
 </GridPane>

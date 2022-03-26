@@ -1,6 +1,7 @@
 package client.communication;
 
 import static client.utils.ActivityImageUtils.imageFromByteArray;
+import static client.utils.ServerUtils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.ActivityImage;
@@ -11,8 +12,6 @@ import org.glassfish.jersey.client.ClientConfig;
 
 
 public class ActivityImageCommunication {
-
-    public static final String SERVER = "http://localhost:8080/";
 
     /**
      * Get Image for ImageView from imageId.
@@ -39,7 +38,7 @@ public class ActivityImageCommunication {
      */
     private static ActivityImage getActivityImage(long imageId) throws RuntimeException {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/images/getImage/" + imageId)
+                .target(serverAddress).path("api/images/getImage/" + imageId)
                 .request(APPLICATION_JSON)
                 .get(ActivityImage.class);
     }
