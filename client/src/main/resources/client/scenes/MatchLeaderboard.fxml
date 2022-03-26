@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -26,7 +27,7 @@
             <Font name="Consolas Bold" size="42.0" />
         </font>
     </Text>
-    <TableView fx:id="table" opacity="0.75" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #7389A4; -fx-background-radius: 20; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" GridPane.vgrow="ALWAYS">
+    <TableView fx:id="table" opacity="0.75" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #7389A4; -fx-background-radius: 20; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colUsername" editable="false" prefWidth="75.0" text="Username" />
             <TableColumn fx:id="colScore" editable="false" prefWidth="75.0" text="Score" />
@@ -35,6 +36,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
         </columnResizePolicy>
     </TableView>
+    <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="500.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 </children>
 <padding>
     <Insets bottom="10.0" />

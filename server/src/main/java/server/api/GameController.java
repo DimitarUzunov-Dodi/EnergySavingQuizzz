@@ -30,7 +30,6 @@ public class GameController {
         this.gameService = gameService;
     }
 
-
     /**
      * Creates a new game and saves it in the database.
      *
@@ -106,5 +105,4 @@ public class GameController {
     public ResponseEntity<?> getPublicCode() {
         return ResponseEntity.ok().body(gameService.getCurrentPublicGame());
     }
-
 }
