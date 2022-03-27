@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class FileUtils {
@@ -16,6 +17,25 @@ public class FileUtils {
     private static final String pathToUserData = "./src/main/data/";
     private static final String fileName = "UserData.userdata";
     private static final File defaultUserData = new File(pathToUserData + fileName);
+    private static String theme = Objects.requireNonNull(FileUtils.class
+            .getResource("../css/LightTheme.css")).toExternalForm();
+
+    /**
+     * gets the theme for the game.
+     * @return theme
+     */
+    public static String getTheme() {
+        return theme;
+    }
+
+    /**
+     * set the current theme for the game.
+     * @param theme String
+     */
+    public static void setTheme(String theme) {
+        FileUtils.theme = Objects.requireNonNull(FileUtils.class
+                .getResource("../css/" + theme + ".css")).toExternalForm();
+    }
 
     /**
      * Default function to saving nickname to a defaultUserData file.

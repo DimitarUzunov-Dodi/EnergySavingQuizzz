@@ -48,7 +48,13 @@ public class MultiplayerCtrl extends SceneController {
             UserAlert.userAlert("WARN", "Cannot connect ot server",
                     "Check your connection and try again.");
         }
-        joinGame();
+        try {
+            joinGame();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            UserAlert.userAlert("WARN", "Cannot connect ot server",
+                    "Check your connection and try again.");
+        }
     }
 
     /**

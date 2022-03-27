@@ -146,7 +146,7 @@ public class GameService {
     }
 
     public void joinGame(String gameCode, String username) {
-        activeGames.get(gameCode).getUserList().add(new User(username));
+        activeGames.get(gameCode).addUser(new User(username));
     }
 
     /**
@@ -169,7 +169,7 @@ public class GameService {
         return activeGames.remove(gameCode);
     }
 
-    public boolean isAllowedToJoin(String gameCode) {
+    public boolean isNotAllowedToJoin(String gameCode) {
         return activeGames.get(gameCode).hasStarted();
     }
 

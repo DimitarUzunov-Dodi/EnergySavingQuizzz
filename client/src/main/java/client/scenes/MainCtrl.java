@@ -39,7 +39,12 @@ public final class MainCtrl {
             quitAlert.setHeaderText("Are you sure you want to quit?");
             Optional<ButtonType> result = quitAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                WaitingRoomCommunication.stop();
+                WaitingRoomCommunication.leaveGame(currentGameID, username);
+                try {
+                    WaitingRoomCtrl.pollingThread.cancel();
+                } catch (NullPointerException exception) {
+                    System.out.println("Blame Yehor for this stupid catch");
+                }
                 Main.primaryStage.close();
             } else {
                 e.consume();

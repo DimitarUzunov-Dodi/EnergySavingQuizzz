@@ -48,6 +48,7 @@ public class AdminActivityDetailsCtrl extends SceneController {
      */
     @Override
     public void show() {
+
     }
 
     /**

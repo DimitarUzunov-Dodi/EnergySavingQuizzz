@@ -28,7 +28,7 @@ public class WebsocketMessageConfig implements WebSocketMessageBrokerConfigurer 
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry registry) {
 
-        registry.enableSimpleBroker("/topic", "/emoji");
+        registry.enableSimpleBroker("/topic", "/emoji", "/time");
         registry.setApplicationDestinationPrefixes("/app");
     }
 

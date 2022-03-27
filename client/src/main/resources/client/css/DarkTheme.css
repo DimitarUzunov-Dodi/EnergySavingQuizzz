@@ -1,7 +1,7 @@
 /* dark theme stylesheet */
 
 #background{
-    -fx-background-image: url("../images/background_lightning_dark.png");
+    -fx-background-image: url("../images/background_lightning_dark_mode.png");
     -fx-background-repeat: repeat;
     -fx-background-position: top left;
 }
@@ -20,4 +20,20 @@
 
 #utilsButton:hover{
     -fx-color: #238723;
+}
+
+#label {
+    -fx-text-fill: #fffc00;
+}
+
+#nicknameField{
+    -fx-text-fill: #fffc00;
+}
+
+#questionText{
+    -fx-fill: #fffc00;
+}
+
+#Question_text{
+    -fx-fill: #fffc00;
 }

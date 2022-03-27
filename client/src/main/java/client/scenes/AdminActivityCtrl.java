@@ -41,6 +41,7 @@ public class AdminActivityCtrl extends SceneController {
 
     @Override
     public void show() {
+
         colActivityId.setCellValueFactory(
                 q -> new SimpleStringProperty(q.getValue().getActivityId() + "")
         );
