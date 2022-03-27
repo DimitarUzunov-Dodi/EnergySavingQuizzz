@@ -1,52 +1,111 @@
 package client.scenes;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import static client.scenes.MainCtrl.currentGameID;
 
+import client.Main;
+import client.MyFXML;
+import client.communication.Utils;
+import client.utils.SceneController;
 import com.google.inject.Inject;
-
-import client.utils.ServerUtils;
-
-import commons.ScoreRecord;
+import commons.User;
+import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.text.Text;
 
-public class MatchLeaderboardCtrl implements Initializable {
+public class MatchLeaderboardCtrl extends SceneController {
 
-    private final MainCtrl mainCtrl;
-    private final ServerUtils server;
-
-    private ObservableList<ScoreRecord> data;
+    private final ObservableList<User> data;
 
     @FXML
-    private TableView<ScoreRecord> table;
+    private TableView<User> table;
     @FXML
-    private TableColumn<ScoreRecord, String> colUsername;
+    private TableColumn<User, String> colUsername;
     @FXML
-    private TableColumn<ScoreRecord, String> colScore;
+    private TableColumn<User, String> colScore;
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Text readyText;
 
+    /**
+     * Basic constructor.
+     * @param myFxml handled by INJECTOR
+     */
     @Inject
-    public MatchLeaderboardCtrl(MainCtrl mainCtrl, ServerUtils server) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+    protected MatchLeaderboardCtrl(MyFXML myFxml) {
+        super(myFxml);
+        data = FXCollections.observableList(new ArrayList<>());
     }
 
+    /**
+     * Shows the match leaderboard for 2 seconds and then switches back to GameScreen.
+     * The transition at the end does NOT call GameScreenCtrl.show() !
+     */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().nickname));
-        colScore.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().score+" points"));
+    public void show() {
+        new Thread(() -> {
+            var l = Utils.getAllUsers(currentGameID);
+            if (l != null) {
+                data.remove(0, data.size());
+                data.addAll(l);
+            }
+        }).start();
+
+        colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getUsername()));
+        colScore.setCellValueFactory(q -> new SimpleStringProperty(
+                q.getValue().getScore() + " points"));
+        table.setItems(data);
+
+        table.setVisible(true);
+        readyText.setVisible(false);
+        countDown();
+
+        showScene();
     }
 
-    public void refresh(String gameCode) {
-        new Thread(() -> {
-            var data = server.getMatchLeaderboard(gameCode);
-            if(data != null)
-                table.setItems(FXCollections.observableList(data));
-        }).start();
+    private void countDown() {
+        final Service<Integer> countDownThread = new Service<>() {
+            @Override
+            protected Task<Integer> createTask() {
+                return new Task<Integer>() {
+                    @Override
+                    protected Integer call() {
+                        int i;
+                        for (i = 0; i < 225; i++) {
+                            updateProgress(225 - i, 225);
+                            if (i == 170) {
+                                readyText.setVisible(true);
+                                table.setVisible(false);
+                            }
+                            try {
+                                Thread.sleep(16);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return i;
+                    }
+                };
+            }
+        };
+
+        // Next Round Transition
+        countDownThread.setOnSucceeded(event -> {
+            Main.primaryStage.setScene(myFxml.get(GameScreenCtrl.class).getScene());
+
+        });
+
+        // bind thread to progress bar and start it
+        progressBar.progressProperty().bind(countDownThread.progressProperty());
+        countDownThread.start();
     }
+
 }

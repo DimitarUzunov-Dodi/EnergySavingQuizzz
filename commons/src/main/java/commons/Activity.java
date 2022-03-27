@@ -1,13 +1,19 @@
 package commons;
 
-import javax.persistence.*;
+import static javax.persistence.GenerationType.SEQUENCE;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "activity")
 public class Activity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = SEQUENCE)
     @Column(name = "activity_id")
     private long activityId;
     @Column(name = "activity_text", length = 512)
@@ -22,6 +28,14 @@ public class Activity {
     public Activity() {
     }
 
+    /**
+     * Basic constructor for Activity entity.
+     * @param activityId activity id
+     * @param activityText activity text
+     * @param value activity value
+     * @param source activity source
+     * @param imageId activity image id
+     */
     public Activity(long activityId, String activityText, long value, String source, long imageId) {
         this.activityId = activityId;
         this.activityText = activityText;
@@ -30,6 +44,13 @@ public class Activity {
         this.imageId = imageId;
     }
 
+    /**
+     * Constructor for Activity entity without an id.
+     * @param activityText activity text
+     * @param value activity value
+     * @param source activity source
+     * @param imageId activity image id
+     */
     public Activity(String activityText, long value, String source, long imageId) {
         this.activityText = activityText;
         this.value = value;
@@ -79,15 +100,27 @@ public class Activity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Activity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Activity)) {
+            return false;
+        }
 
         Activity activity = (Activity) o;
 
-        if (getActivityId() != activity.getActivityId()) return false;
-        if (getValue() != activity.getValue()) return false;
-        if (getImageId() != activity.getImageId()) return false;
-        if (!getActivityText().equals(activity.getActivityText())) return false;
+        if (getActivityId() != activity.getActivityId()) {
+            return false;
+        }
+        if (getValue() != activity.getValue()) {
+            return false;
+        }
+        if (getImageId() != activity.getImageId()) {
+            return false;
+        }
+        if (!getActivityText().equals(activity.getActivityText())) {
+            return false;
+        }
         return getSource().equals(activity.getSource());
     }
 
@@ -103,13 +136,13 @@ public class Activity {
 
     @Override
     public String toString() {
-        return "Activity{" +
-                "activityId=" + activityId +
-                ", activityText='" + activityText + '\'' +
-                ", value=" + value +
-                ", source='" + source + '\'' +
-                ", imageId=" + imageId +
-                '}';
+        return "Activity{"
+                + "activityId=" + activityId
+                + ", activityText='" + activityText + '\''
+                + ", value=" + value
+                + ", source='" + source + '\''
+                + ", imageId=" + imageId
+                + '}';
     }
 
 }

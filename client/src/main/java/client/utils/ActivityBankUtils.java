@@ -1,11 +1,12 @@
 package client.utils;
 
+import static client.utils.ActivityImageUtils.uploadDefaultImage;
+import static client.utils.ActivityImageUtils.uploadImage;
+
 import client.communication.AdminCommunication;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.ActivityBankEntry;
-import commons.ActivityImage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,16 +17,15 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static client.utils.ActivityImageUtils.imageToByteArray;
-
-
 public class ActivityBankUtils {
     private static final String pathToBankZip = "./src/main/data/";
     private static final String zipName = "oopp-activity-bank.zip";
-    private static final String pathToResources = "./src/main/resources/client/images/";
-    private static final String defaultImageName = "default-image.png";
 
 
+    /**
+     * Unzips activity bank archive to a predefined path.
+     * @throws IOException - exception regarding file IO
+     */
     public static void unzipActivityBank() throws IOException {
         String fileZip = pathToBankZip + zipName;
         File destDir = new File(pathToBankZip + "/unzipped");
@@ -59,10 +59,20 @@ public class ActivityBankUtils {
         }
         zis.closeEntry();
         zis.close();
-        // userAlert("ERROR", "Unable to load archive", "Error occurred while trying to read an archive");
+        /*
+        userAlert("ERROR", "Unable to load archive",
+                "Error occurred while trying to read an archive");
+         */
     }
 
-    public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+    /**
+     * New file out of destination directory and a zipEntry.
+     * @param destinationDir - directory to save outcome into
+     * @param zipEntry - archive with activity bank
+     * @return new File in destinationDir
+     * @throws IOException - exception regarding file IO
+     */
+    private static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
 
         String destDirPath = destinationDir.getCanonicalPath();
@@ -75,26 +85,32 @@ public class ActivityBankUtils {
         return destFile;
     }
 
+    /**
+     * Extract json into the database.
+     * @throws IOException - exception regarding file IO
+     */
     public static void jsonToActivityBankEntry() throws IOException {
-        String jsonActivityBankArray = new String(Files.readAllBytes(Paths.get(pathToBankZip + "unzipped/activities.json")));;
+        String jsonActivityBankArray = new String(Files.readAllBytes(
+                Paths.get(pathToBankZip + "unzipped/activities.json")));
         ObjectMapper objectMapper = new ObjectMapper();
-        List<ActivityBankEntry> activityBankEntryList = objectMapper.readValue(jsonActivityBankArray, new TypeReference<List<ActivityBankEntry>>() {
-        });
+        List<ActivityBankEntry> activityBankEntryList = objectMapper.readValue(
+                jsonActivityBankArray,
+                new TypeReference<List<ActivityBankEntry>>() {});
 
         long imageId;
-        for(ActivityBankEntry entry : activityBankEntryList) {
-            imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImage_path());
-            AdminCommunication.addActivityBankEntry(entry, imageId);
+        for (ActivityBankEntry entry : activityBankEntryList) {
+            try {
+                imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImagePath());
+                AdminCommunication.addActivityBankEntry(entry, imageId);
+            } catch (CorruptImageException | ImageNotSupportedException e) {
+                try {
+                    imageId = uploadDefaultImage();
+                    AdminCommunication.addActivityBankEntry(entry, imageId);
+                } catch (CorruptImageException | ImageNotSupportedException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
-    public static long uploadImage(String path) {
-        try {
-            return AdminCommunication
-                    .addActivityImage(new ActivityImage(imageToByteArray(path)))
-                    .readEntity(Long.class);
-        } catch (IOException | CorruptImageException | ImageNotSupportedException ex) {
-            return uploadImage(pathToResources+defaultImageName);
-        }
-    }
 }

@@ -1,69 +1,89 @@
-/*
- * Copyright 2021 Delft University of Technology
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package client;
 
+import client.utils.FileUtils;
+import client.utils.SceneController;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-
-import com.google.inject.Injector;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.util.Builder;
 import javafx.util.BuilderFactory;
 import javafx.util.Callback;
-import javafx.util.Pair;
 
+/**
+ * JavaFX helper class.
+ */
+@SuppressWarnings("checkstyle:abbreviationaswordinname")
 public class MyFXML {
 
-    private Injector injector;
+    private final Injector injector;
 
+    /**
+     * Basic constructor.
+     * @param injector the injector that handles the controllers
+     */
+    @Inject
     public MyFXML(Injector injector) {
         this.injector = injector;
     }
 
-    public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
+    /**
+     * Loads the javafx scene and assigns it to the proper controller instance.
+     * @param url URL of the resource
+     * @return Reference to the instance of a SceneController that holds a
+     *      reference of the freshly loaded Scene
+     */
+    private <T extends SceneController> T loadScene(URL url) {
         try {
-            var loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
+            var loader = new FXMLLoader(url, null, null, new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
             T ctrl = loader.getController();
-            return new Pair<>(ctrl, parent);
+            ctrl.setScene(new Scene(parent));
+            return ctrl;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("IO error while loading fxml:\n" + e);
+            throw new RuntimeException(e); // crash (unless handled by caller)
         }
     }
 
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return MyFXML.class.getClassLoader().getResource(path);
+    /**
+     * Get a reference of the specified scene controller.
+     * @param ctrl Type of the desired controller
+     * @return Reference of the (singleton) instance of that specific controller type.
+     */
+    public <T extends SceneController> T get(Class<T> ctrl) {
+        T c = injector.getInstance(ctrl);
+        if (c.getScene() == null) {
+            String file = ctrl.getSimpleName().replace("Ctrl", ".fxml");
+            String  path = Path.of("", "client", "scenes", file).toString();
+            return loadScene(MyFXML.class.getClassLoader().getResource(path));
+        }
+        return c;
     }
 
-    private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
+    /**
+     * Call SceneController.show() on a controller.
+     * @param ctrl Type of the controller
+     */
+    public <T extends SceneController> void showScene(Class<T> ctrl) {
+        get(ctrl).getScene().getStylesheets().clear();
+        get(ctrl).getScene().getStylesheets().add(FileUtils.getTheme());
+        get(ctrl).show();
+    }
 
+    /**
+     * Wraps the injector for ease of use.
+     */
+    private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
         @Override
         @SuppressWarnings("rawtypes")
         public Builder<?> getBuilder(Class<?> type) {
-            return new Builder() {
-                @Override
-                public Object build() {
-                    return injector.getInstance(type);
-                }
-            };
+            return (Builder) () -> injector.getInstance(type);
         }
 
         @Override

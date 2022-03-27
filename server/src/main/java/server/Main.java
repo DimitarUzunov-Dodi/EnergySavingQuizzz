@@ -1,20 +1,7 @@
-/*
- * Copyright 2021 Delft University of Technology
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package server;
 
+import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,12 +14,31 @@ public class Main {
 
     private static ConfigurableApplicationContext context;
 
+    /**
+     * Program entry point.
+     * @param args command line arguments
+     *      the only supported one is --port [portNr]
+     */
     public static void main(String[] args) {
-        context = SpringApplication.run(Main.class, args);
+        int port = 8080;
+        Arrays.stream(args).forEach(System.out::println);
+        if (args.length > 1) {
+            try {
+                port = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid port specified, defaulting to 8080.");
+            }
+        }
+
+        SpringApplication app = new SpringApplication(Main.class);
+        app.setDefaultProperties(Collections.singletonMap(
+                        "server.port", port
+        ));
+        context = app.run(args);
     }
 
     /**
-     * Method restarts the application with the same arguments it was started
+     * Method restarts the application with the same arguments it was started.
      */
     public static void restart() {
         ApplicationArguments args = context.getBean(ApplicationArguments.class);

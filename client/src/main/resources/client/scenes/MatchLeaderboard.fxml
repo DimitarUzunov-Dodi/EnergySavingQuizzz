@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
-<GridPane id="pane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MatchLeaderboardCtrl">
+<GridPane id="background" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MatchLeaderboardCtrl">
 <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="0.0" />
     <ColumnConstraints halignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" percentWidth="80.0" />
@@ -21,12 +22,12 @@
     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="22.0" percentHeight="5.0" valignment="CENTER" vgrow="NEVER" />
 </rowConstraints>
 <children>
-    <Text id="title" boundsType="VISUAL" fill="#f2c914" stroke="BLACK" strokeType="OUTSIDE" text="Leaderboard" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="503.142578125" GridPane.columnSpan="2147483647">
+    <Text id="title" boundsType="VISUAL" fill="#f2c914" stroke="BLACK" strokeLineJoin="ROUND" strokeType="OUTSIDE" text="Leaderboard" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="503.142578125" GridPane.columnSpan="2147483647">
         <font>
             <Font name="Consolas Bold" size="42.0" />
         </font>
     </Text>
-    <TableView fx:id="table" opacity="0.75" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #7389A4; -fx-background-radius: 20; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" GridPane.vgrow="ALWAYS">
+    <TableView fx:id="table" opacity="0.75" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #7389A4; -fx-background-radius: 20; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 20;" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colUsername" editable="false" prefWidth="75.0" text="Username" />
             <TableColumn fx:id="colScore" editable="false" prefWidth="75.0" text="Score" />
@@ -35,6 +36,12 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
         </columnResizePolicy>
     </TableView>
+    <ProgressBar id="progressBar" fx:id="progressBar" prefWidth="500.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Text fx:id="readyText" boundsType="LOGICAL_VERTICAL_CENTER" fill="#f2c914" stroke="#4d4d4d" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" text="Get Ready!" textAlignment="CENTER" textOrigin="CENTER" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <font>
+            <Font name="Consolas Bold" size="50.0" />
+         </font>
+      </Text>
 </children>
 <padding>
     <Insets bottom="10.0" />

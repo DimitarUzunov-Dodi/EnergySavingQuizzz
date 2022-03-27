@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane id="background" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0"  xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MultiplayerCtrl">
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" percentHeight="27.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="27.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="22.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" percentHeight="14.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <children>
+      <Text id="title" boundsType="VISUAL" fill="#f2c914" stroke="BLACK" strokeType="OUTSIDE" text="Join Server" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="503.142578125" GridPane.columnSpan="2147483647">
+         <font>
+            <Font name="Consolas Bold" size="42.0" />
+         </font>
+      </Text>
+      <Button id="playButton" fx:id="joinPublicButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onJoinPublic" text="Join public game" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <font>
+            <Font name="Consolas Bold" size="24.0" />
+         </font>
+      </Button>
+      <Button id="playButton" fx:id="creatPrivateButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCreatePrivate" text="Create private game" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <font>
+            <Font name="Consolas Bold" size="24.0" />
+         </font>
+      </Button>
+      <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="509.0" minWidth="10.0" percentWidth="70.0" prefWidth="509.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="67.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button id="playButton" fx:id="joinPrivateButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onJoinPrivate" text=" Join private game " textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font name="Consolas Bold" size="24.0" />
+               </font>
+            </Button>
+            <TextField fx:id="gameCodeField" promptText="game code" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </TextField>
+         </children>
+      </GridPane>
+      <Button fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackButton" text="Back" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+         <font>
+            <Font name="Consolas Bold" size="20.0" />
+         </font>
+      </Button>
+   </children>
+</GridPane>
