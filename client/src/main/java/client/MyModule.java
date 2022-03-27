@@ -26,6 +26,9 @@ public class MyModule implements Module {
         binder.bind(SplashCtrl.class).in(Scopes.SINGLETON);
         binder.bind(WaitingRoomCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionTypeAComponentCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionTypeBComponentCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionTypeCComponentCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionTypeDComponentCtrl.class).in(Scopes.SINGLETON);
         // other
 
     }
