@@ -1,12 +1,15 @@
 package server.api;
 
 import java.util.Random;
-
-import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import server.service.GameService;
 
 @RestController
@@ -78,6 +81,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Get the correct answer from the question.
+     *
+     * @param gameCode The game code for the specific game
+     * @param questionIndex The index of the wanted question
+     * @return The correct answer(in energy consumption number)
+     */
     @GetMapping("/getAnswer/{gameCode}/{questionIndex}")
     public ResponseEntity<?> getAnswer(@PathVariable String gameCode,
                                           @PathVariable int questionIndex) {
@@ -90,6 +100,16 @@ public class GameController {
         }
     }
 
+    /**
+     * Process the answer and give bonus points.
+     *
+     * @param gameCode The game code for the specific game
+     * @param username The username
+     * @param questionIndex The index of the wanted question
+     * @param answer correct answer(in energy consumption number) to the question asked
+     * @param time the time spent on giving the answer
+     * @return bonus points achieved
+     */
     @PutMapping("/processAnswer/{gameCode}/{username}/{questionIndex}/{answer}/{time}")
     public ResponseEntity<?> processAnswer(@PathVariable String gameCode,
                                        @PathVariable String username,

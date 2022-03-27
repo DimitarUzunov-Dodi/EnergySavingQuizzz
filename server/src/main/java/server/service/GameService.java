@@ -8,8 +8,12 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import server.database.ActivityRepository;
@@ -181,24 +185,41 @@ public class GameService {
         }
     }
 
-    public int processAnswer(String gameCode, String username, int questionIndex, long answer, int time) {
+    /**
+     * Processes answer from the user and gives bonus points.
+     * Decides how many points(if any) allocate to the user
+     * Question Types A,B,C - either right or wrong
+     * Question Type D - depends on how close the answer is
+     * Time - from 0 to 100
+     * rewardPoints are multiplied by time and divided by 10
+     * so the score range is from 0 to 100
+     *
+     * @param gameCode - code of the game
+     * @param username - name of the user requesting answer processing
+     * @param questionIndex - index of question answered by user
+     * @param answer - answer of the user(energy consume)
+     * @param time - time left (0% - 100%)
+     * @return reward points for user
+     */
+    public int processAnswer(String gameCode, String username,
+                             int questionIndex, long answer, int time) {
         int rewardPoints = 0;
 
         Question question = getQuestion(gameCode, questionIndex);
         long correctAnswer = retrieveAnswer(question);
 
-        if(correctAnswer == answer) {
-            rewardPoints = 1;
-        }
-        else {
-            if(question.getQuestionType() == 3) {
-                if(answer >= 0.8*correctAnswer && answer <= 1.2*correctAnswer) {
-                    rewardPoints = 1;
+        if (correctAnswer == answer) {
+            rewardPoints = 10;
+        } else {
+            if (question.getQuestionType() == 3) {
+                if (answer >= 0.8 * correctAnswer && answer <= 1.2 * correctAnswer) {
+                    rewardPoints = 10;
                 }
             }
         }
 
         rewardPoints *= time;
+        rewardPoints /= 10;
 
         User currentUser = getUserByUsername(gameCode, username);
         if (currentUser == null) {
@@ -209,6 +230,13 @@ public class GameService {
         return rewardPoints;
     }
 
+    /**
+     * Gets correct answer from the specified game from questionIndex.
+     *
+     * @param gameCode - code of the game
+     * @param questionIndex - index of question requested by user
+     * @return correct answer in energy consumption
+     */
     public long getCorrectAnswer(String gameCode, int questionIndex) {
         Question question = getQuestion(gameCode, questionIndex);
         return retrieveAnswer(question);
@@ -216,7 +244,7 @@ public class GameService {
 
     private long retrieveAnswer(Question question) {
         long answer = -1;
-        switch(question.getQuestionType()) {
+        switch (question.getQuestionType()) {
             case 0:
                 answer = correctAnswerQuestionTypeA((QuestionTypeA) question);
                 break;
@@ -268,9 +296,10 @@ public class GameService {
     }
 
     private User getUserByUsername(String gameCode, String username) {
-        for(User user : getUsers(gameCode)) {
-            if(user.getUsername().equals(username))
+        for (User user : getUsers(gameCode)) {
+            if (user.getUsername().equals(username)) {
                 return user;
+            }
         }
         return null;
     }
