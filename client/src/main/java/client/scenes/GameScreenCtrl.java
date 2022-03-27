@@ -17,7 +17,6 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.FXCollections;
