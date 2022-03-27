@@ -25,8 +25,6 @@ public class SettingsCtrl extends SceneController {
 
     @Override
     public void show() {
-        scene.getStylesheets().removeAll();
-        scene.getStylesheets().add(FileUtils.getTheme());
         showScene();
 
     }
@@ -54,14 +52,14 @@ public class SettingsCtrl extends SceneController {
     private void changeColourModeAction() {
         if (colourModeButton.getText().equals("Dark Mode")) {
             colourModeButton.setText("Light Mode");
-            FileUtils.setTheme("file:/C:/OOPP/Project/client/build/resources/main/"
-                    + "client/css/DarkTheme.css");
+            FileUtils.setTheme("DarkTheme");
+            System.out.println(FileUtils.getTheme());
             myFxml.showScene(SplashCtrl.class);
 
 
         } else {
-            FileUtils.setTheme("file:/C:/OOPP/Project/client/build/resources/main"
-                    + "/client/css/LightTheme.css");
+            FileUtils.setTheme("LightTheme");
+            System.out.println(FileUtils.getTheme());
             colourModeButton.setText("Dark Mode");
             myFxml.showScene(SplashCtrl.class);
         }

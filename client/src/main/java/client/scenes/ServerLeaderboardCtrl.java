@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.MyFXML;
-import client.utils.FileUtils;
 import client.utils.SceneController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
@@ -46,8 +45,6 @@ public class ServerLeaderboardCtrl extends SceneController {
 
     @Override
     public void show() {
-        scene.getStylesheets().removeAll();
-        scene.getStylesheets().add(FileUtils.getTheme());
         // load contents async
         new Thread(() -> {
             try {
