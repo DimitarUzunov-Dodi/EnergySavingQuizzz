@@ -100,6 +100,7 @@ public class MatchLeaderboardCtrl extends SceneController {
         // Next Round Transition
         countDownThread.setOnSucceeded(event -> {
             Main.primaryStage.setScene(myFxml.get(GameScreenCtrl.class).getScene());
+
         });
 
         // bind thread to progress bar and start it

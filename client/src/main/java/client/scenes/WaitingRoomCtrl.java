@@ -43,6 +43,7 @@ public class WaitingRoomCtrl extends SceneController {
     @Override
     public void show() {
         setGameCode(currentGameID);
+
         pollingThread = new Timer();
         pollingThread.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -50,6 +51,11 @@ public class WaitingRoomCtrl extends SceneController {
                 refreshUserList();
                 if (WaitingRoomCommunication.isStarted(currentGameID).getStatus() == 418) {
                     System.out.println("START ACTIVATED");
+                    pollingThread.cancel();
+                    Platform.runLater(() -> {
+                        myFxml.showScene(GameScreenCtrl.class);
+                    });
+
                 }
             }
         }, 0, 1000);
@@ -68,6 +74,8 @@ public class WaitingRoomCtrl extends SceneController {
             playersLabel.setText(playerList.size() + " players");
         });
     }
+
+
 
     /**
      * Method sets game code and changes label in the scene,
@@ -95,7 +103,8 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onStartButton() {
         WaitingRoomCommunication.startGame(currentGameID);
-        myFxml.showScene(GameScreenCtrl.class);
+        System.out.println(currentGameID);
+
     }
     
 }
