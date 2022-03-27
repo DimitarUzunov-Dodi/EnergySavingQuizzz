@@ -19,6 +19,8 @@ import commons.User;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -259,6 +261,15 @@ public class GameScreenCtrl extends SceneController {
                                 img.setImage(emojis.get(v.lastName)); // just why?
                                 //  displayImage.setFitWidth(0.1);
                                 setGraphic(img);
+
+                                Timer timer = new Timer();
+                                timer.schedule(new java.util.TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        img.setFitWidth(0.1);
+                                        img.setImage(null);
+                                    }
+                                }, 3000);
                             }
                             setText(name);
                         }
