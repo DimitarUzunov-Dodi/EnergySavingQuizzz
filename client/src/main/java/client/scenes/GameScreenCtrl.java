@@ -49,7 +49,6 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private StackPane questionHolder;
 
-
     @FXML
     private ProgressBar progressBar;
 

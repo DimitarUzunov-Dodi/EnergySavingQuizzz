@@ -1,5 +1,6 @@
 package client;
 
+import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -70,6 +71,8 @@ public class MyFXML {
      * @param ctrl Type of the controller
      */
     public <T extends SceneController> void showScene(Class<T> ctrl) {
+        get(ctrl).getScene().getStylesheets().clear();
+        get(ctrl).getScene().getStylesheets().add(FileUtils.getTheme());
         get(ctrl).show();
     }
 
