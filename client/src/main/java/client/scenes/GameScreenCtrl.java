@@ -5,7 +5,7 @@ import static java.util.Map.entry;
 
 import client.MyFXML;
 import client.communication.GameCommunication;
-import client.communication.LeaderboardCommunication;
+import client.communication.Utils;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -19,6 +19,8 @@ import commons.User;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -30,33 +32,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
-// TODO: this whole controller needs to be reworked bc it's a mess and it's very hard to work with
 public class GameScreenCtrl extends SceneController {
 
     private String username;
 
-    private static User user;
     private static int qIndex;
     private Question activeQuestion;
 
-    private static final double TIME_TO_NEXT_ROUND = 5;
+    private static final double TIME_TO_NEXT_ROUND = 8;
 
     @FXML
     private ImageView menuButton;
-
-
     @FXML
     private StackPane questionHolder;
-
     @FXML
     private ProgressBar progressBar;
-
-
-
     @FXML
     private ListView<String> currentLeaderboard;
-
-
 
     @FXML
     private ImageView emoji1;
@@ -79,7 +71,6 @@ public class GameScreenCtrl extends SceneController {
     }
 
     public static void init(User user1) {
-        user = user1;
     }
 
     /**
@@ -231,15 +222,11 @@ public class GameScreenCtrl extends SceneController {
     }
 
     private void setupPlayerList() {
-        // TODO change from SDK 16 functionality to SDK 11
         // init the player list (cells)
-        /*
         currentLeaderboard.setItems(FXCollections.observableList(
-                WaitingRoomCommunication.getAllUsers(currentGameID)
-                    .stream().map(User::getUsername).toList()
+            Utils.getAllUsers(currentGameID)
+                    .stream().map(User::getUsername).collect(Collectors.toList())
         ));
-
-         */
 
         // register websockets events on receiving messages
         GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, Person.class,
@@ -274,7 +261,7 @@ public class GameScreenCtrl extends SceneController {
         properties.put("currentGameID", currentGameID);
         properties.put("username", MainCtrl.username);
         // connect via websockets
-        GameCommunication.connect(LeaderboardCommunication.serverAddress, properties);
+        GameCommunication.connect(Utils.serverAddress, properties);
 
         GameCommunication.registerForMessages("/time/get/receive/" + MainCtrl.currentGameID,
             long.class, o -> {
@@ -284,9 +271,7 @@ public class GameScreenCtrl extends SceneController {
 
             });
 
-
-
-
+        initImages();
 
         setupPlayerList();
 

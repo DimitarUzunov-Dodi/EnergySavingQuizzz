@@ -1,14 +1,12 @@
 package client.communication;
 
-import static client.communication.LeaderboardCommunication.serverAddress;
+import static client.communication.Utils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.User;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
-import java.util.List;
 import org.glassfish.jersey.client.ClientConfig;
 
 public class WaitingRoomCommunication {
@@ -22,19 +20,7 @@ public class WaitingRoomCommunication {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress).path("/api/game/new")
                 .request(APPLICATION_JSON)
-                .get(new GenericType<String>() {});
-    }
-
-    /**
-     * Send GET request to the server to get a list of all users in a current game.
-     * @return String that contains six-digit game code.
-     * @throws RuntimeException when unable to connect to the server
-     */
-    public static List<User> getAllUsers(String gameCode) throws RuntimeException {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(serverAddress).path("/api/game/getUsers/" + gameCode)
-                .request(APPLICATION_JSON)
-                .get(new GenericType<List<User>>() {});
+                .get(new GenericType<>() {});
     }
 
     /**
@@ -58,7 +44,7 @@ public class WaitingRoomCommunication {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress).path("/api/game/get/public")
                 .request(APPLICATION_JSON)
-                .get(new GenericType<String>() {});
+                .get(new GenericType<>() {});
     }
 
     /**

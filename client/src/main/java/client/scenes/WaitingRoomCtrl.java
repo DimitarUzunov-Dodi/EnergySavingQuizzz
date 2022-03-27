@@ -4,6 +4,7 @@ import static client.scenes.MainCtrl.currentGameID;
 import static client.scenes.MainCtrl.username;
 
 import client.MyFXML;
+import client.communication.Utils;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -64,7 +65,7 @@ public class WaitingRoomCtrl extends SceneController {
 
     private void refreshUserList() {
         playerList = FXCollections.observableList(
-                WaitingRoomCommunication.getAllUsers(currentGameID)
+                Utils.getAllUsers(currentGameID)
                         .stream()
                         .map(
                                 u -> u.getUsername())

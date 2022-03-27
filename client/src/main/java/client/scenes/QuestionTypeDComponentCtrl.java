@@ -56,6 +56,7 @@ public class QuestionTypeDComponentCtrl extends SceneController {
         ));
         activityText.setText(activeQuestion.getActivity().getActivityText());
 
+        textField.clear();
     }
 
     public void loadComponent(QuestionTypeD activeQuestion) {
