@@ -88,6 +88,7 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onBackButton() {
         WaitingRoomCommunication.leaveGame(currentGameID, username);
+        currentGameID = "";
         myFxml.showScene(MultiplayerCtrl.class);
     }
 

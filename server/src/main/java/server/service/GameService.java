@@ -144,7 +144,7 @@ public class GameService {
     }
 
     public void joinGame(String gameCode, String username) {
-        activeGames.get(gameCode).getUserList().add(new User(username));
+        activeGames.get(gameCode).addUser(new User(username));
     }
 
     /**
