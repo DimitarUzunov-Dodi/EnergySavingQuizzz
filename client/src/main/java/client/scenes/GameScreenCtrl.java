@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Main;
 import client.MyFXML;
 import client.communication.ActivityImageCommunication;
 import client.communication.GameCommunication;
@@ -7,10 +8,12 @@ import client.utils.FileUtils;
 import client.utils.SceneController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Game;
 import commons.Person;
 import commons.QuestionTypeA;
 import commons.User;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.FXCollections;
@@ -92,6 +95,8 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView emoji3;
 
+    private long currentTime = 0;
+
     private int correctAnswer;
 
     private final Image emojiHappy = new Image("client/images/emoji1.png");
@@ -132,17 +137,30 @@ public class GameScreenCtrl extends SceneController {
     /**
      * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar.
      */
-    public void countDown() {
+    public void countDown(Long time) {
+        System.out.println("the real real currentime is " + time);
+        Long difference = new Date().getTime() - time;
+        Long remainder = (TIME_TO_NEXT_ROUND * 100) - (difference/10);
+        System.out.println(remainder);
+        System.out.println(difference);
         final Service<Integer> countDownThread = new Service<>() {
+
             @Override
             protected Task<Integer> createTask() {
                 return new Task<Integer>() {
                     @Override
                     protected Integer call() {
-                        int i;
-                        for (i = TIME_TO_NEXT_ROUND * 100; i > 0; i--) {
+                        int i = remainder.intValue();
+                        while(i >= 0) {
+
+                           System.out.println(progressBar.getProgress());
                             updateProgress(i, TIME_TO_NEXT_ROUND * 100);
                             try {
+                                if ( Main.primaryStage.getScene().equals(myFxml.get(GameScreenCtrl.class).getScene())){
+                                    i--;
+                                }
+
+                                //System.out.println(i);
                                 Thread.sleep(10);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
@@ -163,9 +181,11 @@ public class GameScreenCtrl extends SceneController {
     /**
      * refreshes the question.
      */
-    public void refreshQuestion() {
+    public void refreshQuestion(Long time) {
+        System.out.println("the real currentime is " + time);
         // TODO: place this in the right place when answer checking is implemented
         myFxml.showScene(MatchLeaderboardCtrl.class);
+
         activeQuestion = client.communication.GameCommunication
             .getQuestion(MainCtrl.currentGameID, qIndex);
         qIndex++;
@@ -192,7 +212,8 @@ public class GameScreenCtrl extends SceneController {
                 correctAnswer = i;
             }
         }
-        countDown();
+        //progressBar.setProgress(1000);
+        countDown(time);
 
 
     }
@@ -251,7 +272,7 @@ public class GameScreenCtrl extends SceneController {
         // TODO award points
 
 
-        refreshQuestion();
+        refreshQuestion(currentTime);
     }
 
     /**
@@ -278,11 +299,21 @@ public class GameScreenCtrl extends SceneController {
 
     @Override
     public void show() {
+
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("currentGameID", MainCtrl.currentGameID);
         properties.put("username", MainCtrl.username);
         // connect via websockets
         GameCommunication.connect(ServerUtils.serverAddress, properties);
+       GameCommunication.send("/app/time/" + MainCtrl.currentGameID, "foo");
+        GameCommunication.registerForMessages("/time/get/receive/" + MainCtrl.currentGameID,
+            long.class, o -> {
+                currentTime = o;
+                System.out.println(o);
+
+            });
+
+        GameCommunication.send("/app/time/get/" + MainCtrl.currentGameID, "foo");
 
         /* create list object */
 
@@ -298,7 +329,7 @@ public class GameScreenCtrl extends SceneController {
 
         initImages();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
-        progressBar.setProgress(1F);
+       // progressBar.setProgress(1F);
         // Question_text = new Text("foo");
         buttonList.add(button1);
         buttonList.add(button2);
@@ -376,12 +407,15 @@ public class GameScreenCtrl extends SceneController {
                 System.out.println(o.toString());
                 System.out.println("foo");
             });
+
+
         HashMap<String, Object> userProperties = new HashMap<String, Object>();
         userProperties.put("currentGameID", MainCtrl.currentGameID);
         userProperties.put("username", MainCtrl.username);
         GameCommunication.send("/app/game/" + MainCtrl.currentGameID + "/"
             + MainCtrl.username, userProperties);
-        refreshQuestion();
+        System.out.println("the time is " + currentTime);
+        refreshQuestion(currentTime);
 
         showScene();
     }

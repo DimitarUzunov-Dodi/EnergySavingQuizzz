@@ -5,6 +5,7 @@ package server.websockets.controller;
 
 import commons.Game;
 import commons.Person;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import org.slf4j.Logger;
@@ -29,10 +30,8 @@ public class EmojiController {
     private Game currentGame;
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
-
-
-
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
+    private HashMap<String, Long> gameTimes = new HashMap<String, Long>();
 
 
     /**
@@ -62,18 +61,27 @@ public class EmojiController {
     }
 
     /**
-     * sends the appropriate emoji to the clients of all websockets connected.
+     * creates the time for a game
      *
-     * @return the retrieved game
      * @throws Exception Exception
      */
-    @MessageMapping("/game")
-    @SendTo("/game/receive")
-    public Game sendGame() throws Exception {
+    @MessageMapping("/time/{currentGameID}")
+    @SendTo("/time/nothing/")
+    public void createDate(@DestinationVariable String currentGameID) throws Exception {
+        LOGGER.info("creating time");
+        Long time = new Date().getTime();
+        //LOGGER.info(time.toString());
+        gameTimes.put(currentGameID, new Date().getTime());
 
-        playersInCurrentGame++;
-        return currentGame;
 
+    }
+
+    @MessageMapping("/time/get/{currentGameID}")
+    @SendTo("/time/get/receive/{currentGameID}")
+    public long getDate(@DestinationVariable String currentGameID) throws Exception{
+        LOGGER.info("getting time");
+        LOGGER.info(gameTimes.get(currentGameID).toString());
+        return gameTimes.get(currentGameID);
     }
 
     /**
@@ -101,7 +109,7 @@ public class EmojiController {
         System.out.println(gameID);
         System.out.println(gameID);
         LOGGER.info(gameID);
-        System.out.println("fuuuuuck");
+       // System.out.println("fuuuuuck");
         LOGGER.info("fcucucucucu");
         LOGGER.info(webSocketSessionList.toString());
         return properties;
