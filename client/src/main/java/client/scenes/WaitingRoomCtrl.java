@@ -51,6 +51,7 @@ public class WaitingRoomCtrl extends SceneController {
                 refreshUserList();
                 if (WaitingRoomCommunication.isStarted(currentGameID).getStatus() == 418) {
                     System.out.println("START ACTIVATED");
+                    pollingThread.cancel();
                     Platform.runLater(() -> {
                         myFxml.showScene(GameScreenCtrl.class);
                     });
