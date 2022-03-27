@@ -1,14 +1,18 @@
 package client.scenes;
 
 import client.MyFXML;
-import client.communication.ActivityImageCommunication;
 import client.communication.GameCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.*;
-
+import commons.Person;
+import commons.Question;
+import commons.QuestionTypeA;
+import commons.QuestionTypeB;
+import commons.QuestionTypeC;
+import commons.QuestionTypeD;
+import commons.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.FXCollections;
@@ -17,14 +21,12 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
 
 public class GameScreenCtrl extends SceneController {
@@ -139,19 +141,23 @@ public class GameScreenCtrl extends SceneController {
 
         switch (activeQuestion.getQuestionType()) {
             case 0:
-                myFxml.get(QuestionTypeAComponentCtrl.class).loadComponent((QuestionTypeA) activeQuestion);
+                myFxml.get(QuestionTypeAComponentCtrl.class)
+                        .loadComponent((QuestionTypeA) activeQuestion);
 
                 break;
             case 1:
-                myFxml.get(QuestionTypeBComponentCtrl.class).loadComponent((QuestionTypeB) activeQuestion);
+                myFxml.get(QuestionTypeBComponentCtrl.class)
+                        .loadComponent((QuestionTypeB) activeQuestion);
 
                 break;
             case 2:
-                myFxml.get(QuestionTypeCComponentCtrl.class).loadComponent((QuestionTypeC) activeQuestion);
+                myFxml.get(QuestionTypeCComponentCtrl.class)
+                        .loadComponent((QuestionTypeC) activeQuestion);
 
                 break;
             case 3:
-                myFxml.get(QuestionTypeDComponentCtrl.class).loadComponent((QuestionTypeD) activeQuestion);
+                myFxml.get(QuestionTypeDComponentCtrl.class)
+                        .loadComponent((QuestionTypeD) activeQuestion);
 
                 break;
 

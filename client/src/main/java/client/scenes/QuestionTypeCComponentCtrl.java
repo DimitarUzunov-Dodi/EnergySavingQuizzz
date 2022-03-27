@@ -6,15 +6,15 @@ import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.QuestionTypeC;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class QuestionTypeCComponentCtrl extends SceneController {
 
@@ -46,12 +46,12 @@ public class QuestionTypeCComponentCtrl extends SceneController {
     @FXML
     private Text questionText;
 
-    @Inject
     /**
      * Basic constructor.
      *
      * @param myFxml handled by INJECTOR
      */
+    @Inject
     protected QuestionTypeCComponentCtrl(MyFXML myFxml) {
         super(myFxml);
     }

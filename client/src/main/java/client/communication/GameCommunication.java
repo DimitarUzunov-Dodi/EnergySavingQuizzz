@@ -4,7 +4,6 @@ import static client.utils.ServerUtils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.Question;
-import commons.QuestionTypeA;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import java.lang.reflect.Type;

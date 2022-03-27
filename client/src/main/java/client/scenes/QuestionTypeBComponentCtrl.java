@@ -5,13 +5,13 @@ import client.communication.ActivityImageCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.QuestionTypeB;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 
 public class QuestionTypeBComponentCtrl extends SceneController {
 
@@ -33,12 +33,12 @@ public class QuestionTypeBComponentCtrl extends SceneController {
     @FXML
     private ImageView activityImage;
 
-    @Inject
     /**
      * Basic constructor.
      *
      * @param myFxml handled by INJECTOR
      */
+    @Inject
     protected QuestionTypeBComponentCtrl(MyFXML myFxml) {
         super(myFxml);
     }
