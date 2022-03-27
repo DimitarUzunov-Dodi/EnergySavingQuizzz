@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import server.service.GameService;
 
@@ -110,20 +110,20 @@ public class GameController {
      * @param time the time spent on giving the answer
      * @return bonus points achieved
      */
-    @PutMapping("/processAnswer/{gameCode}/{username}/{questionIndex}/{answer}/{time}")
-    public ResponseEntity<?> processAnswer(@PathVariable String gameCode,
-                                       @PathVariable String username,
-                                       @PathVariable int questionIndex,
-                                       @PathVariable long answer,
-                                       @PathVariable int time) {
+    @GetMapping("/processAnswer")
+    public ResponseEntity<?> processAnswer(@RequestParam(name = "gameCode") String gameCode,
+                                           @RequestParam(name = "username") String username,
+                                           @RequestParam(name = "questionIndex") int questionIndex,
+                                           @RequestParam(name = "answer") long answer,
+                                           @RequestParam(name = "time") int time) {
         if (!(gameService.doesGameExist(gameCode))) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("No game found with this game code!");
-        } else if (gameService.isUsernamePresent(gameCode, username)) {
+        } else if (!gameService.isUsernamePresent(gameCode, username)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("Username already in use in this game!");
+                    .body("Username is not present in the game!");
         } else {
             return ResponseEntity.ok(
                     gameService.processAnswer(gameCode, username, questionIndex, answer, time)

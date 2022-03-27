@@ -137,5 +137,6 @@ public class GameCommunication {
                 .queryParam("time", time)
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
+
     }
 }

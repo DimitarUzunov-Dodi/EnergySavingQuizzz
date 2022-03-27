@@ -106,33 +106,21 @@ public class QuestionTypeCComponentCtrl extends SceneController {
      * method to call when answer A is pressed.
      */
     public void answerAPressed() {
-        if (correctAnswer == 0) {
-            myFxml.get(GameScreenCtrl.class).awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
+
     }
 
     /**
      * method to call when answer B is pressed.
      */
     public void answerBPressed() {
-        if (correctAnswer == 1) {
-            myFxml.get(GameScreenCtrl.class).awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
+
     }
 
     /**
      * method to call when answer C is pressed.
      */
     public void answerCPressed() {
-        if (correctAnswer == 2) {
-            myFxml.get(GameScreenCtrl.class).awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
+
     }
 
 }

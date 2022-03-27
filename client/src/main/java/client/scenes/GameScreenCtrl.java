@@ -6,7 +6,6 @@ import static java.util.Map.entry;
 import client.MyFXML;
 import client.communication.GameCommunication;
 import client.communication.LeaderboardCommunication;
-import client.communication.WaitingRoomCommunication;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -19,7 +18,6 @@ import commons.QuestionTypeD;
 import commons.User;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -40,7 +38,7 @@ public class GameScreenCtrl extends SceneController {
     private static int qIndex;
     private Question activeQuestion;
 
-    private static final int TIME_TO_NEXT_ROUND = 3;
+    private static final int TIME_TO_NEXT_ROUND = 15;
 
     @FXML
     private ImageView menuButton;
@@ -133,7 +131,7 @@ public class GameScreenCtrl extends SceneController {
         myFxml.showScene(MatchLeaderboardCtrl.class);
         activeQuestion = client.communication.GameCommunication
             .getQuestion(currentGameID, qIndex);
-        System.out.println(GameCommunication.getAnswer(currentGameID, qIndex));
+        //System.out.println(GameCommunication.getAnswer(currentGameID, qIndex));
         qIndex++;
 
         switch (activeQuestion.getQuestionType()) {
@@ -164,16 +162,6 @@ public class GameScreenCtrl extends SceneController {
         }
         countDown();
 
-    }
-
-    /**
-     * method to award points to client.
-     */
-    public void awardPoints() {
-        // TODO award points
-
-
-        refreshQuestion();
     }
 
     /**
@@ -217,11 +205,15 @@ public class GameScreenCtrl extends SceneController {
     }
 
     private void setupPlayerList() {
+        // TODO change from SDK 16 functionality to SDK 11
         // init the player list (cells)
+        /*
         currentLeaderboard.setItems(FXCollections.observableList(
                 WaitingRoomCommunication.getAllUsers(currentGameID)
                     .stream().map(User::getUsername).toList()
         ));
+
+         */
 
         // register websockets events on receiving messages
         GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, Person.class,
@@ -283,5 +275,22 @@ public class GameScreenCtrl extends SceneController {
 
     public void showQuestion(Node node) {
         questionHolder.getChildren().setAll(node);
+    }
+
+    /**
+     * Sends answer to the server.
+     * Gets reward - bonus for answering a question
+     * reward is in range [0, 100]
+     *
+     * @param answer - answer from the user
+     */
+    public void sendAnswer(long answer) {
+        int reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
+                qIndex - 1, answer, getTimeLeft());
+        System.out.println(reward);
+    }
+
+    private int getTimeLeft() {
+        return (int) Math.round(progressBar.getProgress() * 100);
     }
 }
