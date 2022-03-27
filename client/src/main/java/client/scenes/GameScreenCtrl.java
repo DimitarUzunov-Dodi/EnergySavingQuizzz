@@ -20,6 +20,8 @@ import commons.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -61,7 +63,6 @@ public class GameScreenCtrl extends SceneController {
 
 
 
-
     @FXML
     private ImageView emoji1;
     @FXML
@@ -69,6 +70,9 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView emoji3;
 
+    private Long currentTime = 0L;
+
+    private int questionNumber = -1;
     private final Map<String, Image> emojis = Map.ofEntries(
             entry("emoji1", new Image("client/images/emoji1.png")),
             entry("emoji2", new Image("client/images/emoji2.png")),
@@ -244,7 +248,7 @@ public class GameScreenCtrl extends SceneController {
         // init the player list (cells)
         currentLeaderboard.setItems(FXCollections.observableList(
             WaitingRoomCommunication.getAllUsers(currentGameID)
-                    .stream().map(User::getUsername).toList()
+                    .stream().map(User::getUsername).collect(Collectors.toList())
         ));
 
         // register websockets events on receiving messages
@@ -280,7 +284,7 @@ public class GameScreenCtrl extends SceneController {
         properties.put("currentGameID", currentGameID);
         properties.put("username", MainCtrl.username);
         // connect via websockets
-        GameCommunication.connect(ServerUtils.serverAddress, properties);
+        GameCommunication.connect(LeaderboardCommunication.serverAddress, properties);
 
         GameCommunication.registerForMessages("/time/get/receive/" + MainCtrl.currentGameID,
             long.class, o -> {
@@ -292,23 +296,14 @@ public class GameScreenCtrl extends SceneController {
 
 
 
-        /* adding items to the list view */
-        ObservableList<String> elements = FXCollections.observableArrayList("Fist ", "Second ",
-                "Dodi");
-        currentLeaderboard.setItems(elements);
 
-        initImages();
-        buttonList.add(button1);
-        buttonList.add(button2);
-        buttonList.add(button3);
-        buttonList.add(button4);
 
         setupPlayerList();
 
         qIndex = 0;
 
         GameCommunication.registerForMessages("/game/receive/" + currentGameID,
-                Map.class,o -> {
+                Map.class, o -> {
                     System.out.println(o.toString());
                     System.out.println("foo");
                 });
