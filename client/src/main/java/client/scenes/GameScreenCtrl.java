@@ -40,7 +40,7 @@ public class GameScreenCtrl extends SceneController {
     private static int qIndex;
     private Question activeQuestion;
 
-    private static final double TIME_TO_NEXT_ROUND = 5;
+    private static final double TIME_TO_NEXT_ROUND = 8;
 
     @FXML
     private ImageView menuButton;
