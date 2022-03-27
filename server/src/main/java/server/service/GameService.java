@@ -9,6 +9,8 @@ import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -154,7 +156,7 @@ public class GameService {
      */
     public void leaveGame(String gameCode, String username) {
         activeGames.get(gameCode).removeUser(new User(username));
-        if (getUsers(gameCode).size() == 0 && !currentPublicGame.equals(gameCode)) {
+        if (getUsers(gameCode).size() == 0) {
             activeGames.remove(gameCode);
         }
     }
@@ -183,7 +185,122 @@ public class GameService {
         }
     }
 
+    /**
+     * Processes answer from the user and gives bonus points.
+     * Decides how many points(if any) allocate to the user
+     * Question Types A,B,C - either right or wrong
+     * Question Type D - depends on how close the answer is
+     * Time - from 0 to 100
+     * rewardPoints are multiplied by time and divided by 10
+     * so the score range is from 0 to 100
+     *
+     * @param gameCode - code of the game
+     * @param username - name of the user requesting answer processing
+     * @param questionIndex - index of question answered by user
+     * @param answer - answer of the user(energy consume)
+     * @param time - time left (0% - 100%)
+     * @return reward points for user
+     */
+    public int processAnswer(String gameCode, String username,
+                             int questionIndex, long answer, int time) {
+        int rewardPoints = 0;
+
+        Question question = getQuestion(gameCode, questionIndex);
+        long correctAnswer = retrieveAnswer(question);
+
+        if (correctAnswer == answer) {
+            rewardPoints = 10;
+        } else {
+            if (question.getQuestionType() == 3) {
+                if (answer >= 0.8 * correctAnswer && answer <= 1.2 * correctAnswer) {
+                    rewardPoints = 10;
+                }
+            }
+        }
+
+        rewardPoints *= time;
+        rewardPoints /= 10;
+
+        User currentUser = getUserByUsername(gameCode, username);
+        if (currentUser == null) {
+            return 0;
+        }
+
+        currentUser.addScore(rewardPoints);
+        return rewardPoints;
+    }
+
+    /**
+     * Gets correct answer from the specified game from questionIndex.
+     *
+     * @param gameCode - code of the game
+     * @param questionIndex - index of question requested by user
+     * @return correct answer in energy consumption
+     */
+    public long getCorrectAnswer(String gameCode, int questionIndex) {
+        Question question = getQuestion(gameCode, questionIndex);
+        return retrieveAnswer(question);
+    }
+
+    private long retrieveAnswer(Question question) {
+        long answer = -1;
+        switch (question.getQuestionType()) {
+            case 0:
+                answer = correctAnswerQuestionTypeA((QuestionTypeA) question);
+                break;
+            case 1:
+                answer = checkAnswerQuestionTypeB((QuestionTypeB) question);
+                break;
+            case 2:
+                answer = checkAnswerQuestionTypeC((QuestionTypeC) question);
+                break;
+            case 3:
+                answer = checkAnswerQuestionTypeD((QuestionTypeD) question);
+                break;
+
+            default:
+                // TODO throw error
+                break;
+        }
+        return answer;
+    }
+
     public String getCurrentPublicGame() {
         return currentPublicGame;
+    }
+
+    private long correctAnswerQuestionTypeA(QuestionTypeA question) {
+        List<Activity> activities = Arrays.asList(
+                question.getActivity1(),
+                question.getActivity2(),
+                question.getActivity3());
+
+        Activity maxConsumption = activities
+                .stream()
+                .max(Comparator.comparing(Activity::getValue))
+                .get();
+
+        return maxConsumption.getValue();
+    }
+
+    private long checkAnswerQuestionTypeB(QuestionTypeB question) {
+        return question.getActivity().getValue();
+    }
+
+    private long checkAnswerQuestionTypeC(QuestionTypeC question) {
+        return question.getActivityCorrect().getValue();
+    }
+
+    private long checkAnswerQuestionTypeD(QuestionTypeD question) {
+        return question.getActivity().getValue();
+    }
+
+    private User getUserByUsername(String gameCode, String username) {
+        for (User user : getUsers(gameCode)) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

@@ -98,4 +98,45 @@ public class GameCommunication {
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
     }
+
+    /**
+     * Get the correct answer from the question.
+     *
+     * @param gameCode The game code for the specific game
+     * @param questionIndex The index of the wanted question
+     * @return The correct answer(in energy consumption number)
+     */
+    public static Long getAnswer(String gameCode, int questionIndex) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress)
+                .path(String.format("/api/game/getAnswer/%s/%d", gameCode, questionIndex))
+                .request(APPLICATION_JSON)
+                .get(new GenericType<>() {});
+    }
+
+    /**
+     * Process the answer and give bonus points.
+     *
+     * @param gameCode The game code for the specific game
+     * @param username The username
+     * @param questionIndex The index of the wanted question
+     * @param answer correct answer(in energy consumption number) to the question asked
+     * @param time the time spent on giving the answer
+     * @return bonus points achieved
+     */
+    public static Integer processAnswer(String gameCode, String username,
+                                        int questionIndex, long answer, int time) {
+
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress)
+                .path("/api/game/processAnswer")
+                .queryParam("gameCode", gameCode)
+                .queryParam("username", username)
+                .queryParam("questionIndex", questionIndex)
+                .queryParam("answer", answer)
+                .queryParam("time", time)
+                .request(APPLICATION_JSON)
+                .get(new GenericType<>() {});
+
+    }
 }

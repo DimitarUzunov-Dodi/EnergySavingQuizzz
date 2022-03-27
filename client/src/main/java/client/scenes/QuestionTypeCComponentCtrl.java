@@ -22,6 +22,7 @@ public class QuestionTypeCComponentCtrl extends SceneController {
     private int correctAnswer;
     private QuestionTypeC activeQuestion;
     private ArrayList<Button> buttonList = new ArrayList<>();
+    private List<Activity> activityList = new ArrayList<Activity>();
 
     @FXML
     private StackPane questionTypeCPane;
@@ -72,18 +73,11 @@ public class QuestionTypeCComponentCtrl extends SceneController {
 
         correctActivity = activeQuestion.getActivityCorrect();
 
-        List<Activity> activityList = new ArrayList<Activity>();
         activityList.add(correctActivity);
         activityList.add(activeQuestion.getActivity1());
         activityList.add(activeQuestion.getActivity2());
 
         Collections.shuffle(activityList);
-
-        for (correctAnswer = 0; correctAnswer < activityList.size(); correctAnswer++) {
-            if (activityList.get(correctAnswer).equals(correctActivity)) {
-                break;
-            }
-        }
 
         activityText1.setText(activityList.get(0).getActivityText());
         activityText2.setText(activityList.get(1).getActivityText());
@@ -94,7 +88,6 @@ public class QuestionTypeCComponentCtrl extends SceneController {
                 activityList.get(1).getImageId()));
         image3.setImage(ActivityImageCommunication.getImageFromId(
                 activityList.get(2).getImageId()));
-        System.out.println(correctAnswer);
     }
 
     public void loadComponent(QuestionTypeC activeQuestion) {
@@ -106,33 +99,24 @@ public class QuestionTypeCComponentCtrl extends SceneController {
      * method to call when answer A is pressed.
      */
     public void answerAPressed() {
-        if (correctAnswer == 0) {
-            myFxml.get(GameScreenCtrl.class).awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
+        myFxml.get(GameScreenCtrl.class)
+                .sendAnswer(activityList.get(0).getValue());
     }
 
     /**
      * method to call when answer B is pressed.
      */
     public void answerBPressed() {
-        if (correctAnswer == 1) {
-            myFxml.get(GameScreenCtrl.class).awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
+        myFxml.get(GameScreenCtrl.class)
+                .sendAnswer(activityList.get(1).getValue());
     }
 
     /**
      * method to call when answer C is pressed.
      */
     public void answerCPressed() {
-        if (correctAnswer == 2) {
-            myFxml.get(GameScreenCtrl.class).awardPoints();
-        } else {
-            System.out.print("dumbass");
-        }
+        myFxml.get(GameScreenCtrl.class)
+                .sendAnswer(activityList.get(2).getValue());
     }
 
 }
