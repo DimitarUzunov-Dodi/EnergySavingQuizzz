@@ -4,6 +4,9 @@ import commons.Activity;
 import commons.Game;
 import commons.Question;
 import commons.QuestionTypeA;
+import commons.QuestionTypeB;
+import commons.QuestionTypeC;
+import commons.QuestionTypeD;
 import commons.User;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,23 +71,48 @@ public class GameService {
     public List<Question> createQuestions() {
         // to be edited once new question types are added
 
-        int questionType = random.nextInt(1);
+        int questionType;
         List<Question> questionList = new ArrayList<Question>();
         Question question;
 
-        switch (questionType) {
-            case 0:
-                for (int i = 0;i < 20; i++) {
-                    List<Activity> activityList =
-                        new ArrayList<>(activityRepository.getThreeRandom());
-                    question = new QuestionTypeA(activityList.get(0),
-                        activityList.get(1), activityList.get(2));
-                    questionList.add(question);
-                }
 
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + questionType);
+        for (int i = 0; i < 20; i++) {
+            questionType = random.nextInt(4);
+
+            switch (questionType) {
+                case 0:
+                    List<Activity> activityList =
+                            new ArrayList<>(activityRepository.getThreeRandom());
+                    question = new QuestionTypeA(activityList.get(0),
+                            activityList.get(1), activityList.get(2));
+                    questionList.add(question);
+
+                    break;
+                case 1:
+                    question = new QuestionTypeB(activityRepository.getOneRandom().get());
+                    questionList.add(question);
+
+                    break;
+
+                case 2:
+                    Activity displayActivity = activityRepository.getOneRandom().get();
+                    Activity correctActivity = activityRepository
+                            .getOneRelated(displayActivity.getValue()).get();
+                    question = new QuestionTypeC(displayActivity, correctActivity,
+                            activityRepository.getOneRandom().get(),
+                            activityRepository.getOneRandom().get());
+                    questionList.add(question);
+
+                    break;
+                case 3:
+                    question = new QuestionTypeD(activityRepository.getOneRandom().get());
+                    questionList.add(question);
+
+                    break;
+
+                default:
+                    throw new IllegalStateException("Unexpected value: " + questionType);
+            }
         }
         return questionList;
     }
@@ -116,7 +144,7 @@ public class GameService {
     }
 
     public void joinGame(String gameCode, String username) {
-        activeGames.get(gameCode).getUserList().add(new User(username));
+        activeGames.get(gameCode).addUser(new User(username));
     }
 
     /**

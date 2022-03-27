@@ -52,7 +52,6 @@ public class MatchLeaderboardCtrl extends SceneController {
     @Override
     public void show() {
         new Thread(() -> {
-            System.out.println(">>>" + currentGameID);
             var l = WaitingRoomCommunication.getAllUsers(currentGameID);
             if (l != null) {
                 data.remove(0, data.size());

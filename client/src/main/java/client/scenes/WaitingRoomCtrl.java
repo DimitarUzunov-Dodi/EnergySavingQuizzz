@@ -55,7 +55,11 @@ public class WaitingRoomCtrl extends SceneController {
                 },
                 o -> {
                     System.out.println("STARTED GAME");
-                    // TODO: Game start action
+                    Platform.runLater(() -> {
+                        myFxml.showScene(GameScreenCtrl.class);
+                    });
+
+
                 }
         );
         playerList = FXCollections.observableList(
@@ -84,6 +88,7 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onBackButton() {
         WaitingRoomCommunication.leaveGame(currentGameID, username);
+        currentGameID = "";
         myFxml.showScene(MultiplayerCtrl.class);
     }
 

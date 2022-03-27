@@ -70,7 +70,7 @@
                   <Font size="20.0" />
                </font>
                 </Button>
-                <Button id="utilsButton" fx:id="settingsButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#settingsAction" prefHeight="40.0" prefWidth="500.0" text="Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
+                <Button id="utilsButton" fx:id="highScoresButton" alignment="CENTER" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="20.0" mnemonicParsing="false" onAction="#onHighScoresButton" prefHeight="40.0" prefWidth="500.0" text="Leaderboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
@@ -123,5 +123,10 @@
             </Label>
             </children>
         </GridPane>
+      <Button id="utilsButton" fx:id="settingsButton" alignment="CENTER" maxHeight="70.0" maxWidth="70.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#settingsAction" prefHeight="50.0" prefWidth="50.0" text="⛯" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Button>
     </children>
 </GridPane>

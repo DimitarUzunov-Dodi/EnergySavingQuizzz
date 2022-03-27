@@ -1,9 +1,9 @@
 package client.communication;
 
-import static client.utils.ServerUtils.serverAddress;
+import static client.communication.LeaderboardCommunication.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import commons.QuestionTypeA;
+import commons.Question;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import java.lang.reflect.Type;
@@ -91,7 +91,7 @@ public class GameCommunication {
      * @param questionIndex The question io get out of 20
      * @return The question entity
      */
-    public static QuestionTypeA getQuestion(String gameCode, int questionIndex) {
+    public static Question getQuestion(String gameCode, int questionIndex) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress)
                 .path(String.format("/api/game/getq/%s/%d", gameCode, questionIndex))

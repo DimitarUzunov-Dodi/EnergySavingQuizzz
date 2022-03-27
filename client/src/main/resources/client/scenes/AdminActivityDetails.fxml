@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -20,6 +21,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label id="label" text="ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
@@ -31,7 +33,7 @@
       <TextField fx:id="activityTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="valueField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <TextField fx:id="sourceField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <TextField fx:id="imageIdField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <TextField fx:id="imageIdField" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -45,5 +47,11 @@
             <Button mnemonicParsing="false" onAction="#switchToActivityPanel" prefHeight="45.0" prefWidth="60.0" text="Back" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
+      <Button mnemonicParsing="false" onAction="#pickImage" text="Pick Image" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </Button>
+      <Label id="changeImageField" alignment="CENTER" text="Change the image" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
    </children>
 </GridPane>
