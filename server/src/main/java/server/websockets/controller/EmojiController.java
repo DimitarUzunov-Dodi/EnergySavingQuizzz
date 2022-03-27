@@ -31,7 +31,8 @@ public class EmojiController {
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
-    private HashMap<String, Long> gameTimes = new HashMap<String, Long>();
+    private HashMap<String, HashMap<Integer, Long>> gameTimes
+        = new HashMap<String, HashMap<Integer, Long>>();
 
 
     /**
@@ -61,27 +62,40 @@ public class EmojiController {
     }
 
     /**
-     * creates the time for a game
+     * creates the time for a game.
      *
      * @throws Exception Exception
      */
-    @MessageMapping("/time/{currentGameID}")
-    @SendTo("/time/nothing/")
-    public void createDate(@DestinationVariable String currentGameID) throws Exception {
+    @MessageMapping("/time/{currentGameID}/{questionNumber}")
+    public void createDate(@DestinationVariable String currentGameID,
+                           @DestinationVariable int questionNumber) throws Exception {
         LOGGER.info("creating time");
         Long time = new Date().getTime();
-        //LOGGER.info(time.toString());
-        gameTimes.put(currentGameID, new Date().getTime());
+        if (gameTimes.get(currentGameID) == null) {
+            gameTimes.put(currentGameID, new HashMap<Integer,Long>());
+        }
+        gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
+        LOGGER.info(gameTimes.get(currentGameID).get(questionNumber).toString());
+
 
 
     }
 
-    @MessageMapping("/time/get/{currentGameID}")
+
+    /**
+     * deals with retrieving correct time from server.
+     * @param currentGameID the gameID
+     * @param questionNumber the questionNumber
+     * @return long representing the date
+     * @throws Exception Exception
+     */
+    @MessageMapping("/time/get/{currentGameID}/{questionNumber}")
     @SendTo("/time/get/receive/{currentGameID}")
-    public long getDate(@DestinationVariable String currentGameID) throws Exception{
+    public long getDate(@DestinationVariable String currentGameID,
+                        @DestinationVariable int questionNumber) throws Exception {
         LOGGER.info("getting time");
         LOGGER.info(gameTimes.get(currentGameID).toString());
-        return gameTimes.get(currentGameID);
+        return gameTimes.get(currentGameID).get(questionNumber);
     }
 
     /**
@@ -109,7 +123,6 @@ public class EmojiController {
         System.out.println(gameID);
         System.out.println(gameID);
         LOGGER.info(gameID);
-       // System.out.println("fuuuuuck");
         LOGGER.info("fcucucucucu");
         LOGGER.info(webSocketSessionList.toString());
         return properties;
