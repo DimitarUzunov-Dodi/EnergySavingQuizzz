@@ -40,7 +40,11 @@ public final class MainCtrl {
             Optional<ButtonType> result = quitAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 WaitingRoomCommunication.leaveGame(currentGameID, username);
-                WaitingRoomCtrl.pollingThread.cancel();
+                try {
+                    WaitingRoomCtrl.pollingThread.cancel();
+                } catch (NullPointerException exception) {
+                    System.out.println("Blame Yehor for this stupid catch");
+                }
                 Main.primaryStage.close();
             } else {
                 e.consume();
