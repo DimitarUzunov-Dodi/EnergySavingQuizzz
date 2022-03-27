@@ -4,7 +4,7 @@ import static client.scenes.MainCtrl.currentGameID;
 
 import client.Main;
 import client.MyFXML;
-import client.communication.WaitingRoomCommunication;
+import client.communication.Utils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.User;
@@ -52,7 +52,7 @@ public class MatchLeaderboardCtrl extends SceneController {
     @Override
     public void show() {
         new Thread(() -> {
-            var l = WaitingRoomCommunication.getAllUsers(currentGameID);
+            var l = Utils.getAllUsers(currentGameID);
             if (l != null) {
                 data.remove(0, data.size());
                 data.addAll(l);

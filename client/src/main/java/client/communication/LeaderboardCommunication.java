@@ -1,5 +1,6 @@
 package client.communication;
 
+import static client.communication.Utils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.ServerLeaderboardEntry;
@@ -10,8 +11,6 @@ import java.util.List;
 import org.glassfish.jersey.client.ClientConfig;
 
 public class LeaderboardCommunication {
-
-    public static String serverAddress;
 
     /**
      * Retrieve the all-time leaderboard from the server.

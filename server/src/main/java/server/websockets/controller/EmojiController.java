@@ -50,7 +50,6 @@ public class EmojiController {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmojiController.class);
-    private static final String SERVER = "http://localhost:8080/";
 
 
 

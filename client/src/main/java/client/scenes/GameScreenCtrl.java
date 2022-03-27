@@ -6,8 +6,7 @@ import static java.util.Map.entry;
 import client.MyFXML;
 import client.communication.ActivityImageCommunication;
 import client.communication.GameCommunication;
-import client.communication.LeaderboardCommunication;
-import client.communication.WaitingRoomCommunication;
+import client.communication.Utils;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
@@ -283,7 +282,7 @@ public class GameScreenCtrl extends SceneController {
     private void setupPlayerList() {
         // init the player list (cells)
         currentLeaderboard.setItems(FXCollections.observableList(
-            WaitingRoomCommunication.getAllUsers(currentGameID)
+            Utils.getAllUsers(currentGameID)
                     .stream().map(User::getUsername).toList()
         ));
 
@@ -319,7 +318,7 @@ public class GameScreenCtrl extends SceneController {
         properties.put("currentGameID", currentGameID);
         properties.put("username", MainCtrl.username);
         // connect via websockets
-        GameCommunication.connect(LeaderboardCommunication.serverAddress, properties);
+        GameCommunication.connect(Utils.serverAddress, properties);
 
         initImages();
         //progressBar = (ProgressBar) mainCtrl.getCurrentScene().lookup("#progressBar");
