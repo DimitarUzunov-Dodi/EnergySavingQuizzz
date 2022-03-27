@@ -146,6 +146,10 @@ public class GameScreenCtrl extends SceneController {
                 myFxml.get(QuestionTypeBComponentCtrl.class).loadComponent((QuestionTypeB) activeQuestion);
 
                 break;
+            case 2:
+                myFxml.get(QuestionTypeCComponentCtrl.class).loadComponent((QuestionTypeC) activeQuestion);
+
+                break;
             default:
 
                 break;

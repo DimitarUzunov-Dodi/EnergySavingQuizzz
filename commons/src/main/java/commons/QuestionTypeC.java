@@ -71,7 +71,7 @@ public class QuestionTypeC extends Question {
 
     @Override
     public String displayText() {
-        return "Instead of ..., you could: ";
+        return "Instead of %s, you could be: ";
     }
 
     @Override
