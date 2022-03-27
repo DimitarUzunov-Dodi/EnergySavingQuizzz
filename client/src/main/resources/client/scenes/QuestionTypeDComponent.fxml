@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane fx:id="questionTypeDPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTypeDComponentCtrl">
+    <children>
+        <GridPane>
+            <children>
+                <Text id="questionText" fx:id="questionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" />
+            <VBox alignment="CENTER" GridPane.rowIndex="1">
+               <children>
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                              <ImageView fx:id="activityImage" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../images/OIP.jpg" />
+                                  </image>
+                              </ImageView>
+                        <Text fx:id="activityText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <TextField />
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" text="Submit" />
+               </children>
+            </VBox>
+            </children>
+            <columnConstraints>
+                <ColumnConstraints percentWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="15.0" />
+                <RowConstraints minHeight="10.0" percentHeight="65.0" />
+                <RowConstraints minHeight="10.0" percentHeight="20.0" />
+            </rowConstraints>
+        </GridPane>
+    </children>
+
+</StackPane>

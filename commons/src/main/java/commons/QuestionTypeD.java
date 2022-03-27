@@ -7,6 +7,9 @@ public class QuestionTypeD extends Question {
     private int questionType;
     private Activity activity;
 
+    public QuestionTypeD() {
+    }
+
     /**
      * Constructor.
      * @param activity activity
