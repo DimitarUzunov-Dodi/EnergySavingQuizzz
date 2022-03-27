@@ -98,4 +98,25 @@ public class GameCommunication {
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
     }
+
+    public static Long getAnswer(String gameCode, int questionIndex) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress)
+                .path(String.format("/api/game/getAnswer/%s/%d", gameCode, questionIndex))
+                .request(APPLICATION_JSON)
+                .get(new GenericType<>() {});
+    }
+
+    public static Integer processAnswer(String gameCode, String username, int questionIndex, long answer, int time) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress)
+                .path("/api/game/processAnswer")
+                .queryParam("gameCode", gameCode)
+                .queryParam("username", username)
+                .queryParam("questionIndex", questionIndex)
+                .queryParam("answer", answer)
+                .queryParam("time", time)
+                .request(APPLICATION_JSON)
+                .get(new GenericType<>() {});
+    }
 }

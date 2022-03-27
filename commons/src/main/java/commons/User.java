@@ -38,6 +38,10 @@ public class User {
         return score;
     }
 
+    public void addScore(int bonus) {
+        this.score += bonus;
+    }
+
     public void setScore(int score) {
         this.score = score;
     }

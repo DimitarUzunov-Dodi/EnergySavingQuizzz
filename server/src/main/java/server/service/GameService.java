@@ -8,10 +8,8 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import server.database.ActivityRepository;
@@ -154,7 +152,7 @@ public class GameService {
      */
     public void leaveGame(String gameCode, String username) {
         activeGames.get(gameCode).removeUser(new User(username));
-        if (getUsers(gameCode).size() == 0 && !currentPublicGame.equals(gameCode)) {
+        if (getUsers(gameCode).size() == 0) {
             activeGames.remove(gameCode);
         }
     }
@@ -183,7 +181,97 @@ public class GameService {
         }
     }
 
+    public int processAnswer(String gameCode, String username, int questionIndex, long answer, int time) {
+        int rewardPoints = 0;
+
+        Question question = getQuestion(gameCode, questionIndex);
+        long correctAnswer = retrieveAnswer(question);
+
+        if(correctAnswer == answer) {
+            rewardPoints = 1;
+        }
+        else {
+            if(question.getQuestionType() == 3) {
+                if(answer >= 0.8*correctAnswer && answer <= 1.2*correctAnswer) {
+                    rewardPoints = 1;
+                }
+            }
+        }
+
+        rewardPoints *= time;
+
+        User currentUser = getUserByUsername(gameCode, username);
+        if (currentUser == null) {
+            return 0;
+        }
+
+        currentUser.addScore(rewardPoints);
+        return rewardPoints;
+    }
+
+    public long getCorrectAnswer(String gameCode, int questionIndex) {
+        Question question = getQuestion(gameCode, questionIndex);
+        return retrieveAnswer(question);
+    }
+
+    private long retrieveAnswer(Question question) {
+        long answer = -1;
+        switch(question.getQuestionType()) {
+            case 0:
+                answer = correctAnswerQuestionTypeA((QuestionTypeA) question);
+                break;
+            case 1:
+                answer = checkAnswerQuestionTypeB((QuestionTypeB) question);
+                break;
+            case 2:
+                answer = checkAnswerQuestionTypeC((QuestionTypeC) question);
+                break;
+            case 3:
+                answer = checkAnswerQuestionTypeD((QuestionTypeD) question);
+                break;
+
+            default:
+                // TODO throw error
+                break;
+        }
+        return answer;
+    }
+
     public String getCurrentPublicGame() {
         return currentPublicGame;
+    }
+
+    private long correctAnswerQuestionTypeA(QuestionTypeA question) {
+        List<Activity> activities = Arrays.asList(
+                question.getActivity1(),
+                question.getActivity2(),
+                question.getActivity3());
+
+        Activity maxConsumption = activities
+                .stream()
+                .max(Comparator.comparing(Activity::getValue))
+                .get();
+
+        return maxConsumption.getValue();
+    }
+
+    private long checkAnswerQuestionTypeB(QuestionTypeB question) {
+        return question.getActivity().getValue();
+    }
+
+    private long checkAnswerQuestionTypeC(QuestionTypeC question) {
+        return question.getActivityCorrect().getValue();
+    }
+
+    private long checkAnswerQuestionTypeD(QuestionTypeD question) {
+        return question.getActivity().getValue();
+    }
+
+    private User getUserByUsername(String gameCode, String username) {
+        for(User user : getUsers(gameCode)) {
+            if(user.getUsername().equals(username))
+                return user;
+        }
+        return null;
     }
 }

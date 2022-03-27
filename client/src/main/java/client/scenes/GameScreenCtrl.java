@@ -133,6 +133,7 @@ public class GameScreenCtrl extends SceneController {
         myFxml.showScene(MatchLeaderboardCtrl.class);
         activeQuestion = client.communication.GameCommunication
             .getQuestion(currentGameID, qIndex);
+        System.out.println(GameCommunication.getAnswer(currentGameID, qIndex));
         qIndex++;
 
         switch (activeQuestion.getQuestionType()) {
@@ -218,7 +219,7 @@ public class GameScreenCtrl extends SceneController {
     private void setupPlayerList() {
         // init the player list (cells)
         currentLeaderboard.setItems(FXCollections.observableList(
-            WaitingRoomCommunication.getAllUsers(currentGameID)
+                WaitingRoomCommunication.getAllUsers(currentGameID)
                     .stream().map(User::getUsername).toList()
         ));
 
