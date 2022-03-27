@@ -29,6 +29,7 @@ public class ActivityImageCtrl extends SceneController {
      */
     @Override
     public void show() {
+
     }
 
     /**
