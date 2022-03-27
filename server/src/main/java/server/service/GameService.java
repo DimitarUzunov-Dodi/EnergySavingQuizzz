@@ -154,7 +154,7 @@ public class GameService {
      */
     public void leaveGame(String gameCode, String username) {
         activeGames.get(gameCode).removeUser(new User(username));
-        if (getUsers(gameCode).size() == 0) {
+        if (getUsers(gameCode).size() == 0 && !currentPublicGame.equals(gameCode)) {
             activeGames.remove(gameCode);
         }
     }

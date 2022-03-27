@@ -27,7 +27,6 @@ public class WebsocketEventListener {
     public void handleWebSocketEventListener(final SessionConnectedEvent event) {
         LOGGER.info("hell yeah");
         final String string = "we did it";
-
         sendingOperations.convertAndSend("/game", string);
     }
 

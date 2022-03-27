@@ -7,6 +7,7 @@ import static client.utils.UserAlert.userAlert;
 import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
+import client.utils.UserAlert;
 import com.google.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import java.util.Optional;
@@ -40,7 +41,13 @@ public class MultiplayerCtrl extends SceneController {
      */
     @FXML
     private void onJoinPublic() {
-        currentGameID = WaitingRoomCommunication.getPublicCode();
+        try {
+            currentGameID = WaitingRoomCommunication.getPublicCode();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            UserAlert.userAlert("WARN", "Cannot connect ot server",
+                    "Check your connection and try again.");
+        }
         joinGame();
     }
 
@@ -50,11 +57,22 @@ public class MultiplayerCtrl extends SceneController {
      */
     @FXML
     private void onJoinPrivate() {
-        currentGameID = gameCodeField.getText().trim();
-        joinGame();
+        try {
+            currentGameID = gameCodeField.getText().strip();
+        } catch (Exception e) {
+            UserAlert.userAlert("WARN", "Invalid game code!",
+                    "Make sure the game code is spelled correctly.");
+        }
+        try {
+            joinGame();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            UserAlert.userAlert("WARN", "Cannot connect ot server",
+                    "Check your connection and try again.");
+        }
     }
 
-    private void joinGame() {
+    private void joinGame() throws RuntimeException {
         Response joinResponse = WaitingRoomCommunication.joinGame(currentGameID, username);
         int statusCode = joinResponse.getStatus();
         if (statusCode == 200) {
@@ -83,7 +101,13 @@ public class MultiplayerCtrl extends SceneController {
      */
     @FXML
     private void onCreatePrivate() {
-        currentGameID = WaitingRoomCommunication.createNewGame();
+        try {
+            currentGameID = WaitingRoomCommunication.createNewGame();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            UserAlert.userAlert("WARN", "Cannot connect ot server",
+                    "Check your connection and try again.");
+        }
         gameCodeField.setText(currentGameID);
         joinGame();
     }

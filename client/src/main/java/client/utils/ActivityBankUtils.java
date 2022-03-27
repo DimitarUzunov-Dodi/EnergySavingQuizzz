@@ -1,12 +1,12 @@
 package client.utils;
 
-import static client.utils.ActivityImageUtils.imageToByteArray;
+import static client.utils.ActivityImageUtils.uploadDefaultImage;
+import static client.utils.ActivityImageUtils.uploadImage;
 
 import client.communication.AdminCommunication;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.ActivityBankEntry;
-import commons.ActivityImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,8 +20,6 @@ import java.util.zip.ZipInputStream;
 public class ActivityBankUtils {
     private static final String pathToBankZip = "./src/main/data/";
     private static final String zipName = "oopp-activity-bank.zip";
-    private static final String pathToResources = "./src/main/resources/client/images/";
-    private static final String defaultImageName = "default-image.png";
 
 
     /**
@@ -101,23 +99,18 @@ public class ActivityBankUtils {
 
         long imageId;
         for (ActivityBankEntry entry : activityBankEntryList) {
-            imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImagePath());
-            AdminCommunication.addActivityBankEntry(entry, imageId);
+            try {
+                imageId = uploadImage(pathToBankZip + "unzipped/" + entry.getImagePath());
+                AdminCommunication.addActivityBankEntry(entry, imageId);
+            } catch (CorruptImageException | ImageNotSupportedException e) {
+                try {
+                    imageId = uploadDefaultImage();
+                    AdminCommunication.addActivityBankEntry(entry, imageId);
+                } catch (CorruptImageException | ImageNotSupportedException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
-    /**
-     * Uploads image to a database and returns id of an image.
-     * @param path - path to image(for tranformation into byte[]).
-     * @return id of the image saved into an image db
-     */
-    private static long uploadImage(String path) {
-        try {
-            return AdminCommunication
-                    .addActivityImage(new ActivityImage(imageToByteArray(path)))
-                    .readEntity(Long.class);
-        } catch (IOException | CorruptImageException | ImageNotSupportedException ex) {
-            return uploadImage(pathToResources + defaultImageName);
-        }
-    }
 }

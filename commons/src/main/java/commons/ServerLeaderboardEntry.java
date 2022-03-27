@@ -1,12 +1,10 @@
 package commons;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * A class for storing a server leaderboard entry.
@@ -15,8 +13,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ServerLeaderboardEntry {
 
     @Id
+    @Column(name = "username")
     public String username;
+    @Column(name = "games_played")
     public Integer gamesPlayed;
+    @Column(name = "score")
     public Integer score;
 
     private ServerLeaderboardEntry() {
@@ -81,6 +82,6 @@ public class ServerLeaderboardEntry {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+        return "<" + username + ", " + gamesPlayed + ", " + score + ">";
     }
 }
