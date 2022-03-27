@@ -20,7 +20,7 @@ public class WaitingRoomCommunication {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress).path("/api/game/new")
                 .request(APPLICATION_JSON)
-                .get(new GenericType<String>() {});
+                .get(new GenericType< >() {});
     }
 
     /**

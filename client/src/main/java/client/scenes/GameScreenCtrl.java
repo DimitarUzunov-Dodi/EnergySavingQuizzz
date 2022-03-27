@@ -44,20 +44,12 @@ public class GameScreenCtrl extends SceneController {
 
     @FXML
     private ImageView menuButton;
-
-
     @FXML
     private StackPane questionHolder;
-
     @FXML
     private ProgressBar progressBar;
-
-
-
     @FXML
     private ListView<String> currentLeaderboard;
-
-
 
     @FXML
     private ImageView emoji1;

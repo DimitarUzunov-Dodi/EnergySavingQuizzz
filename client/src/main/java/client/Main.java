@@ -30,7 +30,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         Main.primaryStage = primaryStage;
         Utils.serverAddress = getParameters().getNamed().getOrDefault("server", "http://localhost:8080");
-        System.out.println(Utils.serverAddress);
+        System.out.println("server: " +  Utils.serverAddress);
         MainCtrl mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.start(); // give control to mainCtrl
     }

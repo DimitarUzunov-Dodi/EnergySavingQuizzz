@@ -1,5 +1,6 @@
 package server;
 
+import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         int port = 8080;
+        Arrays.stream(args).forEach(System.out::println);
         if (args.length > 1) {
             try {
                 port = Integer.parseInt(args[1]);
