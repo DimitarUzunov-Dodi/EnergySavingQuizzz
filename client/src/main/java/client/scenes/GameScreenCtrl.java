@@ -271,6 +271,8 @@ public class GameScreenCtrl extends SceneController {
 
     @Override
     public void show() {
+        scene.getStylesheets().removeAll();
+        scene.getStylesheets().add(FileUtils.getTheme());
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("gameID", -1); // should be MainCtrl.currentGameID once it is not null
         // connect via websockets

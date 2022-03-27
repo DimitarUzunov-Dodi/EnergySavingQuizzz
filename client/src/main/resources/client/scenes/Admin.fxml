@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="pane" fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" stylesheets="@/client/css/LightTheme.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminCtrl">
+<GridPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminCtrl">
     <columnConstraints>
         <ColumnConstraints />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
@@ -31,7 +31,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button id="gameSettings" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#switchToAdminActivityPanel" prefHeight="120.0" prefWidth="215.0" text="Manage activities" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Button id="playButton" fx:id="playButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#switchToAdminActivityPanel" prefHeight="120.0" prefWidth="215.0" text="Manage activities" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets left="10.0" />
                     </GridPane.margin>
@@ -39,7 +39,7 @@
                         <Font size="20.0" />
                     </font>
                 </Button>
-            <Button id="serverRestartButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#restartAction" prefHeight="97.0" prefWidth="230.0" text=" Restart the server" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button id="playButton" fx:id="playButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#restartAction" prefHeight="97.0" prefWidth="230.0" text=" Restart the server" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -64,7 +64,7 @@
                 </Label>
             </children>
         </GridPane>
-          <Button id="ackButton" fx:id="BackToMain" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#backToSplashAction" prefHeight="120.0" prefWidth="492.0" text="Back to main" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+          <Button id="utilsButton" fx:id="utilsButton" alignment="CENTER" maxHeight="120.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#backToSplashAction" prefHeight="120.0" prefWidth="492.0" text="Back to main" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
               <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
               </GridPane.margin>

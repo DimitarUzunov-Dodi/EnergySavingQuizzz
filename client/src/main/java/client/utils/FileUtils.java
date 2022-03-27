@@ -16,6 +16,24 @@ public class FileUtils {
     private static final String pathToUserData = "./src/main/data/";
     private static final String fileName = "UserData.userdata";
     private static final File defaultUserData = new File(pathToUserData + fileName);
+    private static String theme = "file:/C:/OOPP/Project/client/build/resources/"
+            + "main/client/css/LightTheme.css";
+
+    /**
+     * gets the theme for the game.
+     * @return theme
+     */
+    public static String getTheme() {
+        return theme;
+    }
+
+    /**
+     * set the currnt theme for the game.
+     * @param theme String
+     */
+    public static void setTheme(String theme) {
+        FileUtils.theme = theme;
+    }
 
     /**
      * Default function to saving nickname to a defaultUserData file.

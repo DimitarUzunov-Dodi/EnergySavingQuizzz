@@ -5,6 +5,7 @@ import static client.scenes.MainCtrl.username;
 
 import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
+import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import java.util.stream.Collectors;
@@ -39,6 +40,8 @@ public class WaitingRoomCtrl extends SceneController {
      */
     @Override
     public void show() {
+        scene.getStylesheets().removeAll();
+        scene.getStylesheets().add(FileUtils.getTheme());
         setGameCode(currentGameID);
         WaitingRoomCommunication.registerForUserListUpdates(username, currentGameID,
                 u -> {

@@ -21,3 +21,19 @@
 #utilsButton:hover{
     -fx-color: #238723;
 }
+
+#label {
+    -fx-text-fill: #fffc00;
+}
+
+#nicknameField{
+    -fx-text-fill: #fffc00;
+}
+
+#questionText{
+    -fx-fill: #fffc00;
+}
+
+#Question_text{
+    -fx-fill: #fffc00;
+}

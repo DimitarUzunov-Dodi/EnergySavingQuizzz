@@ -8,16 +8,20 @@ import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
+import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class SplashCtrl extends SceneController {
 
+    @FXML
+    private GridPane background;
     @FXML
     private Button quitButton;
     @FXML
@@ -34,6 +38,8 @@ public class SplashCtrl extends SceneController {
 
     @Override
     public void show() {
+        scene.getStylesheets().removeAll();
+        scene.getStylesheets().add(FileUtils.getTheme());
         initTextField();
         showScene(); // display the scene on the primaryStage
     }

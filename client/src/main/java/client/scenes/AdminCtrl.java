@@ -4,6 +4,7 @@ import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
 import client.communication.AdminCommunication;
+import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -21,7 +22,11 @@ public class AdminCtrl extends SceneController {
 
     @Override
     public void show() {
+
+        scene.getStylesheets().removeAll();
+        scene.getStylesheets().add(FileUtils.getTheme());
         showScene();
+
     }
 
     /**

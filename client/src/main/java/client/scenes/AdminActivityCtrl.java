@@ -5,6 +5,7 @@ import static client.utils.UserAlert.userAlert;
 import client.MyFXML;
 import client.communication.AdminCommunication;
 import client.utils.ActivityBankUtils;
+import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Activity;
@@ -41,6 +42,8 @@ public class AdminActivityCtrl extends SceneController {
 
     @Override
     public void show() {
+        scene.getStylesheets().removeAll();
+        scene.getStylesheets().add(FileUtils.getTheme());
         colActivityId.setCellValueFactory(
                 q -> new SimpleStringProperty(q.getValue().getActivityId() + "")
         );

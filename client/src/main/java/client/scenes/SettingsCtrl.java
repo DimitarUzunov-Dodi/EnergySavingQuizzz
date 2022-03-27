@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.MyFXML;
+import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -24,7 +25,10 @@ public class SettingsCtrl extends SceneController {
 
     @Override
     public void show() {
+        scene.getStylesheets().removeAll();
+        scene.getStylesheets().add(FileUtils.getTheme());
         showScene();
+
     }
 
     /**
@@ -50,17 +54,17 @@ public class SettingsCtrl extends SceneController {
     private void changeColourModeAction() {
         if (colourModeButton.getText().equals("Dark Mode")) {
             colourModeButton.setText("Light Mode");
+            FileUtils.setTheme("file:/C:/OOPP/Project/client/build/resources/main/"
+                    + "client/css/DarkTheme.css");
+            myFxml.showScene(SplashCtrl.class);
 
 
         } else {
+            FileUtils.setTheme("file:/C:/OOPP/Project/client/build/resources/main"
+                    + "/client/css/LightTheme.css");
             colourModeButton.setText("Dark Mode");
-
-
+            myFxml.showScene(SplashCtrl.class);
         }
-
-
-
-
     }
 
 }

@@ -5,6 +5,7 @@ import static client.scenes.MainCtrl.currentGameID;
 import client.Main;
 import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
+import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.User;
@@ -51,6 +52,8 @@ public class MatchLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
+        scene.getStylesheets().removeAll();
+        scene.getStylesheets().add(FileUtils.getTheme());
         new Thread(() -> {
             System.out.println(">>>" + currentGameID);
             var l = WaitingRoomCommunication.getAllUsers(currentGameID);
