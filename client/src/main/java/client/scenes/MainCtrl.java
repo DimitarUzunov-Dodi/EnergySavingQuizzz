@@ -39,7 +39,8 @@ public final class MainCtrl {
             quitAlert.setHeaderText("Are you sure you want to quit?");
             Optional<ButtonType> result = quitAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                WaitingRoomCommunication.stop();
+                WaitingRoomCommunication.leaveGame(currentGameID, username);
+                WaitingRoomCtrl.pollingThread.cancel();
                 Main.primaryStage.close();
             } else {
                 e.consume();

@@ -1,7 +1,6 @@
 package client.communication;
 
 import static client.communication.LeaderboardCommunication.serverAddress;
-import static client.scenes.MainCtrl.username;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.User;
@@ -10,10 +9,6 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 import org.glassfish.jersey.client.ClientConfig;
 
 public class WaitingRoomCommunication {
@@ -66,61 +61,6 @@ public class WaitingRoomCommunication {
                 .get(new GenericType<String>() {});
     }
 
-    private static ExecutorService pollingThread = Executors.newSingleThreadExecutor();
-    private static String currentGameID;
-
-    /**
-     * Send GET request to the server to create a new game.
-     * @throws RuntimeException when unable to connect to the server
-     */
-    public static void registerForUserListUpdates(String username, String gameCode,
-                                                  Consumer<User> adder, Consumer<User> remover,
-                                                  Consumer<Object> startHandler)
-            throws RuntimeException {
-        currentGameID = gameCode;
-        pollingThread.execute(() -> {
-            while (Objects.equals(currentGameID, gameCode)) {
-                var res = ClientBuilder.newClient(new ClientConfig())
-                        .target(serverAddress).path("/api/user/updates/" + gameCode)
-                        .request(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
-                        .get(Response.class);
-                if (res.getStatus() == 204) {
-                    continue;
-                }
-                if (res.getStatus() == 418) {
-                    startHandler.accept(null);
-                    continue;
-                }
-                var u = res.readEntity(User.class);
-                if (res.getStatus() == 410) {
-                    remover.accept(u);
-                    continue;
-                } else {
-                    if (!u.getUsername().equals(username)) {
-                        adder.accept(u);
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * Method called when application is closing.
-     * So we make sure to leave a game, if user was in it and stop the polling
-     */
-    public static void stop() {
-        try {
-            if (currentGameID != null) {
-                WaitingRoomCommunication.leaveGame(currentGameID, username);
-            }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-        currentGameID = "";
-        pollingThread.shutdownNow();
-    }
-
     /**
      * Send DELETE request to the server to leave the game, if user was connected to it.
      * @return server responser
@@ -145,4 +85,17 @@ public class WaitingRoomCommunication {
                 .post(Entity.json(""));
     }
 
+    /**
+     * GET request that checks if game has started.
+     * 418 - Started
+     * Any other(404 or 400) - Not started
+     * @param gameCode code of teh game to check
+     * @return response
+     */
+    public static Response isStarted(String gameCode) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(serverAddress).path("/api/user/start/" + gameCode + "/started")
+                .request(APPLICATION_JSON)
+                .get();
+    }
 }

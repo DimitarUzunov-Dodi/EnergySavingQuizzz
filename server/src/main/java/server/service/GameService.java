@@ -167,7 +167,7 @@ public class GameService {
         return activeGames.remove(gameCode);
     }
 
-    public boolean isAllowedToJoin(String gameCode) {
+    public boolean isNotAllowedToJoin(String gameCode) {
         return activeGames.get(gameCode).hasStarted();
     }
 
