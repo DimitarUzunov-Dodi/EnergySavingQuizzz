@@ -288,6 +288,7 @@ public class GameScreenCtrl extends SceneController {
         int reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
                 qIndex - 1, answer, getTimeLeft());
         System.out.println(reward);
+        refreshQuestion();
     }
 
     private int getTimeLeft() {

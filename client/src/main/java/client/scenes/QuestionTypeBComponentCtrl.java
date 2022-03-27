@@ -6,6 +6,9 @@ import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.QuestionTypeB;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -17,6 +20,7 @@ public class QuestionTypeBComponentCtrl extends SceneController {
 
     private QuestionTypeB activeQuestion;
     private ArrayList<Button> buttonList = new ArrayList<>();
+    private List<Text> answers;
 
     @FXML
     private StackPane questionTypeBPane;
@@ -64,7 +68,43 @@ public class QuestionTypeBComponentCtrl extends SceneController {
     }
 
     private void setAnswers() {
+        answers = new ArrayList<>(
+                Arrays.asList(answer1, answer2, answer3));
 
+        Collections.shuffle(answers);
+        answers.get(0).setText(
+                String.valueOf(activeQuestion.getActivity().getValue())
+        );
+        answers.get(1).setText(
+                String.valueOf(activeQuestion.getAnswer2())
+        );
+        answers.get(2).setText(
+                String.valueOf(activeQuestion.getAnswer3())
+        );
+    }
+
+    /**
+     * method to call when answer A is pressed.
+     */
+    public void answerAPressed() {
+        myFxml.get(GameScreenCtrl.class)
+                .sendAnswer(Long.parseLong(answer1.getText()));
+    }
+
+    /**
+     * method to call when answer B is pressed.
+     */
+    public void answerBPressed() {
+        myFxml.get(GameScreenCtrl.class)
+                .sendAnswer(Long.parseLong(answer2.getText()));
+    }
+
+    /**
+     * method to call when answer C is pressed.
+     */
+    public void answerCPressed() {
+        myFxml.get(GameScreenCtrl.class)
+                .sendAnswer(Long.parseLong(answer3.getText()));
     }
 
 }

@@ -79,7 +79,7 @@ public class GameService {
 
 
         for (int i = 0; i < 20; i++) {
-            questionType = random.nextInt(1); // TODO change to 4 back
+            questionType = random.nextInt(4);
 
             switch (questionType) {
                 case 0:
