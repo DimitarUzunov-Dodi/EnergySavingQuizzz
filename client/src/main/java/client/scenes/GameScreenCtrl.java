@@ -271,6 +271,8 @@ public class GameScreenCtrl extends SceneController {
 
             });
 
+        initImages();
+
         setupPlayerList();
 
         qIndex = 0;
