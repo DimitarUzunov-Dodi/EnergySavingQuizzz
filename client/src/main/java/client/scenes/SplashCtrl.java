@@ -7,6 +7,7 @@ import static client.utils.FileUtils.writeNickname;
 import static client.utils.UserAlert.userAlert;
 
 import client.MyFXML;
+import client.communication.LeaderboardCommunication;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import client.utils.UserAlert;
@@ -115,5 +116,14 @@ public class SplashCtrl extends SceneController {
     @FXML
     private void adminAction() {
         myFxml.showScene(AdminCtrl.class);
+    }
+
+    /**
+     * Function called by highScoresButton when clicked. Changes scene to ServerLeaderboard scene.
+     */
+    @FXML
+    private void onHighScoresButton() {
+        LeaderboardCommunication.updateServerLeaderboard("IceTeaFoot", 0, 16);
+        myFxml.showScene(ServerLeaderboardCtrl.class);
     }
 }

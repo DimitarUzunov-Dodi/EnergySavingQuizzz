@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.DeferredResult;
 import server.service.GameService;
 
 @RestController
@@ -53,17 +52,12 @@ public class UserController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Username already in use in this game!");
-        } else if (gameService.isAllowedToJoin(gameCode)) {
+        } else if (gameService.isNotAllowedToJoin(gameCode)) {
             return ResponseEntity
                     .status(HttpStatus.I_AM_A_TEAPOT)
                     .body("Room is now closed!");
         } else {
             gameService.joinGame(gameCode, username);
-            listeners.forEach((k, l) -> {
-                if (l.getSecond().equals(gameCode)) {
-                    l.getFirst().accept(Pair.of(new User(username), "ADD"));
-                }
-            });
             return ResponseEntity.ok()
                     .build();
         }
@@ -89,42 +83,9 @@ public class UserController {
                     .body("No such user in selected game!");
         } else {
             gameService.leaveGame(gameCode, username);
-            listeners.forEach((k, l) -> {
-                if (l.getSecond().equals(gameCode)) {
-                    l.getFirst().accept(Pair.of(new User(username), "REMOVE"));
-                }
-            });
             return ResponseEntity.ok()
                     .build();
         }
-    }
-
-    /**
-     * GET mapping that activates long-polling for client.
-     * @param gameCode code is used to know from where to get data
-     * @return DeferredResultResponseEntityUser
-     */
-    @GetMapping("/updates/{gameCode}")
-    public DeferredResult<ResponseEntity<User>> getUserListUpdates(@PathVariable String gameCode) {
-        var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        DeferredResult<ResponseEntity<User>> result = new DeferredResult<ResponseEntity<User>>(
-                5000L, noContent);
-
-        var key = new Object();
-        listeners.put(key, Pair.of(p -> {
-            if (p.getSecond().equals("ADD")) {
-                result.setResult(ResponseEntity.ok(p.getFirst()));
-            } else if ((p.getSecond().equals("REMOVE"))) {
-                result.setResult(ResponseEntity.status(HttpStatus.GONE).body(p.getFirst()));
-            } else if ((p.getSecond().equals("START"))) {
-                result.setResult(ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build());
-            }
-        }, gameCode));
-        result.onCompletion(() -> {
-            listeners.remove(key);
-        });
-
-        return result;
     }
 
     /**
@@ -141,13 +102,29 @@ public class UserController {
                     .body("No game found with this game code!");
         } else {
             gameService.closeRoom(gameCode);
-            listeners.forEach((k, l) -> {
-                if (l.getSecond().equals(gameCode)) {
-                    l.getFirst().accept(Pair.of(new User(""), "START"));
-                }
-            });
             return ResponseEntity.ok()
                     .build();
+        }
+    }
+
+    /**
+     * Adds an user to the user list of a game.
+     *
+     * @param gameCode gamecode
+     * @return ResponseEntity
+     */
+    @GetMapping("start/{gameCode}/started")
+    public ResponseEntity<String> testIfStarted(@PathVariable String gameCode) {
+        if (!(gameService.doesGameExist(gameCode))) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("No game found with this game code!");
+        } else if (gameService.isNotAllowedToJoin(gameCode)) {
+            return ResponseEntity
+                    .status(HttpStatus.I_AM_A_TEAPOT)
+                    .body("Room is now closed!");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Room is still open!");
         }
     }
 }

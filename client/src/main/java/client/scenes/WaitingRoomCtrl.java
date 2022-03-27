@@ -7,6 +7,8 @@ import client.MyFXML;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,6 +26,7 @@ public class WaitingRoomCtrl extends SceneController {
     private Text gameCodeLabel;
     @FXML
     private Text playersLabel;
+    public static Timer pollingThread;
 
     /**
      * Basic constructor.
@@ -40,38 +43,35 @@ public class WaitingRoomCtrl extends SceneController {
     @Override
     public void show() {
         setGameCode(currentGameID);
-        WaitingRoomCommunication.registerForUserListUpdates(username, currentGameID,
-                u -> {
-                    Platform.runLater(() -> {
-                        playerList.add(u.getUsername());
-                        playersLabel.setText(playerList.size() + " players");
-                    });
-                },
-                u -> {
-                    Platform.runLater(() -> {
-                        playerList.remove(u.getUsername());
-                        playersLabel.setText(playerList.size() + " players");
-                    });
-                },
-                o -> {
-                    System.out.println("STARTED GAME");
 
-                    Platform.runLater(() -> {
+        pollingThread = new Timer();
+        pollingThread.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                refreshUserList();
+                if (WaitingRoomCommunication.isStarted(currentGameID).getStatus() == 418) {
+                    System.out.println("START ACTIVATED");
+                     Platform.runLater(() -> {
                         myFxml.showScene(GameScreenCtrl.class);
                     });
 
-
                 }
-        );
+            }
+        }, 0, 1000);
+        showScene();
+    }
+
+    private void refreshUserList() {
         playerList = FXCollections.observableList(
                 WaitingRoomCommunication.getAllUsers(currentGameID)
                         .stream()
                         .map(
                                 u -> u.getUsername())
                         .collect(Collectors.toList()));
-        listView.setItems(playerList);
-        playersLabel.setText(playerList.size() + " players");
-        showScene();
+        Platform.runLater(() -> {
+            listView.setItems(playerList);
+            playersLabel.setText(playerList.size() + " players");
+        });
     }
 
 
@@ -91,6 +91,8 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onBackButton() {
         WaitingRoomCommunication.leaveGame(currentGameID, username);
+        pollingThread.cancel();
+        currentGameID = "";
         myFxml.showScene(MultiplayerCtrl.class);
     }
 

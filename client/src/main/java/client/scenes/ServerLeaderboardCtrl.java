@@ -1,12 +1,14 @@
 package client.scenes;
 
 import client.MyFXML;
+import client.communication.LeaderboardCommunication;
 import client.utils.SceneController;
-import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.ServerLeaderboardEntry;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,16 +18,16 @@ import javafx.scene.control.TableView;
 
 public class ServerLeaderboardCtrl extends SceneController {
 
-    private final ObservableList<ServerLeaderboardEntry> data;
+    private ObservableList<ServerLeaderboardEntry> data;
 
     @FXML
     private TableView<ServerLeaderboardEntry> table;
     @FXML
     private TableColumn<ServerLeaderboardEntry, String> colUsername;
     @FXML
-    private TableColumn<ServerLeaderboardEntry, String> colGamesPlayed;
+    private TableColumn<ServerLeaderboardEntry, Integer> colGamesPlayed;
     @FXML
-    private TableColumn<ServerLeaderboardEntry, String> colScore;
+    private TableColumn<ServerLeaderboardEntry, Integer> colScore;
 
     /**
      * Constructor used by INJECTOR.
@@ -34,13 +36,6 @@ public class ServerLeaderboardCtrl extends SceneController {
     @Inject
     private ServerLeaderboardCtrl(MyFXML myFxml) {
         super(myFxml);
-        colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().username));
-        colGamesPlayed.setCellValueFactory(q -> new SimpleStringProperty(
-                q.getValue().gamesPlayed.toString() + " games played"));
-        colScore.setCellValueFactory(q -> new SimpleStringProperty(
-                q.getValue().score.toString() + " points"));
-        data = FXCollections.observableList(new ArrayList<>());
-        table.setItems(data);
     }
 
     @Override
@@ -48,10 +43,18 @@ public class ServerLeaderboardCtrl extends SceneController {
         // load contents async
         new Thread(() -> {
             try {
-                List<ServerLeaderboardEntry> list = ServerUtils.getServerLeaderboard();
-                data.removeAll();
-                data.addAll(list);
-                table.refresh(); // might be removed
+                List<ServerLeaderboardEntry> list = LeaderboardCommunication.getServerLeaderboard();
+                Platform.runLater(() -> {
+                    colUsername.setCellValueFactory(q -> new SimpleStringProperty(
+                            q.getValue().username));
+                    colGamesPlayed.setCellValueFactory(q -> new SimpleIntegerProperty(
+                            q.getValue().gamesPlayed).asObject());
+                    colScore.setCellValueFactory(q -> new SimpleIntegerProperty(
+                            q.getValue().score).asObject());
+                    list.sort(Comparator.comparing(ServerLeaderboardEntry::getScore).reversed());
+                    data = FXCollections.observableList(list);
+                    table.setItems(data);
+                });
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
