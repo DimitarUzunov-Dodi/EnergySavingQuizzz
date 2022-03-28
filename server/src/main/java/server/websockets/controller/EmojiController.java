@@ -30,9 +30,17 @@ public class EmojiController {
     private Game currentGame;
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
-        new HashMap<String,HashMap<String, HashMap<String, Object>>>();
+        new HashMap<>();
+
     private HashMap<String, HashMap<Integer, Long>> gameTimes
-        = new HashMap<String, HashMap<Integer, Long>>();
+        = new HashMap<>();
+
+    private HashMap<String,HashMap<Integer, Integer>> playersInRound
+        = new HashMap<>();
+
+    private HashMap<String,HashMap<Integer, Integer>> realPlayersInRound
+        = new HashMap<>();
+
 
 
     /**
@@ -53,12 +61,6 @@ public class EmojiController {
 
 
 
-    private int playersInCurrentGame = 0;
-
-    public Game getGame() {
-        String gameCode = gameService.createGame();
-        return gameService.getGame(gameCode);
-    }
 
     /**
      * creates the time for a game.
@@ -67,10 +69,15 @@ public class EmojiController {
      */
     @MessageMapping("/time/{currentGameID}/{questionNumber}")
     public void createDate(@DestinationVariable String currentGameID,
-                           @DestinationVariable Integer questionNumber) throws Exception {
+                           @DestinationVariable Integer questionNumber,
+                           Object[] userAmount) throws Exception {
         LOGGER.info("creating time");
+        if (playersInRound.get(currentGameID) == null) {
+            HashMap<Integer, Integer> inner = new HashMap<>();
+            playersInRound.put(currentGameID, inner);
+        }
 
-
+        playersInRound.get(currentGameID).put(questionNumber, userAmount.length);
         Long time = new Date().getTime();
         if (gameTimes.get(currentGameID) == null) {
             gameTimes.put(currentGameID, new HashMap<Integer,Long>());
@@ -99,6 +106,39 @@ public class EmojiController {
         LOGGER.info(questionNumber.toString());
 
         return gameTimes.get(currentGameID).get(questionNumber);
+    }
+
+
+    /**
+     * update the time for the next question once every player has either answered.
+     * or their time has run out
+     * @param currentGameID ID of the game
+     * @param questionNumber number of the question
+     * @return boolean telling you if you should update the currentTime
+     * @throws Exception Exception
+     */
+    @MessageMapping("/time/update/{currentGameID}/{questionNumber}")
+    @SendTo("/time/update/receive/{currentGameID}")
+    public boolean updateDate(@DestinationVariable String currentGameID,
+                        @DestinationVariable Integer questionNumber) throws Exception {
+        LOGGER.info("getting time");
+        LOGGER.info(questionNumber.toString());
+
+        if (realPlayersInRound.get(currentGameID) == null) {
+            HashMap<Integer, Integer> inner = new HashMap<>();
+            inner.put(questionNumber, 1);
+            realPlayersInRound.put(currentGameID, inner);
+        }
+        realPlayersInRound.get(currentGameID).put(questionNumber,
+            playersInRound.get(currentGameID).get(questionNumber) + 1);
+
+        if (playersInRound.get(currentGameID).get(questionNumber)
+            == playersInRound.get(currentGameID).get(questionNumber)) {
+            gameTimes.get(currentGameID).put(questionNumber, new Date().getTime());
+            return true;
+        }
+        return false;
+
     }
 
     /**
@@ -136,7 +176,7 @@ public class EmojiController {
     /**
      * sends the appropriate emoji to the clients of all websockets connected.
      *
-     * @param emojiInfo the recieved emoji
+     * @param emojiInfo the received emoji
      * @return the sent emoji
      * @throws Exception Exception
      */

@@ -130,6 +130,11 @@ public class GameScreenCtrl extends SceneController {
 
         progressBar.progressProperty().bind(countDownThread.progressProperty());
         countDownThread.start();
+        countDownThread.setOnSucceeded(event -> {
+            refreshQuestion();
+            }
+
+        );
 
     }
 
@@ -137,12 +142,20 @@ public class GameScreenCtrl extends SceneController {
      * refreshes the question.
      */
     public void refreshQuestion() {
+
         questionNumber++;
+        Object[] list = FXCollections.observableList(
+            Utils.getAllUsers(currentGameID)
+                .stream().map(User::getUsername).collect(Collectors.toList())).toArray();
+
+        currentLeaderboard.setItems(FXCollections.observableList(
+            Utils.getAllUsers(currentGameID)
+                .stream().map(User::getUsername).collect(Collectors.toList())));
         GameCommunication.send("/app/time/" + MainCtrl.currentGameID
-            + "/" + questionNumber, "foo");
+            + "/" + questionNumber, list);
         GameCommunication.send("/app/time/get/" + MainCtrl.currentGameID
             + "/" + questionNumber, "foo");
-        System.out.println("the real currentime is " + currentTime);
+        System.out.println("the real currentTime is " + currentTime);
         // TODO: place this in the right place when answer checking is implemented
         myFxml.showScene(MatchLeaderboardCtrl.class);
 
@@ -262,6 +275,12 @@ public class GameScreenCtrl extends SceneController {
         properties.put("username", MainCtrl.username);
         // connect via websockets
         GameCommunication.connect(Utils.serverAddress, properties);
+        GameCommunication.registerForMessages("/time/update/receive/"
+            + MainCtrl.currentGameID, boolean.class, o -> {
+                if (o == true) {
+                    GameCommunication.send("app/time/get" + currentGameID, "foo");
+                }
+            });
 
         GameCommunication.registerForMessages("/time/get/receive/" + MainCtrl.currentGameID,
             long.class, o -> {
