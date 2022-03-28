@@ -67,14 +67,17 @@ public class EmojiController {
      */
     @MessageMapping("/time/{currentGameID}/{questionNumber}")
     public void createDate(@DestinationVariable String currentGameID,
-                           @DestinationVariable int questionNumber) throws Exception {
+                           @DestinationVariable Integer questionNumber) throws Exception {
         LOGGER.info("creating time");
+
+
         Long time = new Date().getTime();
         if (gameTimes.get(currentGameID) == null) {
             gameTimes.put(currentGameID, new HashMap<Integer,Long>());
         }
         gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
         LOGGER.info(gameTimes.get(currentGameID).get(questionNumber).toString());
+        LOGGER.info(questionNumber.toString());
 
 
 
@@ -91,9 +94,10 @@ public class EmojiController {
     @MessageMapping("/time/get/{currentGameID}/{questionNumber}")
     @SendTo("/time/get/receive/{currentGameID}")
     public long getDate(@DestinationVariable String currentGameID,
-                        @DestinationVariable int questionNumber) throws Exception {
+                        @DestinationVariable Integer questionNumber) throws Exception {
         LOGGER.info("getting time");
-        LOGGER.info(gameTimes.get(currentGameID).toString());
+        LOGGER.info(questionNumber.toString());
+
         return gameTimes.get(currentGameID).get(questionNumber);
     }
 
