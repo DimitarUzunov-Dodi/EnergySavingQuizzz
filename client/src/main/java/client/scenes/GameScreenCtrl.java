@@ -19,7 +19,10 @@ import commons.User;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -40,6 +43,7 @@ public class GameScreenCtrl extends SceneController {
     private Question activeQuestion;
 
     private static final double TIME_TO_NEXT_ROUND = 8;
+    private static final int SHOW_ANSWER_DELAY = 2;
 
     @FXML
     private ImageView menuButton;
@@ -131,6 +135,7 @@ public class GameScreenCtrl extends SceneController {
         progressBar.progressProperty().bind(countDownThread.progressProperty());
         countDownThread.start();
 
+        countDownThread.setOnSucceeded(event -> showCorrectAnswer());
     }
 
     /**
@@ -308,9 +313,44 @@ public class GameScreenCtrl extends SceneController {
         int reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
                 qIndex - 1, answer, getTimeLeft());
         System.out.println(reward);
-        refreshQuestion();
     }
 
+    private void showCorrectAnswer() {
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, qIndex - 1);
+        showAnswerInComponent(correctAnswer);
+
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                Platform.runLater(() -> refreshQuestion());
+            }
+        }, SHOW_ANSWER_DELAY * 1000);
+
+    }
+
+    private void showAnswerInComponent(long correctAnswer) {
+        switch (activeQuestion.getQuestionType()) {
+            case 0:
+                myFxml.get(QuestionTypeAComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
+            case 1:
+                myFxml.get(QuestionTypeBComponentCtrl.class);
+                break;
+            case 2:
+                myFxml.get(QuestionTypeCComponentCtrl.class);
+                break;
+            case 3:
+                myFxml.get(QuestionTypeDComponentCtrl.class);
+                break;
+            default:
+                break;
+
+        }
+
+    }
+    
     private int getTimeLeft() {
         return (int) Math.round(progressBar.getProgress() * 100);
     }

@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.MyFXML;
 import client.communication.ActivityImageCommunication;
+import client.utils.ColorUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.QuestionTypeA;
@@ -17,6 +18,8 @@ public class QuestionTypeAComponentCtrl extends SceneController {
 
     private QuestionTypeA activeQuestion;
     private ArrayList<Button> buttonList = new ArrayList<>();
+
+    private Long answerGiven = null;
 
     @FXML
     private StackPane questionTypeAPane;
@@ -59,6 +62,8 @@ public class QuestionTypeAComponentCtrl extends SceneController {
         buttonList.add(button2);
         buttonList.add(button3);
 
+        setButtons();
+
         questionText.setText(activeQuestion.displayText());
         activityText1.setText(activeQuestion.getActivity1().getActivityText());
         activityText2.setText(activeQuestion.getActivity2().getActivityText());
@@ -73,6 +78,7 @@ public class QuestionTypeAComponentCtrl extends SceneController {
 
     }
 
+
     public void loadComponent(QuestionTypeA activeQuestion) {
         this.activeQuestion = activeQuestion;
         show();
@@ -82,23 +88,58 @@ public class QuestionTypeAComponentCtrl extends SceneController {
      * method to call when answer A is pressed.
      */
     public void answerAPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activeQuestion.getActivity1().getValue());
+        answerGiven = activeQuestion.getActivity1().getValue();
+        myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
     }
 
     /**
-     * method to call when answer B is pressed.
+     * method to call when answer A is pressed.
      */
     public void answerBPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activeQuestion.getActivity2().getValue());
+        answerGiven = activeQuestion.getActivity2().getValue();
+        myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
     }
 
     /**
-     * method to call when answer C is pressed.
+     * method to call when answer A is pressed.
      */
     public void answerCPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activeQuestion.getActivity3().getValue());
+        answerGiven = activeQuestion.getActivity3().getValue();
+        myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
     }
+
+    /**
+     * Shows correct answer.
+     * @param correctAnswer - correct answer from the server
+     */
+    public void showCorrectAnswer(long correctAnswer) {
+        Button correctButton = findButtonByAnswer(correctAnswer);
+        correctButton.setBackground(ColorUtils.greenButton);
+        if (answerGiven != null && answerGiven != correctAnswer) {
+            Button selected = findButtonByAnswer(answerGiven);
+            selected.setBackground(ColorUtils.redButton);
+        }
+    }
+
+    private void setButtons() {
+        button1.setBackground(ColorUtils.defaultButton);
+        button2.setBackground(ColorUtils.defaultButton);
+        button3.setBackground(ColorUtils.defaultButton);
+    }
+
+    private Button findButtonByAnswer(long answer) {
+        if (answer == activeQuestion.getActivity1().getValue()) {
+            return button1;
+        } else if (answer == activeQuestion.getActivity2().getValue()) {
+            return button2;
+        } else if (answer == activeQuestion.getActivity3().getValue()) {
+            return button3;
+        }
+
+        return null;
+    }
+
 }
