@@ -92,6 +92,9 @@ public class GameCommunication {
      * @return The question entity
      */
     public static Question getQuestion(String gameCode, int questionIndex) {
+        if (questionIndex < 0) {
+            throw new IllegalArgumentException("question index " + questionIndex);
+        }
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress)
                 .path(String.format("/api/game/getq/%s/%d", gameCode, questionIndex))
@@ -107,6 +110,9 @@ public class GameCommunication {
      * @return The correct answer(in energy consumption number)
      */
     public static Long getAnswer(String gameCode, int questionIndex) {
+        if (questionIndex < 0) {
+            throw new IllegalArgumentException("answer for question index " + questionIndex);
+        }
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress)
                 .path(String.format("/api/game/getAnswer/%s/%d", gameCode, questionIndex))
@@ -126,6 +132,9 @@ public class GameCommunication {
      */
     public static Integer processAnswer(String gameCode, String username,
                                         int questionIndex, long answer, int time) {
+        if (questionIndex < 0) {
+            throw new IllegalArgumentException("process answer for question index " + questionIndex);
+        }
 
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress)

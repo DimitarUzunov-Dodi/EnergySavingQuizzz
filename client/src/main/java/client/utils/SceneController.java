@@ -4,13 +4,14 @@ import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  * Abstract class that forms the basis of a scene controller.
  */
 public abstract class SceneController {
     protected Scene scene = null;
-    protected final MyFXML myFxml;
+    protected static MyFXML myFxml;
 
     /**
      * Basic constructor.
@@ -18,15 +19,26 @@ public abstract class SceneController {
      */
     @Inject
     protected SceneController(MyFXML myFxml) {
-        this.myFxml = myFxml;
+        SceneController.myFxml = myFxml;
+    }
+
+    /**
+     * Function that is called by other classes to hand control flow to this controller.
+     * If you override this function make sure to call present() to actually show
+     *      the scene on the current stage.
+     */
+    public void show() {
+        present();
     }
 
     /**
      * Function that is called by other classes to hand control flow to this controller.
      * Override this function to refresh scene content and add extra functionality.
-     * Make sure to call showScene() to actually show the scene on the current stage.
+     * @param args Variable arguments that can be used for custom controllers.
      */
-    public abstract void show();
+    public void show(Object... args) {
+        show();
+    }
 
     /**
      * Get the scene that this controller belongs to.
@@ -45,9 +57,16 @@ public abstract class SceneController {
     }
 
     /**
-     * Shows this controller's scene on the stage it currently sits.
+     * Shows this controller's scene on the primary stage.
      */
-    protected void showScene() {
+    protected void present() {
         Main.primaryStage.setScene(scene);
+    }
+
+    /**
+     * Shows this controller's scene on the specified stage.
+     */
+    protected void present(Stage stage) {
+        stage.setScene(scene);
     }
 }

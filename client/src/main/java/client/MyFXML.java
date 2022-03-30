@@ -67,13 +67,16 @@ public class MyFXML {
     }
 
     /**
-     * Call SceneController.show() on a controller.
+     * Call SceneController.show() or show(Object... args) on a controller.
+     * The specific show function is chosen based on the length of parameter args.
      * @param ctrl Type of the controller
+     * @param args Vararg to pass to show(...)
      */
-    public <T extends SceneController> void showScene(Class<T> ctrl) {
+    public <T extends SceneController> void showScene(Class<T> ctrl, Object... args) {
         get(ctrl).getScene().getStylesheets().clear();
         get(ctrl).getScene().getStylesheets().add(FileUtils.getTheme());
-        get(ctrl).show();
+        if (args.length == 0) get(ctrl).show(); // show()
+        else get(ctrl).show(args); // show(...)
     }
 
     /**

@@ -16,6 +16,9 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
+
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,9 +73,6 @@ public class GameScreenCtrl extends SceneController {
         super(myFxml);
     }
 
-    public static void init(User user1) {
-    }
-
     /**
      * Initialises the images for the game screen.
      */
@@ -89,9 +89,8 @@ public class GameScreenCtrl extends SceneController {
      * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar.
      */
     public void countDown() {
-        System.out.println("the real real currentime is " + currentTime);
+        System.out.println("the real real current time is " + currentTime);
         Double threadSleepTime = 10D;
-        Long difference = currentTime - new Date().getTime();
 
         final Service<Integer> countDownThread = new Service<>() {
 
@@ -110,7 +109,7 @@ public class GameScreenCtrl extends SceneController {
 
                         while (i >= 0) {
 
-                            System.out.println(progressBar.getProgress() + "foo");
+                            //System.out.println(progressBar.getProgress() + "foo");
                             updateProgress(i, TIME_TO_NEXT_ROUND * 100D);
                             try {
 
@@ -142,9 +141,7 @@ public class GameScreenCtrl extends SceneController {
             + "/" + questionNumber, "foo");
         GameCommunication.send("/app/time/get/" + MainCtrl.currentGameID
             + "/" + questionNumber, "foo");
-        System.out.println("the real currentime is " + currentTime);
-        // TODO: place this in the right place when answer checking is implemented
-        myFxml.showScene(MatchLeaderboardCtrl.class);
+        System.out.println("the real current time is " + currentTime);
 
         activeQuestion = client.communication.GameCommunication
             .getQuestion(currentGameID, qIndex);
@@ -178,6 +175,7 @@ public class GameScreenCtrl extends SceneController {
 
         }
         countDown();
+        present();
 
     }
 
@@ -224,34 +222,32 @@ public class GameScreenCtrl extends SceneController {
     private void setupPlayerList() {
         // init the player list (cells)
         currentLeaderboard.setItems(FXCollections.observableList(
-            Utils.getAllUsers(currentGameID)
+            Utils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
                     .stream().map(User::getUsername).collect(Collectors.toList())
         ));
 
         // register websockets events on receiving messages
         GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, Person.class,
-            v -> {
-                currentLeaderboard.setCellFactory(param -> new ListCell<>() {
-                    @Override
-                    public void updateItem(String name, boolean empty) {
-                        super.updateItem(name, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            if (name.equals(v.firstName)) {
-                                ImageView img = new ImageView();
-                                img.setFitHeight(20);
-                                img.setFitWidth(20);
-                                img.setImage(emojis.get(v.lastName)); // just why?
-                                //  displayImage.setFitWidth(0.1);
-                                setGraphic(img);
-                            }
-                            setText(name);
+            v -> currentLeaderboard.setCellFactory(param -> new ListCell<>() {
+                @Override
+                public void updateItem(String name, boolean empty) {
+                    super.updateItem(name, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+                    } else {
+                        if (name.equals(v.firstName)) {
+                            ImageView img = new ImageView();
+                            img.setFitHeight(20);
+                            img.setFitWidth(20);
+                            img.setImage(emojis.get(v.lastName)); // just why?
+                            //  displayImage.setFitWidth(0.1);
+                            setGraphic(img);
                         }
+                        setText(name);
                     }
-                });
-            });
+                }
+            }));
     }
 
     @Override
@@ -282,15 +278,13 @@ public class GameScreenCtrl extends SceneController {
                     System.out.println(o.toString());
                     System.out.println("foo");
                 });
-        HashMap<String, Object> userProperties = new HashMap<String, Object>();
+        HashMap<String, Object> userProperties = new HashMap<>();
         userProperties.put("currentGameID", currentGameID);
         userProperties.put("username", MainCtrl.username);
         GameCommunication.send("/app/game/" + MainCtrl.currentGameID + "/"
             + MainCtrl.username, userProperties);
         System.out.println("the time is " + currentTime);
         refreshQuestion();
-
-        showScene();
     }
 
     public void showQuestion(Node node) {
@@ -306,9 +300,9 @@ public class GameScreenCtrl extends SceneController {
      */
     public void sendAnswer(long answer) {
         int reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                qIndex - 1, answer, getTimeLeft());
+                qIndex, answer, getTimeLeft());
         System.out.println(reward);
-        refreshQuestion();
+        myFxml.showScene(MatchLeaderboardCtrl.class, Instant.now().plusSeconds(8));
     }
 
     private int getTimeLeft() {
