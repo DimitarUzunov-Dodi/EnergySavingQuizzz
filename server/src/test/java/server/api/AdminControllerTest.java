@@ -1,12 +1,11 @@
 package server.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import commons.Activity;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AdminControllerTest {
     private AdminController controller;
@@ -24,7 +23,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    public void getAllTest(){
+    public void getAllTest() {
         assertEquals(0, activityRepo.activities.size());
         Activity a = new Activity(1, "a", 23, "a", 1);
         Activity b = new Activity(2, "b", 13, "b", 2);
