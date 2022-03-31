@@ -7,117 +7,129 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ActivityTest {
-    public Activity a;
+    public Activity activityA;
 
     @BeforeEach
-    public void setup(){
-        a = new Activity(1, "Test", 23, "source", 2);
+    public void setup() {
+        activityA = new Activity(1, "Test", 23, "source", 2);
     }
 
     @Test
     void getActivityIdTest() {
-        assertEquals(1, a.getActivityId());
+        assertEquals(1, activityA.getActivityId());
     }
 
     @Test
     void setActivityIdTest() {
         long toChange = 23;
-        a.setActivityId(toChange);
-        assertEquals(toChange, a.getActivityId());
+        activityA.setActivityId(toChange);
+        assertEquals(toChange, activityA.getActivityId());
     }
 
     @Test
     void getActivityTextTest() {
-        assertEquals("Test", a.getActivityText());
+        assertEquals("Test", activityA.getActivityText());
     }
 
     @Test
     void setActivityTextTest() {
         String toChange = "New text";
-        a.setActivityText(toChange);
-        assertEquals(toChange, a.getActivityText());
+        activityA.setActivityText(toChange);
+        assertEquals(toChange, activityA.getActivityText());
     }
 
     @Test
     void getActivitySourceTest() {
-        assertEquals("source", a.getSource());
+        assertEquals("source", activityA.getSource());
     }
 
     @Test
     void setActivitySourceTest() {
         String toChange = "New source";
-        a.setSource(toChange);
-        assertEquals(toChange, a.getSource());
+        activityA.setSource(toChange);
+        assertEquals(toChange, activityA.getSource());
     }
 
     @Test
     void getActivityValueTest() {
-        assertEquals(23, a.getValue());
+        assertEquals(23, activityA.getValue());
     }
 
     @Test
     void setActivityValueTest() {
         long toChange = 46;
-        a.setValue(toChange);
-        assertEquals(toChange, a.getValue());
+        activityA.setValue(toChange);
+        assertEquals(toChange, activityA.getValue());
     }
 
     @Test
     void getActivityImageId() {
-        assertEquals(2, a.getImageId());
+        assertEquals(2, activityA.getImageId());
     }
 
     @Test
     void setActivityImageId() {
         long toChange = 3;
-        a.setImageId(toChange);
-        assertEquals(toChange, a.getImageId());
+        activityA.setImageId(toChange);
+        assertEquals(toChange, activityA.getImageId());
     }
 
     @Test
     void equalsNullTest() {
         Activity b = null;
-        assertNotEquals(a, b);
+        assertNotEquals(activityA, b);
     }
 
     @Test
     void equalsIdDiffTest() {
         Activity b = new Activity(2, "Test", 23, "source", 2);
-        assertNotEquals(a, b);
+        assertNotEquals(activityA, b);
     }
 
     @Test
     void equalsValueDiffTest() {
         Activity b = new Activity(1, "Test", 22, "source", 2);
-        assertNotEquals(a, b);
+        assertNotEquals(activityA, b);
     }
 
     @Test
     void equalsTextDiffTest() {
         Activity b = new Activity(1, "Tet", 22, "source", 2);
-        assertNotEquals(a, b);
+        assertNotEquals(activityA, b);
     }
 
     @Test
     void equalsSourceDiffTest() {
         Activity b = new Activity(1, "Tet", 22, "soure", 2);
-        assertNotEquals(a, b);
+        assertNotEquals(activityA, b);
     }
 
     @Test
     void equalsImageIdDiffTest() {
         Activity b = new Activity(1, "Tet", 22, "source", 3);
-        assertNotEquals(a, b);
+        assertNotEquals(activityA, b);
     }
 
     @Test
     void equalsSameTest() {
-        assertEquals(a, a);
+        assertEquals(activityA, activityA);
     }
 
     @Test
     void equalsSameAttributesTest() {
         Activity b = new Activity(1, "Test", 23, "source", 2);
-        assertEquals(a, b);
+        assertEquals(activityA, b);
+    }
+
+    @Test
+    void hashCodeTest() {
+        Activity b = new Activity(1, "Test", 23, "source", 2);
+        assertEquals(activityA.hashCode(), b.hashCode());
+    }
+
+    @Test
+    void toStringSameAttributesTest() {
+        Activity b = new Activity(1, "Test", 23, "source", 2);
+        assertEquals(activityA.toString(), b.toString());
     }
 }
