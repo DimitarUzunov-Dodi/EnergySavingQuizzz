@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -69,7 +68,9 @@ public class MatchLeaderboardCtrl extends SceneController {
     @Override
     public void show(Object... args) throws IllegalArgumentException {
         // initial setup (only done once)
-        if (first) setUp();
+        if (first) {
+            setUp();
+        }
 
         // handle args
         if (args.length != 1 || args[0].getClass() != Instant.class) {
@@ -92,13 +93,13 @@ public class MatchLeaderboardCtrl extends SceneController {
         // progress bar
         progressBar.setProgress(1d);
         progressBar.setUserData(32d / Duration.between(Instant.now(), endTime).toMillis());
-        ScheduledFuture<?> barTask = scheduler.scheduleAtFixedRate(
+        final ScheduledFuture<?> barTask = scheduler.scheduleAtFixedRate(
                 () -> {
                     progressBar.setProgress(Math.max(0,
                             progressBar.getProgress() - (Double) progressBar.getUserData()));
                     System.out.println('.');
                 },
-        32L);
+            32L);
 
         // show scene
         table.setVisible(true);

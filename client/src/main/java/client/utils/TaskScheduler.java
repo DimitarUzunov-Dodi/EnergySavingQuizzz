@@ -5,7 +5,9 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.*;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * Wraps ScheduledThreadPoolExecutor for convenience.
@@ -17,32 +19,9 @@ public class TaskScheduler extends ScheduledThreadPoolExecutor {
 
     /**
      * Submits a periodic action that becomes enabled right after submission,
-     * and subsequently with the given period;
-     * that is, executions will commence immediately, then {@code period}, then
-     * {@code 2 * period}, and so on.
-     *
-     * <p>The sequence of task executions continues indefinitely until
-     * one of the following exceptional completions occur:
-     * <ul>
-     * <li>The task is {@linkplain Future#cancel explicitly cancelled}
-     * via the returned future.
-     * <li>Method {@link #shutdown} is called and the {@linkplain
-     * #getContinueExistingPeriodicTasksAfterShutdownPolicy policy on
-     * whether to continue after shutdown} is not set true, or method
-     * {@link #shutdownNow} is called; also resulting in task
-     * cancellation.
-     * <li>An execution of the task throws an exception.  In this case
-     * calling {@link Future#get() get} on the returned future will throw
-     * {@link ExecutionException}, holding the exception as its cause.
-     * </ul>
-     * Subsequent executions are suppressed.  Subsequent calls to
-     * {@link Future#isDone isDone()} on the returned future will
-     * return {@code true}.
-     *
-     * <p>If any execution of this task takes longer than its period, then
-     * subsequent executions may start late, but will not concurrently
-     * execute.
-     *
+     *      and subsequently with the given period;
+     *      that is, executions will commence immediately, then {@code period}, then
+     *      {@code 2 * period}, and so on.
      * @throws RejectedExecutionException {@inheritDoc}
      * @throws NullPointerException       {@inheritDoc}
      * @throws IllegalArgumentException   {@inheritDoc}
@@ -87,6 +66,10 @@ public class TaskScheduler extends ScheduledThreadPoolExecutor {
                 Duration.between(Instant.now(), instant).toNanos(), NANOSECONDS);
     }
 
+    /**
+     * Print scheduler status.
+     * @return Future that can be used to cancel the debugging task
+     */
     public ScheduledFuture<?> startDebugPrinting() {
         return scheduleAtFixedRate(() -> {
             System.out.println("-- completed: " + getCompletedTaskCount());

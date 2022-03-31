@@ -19,8 +19,9 @@ public class Utils {
      */
     public static Optional<List<User>> getAllUsers(String gameCode) {
         try {
-            if (gameCode == null)
+            if (gameCode == null) {
                 throw new IllegalArgumentException("'gameCode' may not be null!");
+            }
             return Optional.ofNullable(ClientBuilder.newClient(new ClientConfig())
                     .target(serverAddress).path("/api/game/getUsers/" + gameCode)
                     .request(APPLICATION_JSON)

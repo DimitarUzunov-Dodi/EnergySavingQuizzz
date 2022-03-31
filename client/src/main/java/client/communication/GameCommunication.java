@@ -133,7 +133,7 @@ public class GameCommunication {
     public static Integer processAnswer(String gameCode, String username,
                                         int questionIndex, long answer, int time) {
         if (questionIndex < 0) {
-            throw new IllegalArgumentException("process answer for question index " + questionIndex);
+            throw new IllegalArgumentException("process answer for question nr " + questionIndex);
         }
 
         return ClientBuilder.newClient(new ClientConfig())

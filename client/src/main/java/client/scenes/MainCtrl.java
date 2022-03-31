@@ -6,10 +6,10 @@ import client.communication.WaitingRoomCommunication;
 import client.utils.TaskScheduler;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import javafx.stage.WindowEvent;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.WindowEvent;
 
 /**
  * Contains the entry point for the user interface.

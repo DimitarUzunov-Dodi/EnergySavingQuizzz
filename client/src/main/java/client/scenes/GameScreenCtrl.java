@@ -16,7 +16,6 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;

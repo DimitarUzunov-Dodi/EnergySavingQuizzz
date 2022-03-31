@@ -75,8 +75,11 @@ public class MyFXML {
     public <T extends SceneController> void showScene(Class<T> ctrl, Object... args) {
         get(ctrl).getScene().getStylesheets().clear();
         get(ctrl).getScene().getStylesheets().add(FileUtils.getTheme());
-        if (args.length == 0) get(ctrl).show(); // show()
-        else get(ctrl).show(args); // show(...)
+        if (args.length == 0) {
+            get(ctrl).show(); // show()
+        } else {
+            get(ctrl).show(args); // show(...)
+        }
     }
 
     /**
