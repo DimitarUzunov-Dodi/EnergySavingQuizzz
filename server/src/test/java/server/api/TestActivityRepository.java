@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,6 +70,14 @@ public class TestActivityRepository implements ActivityRepository {
 
     @Override
     public <S extends Activity> S save(S entity) {
+        List<Activity> sameID = activities.stream()
+                .filter(c -> c.getActivityId() == entity.getActivityId())
+                .collect(Collectors.toList());
+        if (sameID.size() != 0) {
+            activities = activities.stream()
+                    .filter(c -> c.getActivityId() != entity.getActivityId())
+                    .collect(Collectors.toList());
+        }
         activities.add(entity);
         return null;
     }
@@ -80,7 +89,14 @@ public class TestActivityRepository implements ActivityRepository {
 
     @Override
     public Optional<Activity> findById(Long along) {
-        return Optional.empty();
+        List<Activity> sameID = activities.stream()
+                .filter(c -> c.getActivityId() == along)
+                .collect(Collectors.toList());
+        if (sameID.size() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.ofNullable(sameID.get(0));
+        }
     }
 
     @Override
