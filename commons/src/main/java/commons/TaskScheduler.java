@@ -72,7 +72,6 @@ public class TaskScheduler extends ScheduledThreadPoolExecutor {
      */
     public ScheduledFuture<?> startDebugPrinting() {
         return scheduleAtFixedRate(() -> {
-            System.out.println("-- completed: " + getCompletedTaskCount());
             System.out.println("----- queued: " + getQueue().size());
             System.out.println("----- active: " + getActiveCount());
         }, 0, 500, MILLISECONDS);

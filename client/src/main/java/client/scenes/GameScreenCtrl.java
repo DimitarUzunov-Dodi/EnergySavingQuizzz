@@ -58,7 +58,7 @@ public class GameScreenCtrl extends SceneController {
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
-        qIndex = -1;
+        qIndex = 0;
     }
 
     /**
@@ -69,7 +69,6 @@ public class GameScreenCtrl extends SceneController {
         EmojiMessage emojiInfo = new EmojiMessage(username, "emoji1");
         GameCommunication.send("/app/emoji/" + currentGameID
             + "/" + MainCtrl.username, emojiInfo);
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
     }
 
     /**
@@ -80,7 +79,6 @@ public class GameScreenCtrl extends SceneController {
         EmojiMessage emojiInfo = new EmojiMessage(username, "emoji2");
         GameCommunication.send("/app/emoji/" + currentGameID
                 + "/" + MainCtrl.username, emojiInfo);
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
     }
 
     /**
@@ -91,7 +89,6 @@ public class GameScreenCtrl extends SceneController {
         EmojiMessage emojiInfo = new EmojiMessage(username, "emoji3");
         GameCommunication.send("/app/emoji/" + currentGameID
                 + "/" + MainCtrl.username, emojiInfo);
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
     }
 
     /**
@@ -115,9 +112,10 @@ public class GameScreenCtrl extends SceneController {
         }
 
         if ((Boolean) args[0]) {
-            // TODO: init whatever else needs it
-            // ws
+            // ws setup
             setupWebSockets();
+            // receive first question time
+            GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
         }
         show();
     }
@@ -130,6 +128,9 @@ public class GameScreenCtrl extends SceneController {
     @Override
     public void show() {
 
+        // TODO: handle this properly
+        roundStartTime = Instant.now();
+
         // refresh player list
         currentLeaderboard.setItems(FXCollections.observableList(
                 Utils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
@@ -140,20 +141,6 @@ public class GameScreenCtrl extends SceneController {
         progressBar.setProgress(1d);
         refreshQuestion();
         present();
-
-        // TODO: schedule these where you handle incoming ws messages
-        roundEndTime = Instant.now().plusSeconds(22);
-        roundStartTime = Instant.now().minusMillis(10);
-        // progress bar
-        final ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, roundEndTime);
-        // round end transition
-        ScheduledFuture<?> endRoundTask = scheduler.scheduleAtInstant(
-                () -> {
-                    barTask.cancel(false);
-                    Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                                    roundEndTime.plusSeconds(6)));
-                },
-                roundEndTime);
     }
 
     // TODO: Replace with final ws implementation
@@ -161,23 +148,50 @@ public class GameScreenCtrl extends SceneController {
      * Set up the WS connection and start listening for messages.
      */
     private void setupWebSockets() {
+        // connect
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("currentGameID", currentGameID);
         properties.put("username", MainCtrl.username);
-
         GameCommunication.connect(Utils.serverAddress, properties);
-        GameCommunication.registerForMessages("/time/get/receive/" + currentGameID,
-            long.class, o -> {
 
-            roundEndTime = Instant.ofEpochMilli(o);
-                System.out.println(roundEndTime);
-            refreshQuestion();
-                scheduler.scheduleAtInstant(
-                    () -> myFxml.showScene(MatchLeaderboardCtrl.class, roundEndTime.plusSeconds(6)),
-                    roundEndTime);
+        // configure the connection
+        HashMap<String, Object> userProperties = new HashMap<>();
+        userProperties.put("currentGameID", currentGameID);
+        userProperties.put("username", MainCtrl.username);
+        GameCommunication.send("/app/game/" + currentGameID + "/"
+                + MainCtrl.username, userProperties);
+
+        // save barTask (0 - barTask) (1 - transitionTask)
+        final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[2];
+
+        // register to receive roundEndTime
+        GameCommunication.registerForMessages("/time/get/receive/" + currentGameID,
+            Long.class, o -> {
+                if(o == null) {
+                    return;
+                }
+
+                roundEndTime = Instant.ofEpochMilli(o);
+                System.out.println("new roundEndTime: " + roundEndTime);
+
                 // progress bar
-                final ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, roundEndTime);
+                if (tasks[0] != null) {
+                    tasks[0].cancel(false);
+                }
+                tasks[0] = SceneController.scheduleProgressBar(progressBar, roundEndTime);
+
+                // transition to leaderboard
+                if (tasks[1] != null) {
+                    tasks[1].cancel(false);
+                }
+                tasks[1] = scheduler.scheduleAtInstant(() -> {
+                    tasks[0].cancel(false);
+                    Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                            roundEndTime.plusSeconds(6)));
+                }, roundEndTime);
         });
+
+        // register for emojis
         GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, EmojiMessage.class,
                 v -> currentLeaderboard.setCellFactory(param -> new ListCell<>() {
                     @Override
@@ -191,32 +205,19 @@ public class GameScreenCtrl extends SceneController {
                                 ImageView img = new ImageView();
                                 img.setFitHeight(20);
                                 img.setFitWidth(20);
-                                img.setImage(emojis.get(v.emojiID)); // just why?
-                                //  displayImage.setFitWidth(0.1);
+                                img.setImage(emojis.get(v.emojiID));
                                 setGraphic(img);
                             }
                             setText(name);
                         }
                     }
                 }));
-        GameCommunication.registerForMessages("/game/receive/" + currentGameID + "/" + MainCtrl.username,
-                Map.class, o -> {
-                    System.out.println(o.toString());
-                    System.out.println("floop");
-                });
-        HashMap<String, Object> userProperties = new HashMap<>();
-        userProperties.put("currentGameID", currentGameID);
-        userProperties.put("username", MainCtrl.username);
-        GameCommunication.send("/app/game/" + currentGameID + "/"
-                + MainCtrl.username, userProperties);
-        System.out.println("foo");
     }
 
     /**
      * Get the question from the server and display it.
      */
     public void refreshQuestion() {
-        qIndex++;
         Question activeQuestion = GameCommunication.getQuestion(currentGameID, qIndex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
@@ -238,12 +239,7 @@ public class GameScreenCtrl extends SceneController {
             default:
                 break;
         }
-
-
-       // GameCommunication.send("/app/time/" + currentGameID + "/" + qIndex, "foo");
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
-
-
+        qIndex++;
     }
 
     /**
@@ -264,6 +260,6 @@ public class GameScreenCtrl extends SceneController {
     public void sendAnswer(long answer) {
         int reward = GameCommunication.processAnswer(currentGameID, username, qIndex,
                 answer, Duration.between(roundStartTime, Instant.now()).toMillis());
-        myFxml.showScene(MatchLeaderboardCtrl.class, Instant.now().plusSeconds(8));
+        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
     }
 }

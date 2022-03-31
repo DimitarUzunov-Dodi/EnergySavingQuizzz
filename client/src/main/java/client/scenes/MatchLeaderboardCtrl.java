@@ -91,6 +91,7 @@ public class MatchLeaderboardCtrl extends SceneController {
         });
 
         // progress bar
+        progressBar.setProgress(1d);
         ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, endTime);
 
         // show scene
@@ -107,7 +108,6 @@ public class MatchLeaderboardCtrl extends SceneController {
         // back to GameScreen
         scheduler.scheduleAtInstant(() -> {
             barTask.cancel(false); // stop progressBar
-            // TODO: find a proper way to transition back to game screen
             Platform.runLater(() -> myFxml.showScene(GameScreenCtrl.class));
         }, endTime);
     }
