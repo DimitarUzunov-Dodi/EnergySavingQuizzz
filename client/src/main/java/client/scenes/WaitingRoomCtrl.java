@@ -56,7 +56,7 @@ public class WaitingRoomCtrl extends SceneController {
                     System.out.println("START ACTIVATED");
                     pollingThread.cancel();
                     Platform.runLater(() -> {
-                        myFxml.showScene(GameScreenCtrl.class);
+                        myFxml.showScene(GameScreenCtrl.class, true);
                     });
 
                 }

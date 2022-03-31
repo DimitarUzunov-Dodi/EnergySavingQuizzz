@@ -1,9 +1,10 @@
 package client.scenes;
 
-import static client.scenes.MainCtrl.*;
+import static client.scenes.MainCtrl.currentGameID;
+import static client.scenes.MainCtrl.scheduler;
+import static client.scenes.MainCtrl.username;
 import static java.util.Map.entry;
 
-import client.Main;
 import client.MyFXML;
 import client.communication.GameCommunication;
 import client.communication.Utils;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -37,6 +37,7 @@ public class GameScreenCtrl extends SceneController {
 
     private Instant roundStartTime, roundEndTime;
     private int qIndex = -1;
+
     @FXML
     private StackPane questionHolder;
     @FXML
