@@ -78,6 +78,7 @@ public abstract class SceneController {
     }
 
     protected static ScheduledFuture<?> scheduleProgressBar(ProgressBar bar, Instant endTime) {
+        bar.setProgress(1d);
         bar.setUserData(32d / Duration.between(Instant.now(), endTime).toMillis());
         return scheduler.scheduleAtFixedRate(
                 () -> {
