@@ -35,4 +35,42 @@
 - [ ] same for missing tests?
 
 ## Notes (note taker Dimitar)
-tbd
+Demo 
+-  Natalia does not like game, too difficult, not enough time
+- have to add end game screen
+
+Testing 
+- we are gonna write all the unit test possible
+- not much points deducted
+
+Data Propagation
+- Websockets? - Short and Long polling
+- Short polling is balanced is the long polling ng missing a bad thing? -There should not be a penalty but natalia will ask for specifics.
+- Sebastian version has some issues
+
+!!!!No rebasing!!!!
+
+No need for update of Java
+
+Presenting -Making a video in which we talk about the functionality
+
+this Friday 
+- Buddycheck review
+
+Next Friday
+
+-buddy check
+-code deadline
+-CoC
+-video
+
+Trial Presentation next week
+- Content Main
+
+
+Feedback
+- Find a space to meet, Move the issues from last week to last week, so that we have balanced issues
+
+Merge Review
+- Chaan only commit
+- Add useful comments
