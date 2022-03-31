@@ -38,7 +38,6 @@ public class LeaderboardCommunication {
      */
     public static void updateServerLeaderboard(String username, int games, int score)
             throws RuntimeException {
-        System.out.println("+ <" + username + ", " + games + ", " + score + ">");
         if (username == null || username.isEmpty()) {
             throw new RuntimeException("Invalid username");
         }

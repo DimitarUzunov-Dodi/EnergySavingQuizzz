@@ -141,14 +141,14 @@ public class EmojiController {
         System.out.println(gameID);
         LOGGER.info(gameID);
         System.out.println("fuck");
-        if (emojiInfo.lastName.equals("emoji1")) {
-            LOGGER.info("Emoji1 send by" + emojiInfo.firstName);
+        if (emojiInfo.emojiID.equals("emoji1")) {
+            LOGGER.info("Emoji1 send by" + emojiInfo.username);
         }
-        if (emojiInfo.lastName.equals("emoji2")) {
-            LOGGER.info("Emoji2 send by" + emojiInfo.firstName);
+        if (emojiInfo.emojiID.equals("emoji2")) {
+            LOGGER.info("Emoji2 send by" + emojiInfo.username);
         }
-        if (emojiInfo.lastName.equals("emoji3")) {
-            LOGGER.info("Emoji3 send by" + emojiInfo.firstName);
+        if (emojiInfo.emojiID.equals("emoji3")) {
+            LOGGER.info("Emoji3 send by" + emojiInfo.username);
         }
         return emojiInfo;
 

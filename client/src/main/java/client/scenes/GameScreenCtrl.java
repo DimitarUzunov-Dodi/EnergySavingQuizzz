@@ -15,7 +15,6 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +30,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import org.springframework.beans.factory.support.ScopeNotActiveException;
 
 public class GameScreenCtrl extends SceneController {
 
@@ -128,6 +126,7 @@ public class GameScreenCtrl extends SceneController {
 
         // other UI stuff
         progressBar.setProgress(1d);
+        refreshQuestion();
 
         // TODO: schedule these where you handle incoming ws messages
         // round end transition
