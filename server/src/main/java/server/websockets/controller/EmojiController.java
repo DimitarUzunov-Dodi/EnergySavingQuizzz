@@ -68,7 +68,7 @@ public class EmojiController {
         LOGGER.info("creating time");
         LOGGER.info(currentGameID + "  " + questionNumber);
 
-        Instant time = Instant.now().plusSeconds(gameService.getCurrentQuestion(currentGameID).getDuration().toSeconds());
+        Instant time = Instant.now().plusSeconds(gameService.getQuestion(currentGameID, questionNumber).getDuration().toSeconds());
         if (!gameTimes.containsKey(currentGameID)) {
             LOGGER.info("poo");
             gameTimes.put(currentGameID, new HashMap<Integer,Instant>());
@@ -105,7 +105,7 @@ public class EmojiController {
             userInputs.get(currentGameID).put(questionNumber, 0);
             LOGGER.info(userInputs.get(currentGameID).get(questionNumber).toString() + " OMG");
         }
-        Instant time = Instant.now().plusSeconds(gameService.getCurrentQuestion(currentGameID).getDuration().toSeconds());
+        Instant time = Instant.now().plusSeconds(gameService.getQuestion(currentGameID, questionNumber).getDuration().toSeconds());
         gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
       userInputs.putIfAbsent(currentGameID, new HashMap<Integer, Integer>());
       userInputs.get(currentGameID).putIfAbsent(questionNumber, 0);

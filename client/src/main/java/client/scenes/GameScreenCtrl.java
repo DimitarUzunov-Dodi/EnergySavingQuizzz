@@ -40,7 +40,7 @@ import javafx.scene.layout.StackPane;
 public class GameScreenCtrl extends SceneController {
 
     private Instant roundStartTime, roundEndTime;
-    private int qIndex = -1;
+    private int qIndex;
 
     @FXML
     private StackPane questionHolder;
@@ -58,7 +58,7 @@ public class GameScreenCtrl extends SceneController {
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
-        questionIndex = -1;
+        qIndex = -1;
     }
 
     /**
@@ -217,7 +217,7 @@ public class GameScreenCtrl extends SceneController {
      */
     public void refreshQuestion() {
         qIndex++;
-        Question activeQuestion = GameCommunication.getQuestion(currentGameID, questionIndex);
+        Question activeQuestion = GameCommunication.getQuestion(currentGameID, qIndex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class)
@@ -262,7 +262,7 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
-        int reward = GameCommunication.processAnswer(currentGameID, username, questionIndex,
+        int reward = GameCommunication.processAnswer(currentGameID, username, qIndex,
                 answer, Duration.between(roundStartTime, Instant.now()).toMillis());
         myFxml.showScene(MatchLeaderboardCtrl.class, Instant.now().plusSeconds(8));
     }
