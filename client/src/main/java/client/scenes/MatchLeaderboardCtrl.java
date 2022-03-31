@@ -56,7 +56,7 @@ public class MatchLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
-        throw new IllegalArgumentException("you must call show(<instant>) instead");
+        throw new IllegalArgumentException("you must call show(<instant>)");
     }
 
     /**

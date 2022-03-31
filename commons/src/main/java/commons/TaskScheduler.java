@@ -1,4 +1,4 @@
-package client.utils;
+package commons;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
