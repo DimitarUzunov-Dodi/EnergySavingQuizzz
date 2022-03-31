@@ -2,6 +2,7 @@ package server.websockets.controller;
 
 import commons.Game;
 import commons.EmojiMessage;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
@@ -61,12 +62,13 @@ public class EmojiController {
      * @throws Exception Exception
      */
     @MessageMapping("/time/{currentGameID}/{questionNumber}")
+    @SendTo("/foo")
     public void createDate(@DestinationVariable String currentGameID,
                            @DestinationVariable Integer questionNumber) throws Exception {
         LOGGER.info("creating time");
         LOGGER.info(currentGameID + "  " + questionNumber);
 
-        Instant time = Instant.now();
+        Instant time = Instant.now().plusSeconds(gameService.getCurrentQuestion(currentGameID).getDuration().toSeconds());
         if (!gameTimes.containsKey(currentGameID)) {
             LOGGER.info("poo");
             gameTimes.put(currentGameID, new HashMap<Integer,Instant>());
@@ -91,29 +93,34 @@ public class EmojiController {
     @MessageMapping("/time/get/{currentGameID}/{questionNumber}")
     @SendTo("/time/get/receive/{currentGameID}")
     public Instant getDate(@DestinationVariable String currentGameID,
-                        @DestinationVariable Integer questionNumber) throws Exception {
+                        @DestinationVariable Integer questionNumber, String foo) throws Exception {
         LOGGER.info("getting time");
         LOGGER.info(questionNumber.toString());
+        if (!gameTimes.containsKey(currentGameID)) {
+            LOGGER.info("poo");
+            gameTimes.put(currentGameID, new HashMap<Integer,Instant>());
+        }
         if (!userInputs.containsKey(currentGameID)){
             userInputs.put(currentGameID, new HashMap<Integer,Integer>());
             userInputs.get(currentGameID).put(questionNumber, 0);
             LOGGER.info(userInputs.get(currentGameID).get(questionNumber).toString() + " OMG");
         }
-
+        Instant time = Instant.now().plusSeconds(gameService.getCurrentQuestion(currentGameID).getDuration().toSeconds());
+        gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
       userInputs.putIfAbsent(currentGameID, new HashMap<Integer, Integer>());
       userInputs.get(currentGameID).putIfAbsent(questionNumber, 0);
         Integer last = userInputs.get(currentGameID).get(questionNumber);
         userInputs.get(currentGameID).put(questionNumber, last + 1);
-       /** if (userInputs.get(currentGameID).get(questionNumber) == gameService.getGame(currentGameID).getUserList().size()){
+        if (userInputs.get(currentGameID).get(questionNumber) == gameService.getGame(currentGameID).getUserList().size()){
             LOGGER.info("SENDING CHECK");
             LOGGER.info(questionNumber.toString());
             LOGGER.info(gameTimes.get(currentGameID).get(questionNumber).toString());
             LOGGER.info("/time/get/receive/" + currentGameID.toString());
             return gameTimes.get(currentGameID).get(questionNumber);
         }
-        **/
-       // return gameTimes.get(currentGameID).get(questionNumber);
-        return Instant.now();
+
+        return gameTimes.get(currentGameID).get(questionNumber);
+       // return Instant.now() + gameService.getCurrentQuestion(currentGameID());
     }
 
     /**

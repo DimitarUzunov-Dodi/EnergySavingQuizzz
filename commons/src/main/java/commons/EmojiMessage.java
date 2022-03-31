@@ -8,6 +8,9 @@ public class EmojiMessage {
     public String username;
     public String emojiID;
 
+    public EmojiMessage(){
+
+    }
     public EmojiMessage(String username, String emojiID) {
         this.username = username;
         this.emojiID = emojiID;
