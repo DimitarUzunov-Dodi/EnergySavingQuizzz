@@ -1,6 +1,10 @@
 package server.api;
- 
+
 import commons.ActivityImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,28 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import server.database.ActivityImagesRepository;
  
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
- 
 public class TestActivityImagesRepository implements ActivityImagesRepository {
     public List<ActivityImage> images = new ArrayList<>();
- 
-    @Override
-    public List<ActivityImage> findAll() {
-        return null;
-    }
- 
-    @Override
-    public List<ActivityImage> findAll(Sort sort) {
-        return null;
-    }
- 
-    @Override
-    public Page<ActivityImage> findAll(Pageable pageable) {
-        return null;
-    }
  
     @Override
     public List<ActivityImage> findAllById(Iterable<Long> longs) {
@@ -37,12 +21,7 @@ public class TestActivityImagesRepository implements ActivityImagesRepository {
     }
  
     @Override
-    public long count() {
-        return 0;
-    }
- 
-    @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Long along) {
  
     }
  
@@ -77,12 +56,12 @@ public class TestActivityImagesRepository implements ActivityImagesRepository {
     }
  
     @Override
-    public Optional<ActivityImage> findById(Long aLong) {
+    public Optional<ActivityImage> findById(Long along) {
         return Optional.empty();
     }
  
     @Override
-    public boolean existsById(Long aLong) {
+    public boolean existsById(Long along) {
         return false;
     }
  
@@ -105,24 +84,24 @@ public class TestActivityImagesRepository implements ActivityImagesRepository {
     public void deleteAllInBatch(Iterable<ActivityImage> entities) {
  
     }
- 
+
+    @Override
+    public void deleteAllInBatch() {
+
+    }
+
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> longs) {
  
     }
  
     @Override
-    public void deleteAllInBatch() {
- 
-    }
- 
-    @Override
-    public ActivityImage getOne(Long aLong) {
+    public ActivityImage getOne(Long along) {
         return null;
     }
  
     @Override
-    public ActivityImage getById(Long aLong) {
+    public ActivityImage getById(Long along) {
         return null;
     }
  
@@ -145,7 +124,27 @@ public class TestActivityImagesRepository implements ActivityImagesRepository {
     public <S extends ActivityImage> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
- 
+
+    @Override
+    public List<ActivityImage> findAll() {
+        return null;
+    }
+
+    @Override
+    public List<ActivityImage> findAll(Sort sort) {
+        return null;
+    }
+
+    @Override
+    public Page<ActivityImage> findAll(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public long count() {
+        return 0;
+    }
+
     @Override
     public <S extends ActivityImage> long count(Example<S> example) {
         return 0;
@@ -157,7 +156,9 @@ public class TestActivityImagesRepository implements ActivityImagesRepository {
     }
  
     @Override
-    public <S extends ActivityImage, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends ActivityImage, R> R findBy(Example<S> example,
+                                                 Function<FluentQuery.FetchableFluentQuery<S>,
+                                                         R> queryFunction) {
         return null;
     }
 }
