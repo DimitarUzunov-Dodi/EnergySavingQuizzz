@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import commons.Person;
+import commons.EmojiMessage;
 import commons.Quote;
 import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +68,7 @@ public class QuoteControllerTest {
     }
 
     private static Quote getQuote(String q) {
-        return new Quote(new Person(q, q), q);
+        return new Quote(new EmojiMessage(q, q), q);
     }
 
     @SuppressWarnings("serial")

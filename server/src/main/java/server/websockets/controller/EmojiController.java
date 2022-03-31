@@ -1,10 +1,7 @@
-
-
 package server.websockets.controller;
 
-
 import commons.Game;
-import commons.Person;
+import commons.EmojiMessage;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
@@ -16,8 +13,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import server.service.GameService;
-
-
 
 @Controller
 public class EmojiController {
@@ -47,11 +42,7 @@ public class EmojiController {
 
     }
 
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EmojiController.class);
-
-
 
     private int playersInCurrentGame = 0;
 
@@ -142,9 +133,9 @@ public class EmojiController {
      */
     @MessageMapping("/emoji/{gameID}/{username}")
     @SendTo("/emoji/receive/{gameID}")
-    public Person sendEmoji(
+    public EmojiMessage sendEmoji(
         @DestinationVariable String gameID, @DestinationVariable String username,
-        Person emojiInfo) throws Exception {
+        EmojiMessage emojiInfo) throws Exception {
 
         System.out.println(gameID);
         System.out.println(gameID);

@@ -4,7 +4,14 @@ import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.ScheduledFuture;
+
+import static client.scenes.MainCtrl.scheduler;
 
 /**
  * Abstract class that forms the basis of a scene controller.
@@ -68,5 +75,15 @@ public abstract class SceneController {
      */
     protected void present(Stage stage) {
         stage.setScene(scene);
+    }
+
+    protected static ScheduledFuture<?> scheduleProgressBar(ProgressBar bar, Instant endTime) {
+        bar.setUserData(32d / Duration.between(Instant.now(), endTime).toMillis());
+        return scheduler.scheduleAtFixedRate(
+                () -> {
+                    bar.setProgress(Math.max(0,
+                            bar.getProgress() - (Double) bar.getUserData()));
+                },
+                32L);
     }
 }

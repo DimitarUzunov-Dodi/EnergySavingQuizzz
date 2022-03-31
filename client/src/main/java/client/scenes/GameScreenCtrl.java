@@ -1,30 +1,28 @@
 package client.scenes;
 
-import static client.scenes.MainCtrl.currentGameID;
+import static client.scenes.MainCtrl.*;
 import static java.util.Map.entry;
 
 import client.MyFXML;
 import client.communication.GameCommunication;
 import client.communication.Utils;
-import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
-import commons.Person;
+import commons.EmojiMessage;
 import commons.Question;
 import commons.QuestionTypeA;
 import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
@@ -33,18 +31,12 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import org.springframework.beans.factory.support.ScopeNotActiveException;
 
 public class GameScreenCtrl extends SceneController {
 
-    private String username;
+    private Instant roundStartTime, roundEndTime;
 
-    private static int qIndex;
-    private Question activeQuestion;
-
-    private static final double TIME_TO_NEXT_ROUND = 8;
-
-    @FXML
-    private ImageView menuButton;
     @FXML
     private StackPane questionHolder;
     @FXML
@@ -52,16 +44,7 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ListView<String> currentLeaderboard;
 
-    @FXML
-    private ImageView emoji1;
-    @FXML
-    private ImageView emoji2;
-    @FXML
-    private ImageView emoji3;
-
-    private Long currentTime = 0L;
-
-    private int questionNumber = -1;
+    // TODO: maybe replace with UTF-8 chars
     private final Map<String, Image> emojis = Map.ofEntries(
             entry("emoji1", new Image("client/images/emoji1.png")),
             entry("emoji2", new Image("client/images/emoji2.png")),
@@ -73,141 +56,33 @@ public class GameScreenCtrl extends SceneController {
     }
 
     /**
-     * Initialises the images for the game screen.
-     */
-    public void initImages() {
-        //windmill.setImage(new Image("client/images/OIP.jpg"));
-        menuButton.setImage(new Image(("client/images/menu.png")));
-        emoji1.setImage(new Image("client/images/emoji1.png"));
-        emoji2.setImage(new Image("client/images/emoji2.png"));
-        emoji3.setImage(new Image("client/images/emoji3.png"));
-    }
-
-
-    /**
-     * Start a time for TIME_TO_NEXT_ROUND seconds and bind to progressbar.
-     */
-    public void countDown() {
-        System.out.println("the real real current time is " + currentTime);
-        Double threadSleepTime = 10D;
-
-        final Service<Integer> countDownThread = new Service<>() {
-
-            @Override
-            protected Task<Integer> createTask() {
-                return new Task<Integer>() {
-                    @Override
-                    protected Integer call() {
-
-                        Double remainder = (((TIME_TO_NEXT_ROUND * 100D)
-                            - ((new Date().getTime() - currentTime) / threadSleepTime)));
-                        System.out.println("the remainder is " + remainder);
-                        System.out.println(new Date().getTime() - currentTime + "subtract");
-
-                        int i = remainder.intValue();
-
-                        while (i >= 0) {
-
-                            //System.out.println(progressBar.getProgress() + "foo");
-                            updateProgress(i, TIME_TO_NEXT_ROUND * 100D);
-                            try {
-
-                                i--;
-                                //System.out.println(i);
-                                Thread.sleep(threadSleepTime.intValue());
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        return i;
-                    }
-                };
-            }
-        };
-
-
-        progressBar.progressProperty().bind(countDownThread.progressProperty());
-        countDownThread.start();
-
-    }
-
-    /**
-     * refreshes the question.
-     */
-    public void refreshQuestion() {
-        questionNumber++;
-        GameCommunication.send("/app/time/" + MainCtrl.currentGameID
-            + "/" + questionNumber, "foo");
-        GameCommunication.send("/app/time/get/" + MainCtrl.currentGameID
-            + "/" + questionNumber, "foo");
-        System.out.println("the real current time is " + currentTime);
-
-        activeQuestion = client.communication.GameCommunication
-            .getQuestion(currentGameID, qIndex);
-        //System.out.println(GameCommunication.getAnswer(currentGameID, qIndex));
-        qIndex++;
-
-        switch (activeQuestion.getQuestionType()) {
-            case 0:
-                myFxml.get(QuestionTypeAComponentCtrl.class)
-                        .loadComponent((QuestionTypeA) activeQuestion);
-
-                break;
-            case 1:
-                myFxml.get(QuestionTypeBComponentCtrl.class)
-                        .loadComponent((QuestionTypeB) activeQuestion);
-
-                break;
-            case 2:
-                myFxml.get(QuestionTypeCComponentCtrl.class)
-                        .loadComponent((QuestionTypeC) activeQuestion);
-
-                break;
-            case 3:
-                myFxml.get(QuestionTypeDComponentCtrl.class)
-                        .loadComponent((QuestionTypeD) activeQuestion);
-
-                break;
-
-            default:
-                break;
-
-        }
-        countDown();
-        present();
-
-    }
-
-    /**
      * When the first emoji is clicked it is sent to the server and also by whom it has been sent.
      */
-    public void emoji1Pressed() {
-        username = FileUtils.readNickname();
-        Person emojiInfo = new Person(username, "emoji1");
+    @FXML
+    private void emoji1Pressed() {
+        EmojiMessage emojiInfo = new EmojiMessage(username, "emoji1");
         GameCommunication.send("/app/emoji/" + currentGameID
-            +
-            "/" + MainCtrl.username, emojiInfo);
+            + "/" + MainCtrl.username, emojiInfo);
     }
 
     /**
      * When the second emoji is clicked it is sent to the server and also by whom it has been sent.
      */
-    public void emoji2Pressed() {
-        username = FileUtils.readNickname();
-        Person emojiInfo = new Person(username, "emoji2");
+    @FXML
+    private void emoji2Pressed() {
+        EmojiMessage emojiInfo = new EmojiMessage(username, "emoji2");
         GameCommunication.send("/app/emoji/" + currentGameID
-            +
-            "/" + MainCtrl.username, emojiInfo);
+                + "/" + MainCtrl.username, emojiInfo);
     }
 
     /**
      * When the third emoji is clicked it is sent to the server and also by whom it has been sent.
      */
-    public void emoji3Pressed() {
-        username = FileUtils.readNickname();
-        Person emojiInfo = new Person(username, "emoji3");
-        GameCommunication.send("/app/emoji/" + currentGameID + "/"
-            + MainCtrl.username, emojiInfo);
+    @FXML
+    private void emoji3Pressed() {
+        EmojiMessage emojiInfo = new EmojiMessage(username, "emoji3");
+        GameCommunication.send("/app/emoji/" + currentGameID
+                + "/" + MainCtrl.username, emojiInfo);
     }
 
     /**
@@ -218,60 +93,83 @@ public class GameScreenCtrl extends SceneController {
         myFxml.showScene(SettingsCtrl.class);
     }
 
-    private void setupPlayerList() {
-        // init the player list (cells)
-        currentLeaderboard.setItems(FXCollections.observableList(
-            Utils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
-                    .stream().map(User::getUsername).collect(Collectors.toList())
-        ));
+    /**
+     * Sets up the ws connection and inits some UI elements, then calls {@link #show()}.
+     * @param args Only accepts one argument of type {@code Boolean}, which determines
+     *             if the extra initialisation takes place or not.
+     */
+    @Override
+    public void show(Object... args) {
+        // handle varargs
+        if (args.length != 1 || !args[0].getClass().equals(Boolean.class)) {
+            throw new IllegalArgumentException("Expected only one Boolean argument");
+        }
 
-        // register websockets events on receiving messages
-        GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, Person.class,
-            v -> currentLeaderboard.setCellFactory(param -> new ListCell<>() {
-                @Override
-                public void updateItem(String name, boolean empty) {
-                    super.updateItem(name, empty);
-                    if (empty) {
-                        setGraphic(null);
-                        setText(null);
-                    } else {
-                        if (name.equals(v.firstName)) {
-                            ImageView img = new ImageView();
-                            img.setFitHeight(20);
-                            img.setFitWidth(20);
-                            img.setImage(emojis.get(v.lastName)); // just why?
-                            //  displayImage.setFitWidth(0.1);
-                            setGraphic(img);
-                        }
-                        setText(name);
-                    }
-                }
-            }));
+        if ((Boolean) args[0]) {
+            // TODO: init whatever else needs it
+            // ws
+            setupWebSockets();
+        }
+        show();
     }
 
+    /**
+     * Displays the game scene and triggers all the necessary refreshes and async tasks.
+     * Make sure to have working ws connection and initialized scene elements!
+     * You can do that by calling {@code show(true)}.
+     */
     @Override
     public void show() {
+        // refresh player list
+        currentLeaderboard.setItems(FXCollections.observableList(
+                Utils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
+                        .stream().map(User::getUsername).collect(Collectors.toList())
+        ));
 
+        // other UI stuff
+        progressBar.setProgress(1d);
+
+        // TODO: schedule these where you handle incoming ws messages
+        // round end transition
+        scheduler.scheduleAtInstant(
+                () -> myFxml.showScene(MatchLeaderboardCtrl.class, roundEndTime.plusSeconds(6)),
+                roundEndTime);
+        // progress bar
+        final ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, roundEndTime);
+    }
+
+    // TODO: Replace with final ws implementation
+    /**
+     * Set up the WS connection and start listening for messages.
+     */
+    private void setupWebSockets() {
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("currentGameID", currentGameID);
-        properties.put("username", MainCtrl.username);
-        // connect via websockets
+        properties.put("username", username);
+
         GameCommunication.connect(Utils.serverAddress, properties);
 
-        GameCommunication.registerForMessages("/time/get/receive/" + MainCtrl.currentGameID,
-            long.class, o -> {
-                currentTime = o;
-                System.out.println(o);
-                System.out.println("time/get/receive");
-
-            });
-
-        initImages();
-
-        setupPlayerList();
-
-        qIndex = 0;
-
+        GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, EmojiMessage.class,
+                v -> currentLeaderboard.setCellFactory(param -> new ListCell<>() {
+                    @Override
+                    public void updateItem(String name, boolean empty) {
+                        super.updateItem(name, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            if (name.equals(v.username)) {
+                                ImageView img = new ImageView();
+                                img.setFitHeight(20);
+                                img.setFitWidth(20);
+                                img.setImage(emojis.get(v.emojiID)); // just why?
+                                //  displayImage.setFitWidth(0.1);
+                                setGraphic(img);
+                            }
+                            setText(name);
+                        }
+                    }
+                }));
         GameCommunication.registerForMessages("/game/receive/" + currentGameID,
                 Map.class, o -> {
                     System.out.println(o.toString());
@@ -281,11 +179,40 @@ public class GameScreenCtrl extends SceneController {
         userProperties.put("currentGameID", currentGameID);
         userProperties.put("username", MainCtrl.username);
         GameCommunication.send("/app/game/" + MainCtrl.currentGameID + "/"
-            + MainCtrl.username, userProperties);
-        System.out.println("the time is " + currentTime);
-        refreshQuestion();
+                + MainCtrl.username, userProperties);
     }
 
+    /**
+     * Get the question from the server and display it.
+     */
+    public void refreshQuestion() {
+        Question activeQuestion = GameCommunication.getCurrentQuestion(currentGameID);
+        switch (activeQuestion.getQuestionType()) {
+            case 0:
+                myFxml.get(QuestionTypeAComponentCtrl.class)
+                        .loadComponent((QuestionTypeA) activeQuestion);
+                break;
+            case 1:
+                myFxml.get(QuestionTypeBComponentCtrl.class)
+                        .loadComponent((QuestionTypeB) activeQuestion);
+                break;
+            case 2:
+                myFxml.get(QuestionTypeCComponentCtrl.class)
+                        .loadComponent((QuestionTypeC) activeQuestion);
+                break;
+            case 3:
+                myFxml.get(QuestionTypeDComponentCtrl.class)
+                        .loadComponent((QuestionTypeD) activeQuestion);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Displays a question to the correct node in the Scene.
+     * @param node - where to put the new question element
+     */
     public void showQuestion(Node node) {
         questionHolder.getChildren().setAll(node);
     }
@@ -297,14 +224,8 @@ public class GameScreenCtrl extends SceneController {
      *
      * @param answer - answer from the user
      */
-    public void sendAnswer(long answer) {
-        int reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                qIndex, answer, getTimeLeft());
-        System.out.println(reward);
+    public static void sendAnswer(long answer) {
+        int reward = GameCommunication.processAnswer(currentGameID, username, answer, Instant.now());
         myFxml.showScene(MatchLeaderboardCtrl.class, Instant.now().plusSeconds(8));
-    }
-
-    private int getTimeLeft() {
-        return (int) Math.round(progressBar.getProgress() * 100);
     }
 }
