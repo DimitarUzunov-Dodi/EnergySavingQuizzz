@@ -22,6 +22,8 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Displays the final screen at the end of the game
@@ -40,6 +42,7 @@ public class EndLeaderboardCtrl extends SceneController {
 
 
 
+
     /**
      * Constructor used by INJECTOR.
      * @param myFxml handled by INJECTOR
@@ -50,9 +53,12 @@ public class EndLeaderboardCtrl extends SceneController {
 
     }
 
+    /**
+     * Loads the Screen with the data of the match
+     */
     @Override
     public void show() {
-
+        chart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
          //get player list from server
         scheduler.execute(() -> {
             Optional<List<User>> l = Utils.getAllUsers(currentGameID);
@@ -75,17 +81,26 @@ public class EndLeaderboardCtrl extends SceneController {
 
             }
         });
+
         present();
 
 
     }
 
 
+    /**
+     * Send a user to a new waiting lobby with the same game ID
+     */
+    @FXML
+    private void nextGame() {
+        myFxml.showScene(WaitingRoomCtrl.class, currentGameID);
+    }
 
-
+    /**
+     * returns back to SplashScreen
+     */
     @FXML
     private void onBackButton() {
         myFxml.showScene(SplashCtrl.class);
     }
 }
-

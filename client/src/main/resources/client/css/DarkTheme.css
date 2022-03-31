@@ -30,10 +30,6 @@
     -fx-text-fill: #fffc00;
 }
 
-#questionText{
-    -fx-fill: #fffc00;
-}
-
-#Question_text{
-    -fx-fill: #fffc00;
+.default-color0.chart-bar {
+    -fx-bar-fill: #fffa00
 }
