@@ -20,7 +20,7 @@ public class Quote {
     public long id;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    public Person person;
+    public EmojiMessage person;
     public String quote;
 
     @SuppressWarnings("unused")
@@ -28,7 +28,7 @@ public class Quote {
         // for object mappers
     }
 
-    public Quote(Person person, String quote) {
+    public Quote(EmojiMessage person, String quote) {
         this.person = person;
         this.quote = quote;
     }

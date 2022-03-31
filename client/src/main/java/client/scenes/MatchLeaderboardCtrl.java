@@ -56,7 +56,7 @@ public class MatchLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
-        throw new IllegalArgumentException("you must call show(<instant>)");
+        throw new IllegalArgumentException("Missing variadic argument: <instant>");
     }
 
     /**
@@ -93,13 +93,7 @@ public class MatchLeaderboardCtrl extends SceneController {
         // progress bar
         progressBar.setProgress(1d);
         progressBar.setUserData(32d / Duration.between(Instant.now(), endTime).toMillis());
-        final ScheduledFuture<?> barTask = scheduler.scheduleAtFixedRate(
-                () -> {
-                    progressBar.setProgress(Math.max(0,
-                            progressBar.getProgress() - (Double) progressBar.getUserData()));
-                    System.out.println('.');
-                },
-            32L);
+        ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, endTime);
 
         // show scene
         table.setVisible(true);

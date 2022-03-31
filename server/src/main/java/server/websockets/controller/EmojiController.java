@@ -1,11 +1,7 @@
-
-
 package server.websockets.controller;
 
-
 import commons.Game;
-import commons.Person;
-import java.time.Instant;
+import commons.EmojiMessage;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
@@ -50,11 +46,7 @@ public class EmojiController {
 
     }
 
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EmojiController.class);
-
-
 
     private int playersInCurrentGame = 0;
 
@@ -165,9 +157,9 @@ public class EmojiController {
      */
     @MessageMapping("/emoji/{gameID}/{username}")
     @SendTo("/emoji/receive/{gameID}")
-    public Person sendEmoji(
+    public EmojiMessage sendEmoji(
         @DestinationVariable String gameID, @DestinationVariable String username,
-        Person emojiInfo) throws Exception {
+        EmojiMessage emojiInfo) throws Exception {
 
         LOGGER.info(gameID);
         System.out.println("fuck");
