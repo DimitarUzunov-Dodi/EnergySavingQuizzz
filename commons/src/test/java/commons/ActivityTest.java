@@ -2,21 +2,39 @@ package commons;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ActivityTest {
     public Activity activityA;
+    public long id = 1;
+    public String activityText = "Test";
+    public long imageId = 2;
+    public long value = 23;
+    public String source = "source";
 
     @BeforeEach
     public void setup() {
-        activityA = new Activity(1, "Test", 23, "source", 2);
+        activityA = new Activity(id, activityText, value, source, imageId);
+    }
+
+    @Test
+    public void constructorTest() {
+        Activity toBeTested = new Activity(id, activityText, value, source, imageId);
+        assertNotNull(toBeTested);
+    }
+
+    @Test
+    public void constructorWithoutIdTest() {
+        Activity toBeTested = new Activity(activityText, value, source, imageId);
+        assertNotNull(toBeTested);
     }
 
     @Test
     void getActivityIdTest() {
-        assertEquals(1, activityA.getActivityId());
+        assertEquals(id, activityA.getActivityId());
     }
 
     @Test
@@ -28,7 +46,7 @@ public class ActivityTest {
 
     @Test
     void getActivityTextTest() {
-        assertEquals("Test", activityA.getActivityText());
+        assertEquals(activityText, activityA.getActivityText());
     }
 
     @Test
@@ -40,7 +58,7 @@ public class ActivityTest {
 
     @Test
     void getActivitySourceTest() {
-        assertEquals("source", activityA.getSource());
+        assertEquals(source, activityA.getSource());
     }
 
     @Test
@@ -52,7 +70,7 @@ public class ActivityTest {
 
     @Test
     void getActivityValueTest() {
-        assertEquals(23, activityA.getValue());
+        assertEquals(value, activityA.getValue());
     }
 
     @Test
@@ -64,7 +82,7 @@ public class ActivityTest {
 
     @Test
     void getActivityImageId() {
-        assertEquals(2, activityA.getImageId());
+        assertEquals(imageId, activityA.getImageId());
     }
 
     @Test
