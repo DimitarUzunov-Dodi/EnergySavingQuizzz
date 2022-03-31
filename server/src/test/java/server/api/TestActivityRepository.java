@@ -69,6 +69,7 @@ public class TestActivityRepository implements ActivityRepository {
 
     @Override
     public <S extends Activity> S save(S entity) {
+        activities.add(entity);
         return null;
     }
 
@@ -134,7 +135,7 @@ public class TestActivityRepository implements ActivityRepository {
 
     @Override
     public List<Activity> findAll() {
-        return null;
+        return activities;
     }
 
     @Override
