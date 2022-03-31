@@ -151,9 +151,10 @@ public class GameScreenCtrl extends SceneController {
 
         GameCommunication.connect(Utils.serverAddress, properties);
         GameCommunication.registerForMessages("/time/get/receive/" + currentGameID,
-            java.time.Instant.class, o -> {
-            System.out.println("fooolp");
-            roundEndTime = o;
+            long.class, o -> {
+
+            roundEndTime = Instant.ofEpochMilli(o);
+                System.out.println(roundEndTime);
             refreshQuestion();
                 scheduler.scheduleAtInstant(
                     () -> myFxml.showScene(MatchLeaderboardCtrl.class, roundEndTime.plusSeconds(6)),
@@ -224,7 +225,7 @@ public class GameScreenCtrl extends SceneController {
 
 
        // GameCommunication.send("/app/time/" + currentGameID + "/" + qIndex, "foo");
-      //  GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
+        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
 
 
     }

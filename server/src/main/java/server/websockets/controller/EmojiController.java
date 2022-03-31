@@ -92,7 +92,7 @@ public class EmojiController {
      */
     @MessageMapping("/time/get/{currentGameID}/{questionNumber}")
     @SendTo("/time/get/receive/{currentGameID}")
-    public Instant getDate(@DestinationVariable String currentGameID,
+    public long getDate(@DestinationVariable String currentGameID,
                         @DestinationVariable Integer questionNumber, String foo) throws Exception {
         LOGGER.info("getting time");
         LOGGER.info(questionNumber.toString());
@@ -116,10 +116,10 @@ public class EmojiController {
             LOGGER.info(questionNumber.toString());
             LOGGER.info(gameTimes.get(currentGameID).get(questionNumber).toString());
             LOGGER.info("/time/get/receive/" + currentGameID.toString());
-            return gameTimes.get(currentGameID).get(questionNumber);
+            return gameTimes.get(currentGameID).get(questionNumber).toEpochMilli();
         }
 
-        return gameTimes.get(currentGameID).get(questionNumber);
+        return gameTimes.get(currentGameID).get(questionNumber).toEpochMilli();
        // return Instant.now() + gameService.getCurrentQuestion(currentGameID());
     }
 
