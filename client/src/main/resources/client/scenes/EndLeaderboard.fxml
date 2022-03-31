@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane id="background" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ServerLeaderboardCtrl">
+<GridPane id="background" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EndLeaderboardCtrl">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="0.0" />
         <ColumnConstraints halignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" percentWidth="80.0" />
@@ -39,12 +39,12 @@
                 </ImageView>
             </graphic>
         </Button>
-      <BarChart GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <BarChart fx:id="chart" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis fx:id="usernames" side="BOTTOM" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis fx:id="points" side="LEFT" />
         </yAxis>
       </BarChart>
       <Button fx:id="backButton1" alignment="CENTER" mnemonicParsing="false" onAction="#onBackButton" style="-fx-background-color: #f2c914; -fx-background-radius: 10; -fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 10;" text=" Play Another" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
