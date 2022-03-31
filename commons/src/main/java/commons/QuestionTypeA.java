@@ -26,8 +26,7 @@ public class QuestionTypeA extends Question {
     }
 
     public String giveText() {
-        String string = "Which one uses the most energy?";
-        return  string;
+        return "Which one uses the most energy?";
     }
 
     public void setQuestionType(int questionType) {

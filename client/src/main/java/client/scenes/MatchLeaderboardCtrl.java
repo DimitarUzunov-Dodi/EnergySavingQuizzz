@@ -56,7 +56,7 @@ public class MatchLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
-        throw new IllegalArgumentException("you must call show(<instant>)");
+        throw new IllegalArgumentException("Missing variadic argument: <instant>");
     }
 
     /**
@@ -97,7 +97,6 @@ public class MatchLeaderboardCtrl extends SceneController {
                 () -> {
                     progressBar.setProgress(Math.max(0,
                             progressBar.getProgress() - (Double) progressBar.getUserData()));
-                    System.out.println('.');
                 },
             32L);
 
