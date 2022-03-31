@@ -15,15 +15,20 @@ import server.service.GameService;
 @RestController
 @RequestMapping("/api/game")
 public class GameController {
+
+    @Autowired
+    private final Random random;
     @Autowired
     private final GameService gameService;
 
     /**
      * Constructor for the GameController class.
      *
+     * @param random Random instance for game code generation
      * @param gameService Service
      */
-    public GameController(GameService gameService) {
+    public GameController(Random random, GameService gameService) {
+        this.random = random;
         this.gameService = gameService;
     }
 
@@ -46,7 +51,7 @@ public class GameController {
      * @return HTTP 200 Status if okay, error otherwise.
      */
     @DeleteMapping("/end/{gameCode}")
-    public ResponseEntity<?> endGame(@PathVariable String gameCode) {
+    public ResponseEntity<?>  endGame(@PathVariable String gameCode) {
 
         if (gameService.doesGameExist(gameCode)) {
             return ResponseEntity
@@ -61,16 +66,18 @@ public class GameController {
      *  Get question from list of generated ones.
      *
      * @param gameCode The game code for the specific game
+     * @param questionIndex The index of the wanted question
      * @return The question entity
      */
-    @GetMapping("/getQ/{gameCode}")
-    public ResponseEntity<?> getQuestion(@PathVariable String gameCode) {
+    @GetMapping("/getq/{gameCode}/{questionIndex}")
+    public ResponseEntity<?> getQuestion(@PathVariable String gameCode,
+                                         @PathVariable int questionIndex) {
         if (!gameService.doesGameExist(gameCode)) {
             return ResponseEntity
                     .badRequest()
                     .body("Game not found!");
         } else {
-            return ResponseEntity.ok(gameService.getCurrentQuestion(gameCode));
+            return ResponseEntity.ok(gameService.getQuestion(gameCode, questionIndex));
         }
     }
 
@@ -89,7 +96,7 @@ public class GameController {
                     .badRequest()
                     .body("Game not found!");
         } else {
-            return ResponseEntity.ok(gameService.getCorrectAnswer(gameCode));
+            return ResponseEntity.ok(gameService.getCorrectAnswer(gameCode, questionIndex));
         }
     }
 
@@ -108,7 +115,7 @@ public class GameController {
                                            @RequestParam(name = "username") String username,
                                            @RequestParam(name = "questionIndex") int questionIndex,
                                            @RequestParam(name = "answer") long answer,
-                                           @RequestParam(name = "time") int time) {
+                                           @RequestParam(name = "time") long time) {
         if (!(gameService.doesGameExist(gameCode))) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)

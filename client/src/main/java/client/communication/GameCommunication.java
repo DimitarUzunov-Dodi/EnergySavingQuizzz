@@ -7,7 +7,6 @@ import commons.Question;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import java.lang.reflect.Type;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import org.glassfish.jersey.client.ClientConfig;
@@ -87,13 +86,18 @@ public class GameCommunication {
 
     /**
      *  Communication method for getting a question.
+     *
      * @param gameCode Specify the game code for which to get questions
+     * @param questionIndex The question io get out of 20
      * @return The question entity
      */
-    public static Question getCurrentQuestion(String gameCode) {
+    public static Question getQuestion(String gameCode, int questionIndex) {
+        if (questionIndex < 0) {
+            throw new IllegalArgumentException("question index " + questionIndex);
+        }
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress)
-                .path(String.format("/api/game/getQ/%s", gameCode))
+                .path(String.format("/api/game/getq/%s/%d", gameCode, questionIndex))
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
     }
@@ -121,23 +125,27 @@ public class GameCommunication {
      *
      * @param gameCode The game code for the specific game
      * @param username The username
+     * @param questionIndex The index of the wanted question
      * @param answer correct answer(in energy consumption number) to the question asked
      * @param time the time spent on giving the answer
      * @return bonus points achieved
      */
     public static Integer processAnswer(String gameCode, String username,
-                                        long answer, Instant time) {
+                                        int questionIndex, long answer, long time) {
+        if (questionIndex < 0) {
+            throw new IllegalArgumentException("process answer for question nr " + questionIndex);
+        }
 
         return ClientBuilder.newClient(new ClientConfig())
                 .target(serverAddress)
                 .path("/api/game/processAnswer")
                 .queryParam("gameCode", gameCode)
                 .queryParam("username", username)
+                .queryParam("questionIndex", questionIndex)
                 .queryParam("answer", answer)
                 .queryParam("time", time)
                 .request(APPLICATION_JSON)
                 .get(new GenericType<>() {});
-        // TODO: remember that you removed a querryparam (qINdex)
 
     }
 }

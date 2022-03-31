@@ -15,12 +15,16 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
+
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
+
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -34,6 +38,7 @@ import javafx.scene.layout.StackPane;
 public class GameScreenCtrl extends SceneController {
 
     private Instant roundStartTime, roundEndTime;
+    private int questionIndex;
 
     @FXML
     private StackPane questionHolder;
@@ -51,6 +56,7 @@ public class GameScreenCtrl extends SceneController {
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
+        questionIndex = -1;
     }
 
     /**
@@ -127,14 +133,21 @@ public class GameScreenCtrl extends SceneController {
         // other UI stuff
         progressBar.setProgress(1d);
         refreshQuestion();
+        present();
 
         // TODO: schedule these where you handle incoming ws messages
-        // round end transition
-        scheduler.scheduleAtInstant(
-                () -> myFxml.showScene(MatchLeaderboardCtrl.class, roundEndTime.plusSeconds(6)),
-                roundEndTime);
+        roundEndTime = Instant.now().plusSeconds(22);
+        roundStartTime = Instant.now().minusMillis(10);
         // progress bar
         final ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, roundEndTime);
+        // round end transition
+        ScheduledFuture<?> endRoundTask = scheduler.scheduleAtInstant(
+                () -> {
+                    barTask.cancel(false);
+                    Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                                    roundEndTime.plusSeconds(6)));
+                },
+                roundEndTime);
     }
 
     // TODO: Replace with final ws implementation
@@ -185,7 +198,8 @@ public class GameScreenCtrl extends SceneController {
      * Get the question from the server and display it.
      */
     public void refreshQuestion() {
-        Question activeQuestion = GameCommunication.getCurrentQuestion(currentGameID);
+        questionIndex++;
+        Question activeQuestion = GameCommunication.getQuestion(currentGameID, questionIndex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class)
@@ -223,8 +237,9 @@ public class GameScreenCtrl extends SceneController {
      *
      * @param answer - answer from the user
      */
-    public static void sendAnswer(long answer) {
-        int reward = GameCommunication.processAnswer(currentGameID, username, answer, Instant.now());
+    public void sendAnswer(long answer) {
+        int reward = GameCommunication.processAnswer(currentGameID, username, questionIndex,
+                answer, Duration.between(roundStartTime, Instant.now()).toMillis());
         myFxml.showScene(MatchLeaderboardCtrl.class, Instant.now().plusSeconds(8));
     }
 }

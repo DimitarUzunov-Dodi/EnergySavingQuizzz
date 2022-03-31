@@ -123,9 +123,8 @@ public class GameService {
         return activeGames.containsKey(gameCode);
     }
 
-    public Question getCurrentQuestion(String gameCode) {
-        List<Question> l = activeGames.get(gameCode).getActiveQuestionList();
-        return l.remove(l.size() - 1);
+    public Question getQuestion(String gameCode, int questionIndex) {
+        return activeGames.get(gameCode).getActiveQuestionList().get(questionIndex);
     }
 
     public Game getGame(String gameCode) {
@@ -203,10 +202,10 @@ public class GameService {
      * @return reward points for user
      */
     public int processAnswer(String gameCode, String username,
-                             int questionIndex, long answer, int time) {
+                             int questionIndex, long answer, long time) {
         int rewardPoints = 0;
 
-        Question question = getCurrentQuestion(gameCode);
+        Question question = getQuestion(gameCode, questionIndex);
         long correctAnswer = retrieveAnswer(question);
 
         if (correctAnswer == answer) {
@@ -235,10 +234,11 @@ public class GameService {
      * Gets correct answer from the specified game from questionIndex.
      *
      * @param gameCode - code of the game
+     * @param questionIndex - index of question requested by user
      * @return correct answer in energy consumption
      */
-    public long getCorrectAnswer(String gameCode) {
-        Question question = getCurrentQuestion(gameCode);
+    public long getCorrectAnswer(String gameCode, int questionIndex) {
+        Question question = getQuestion(gameCode, questionIndex);
         return retrieveAnswer(question);
     }
 

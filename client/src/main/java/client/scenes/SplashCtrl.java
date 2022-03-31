@@ -72,7 +72,7 @@ public class SplashCtrl extends SceneController {
         }
         // may throw exceptions, but it's unlikely
         WaitingRoomCommunication.joinGame(currentGameID, username);
-        myFxml.showScene(GameScreenCtrl.class);
+        myFxml.showScene(GameScreenCtrl.class, true);
     }
 
     /**
