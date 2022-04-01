@@ -17,7 +17,6 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
-
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -39,8 +37,9 @@ import javafx.scene.layout.StackPane;
 
 public class GameScreenCtrl extends SceneController {
 
-    private Instant roundStartTime, roundEndTime;
-    private int qIndex;
+    private Instant roundStartTime;
+    private Instant roundEndTime;
+    private int qindex;
 
     @FXML
     private StackPane questionHolder;
@@ -58,7 +57,7 @@ public class GameScreenCtrl extends SceneController {
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
-        qIndex = 0;
+        qindex = 0;
     }
 
     /**
@@ -115,7 +114,7 @@ public class GameScreenCtrl extends SceneController {
             // ws setup
             setupWebSockets();
             // receive first question time
-            GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
+            GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
         }
         show();
     }
@@ -139,6 +138,7 @@ public class GameScreenCtrl extends SceneController {
 
         // other UI stuff
         progressBar.setProgress(1d);
+        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
         refreshQuestion();
         present();
     }
@@ -167,11 +167,19 @@ public class GameScreenCtrl extends SceneController {
         // register to receive roundEndTime
         GameCommunication.registerForMessages("/time/get/receive/" + currentGameID,
             Long.class, o -> {
-                if(o == null) {
+
+                if (o == null) {
                     return;
                 }
 
-                roundEndTime = Instant.ofEpochMilli(o);
+                if (o.equals(0L)) {
+                    roundEndTime = Instant.now().plusMillis(10);
+                } else {
+                    roundEndTime = Instant.ofEpochMilli(o);
+                    qindex++;
+
+                }
+
                 System.out.println("new roundEndTime: " + roundEndTime);
 
                 // progress bar
@@ -188,8 +196,13 @@ public class GameScreenCtrl extends SceneController {
                     tasks[0].cancel(false);
                     Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
                             roundEndTime.plusSeconds(6)));
+                    System.out.println(qindex);
+
+
                 }, roundEndTime);
-        });
+
+
+            });
 
         // register for emojis
         GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, EmojiMessage.class,
@@ -218,7 +231,7 @@ public class GameScreenCtrl extends SceneController {
      * Get the question from the server and display it.
      */
     public void refreshQuestion() {
-        Question activeQuestion = GameCommunication.getQuestion(currentGameID, qIndex);
+        Question activeQuestion = GameCommunication.getQuestion(currentGameID, qindex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class)
@@ -239,7 +252,7 @@ public class GameScreenCtrl extends SceneController {
             default:
                 break;
         }
-        qIndex++;
+
     }
 
     /**
@@ -258,8 +271,8 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
-        int reward = GameCommunication.processAnswer(currentGameID, username, qIndex,
+        int reward = GameCommunication.processAnswer(currentGameID, username, qindex,
                 answer, Duration.between(roundStartTime, Instant.now()).toMillis());
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qIndex, "foo");
+        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "Schmoop");
     }
 }

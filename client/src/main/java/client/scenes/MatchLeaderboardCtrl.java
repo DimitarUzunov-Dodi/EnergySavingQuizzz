@@ -8,7 +8,6 @@ import client.communication.Utils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.User;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,24 +91,23 @@ public class MatchLeaderboardCtrl extends SceneController {
 
         // progress bar
         progressBar.setProgress(1d);
-        ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, endTime);
 
-        // show scene
         table.setVisible(true);
         readyText.setVisible(false);
         present();
-
+        ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, endTime);
+        // back to GameScreen
+        scheduler.scheduleAtInstant(() -> {
+            barTask.cancel(false); // stop progressBar
+            Platform.runLater(() -> myFxml.showScene(GameScreenCtrl.class));
+        }, endTime);
         // transition screen
         scheduler.scheduleAtInstant(() -> {
             readyText.setVisible(true);
             table.setVisible(false);
         }, endTime.minusSeconds(2));
 
-        // back to GameScreen
-        scheduler.scheduleAtInstant(() -> {
-            barTask.cancel(false); // stop progressBar
-            Platform.runLater(() -> myFxml.showScene(GameScreenCtrl.class));
-        }, endTime);
+
     }
 
     /**

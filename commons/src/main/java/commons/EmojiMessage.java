@@ -1,16 +1,17 @@
 package commons;
 
 /**
- * Represents the object that is sent via ws to transmit emoji-related updates
+ * Represents the object that is sent via ws to transmit emoji-related updates.
  */
 public class EmojiMessage {
 
     public String username;
     public String emojiID;
 
-    public EmojiMessage(){
+    public EmojiMessage() {
 
     }
+
     public EmojiMessage(String username, String emojiID) {
         this.username = username;
         this.emojiID = emojiID;

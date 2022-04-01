@@ -1,17 +1,17 @@
 package client.utils;
 
+import static client.scenes.MainCtrl.scheduler;
+
 import client.Main;
 import client.MyFXML;
 import com.google.inject.Inject;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.ScheduledFuture;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.ScheduledFuture;
-
-import static client.scenes.MainCtrl.scheduler;
 
 /**
  * Abstract class that forms the basis of a scene controller.
