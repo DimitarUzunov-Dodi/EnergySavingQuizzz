@@ -86,4 +86,15 @@ public abstract class SceneController {
                 },
                 32L);
     }
+
+    protected static ScheduledFuture<?> scheduleProgressBar(ProgressBar bar,
+                                                            Instant startTime, Instant endTime) {
+        bar.setUserData(32d / Duration.between(startTime, endTime).toMillis());
+        return scheduler.scheduleAtFixedRate(
+            () -> {
+                bar.setProgress(Math.max(0,
+                    bar.getProgress() - (Double) bar.getUserData()));
+            },
+            32L);
+    }
 }

@@ -40,7 +40,7 @@ public class GameScreenCtrl extends SceneController {
     private Instant roundStartTime;
     private Instant roundEndTime;
     private int qindex;
-
+    private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[3];
     @FXML
     private StackPane questionHolder;
     @FXML
@@ -127,8 +127,7 @@ public class GameScreenCtrl extends SceneController {
     @Override
     public void show() {
 
-        // TODO: handle this properly
-        roundStartTime = Instant.now();
+
 
         // refresh player list
         currentLeaderboard.setItems(FXCollections.observableList(
@@ -138,7 +137,7 @@ public class GameScreenCtrl extends SceneController {
 
         // other UI stuff
         progressBar.setProgress(1d);
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
+        //GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
         refreshQuestion();
         present();
     }
@@ -162,46 +161,84 @@ public class GameScreenCtrl extends SceneController {
                 + MainCtrl.username, userProperties);
 
         // save barTask (0 - barTask) (1 - transitionTask)
-        final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[2];
+
 
         // register to receive roundEndTime
         GameCommunication.registerForMessages("/time/get/receive/" + currentGameID,
-            Long.class, o -> {
-
+            Long[].class, o -> {
                 if (o == null) {
                     return;
                 }
 
-                if (o.equals(0L)) {
-                    roundEndTime = Instant.now().plusMillis(10);
-                } else {
-                    roundEndTime = Instant.ofEpochMilli(o);
-                    qindex++;
+                roundStartTime = Instant.ofEpochMilli(o[0]);
 
-                }
-
-                System.out.println("new roundEndTime: " + roundEndTime);
-
-                // progress bar
+                roundEndTime = Instant.ofEpochMilli(o[1]);
                 if (tasks[0] != null) {
                     tasks[0].cancel(false);
                 }
-                tasks[0] = SceneController.scheduleProgressBar(progressBar, roundEndTime);
+                tasks[0] = SceneController
+                    .scheduleProgressBar(progressBar, roundStartTime, roundEndTime);
+
+
+                System.out.println("new roundStartTime: " + roundStartTime);
+                System.out.println("new roundEndTime: " + roundEndTime);
+
+                // progress bar
+
 
                 // transition to leaderboard
                 if (tasks[1] != null) {
+                    System.out.println("1 canceled");
                     tasks[1].cancel(false);
                 }
-                tasks[1] = scheduler.scheduleAtInstant(() -> {
-                    tasks[0].cancel(false);
-                    Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                            roundEndTime.plusSeconds(6)));
-                    System.out.println(qindex);
+
+                if (qindex == 0) {
+                    tasks[1] = scheduler.scheduleAtInstant(() -> {
+                        System.out.println("holy schmoop");
+                        tasks[0].cancel(false);
+
+                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                            roundEndTime));
+
+
+
+
+                    }, roundEndTime);
+                }
+                System.out.println("the index is: " + qindex);
+                if (qindex != 0) {
+                    tasks[1] = scheduler.scheduleAtInstant(() -> {
+                        System.out.println("holy schdfsfoop");
+                        //tasks[0].cancel(false);
+
+                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                            Instant.now().plusMillis(10).plusSeconds(6)));
+                        System.out.println(qindex);
+
+
+
+
+                    }, Instant.now().plusMillis(10));
+                }
+
+
+                //  System.out.println("qIndex" + qindex);
+                qindex++;
+
+
+                if (tasks[2] != null) {
+                    System.out.println("1 canceled");
+                    tasks[2].cancel(false);
+
+                }
+
+                tasks[2] = scheduler.scheduleAtInstant(() -> {
+                    System.out.println("debug");
+                    GameCommunication.send("/app/time/get/" + currentGameID
+                          + "/" + qindex, "foo");
 
 
                 }, roundEndTime);
-
-
             });
 
         // register for emojis
@@ -273,6 +310,6 @@ public class GameScreenCtrl extends SceneController {
     public void sendAnswer(long answer) {
         int reward = GameCommunication.processAnswer(currentGameID, username, qindex,
                 answer, Duration.between(roundStartTime, Instant.now()).toMillis());
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "Schmoop");
+        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
     }
 }

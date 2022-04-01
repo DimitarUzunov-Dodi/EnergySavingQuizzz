@@ -2,6 +2,7 @@ package server.websockets.controller;
 
 import commons.EmojiMessage;
 import commons.Game;
+import commons.WsGame;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Random;
@@ -26,8 +27,8 @@ public class EmojiController {
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
-    private HashMap<String, HashMap<Integer, Instant>> gameTimes
-        = new HashMap<String, HashMap<Integer, Instant>>();
+    private HashMap<String, HashMap<Integer, WsGame>> gameTimes
+        = new HashMap<String, HashMap<Integer, WsGame>>();
 
     private HashMap<String, HashMap<Integer, Integer>> userInputs
         = new HashMap<String, HashMap<Integer, Integer>>();
@@ -66,12 +67,12 @@ public class EmojiController {
         LOGGER.info("creating time");
         LOGGER.info(currentGameID + "  " + questionNumber);
 
-        Instant time = Instant.now().plusSeconds(gameService
+        WsGame time = new WsGame(Instant.now(), Instant.now().plusSeconds(gameService
             .getQuestion(currentGameID, questionNumber)
-            .getDuration().toSeconds());
+            .getDuration().toSeconds()));
         if (!gameTimes.containsKey(currentGameID)) {
             LOGGER.info("poo");
-            gameTimes.put(currentGameID, new HashMap<Integer,Instant>());
+            gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
         }
         gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
         LOGGER.info(gameTimes.get(currentGameID).get(questionNumber).toString());
@@ -94,13 +95,13 @@ public class EmojiController {
      */
     @MessageMapping("/time/get/{currentGameID}/{questionNumber}")
     @SendTo("/time/get/receive/{currentGameID}")
-    public Long getDate(@DestinationVariable String currentGameID,
+    public Long[] getDate(@DestinationVariable String currentGameID,
                         @DestinationVariable Integer questionNumber, String foo) throws Exception {
 
         LOGGER.info("getting time");
         if (!gameTimes.containsKey(currentGameID)) {
             LOGGER.info("poo");
-            gameTimes.put(currentGameID, new HashMap<Integer,Instant>());
+            gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
         }
         if (!userInputs.containsKey(currentGameID)) {
             userInputs.put(currentGameID, new HashMap<Integer,Integer>());
@@ -112,25 +113,30 @@ public class EmojiController {
         Integer last = userInputs.get(currentGameID).get(questionNumber);
         userInputs.get(currentGameID).put(questionNumber, last + 1);
         if (userInputs.get(currentGameID).get(questionNumber)
-            >= gameService.getGame(currentGameID).getUserList().size()) {
-            if (foo.equals("Schmoop")) {
-                return 0L;
+            == gameService.getGame(currentGameID).getUserList().size()) {
+            WsGame time = new WsGame(Instant.now().plusMillis(500),
+                Instant.now().plusSeconds(gameService
+                .getQuestion(currentGameID, questionNumber)
+                .getDuration().toSeconds()));
+            if (questionNumber != 0) {
+                LOGGER.info("plus 12");
+                time.endTime = time.endTime.plusSeconds(6);
+                time.startTime = time.startTime.plusSeconds(6);
             }
-
+            gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
+            LOGGER.info("SENDING CHECK");
+            Long[] array = new Long[]{gameTimes.get(currentGameID)
+                .get(questionNumber).startTime.toEpochMilli(),gameTimes.get(currentGameID)
+                .get(questionNumber).endTime.toEpochMilli()};
+            return array;
         }
-        Instant time = Instant.now().plusSeconds(gameService
-            .getQuestion(currentGameID, questionNumber)
-            .getDuration().toSeconds());
-        if (questionNumber != 0) {
-            time = time.plusSeconds(6);
-        }
 
-        gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
-        LOGGER.info("SENDING CHECK");
-        LOGGER.info("questionnumber: " + questionNumber.toString());
-        LOGGER.info(gameTimes.get(currentGameID).get(questionNumber).toString());
-        LOGGER.info("/time/get/receive/" + currentGameID.toString());
-        return gameTimes.get(currentGameID).get(questionNumber).toEpochMilli();
+
+
+
+
+
+        return null;
 
     }
 
