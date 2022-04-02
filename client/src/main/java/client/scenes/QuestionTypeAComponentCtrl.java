@@ -6,7 +6,6 @@ import client.utils.SceneController;
 import client.utils.StyleUtils;
 import com.google.inject.Inject;
 import commons.QuestionTypeA;
-import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;

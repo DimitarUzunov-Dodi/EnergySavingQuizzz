@@ -339,7 +339,7 @@ public class GameScreenCtrl extends SceneController {
                 myFxml.get(QuestionTypeBComponentCtrl.class).showCorrectAnswer(correctAnswer);
                 break;
             case 2:
-                myFxml.get(QuestionTypeCComponentCtrl.class);
+                myFxml.get(QuestionTypeCComponentCtrl.class).showCorrectAnswer(correctAnswer);
                 break;
             case 3:
                 myFxml.get(QuestionTypeDComponentCtrl.class);
