@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 public class QuestionTypeAComponentCtrl extends SceneController {
 
     private QuestionTypeA activeQuestion;
-    private ArrayList<Button> buttonList = new ArrayList<>();
 
     private Long answerGiven;
 
@@ -59,11 +58,7 @@ public class QuestionTypeAComponentCtrl extends SceneController {
         myFxml.get(GameScreenCtrl.class).showQuestion(questionTypeAPane);
         answerGiven = null;
 
-        buttonList.add(button1);
-        buttonList.add(button2);
-        buttonList.add(button3);
-
-        setButtons();
+        resetButtons();
 
         questionText.setText(activeQuestion.displayText());
         activityText1.setText(activeQuestion.getActivity1().getActivityText());
@@ -140,7 +135,7 @@ public class QuestionTypeAComponentCtrl extends SceneController {
         }
     }
 
-    private void setButtons() {
+    private void resetButtons() {
         button1.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
         button2.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
         button3.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);

@@ -79,7 +79,6 @@ public class GameService {
 
 
         for (int i = 0; i < 20; i++) {
-            // TODO change back to 4, only for testing purposes!!!!!
             questionType = random.nextInt(4);
 
             switch (questionType) {
