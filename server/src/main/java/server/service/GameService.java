@@ -79,8 +79,7 @@ public class GameService {
 
 
         for (int i = 0; i < 20; i++) {
-            //questionType = random.nextInt(4);
-            questionType = 1;
+            questionType = random.nextInt(4);
 
             switch (questionType) {
                 case 0:

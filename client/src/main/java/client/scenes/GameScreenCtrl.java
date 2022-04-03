@@ -2,7 +2,6 @@ package client.scenes;
 
 import static client.scenes.MainCtrl.currentGameID;
 import static client.scenes.MainCtrl.scheduler;
-import static client.scenes.MainCtrl.username;
 import static java.util.Map.entry;
 
 import client.MyFXML;
@@ -17,15 +16,11 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -209,7 +204,7 @@ public class GameScreenCtrl extends SceneController {
                         tasks[0].cancel(false);
 
                         Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                           roundEndTime));
+                                roundEndTime));
                         //showCorrectAnswer();
 
 
@@ -225,7 +220,7 @@ public class GameScreenCtrl extends SceneController {
 
                         showCorrectAnswer();
                         //Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                          //  Instant.now().plusMillis(10).plusSeconds(6)));
+                        //Instant.now().plusMillis(10).plusSeconds(6)));
                         System.out.println(qindex);
 
 
@@ -328,6 +323,7 @@ public class GameScreenCtrl extends SceneController {
                 qindex, answer, getTimeLeft());
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
     }
+
     private void showCorrectAnswer() {
         System.out.println("showing correct answer");
         if (reward != 0) {
@@ -337,18 +333,21 @@ public class GameScreenCtrl extends SceneController {
             });
         }
 
-        long correctAnswer = GameCommunication.getAnswer(currentGameID, qindex-1);
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, qindex - 1);
         System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
 
 
-        scheduler.schedule(() -> Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                Instant.now().plusSeconds(6))), 2000);
+        scheduler.schedule(
+                () -> Platform.runLater(
+                        () -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                                Instant.now().plusSeconds(6))), 2000);
 
 
     }
+
     private void showAnswerInComponent(long correctAnswer) {
-        System.out.println(activeQuestion.getQuestionType()+ "    That was the active question");
+        System.out.println(activeQuestion.getQuestionType() + "    That was the active question");
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class).showCorrectAnswer(correctAnswer);
