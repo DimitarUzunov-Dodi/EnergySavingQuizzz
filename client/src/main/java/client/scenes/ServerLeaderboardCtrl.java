@@ -59,7 +59,7 @@ public class ServerLeaderboardCtrl extends SceneController {
                 ex.printStackTrace();
             }
         }).start();
-        showScene();
+        present();
     }
 
     /**
