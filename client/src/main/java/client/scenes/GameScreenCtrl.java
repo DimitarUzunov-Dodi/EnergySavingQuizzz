@@ -28,6 +28,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
@@ -61,7 +62,12 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView emoji3;
 
+    @FXML
+    private Label rewardLabel;
+
     private Long currentTime = 0L;
+
+    private int reward;
 
     private int questionNumber = -1;
     private final Map<String, Image> emojis = Map.ofEntries(
@@ -276,6 +282,8 @@ public class GameScreenCtrl extends SceneController {
 
             });
 
+        rewardLabel.setVisible(false);
+
         initImages();
 
         setupPlayerList();
@@ -310,12 +318,18 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
-        int reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
+        reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
                 qIndex - 1, answer, getTimeLeft());
+
         System.out.println(reward);
     }
 
     private void showCorrectAnswer() {
+        if (reward != 0) {
+            rewardLabel.setText("+" + reward + " points");
+            rewardLabel.setVisible(true);
+        }
+
         long correctAnswer = GameCommunication.getAnswer(currentGameID, qIndex - 1);
         showAnswerInComponent(correctAnswer);
 

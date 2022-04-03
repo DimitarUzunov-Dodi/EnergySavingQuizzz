@@ -47,7 +47,10 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" text="Submit" />
+                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" prefHeight="26.0" prefWidth="104.0" text="Submit">
+                     <font>
+                        <Font size="10.0" />
+                     </font></Button>
                </children>
             </VBox>
             </children>
