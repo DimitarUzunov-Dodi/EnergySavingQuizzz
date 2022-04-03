@@ -24,13 +24,13 @@ public class Utils {
 
         var dodi = new User("Dodi");
          dodi.addScore(30);
-        var geca = new User("Geca1");
+        var geca = new User("Geca");
         geca.addScore(20);
-        var geca1 = new User("Geca13");
-        geca1.addScore(40);
-        var geca3 = new User("Geca2");
+        var geca1 = new User("Geca1");
+        geca1.addScore(70);
+        var geca3 = new User("Geca3");
         geca3.addScore(50);
-        var geca2 = new User("Geca4");
+        var geca2 = new User("Geca2");
         geca2.addScore(40);
 
 

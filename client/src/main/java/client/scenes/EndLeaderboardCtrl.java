@@ -11,10 +11,7 @@ import client.utils.UserAlert;
 import com.google.inject.Inject;
 import commons.User;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -64,27 +61,32 @@ public class EndLeaderboardCtrl extends SceneController {
             Optional<List<User>> l = Utils.getAllUsers(currentGameID);
 
 
-            if (l.isPresent()) {
 
+            if (l.isPresent()) {
+                 //Sorts the list for a proper display
+                var sortedList = l.stream().toList().get(0);
+
+                List<User> newList = sortedList.stream().sorted((x,y)-> x.getScore() - y.getScore()).collect(Collectors.toList());
+                Collections.reverse(newList);
+
+                for (User user:newList
+                     ) {
+                    System.out.println(user.getUsername());
+                }
 
                 var series = new XYChart.Series<String, Integer>();
                 series.setName("Points");
-                l.get().forEach(user -> {
+                newList.forEach(user -> {
                     var data = new XYChart.Data<String,Integer>(user.getUsername(), user.getScore());
                     series.getData().add(data);
                 });
-                //series.getData().stream().sorted((a,b)->a.getYValue().compareTo(b.getYValue())).collect(Collectors.toList());
                 System.out.println(series);
-
                 chart.getData().add(series);
 
 
             }
         });
-
         present();
-
-
     }
 
 
