@@ -22,12 +22,15 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
@@ -41,6 +44,9 @@ public class GameScreenCtrl extends SceneController {
     private Instant roundEndTime;
     private int qindex;
     private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[3];
+    private String username;
+    private Question activeQuestion;
+    private static final int SHOW_ANSWER_DELAY = 2;
     @FXML
     private StackPane questionHolder;
     @FXML
@@ -48,7 +54,9 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ListView<String> currentLeaderboard;
 
-    // TODO: maybe replace with UTF-8 chars
+    private int reward;
+    @FXML
+    private Label rewardLabel;
     private final Map<String, Image> emojis = Map.ofEntries(
             entry("emoji1", new Image("client/images/emoji1.png")),
             entry("emoji2", new Image("client/images/emoji2.png")),
@@ -135,6 +143,8 @@ public class GameScreenCtrl extends SceneController {
                         .stream().map(User::getUsername).collect(Collectors.toList())
         ));
 
+                           
+
         // other UI stuff
         progressBar.setProgress(1d);
         //GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
@@ -180,8 +190,8 @@ public class GameScreenCtrl extends SceneController {
                     .scheduleProgressBar(progressBar, roundStartTime, roundEndTime);
 
 
-                System.out.println("new roundStartTime: " + roundStartTime);
-                System.out.println("new roundEndTime: " + roundEndTime);
+        }
+        
 
                 // progress bar
 
@@ -290,6 +300,7 @@ public class GameScreenCtrl extends SceneController {
                 break;
         }
 
+        rewardLabel.setVisible(false);
     }
 
     /**
@@ -308,8 +319,52 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
-        int reward = GameCommunication.processAnswer(currentGameID, username, qindex,
-                answer, Duration.between(roundStartTime, Instant.now()).toMillis());
+        reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
+                qIndex - 1, answer, getTimeLeft());
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
     }
+    private void showCorrectAnswer() {
+        if (reward != 0) {
+            rewardLabel.setText("+" + reward + " points");
+            rewardLabel.setVisible(true);
+        }
+
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, qIndex - 1);
+        showAnswerInComponent(correctAnswer);
+
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                Platform.runLater(() -> refreshQuestion());
+            }
+        }, SHOW_ANSWER_DELAY * 1000);
+
+    private void showAnswerInComponent(long correctAnswer) {
+        switch (activeQuestion.getQuestionType()) {
+            case 0:
+                myFxml.get(QuestionTypeAComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
+            case 1:
+                myFxml.get(QuestionTypeBComponentCtrl.class).showCorrectAnswer(correctAnswer);
+            case 2:
+                break;
+                myFxml.get(QuestionTypeCComponentCtrl.class).showCorrectAnswer(correctAnswer);
+            case 3:
+                break;
+                myFxml.get(QuestionTypeDComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
+            default:
+                break;
+
+        }
+
+    }
+    private int getTimeLeft() {
+        return (int) Math.round(progressBar.getProgress() * 100);
+    }
+    }
+
+    
 }
