@@ -21,12 +21,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
@@ -42,6 +46,7 @@ public class GameScreenCtrl extends SceneController {
     private Question activeQuestion;
 
     private static final double TIME_TO_NEXT_ROUND = 8;
+    private static final int SHOW_ANSWER_DELAY = 2;
 
     @FXML
     private ImageView menuButton;
@@ -59,7 +64,12 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView emoji3;
 
+    @FXML
+    private Label rewardLabel;
+
     private Long currentTime = 0L;
+
+    private int reward;
 
     private int questionNumber = -1;
     private final Map<String, Image> emojis = Map.ofEntries(
@@ -129,6 +139,7 @@ public class GameScreenCtrl extends SceneController {
         progressBar.progressProperty().bind(countDownThread.progressProperty());
         countDownThread.start();
 
+        countDownThread.setOnSucceeded(event -> showCorrectAnswer());
     }
 
     /**
@@ -173,6 +184,7 @@ public class GameScreenCtrl extends SceneController {
                 break;
 
         }
+        rewardLabel.setText("");
         countDown();
         present();
 
@@ -266,6 +278,8 @@ public class GameScreenCtrl extends SceneController {
 
             });
 
+        rewardLabel.setVisible(false);
+
         initImages();
 
         setupPlayerList();
@@ -284,6 +298,7 @@ public class GameScreenCtrl extends SceneController {
             + MainCtrl.username, userProperties);
         System.out.println("the time is " + currentTime);
         refreshQuestion();
+        showScene();
     }
 
     public void showQuestion(Node node) {
@@ -298,12 +313,53 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
-        int reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                qIndex, answer, getTimeLeft());
+        reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
+                qIndex - 1, answer, getTimeLeft());
+
         System.out.println(reward);
-        myFxml.showScene(MatchLeaderboardCtrl.class, Instant.now().plusSeconds(8));
     }
 
+    private void showCorrectAnswer() {
+        if (reward != 0) {
+            rewardLabel.setText("+" + reward + " points");
+            rewardLabel.setVisible(true);
+        }
+
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, qIndex - 1);
+        showAnswerInComponent(correctAnswer);
+
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                Platform.runLater(() -> refreshQuestion());
+            }
+        }, SHOW_ANSWER_DELAY * 1000);
+
+    }
+
+    private void showAnswerInComponent(long correctAnswer) {
+        switch (activeQuestion.getQuestionType()) {
+            case 0:
+                myFxml.get(QuestionTypeAComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
+            case 1:
+                myFxml.get(QuestionTypeBComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
+            case 2:
+                myFxml.get(QuestionTypeCComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
+            case 3:
+                myFxml.get(QuestionTypeDComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
+            default:
+                break;
+
+        }
+
+    }
+    
     private int getTimeLeft() {
         return (int) Math.round(progressBar.getProgress() * 100);
     }
