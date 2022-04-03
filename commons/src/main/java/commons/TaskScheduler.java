@@ -48,7 +48,7 @@ public class TaskScheduler extends ScheduledThreadPoolExecutor {
      * @param command - the task to execute
      * @param delay - the time from now to delay execution
      * @return - a ScheduledFuture representing pending completion of the task
-     *      and whose get() method will return null upon completion
+     *      and whose {@code get()} method will return null upon completion
      */
     public ScheduledFuture<?> schedule(Runnable command, long delay) {
         return schedule(command, delay, MILLISECONDS);
@@ -72,7 +72,6 @@ public class TaskScheduler extends ScheduledThreadPoolExecutor {
      */
     public ScheduledFuture<?> startDebugPrinting() {
         return scheduleAtFixedRate(() -> {
-            System.out.println("-- completed: " + getCompletedTaskCount());
             System.out.println("----- queued: " + getQueue().size());
             System.out.println("----- active: " + getActiveCount());
         }, 0, 500, MILLISECONDS);

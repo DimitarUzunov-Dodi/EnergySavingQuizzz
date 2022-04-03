@@ -3,9 +3,9 @@ package client.scenes;
 import client.MyFXML;
 import client.communication.ActivityImageCommunication;
 import client.utils.SceneController;
+import client.utils.StyleUtils;
 import com.google.inject.Inject;
 import commons.QuestionTypeA;
-import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -16,7 +16,8 @@ import javafx.scene.text.Text;
 public class QuestionTypeAComponentCtrl extends SceneController {
 
     private QuestionTypeA activeQuestion;
-    private ArrayList<Button> buttonList = new ArrayList<>();
+
+    private Long answerGiven;
 
     @FXML
     private StackPane questionTypeAPane;
@@ -54,10 +55,9 @@ public class QuestionTypeAComponentCtrl extends SceneController {
     @Override
     public void show() {
         myFxml.get(GameScreenCtrl.class).showQuestion(questionTypeAPane);
+        answerGiven = null;
 
-        buttonList.add(button1);
-        buttonList.add(button2);
-        buttonList.add(button3);
+        resetButtons();
 
         questionText.setText(activeQuestion.displayText());
         activityText1.setText(activeQuestion.getActivity1().getActivityText());
@@ -73,6 +73,7 @@ public class QuestionTypeAComponentCtrl extends SceneController {
 
     }
 
+
     public void loadComponent(QuestionTypeA activeQuestion) {
         this.activeQuestion = activeQuestion;
         show();
@@ -82,23 +83,74 @@ public class QuestionTypeAComponentCtrl extends SceneController {
      * method to call when answer A is pressed.
      */
     public void answerAPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activeQuestion.getActivity1().getValue());
+        if (answerGiven == null) {
+            answerGiven = activeQuestion.getActivity1().getValue();
+            myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
+            button1.setStyle(StyleUtils.YELLOW_BUTTON_STYLE);
+        }
     }
 
     /**
      * method to call when answer B is pressed.
      */
     public void answerBPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activeQuestion.getActivity2().getValue());
+        if (answerGiven == null) {
+            answerGiven = activeQuestion.getActivity2().getValue();
+            myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
+            button2.setStyle(StyleUtils.YELLOW_BUTTON_STYLE);
+        }
     }
 
     /**
      * method to call when answer C is pressed.
      */
     public void answerCPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activeQuestion.getActivity3().getValue());
+        if (answerGiven == null) {
+            answerGiven = activeQuestion.getActivity3().getValue();
+            myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
+            button3.setStyle(StyleUtils.YELLOW_BUTTON_STYLE);
+        }
+
     }
+
+    /**
+     * Shows correct answer.
+     * @param correctAnswer - correct answer from the server
+     */
+    public void showCorrectAnswer(long correctAnswer) {
+        Button correctButton = findButtonByAnswer(correctAnswer);
+        if (correctButton != null) {
+            correctButton.setStyle(StyleUtils.GREEN_BUTTON_STYLE);
+        }
+
+        if (answerGiven != null && answerGiven != correctAnswer) {
+            Button selectedButton = findButtonByAnswer(answerGiven);
+            if (selectedButton != null) {
+                selectedButton.setStyle(StyleUtils.RED_BUTTON_STYLE);
+            }
+        }
+    }
+
+    private void resetButtons() {
+        button1.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+        button2.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+        button3.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+    }
+
+
+    private Button findButtonByAnswer(long answer) {
+        if (answer == activeQuestion.getActivity1().getValue()) {
+            return button1;
+        } else if (answer == activeQuestion.getActivity2().getValue()) {
+            return button2;
+        } else if (answer == activeQuestion.getActivity3().getValue()) {
+            return button3;
+        }
+
+        return null;
+    }
+
 }

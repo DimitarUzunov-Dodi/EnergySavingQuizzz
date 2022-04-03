@@ -115,7 +115,7 @@ public class GameController {
                                            @RequestParam(name = "username") String username,
                                            @RequestParam(name = "questionIndex") int questionIndex,
                                            @RequestParam(name = "answer") long answer,
-                                           @RequestParam(name = "time") int time) {
+                                           @RequestParam(name = "time") long time) {
         if (!(gameService.doesGameExist(gameCode))) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)

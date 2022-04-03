@@ -56,7 +56,7 @@ public class WaitingRoomCtrl extends SceneController {
                     System.out.println("START ACTIVATED");
                     pollingThread.cancel();
                     Platform.runLater(() -> {
-                        myFxml.showScene(GameScreenCtrl.class);
+                        myFxml.showScene(GameScreenCtrl.class, true);
                     });
 
                 }
@@ -106,8 +106,7 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onStartButton() {
         WaitingRoomCommunication.startGame(currentGameID);
-        System.out.println(currentGameID);
-
+        System.out.println("gameID: " + currentGameID);
     }
     
 }

@@ -202,7 +202,7 @@ public class GameService {
      * @return reward points for user
      */
     public int processAnswer(String gameCode, String username,
-                             int questionIndex, long answer, int time) {
+                             int questionIndex, long answer, long time) {
         int rewardPoints = 0;
 
         Question question = getQuestion(gameCode, questionIndex);

@@ -131,7 +131,7 @@ public class GameCommunication {
      * @return bonus points achieved
      */
     public static Integer processAnswer(String gameCode, String username,
-                                        int questionIndex, long answer, int time) {
+                                        int questionIndex, long answer, long time) {
         if (questionIndex < 0) {
             throw new IllegalArgumentException("process answer for question nr " + questionIndex);
         }

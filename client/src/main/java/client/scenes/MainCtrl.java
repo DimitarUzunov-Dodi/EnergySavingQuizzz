@@ -33,6 +33,7 @@ public final class MainCtrl {
         myFxml = new MyFXML(injector);
         scheduler.setRemoveOnCancelPolicy(false);
         scheduler.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+        scheduler.startDebugPrinting();
     }
 
     /**
