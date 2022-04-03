@@ -298,7 +298,7 @@ public class GameScreenCtrl extends SceneController {
             + MainCtrl.username, userProperties);
         System.out.println("the time is " + currentTime);
         refreshQuestion();
-        showScene();
+
     }
 
     public void showQuestion(Node node) {
