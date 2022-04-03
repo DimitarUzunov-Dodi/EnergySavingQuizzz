@@ -265,6 +265,22 @@ public class GameScreenCtrl extends SceneController {
                                 img.setFitWidth(20);
                                 img.setImage(emojis.get(v.emojiID));
                                 setGraphic(img);
+
+                                if (roundEndTime.getNano() > 3000000) {
+                                    var emojiCleaner = scheduler.scheduleAtInstant(() -> {
+                                        img.setFitWidth(0.1);
+                                        img.setImage(null);
+                                        setGraphic(img);
+                                    },Instant.now().plusSeconds(3));
+                                } else {
+                                    var emojiCleaner = scheduler.scheduleAtInstant(() -> {
+                                        img.setFitWidth(0.1);
+                                        img.setImage(null);
+                                        setGraphic(img);
+                                    }, roundEndTime);
+
+                                }
+
                             }
                             setText(name);
                         }
