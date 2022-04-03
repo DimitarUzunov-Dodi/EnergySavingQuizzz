@@ -1,20 +1,21 @@
 package client.utils;
 
+import static client.utils.ActivityImageUtils.fileToByteArray;
+import static client.utils.ActivityImageUtils.getFormat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
-
-import static client.utils.ActivityImageUtils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class ActivityImageUtilsTest {
 
@@ -75,8 +76,9 @@ class ActivityImageUtilsTest {
         if (img1.getWidth() == img2.getWidth() && img1.getHeight() == img2.getHeight()) {
             for (int x = 0; x < img1.getWidth(); x++) {
                 for (int y = 0; y < img1.getHeight(); y++) {
-                    if (img1.getRGB(x, y) != img2.getRGB(x, y))
+                    if (img1.getRGB(x, y) != img2.getRGB(x, y)) {
                         return false;
+                    }
                 }
             }
         } else {
