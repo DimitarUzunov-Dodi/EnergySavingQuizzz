@@ -25,7 +25,7 @@ public class SettingsCtrl extends SceneController {
 
     @Override
     public void show() {
-        showScene();
+        present();
 
     }
 

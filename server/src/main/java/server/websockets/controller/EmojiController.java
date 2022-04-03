@@ -1,11 +1,9 @@
-
-
 package server.websockets.controller;
 
-
+import commons.EmojiMessage;
 import commons.Game;
-import commons.Person;
-import java.util.Date;
+import commons.WsGame;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Random;
 import org.slf4j.Logger;
@@ -16,8 +14,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import server.service.GameService;
-
-
 
 @Controller
 public class EmojiController {
@@ -31,8 +27,11 @@ public class EmojiController {
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
-    private HashMap<String, HashMap<Integer, Long>> gameTimes
-        = new HashMap<String, HashMap<Integer, Long>>();
+    private HashMap<String, HashMap<Integer, WsGame>> gameTimes
+        = new HashMap<String, HashMap<Integer, WsGame>>();
+
+    private HashMap<String, HashMap<Integer, Integer>> userInputs
+        = new HashMap<String, HashMap<Integer, Integer>>();
 
 
     /**
@@ -47,11 +46,7 @@ public class EmojiController {
 
     }
 
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EmojiController.class);
-
-
 
     private int playersInCurrentGame = 0;
 
@@ -66,22 +61,29 @@ public class EmojiController {
      * @throws Exception Exception
      */
     @MessageMapping("/time/{currentGameID}/{questionNumber}")
+    @SendTo("/foo")
     public void createDate(@DestinationVariable String currentGameID,
                            @DestinationVariable Integer questionNumber) throws Exception {
         LOGGER.info("creating time");
+        LOGGER.info(currentGameID + "  " + questionNumber);
 
-
-        Long time = new Date().getTime();
-        if (gameTimes.get(currentGameID) == null) {
-            gameTimes.put(currentGameID, new HashMap<Integer,Long>());
+        WsGame time = new WsGame(Instant.now(), Instant.now().plusSeconds(gameService
+            .getQuestion(currentGameID, questionNumber)
+            .getDuration().toSeconds()));
+        if (!gameTimes.containsKey(currentGameID)) {
+            LOGGER.info("poo");
+            gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
         }
         gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
         LOGGER.info(gameTimes.get(currentGameID).get(questionNumber).toString());
-        LOGGER.info(questionNumber.toString());
+        LOGGER.info(questionNumber.toString() + "is questionNumber");
+        LOGGER.info(currentGameID + " is gameID");
 
 
 
     }
+
+
 
 
     /**
@@ -93,12 +95,49 @@ public class EmojiController {
      */
     @MessageMapping("/time/get/{currentGameID}/{questionNumber}")
     @SendTo("/time/get/receive/{currentGameID}")
-    public long getDate(@DestinationVariable String currentGameID,
-                        @DestinationVariable Integer questionNumber) throws Exception {
-        LOGGER.info("getting time");
-        LOGGER.info(questionNumber.toString());
+    public Long[] getDate(@DestinationVariable String currentGameID,
+                        @DestinationVariable Integer questionNumber, String foo) throws Exception {
 
-        return gameTimes.get(currentGameID).get(questionNumber);
+        LOGGER.info("getting time");
+        if (!gameTimes.containsKey(currentGameID)) {
+            LOGGER.info("poo");
+            gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
+        }
+        if (!userInputs.containsKey(currentGameID)) {
+            userInputs.put(currentGameID, new HashMap<Integer,Integer>());
+        }
+        if (!userInputs.get(currentGameID).containsKey(questionNumber)) {
+            userInputs.get(currentGameID).put(questionNumber, 0);
+        }
+
+        Integer last = userInputs.get(currentGameID).get(questionNumber);
+        userInputs.get(currentGameID).put(questionNumber, last + 1);
+        if (userInputs.get(currentGameID).get(questionNumber)
+            == gameService.getGame(currentGameID).getUserList().size()) {
+            WsGame time = new WsGame(Instant.now().plusMillis(500),
+                Instant.now().plusSeconds(gameService
+                .getQuestion(currentGameID, questionNumber)
+                .getDuration().toSeconds()));
+            if (questionNumber != 0) {
+                LOGGER.info("plus 12");
+                time.endTime = time.endTime.plusSeconds(6);
+                time.startTime = time.startTime.plusSeconds(6);
+            }
+            gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
+            LOGGER.info("SENDING CHECK");
+            Long[] array = new Long[]{gameTimes.get(currentGameID)
+                .get(questionNumber).startTime.toEpochMilli(),gameTimes.get(currentGameID)
+                .get(questionNumber).endTime.toEpochMilli()};
+            return array;
+        }
+
+
+
+
+
+
+        return null;
+
     }
 
     /**
@@ -142,22 +181,20 @@ public class EmojiController {
      */
     @MessageMapping("/emoji/{gameID}/{username}")
     @SendTo("/emoji/receive/{gameID}")
-    public Person sendEmoji(
+    public EmojiMessage sendEmoji(
         @DestinationVariable String gameID, @DestinationVariable String username,
-        Person emojiInfo) throws Exception {
+        EmojiMessage emojiInfo) throws Exception {
 
-        System.out.println(gameID);
-        System.out.println(gameID);
         LOGGER.info(gameID);
         System.out.println("fuck");
-        if (emojiInfo.lastName.equals("emoji1")) {
-            LOGGER.info("Emoji1 send by" + emojiInfo.firstName);
+        if (emojiInfo.emojiID.equals("emoji1")) {
+            LOGGER.info("Emoji1 send by" + emojiInfo.username);
         }
-        if (emojiInfo.lastName.equals("emoji2")) {
-            LOGGER.info("Emoji2 send by" + emojiInfo.firstName);
+        if (emojiInfo.emojiID.equals("emoji2")) {
+            LOGGER.info("Emoji2 send by" + emojiInfo.username);
         }
-        if (emojiInfo.lastName.equals("emoji3")) {
-            LOGGER.info("Emoji3 send by" + emojiInfo.firstName);
+        if (emojiInfo.emojiID.equals("emoji3")) {
+            LOGGER.info("Emoji3 send by" + emojiInfo.username);
         }
         return emojiInfo;
 

@@ -25,11 +25,6 @@ public class QuestionTypeA extends Question {
         activity3 = activityC;
     }
 
-    public String giveText() {
-        String string = "Which one uses the most energy?";
-        return  string;
-    }
-
     public void setQuestionType(int questionType) {
         this.questionType = questionType;
     }

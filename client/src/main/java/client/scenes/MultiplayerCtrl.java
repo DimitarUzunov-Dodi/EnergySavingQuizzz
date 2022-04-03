@@ -32,7 +32,7 @@ public class MultiplayerCtrl extends SceneController {
 
     @Override
     public void show() {
-        showScene();
+        present();
     }
 
     /**
