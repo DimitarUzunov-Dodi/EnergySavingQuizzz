@@ -21,3 +21,6 @@
 #utilsButton:hover{
     -fx-color: #00FF00;
 }
+.default-color0.chart-bar {
+    -fx-bar-fill: #fffa00
+}

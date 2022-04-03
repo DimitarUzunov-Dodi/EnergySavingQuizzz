@@ -29,13 +29,6 @@ public class SettingsCtrl extends SceneController {
 
     }
 
-    /**
-     * Function called by admin button when clicked. Changes scene to AdminPage scene.
-     */
-    @FXML
-    private void adminAction() {
-        myFxml.showScene(AdminCtrl.class);
-    }
 
     /**
      * Function called by Back to MainMenu button when clicked. Changes scene to SplashScreen scene.
@@ -54,14 +47,13 @@ public class SettingsCtrl extends SceneController {
             colourModeButton.setText("Light Mode");
             FileUtils.setTheme("DarkTheme");
             System.out.println(FileUtils.getTheme());
-            myFxml.showScene(SplashCtrl.class);
-
+            myFxml.showScene(SettingsCtrl.class);
 
         } else {
             FileUtils.setTheme("LightTheme");
             System.out.println(FileUtils.getTheme());
             colourModeButton.setText("Dark Mode");
-            myFxml.showScene(SplashCtrl.class);
+            myFxml.showScene(SettingsCtrl.class);
         }
     }
 

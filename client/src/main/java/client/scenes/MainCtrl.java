@@ -41,11 +41,12 @@ public final class MainCtrl {
      */
     public void start() {
         // set quit pop-up
+
         Main.primaryStage.setOnCloseRequest(this::onApplicationClose);
         Main.primaryStage.setMinWidth(800);
         Main.primaryStage.setMinHeight(600);
 
-        myFxml.showScene(SplashCtrl.class);
+        myFxml.showScene(EndLeaderboardCtrl.class);
         Main.primaryStage.show(); // make app window visible
     }
 
