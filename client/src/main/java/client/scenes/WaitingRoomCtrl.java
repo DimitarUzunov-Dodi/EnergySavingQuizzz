@@ -8,6 +8,8 @@ import client.communication.Utils;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.User;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
@@ -54,21 +56,21 @@ public class WaitingRoomCtrl extends SceneController {
                     System.out.println("START ACTIVATED");
                     pollingThread.cancel();
                     Platform.runLater(() -> {
-                        myFxml.showScene(GameScreenCtrl.class);
+                        myFxml.showScene(GameScreenCtrl.class, true);
                     });
 
                 }
             }
         }, 0, 1000);
-        showScene();
+        present();
     }
 
     private void refreshUserList() {
         playerList = FXCollections.observableList(
                 Utils.getAllUsers(currentGameID)
+                        .orElse(new ArrayList<>(0))
                         .stream()
-                        .map(
-                                u -> u.getUsername())
+                        .map(User::getUsername)
                         .collect(Collectors.toList()));
         Platform.runLater(() -> {
             listView.setItems(playerList);
@@ -104,8 +106,7 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onStartButton() {
         WaitingRoomCommunication.startGame(currentGameID);
-        System.out.println(currentGameID);
-
+        System.out.println("gameID: " + currentGameID);
     }
     
 }

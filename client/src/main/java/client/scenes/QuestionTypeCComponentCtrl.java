@@ -3,6 +3,7 @@ package client.scenes;
 import client.MyFXML;
 import client.communication.ActivityImageCommunication;
 import client.utils.SceneController;
+import client.utils.StyleUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.QuestionTypeC;
@@ -19,10 +20,10 @@ import javafx.scene.text.Text;
 public class QuestionTypeCComponentCtrl extends SceneController {
 
     private Activity correctActivity;
-    private int correctAnswer;
     private QuestionTypeC activeQuestion;
-    private ArrayList<Button> buttonList = new ArrayList<>();
-    private List<Activity> activityList = new ArrayList<Activity>();
+    private List<Activity> activityList;
+
+    private Long answerGiven;
 
     @FXML
     private StackPane questionTypeCPane;
@@ -61,9 +62,9 @@ public class QuestionTypeCComponentCtrl extends SceneController {
     public void show() {
         myFxml.get(GameScreenCtrl.class).showQuestion(questionTypeCPane);
 
-        buttonList.add(button1);
-        buttonList.add(button2);
-        buttonList.add(button3);
+        answerGiven = null;
+        activityList = new ArrayList<Activity>();
+        resetButtons();
 
         questionText.setText(String.format(activeQuestion.displayText(),
                 Character.toLowerCase(activeQuestion.getDisplayActivity()
@@ -99,24 +100,73 @@ public class QuestionTypeCComponentCtrl extends SceneController {
      * method to call when answer A is pressed.
      */
     public void answerAPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activityList.get(0).getValue());
+        if (answerGiven == null) {
+            answerGiven = activityList.get(0).getValue();
+            myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
+            button1.setStyle(StyleUtils.YELLOW_BUTTON_STYLE);
+        }
     }
 
     /**
      * method to call when answer B is pressed.
      */
     public void answerBPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activityList.get(1).getValue());
+        if (answerGiven == null) {
+            answerGiven = activityList.get(1).getValue();
+            myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
+            button2.setStyle(StyleUtils.YELLOW_BUTTON_STYLE);
+        }
     }
 
     /**
      * method to call when answer C is pressed.
      */
     public void answerCPressed() {
-        myFxml.get(GameScreenCtrl.class)
-                .sendAnswer(activityList.get(2).getValue());
+        if (answerGiven == null) {
+            answerGiven = activityList.get(2).getValue();
+            myFxml.get(GameScreenCtrl.class).sendAnswer(answerGiven);
+
+            button3.setStyle(StyleUtils.YELLOW_BUTTON_STYLE);
+        }
+    }
+
+    /**
+     * Shows correct answer.
+     * @param correctAnswer - correct answer from the server
+     */
+    public void showCorrectAnswer(long correctAnswer) {
+        Button correctButton = findButtonByAnswer(correctAnswer);
+        if (correctButton != null) {
+            correctButton.setStyle(StyleUtils.GREEN_BUTTON_STYLE);
+        }
+
+        if (answerGiven != null && answerGiven != correctAnswer) {
+            Button selectedButton = findButtonByAnswer(answerGiven);
+            if (selectedButton != null) {
+                selectedButton.setStyle(StyleUtils.RED_BUTTON_STYLE);
+            }
+        }
+    }
+
+    private void resetButtons() {
+        button1.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+        button2.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+        button3.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+    }
+
+
+    private Button findButtonByAnswer(long answer) {
+        if (answer == activityList.get(0).getValue()) {
+            return button1;
+        } else if (answer == activityList.get(1).getValue()) {
+            return button2;
+        } else if (answer == activityList.get(2).getValue()) {
+            return button3;
+        }
+
+        return null;
     }
 
 }

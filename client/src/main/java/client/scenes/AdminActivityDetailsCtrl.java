@@ -57,7 +57,7 @@ public class AdminActivityDetailsCtrl extends SceneController {
      */
     public void customShow(Activity selected) {
         setActivity(selected);
-        showScene();
+        present();
     }
 
     /**

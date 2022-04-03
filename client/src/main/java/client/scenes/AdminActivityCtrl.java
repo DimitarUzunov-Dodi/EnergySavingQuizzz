@@ -52,7 +52,7 @@ public class AdminActivityCtrl extends SceneController {
                 q -> new SimpleStringProperty(q.getValue().getValue() + "")
         );
         refresh();
-        showScene();
+        present();
     }
 
     /**

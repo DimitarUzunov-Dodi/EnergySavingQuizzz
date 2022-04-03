@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane id="background" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EndLeaderboardCtrl">
+    <columnConstraints>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="0.0" />
+        <ColumnConstraints halignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" percentWidth="80.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="0.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="46.0" percentHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="50.0" prefHeight="481.0" valignment="CENTER" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="22.0" percentHeight="5.0" prefHeight="50.0" valignment="CENTER" vgrow="NEVER" />
+    </rowConstraints>
+    <children>
+        <Text id="title" boundsType="VISUAL" fill="#f2c914" stroke="BLACK" strokeType="OUTSIDE" text="Final Results" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="503.142578125" GridPane.columnSpan="2147483647">
+            <font>
+                <Font name="Consolas Bold" size="42.0" />
+            </font>
+        </Text>
+        <Button fx:id="backButton" alignment="CENTER" mnemonicParsing="false" onAction="#onBackButton" style="-fx-background-color: #f2c914; -fx-background-radius: 10; -fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 10;" textAlignment="CENTER" GridPane.rowIndex="2">
+            <graphic>
+                <ImageView id="exit_icon" fitHeight="20.0" fitWidth="20.0" preserveRatio="true" rotate="180.0" scaleX="1.4" scaleY="1.4">
+                    <image>
+                        <Image url="@../images/exit_icon.jpg" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+      <BarChart id="label" fx:id="chart" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <xAxis>
+          <CategoryAxis fx:id="usernames" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis id="lable" fx:id="points" side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Button fx:id="anotherGame" alignment="CENTER" mnemonicParsing="false" onAction="#nextGame" style="-fx-background-color: #f2c914; -fx-background-radius: 10; -fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 10;" text=" Play Another" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+    </children>
+    <padding>
+        <Insets bottom="10.0" />
+    </padding>
+</GridPane>
