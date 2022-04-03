@@ -39,7 +39,7 @@ public class ActivityImageCtrl extends SceneController {
     @FXML
     public void customShow(Activity selected) {
         showImage(selected.getImageId());
-        showScene();
+        present();
     }
 
     /**

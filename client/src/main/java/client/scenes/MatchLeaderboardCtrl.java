@@ -1,19 +1,22 @@
 package client.scenes;
 
 import static client.scenes.MainCtrl.currentGameID;
+import static client.scenes.MainCtrl.scheduler;
 
-import client.Main;
 import client.MyFXML;
-import client.communication.WaitingRoomCommunication;
+import client.communication.Utils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.User;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ScheduledFuture;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
@@ -23,6 +26,7 @@ import javafx.scene.text.Text;
 public class MatchLeaderboardCtrl extends SceneController {
 
     private final ObservableList<User> data;
+    private boolean first; // check for initial table setup
 
     @FXML
     private TableView<User> table;
@@ -43,69 +47,78 @@ public class MatchLeaderboardCtrl extends SceneController {
     protected MatchLeaderboardCtrl(MyFXML myFxml) {
         super(myFxml);
         data = FXCollections.observableList(new ArrayList<>());
+        first = true;
     }
 
     /**
-     * Shows the match leaderboard for 2 seconds and then switches back to GameScreen.
-     * The transition at the end does NOT call GameScreenCtrl.show() !
+     * Use show(Object... args) instead!
      */
     @Override
     public void show() {
-        new Thread(() -> {
-            var l = WaitingRoomCommunication.getAllUsers(currentGameID);
-            if (l != null) {
-                data.remove(0, data.size());
-                data.addAll(l);
-            }
-        }).start();
+        throw new IllegalArgumentException("Missing variadic argument: <instant>");
+    }
 
+    /**
+     * Shows the match leaderboard until the specified timestamp,
+     *      after which it transitions back to GameScreen.
+     * @param args Takes only 1 argument of type `Instant` that
+     *      represents the moment of transition to GameScreen
+     */
+    @Override
+    public void show(Object... args) throws IllegalArgumentException {
+        // initial setup (only done once)
+        if (first) {
+            setUp();
+        }
+
+        // handle args
+        if (args.length != 1 || args[0].getClass() != Instant.class) {
+            throw new IllegalArgumentException("only ONE argument of type `Instant` is accepted");
+        }
+        if (((Instant) args[0]).isBefore(Instant.now())) {
+            throw new IllegalArgumentException("args[0] may not represent a past moment");
+        }
+        final Instant endTime = (Instant) args[0];
+
+        // get player list from server
+        scheduler.execute(() -> {
+            Optional<List<User>> l = Utils.getAllUsers(currentGameID);
+            if (l.isPresent()) {
+                data.clear();
+                data.addAll(l.get());
+            }
+        });
+
+        // progress bar
+        progressBar.setProgress(1d);
+
+        table.setVisible(true);
+        readyText.setVisible(false);
+        present();
+        ScheduledFuture<?> barTask = SceneController.scheduleProgressBar(progressBar, endTime);
+        // back to GameScreen
+        scheduler.scheduleAtInstant(() -> {
+            barTask.cancel(false); // stop progressBar
+            Platform.runLater(() -> myFxml.showScene(GameScreenCtrl.class));
+        }, endTime);
+        // transition screen
+        scheduler.scheduleAtInstant(() -> {
+            readyText.setVisible(true);
+            table.setVisible(false);
+        }, endTime.minusSeconds(2));
+
+
+    }
+
+    /**
+     * Set up the table.
+     * Only needs to be called once.
+     */
+    private void setUp() {
         colUsername.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().getUsername()));
         colScore.setCellValueFactory(q -> new SimpleStringProperty(
                 q.getValue().getScore() + " points"));
         table.setItems(data);
-
-        table.setVisible(true);
-        readyText.setVisible(false);
-        countDown();
-
-        showScene();
+        first = false;
     }
-
-    private void countDown() {
-        final Service<Integer> countDownThread = new Service<>() {
-            @Override
-            protected Task<Integer> createTask() {
-                return new Task<Integer>() {
-                    @Override
-                    protected Integer call() {
-                        int i;
-                        for (i = 0; i < 225; i++) {
-                            updateProgress(225 - i, 225);
-                            if (i == 170) {
-                                readyText.setVisible(true);
-                                table.setVisible(false);
-                            }
-                            try {
-                                Thread.sleep(16);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        return i;
-                    }
-                };
-            }
-        };
-
-        // Next Round Transition
-        countDownThread.setOnSucceeded(event -> {
-            Main.primaryStage.setScene(myFxml.get(GameScreenCtrl.class).getScene());
-
-        });
-
-        // bind thread to progress bar and start it
-        progressBar.progressProperty().bind(countDownThread.progressProperty());
-        countDownThread.start();
-    }
-
 }

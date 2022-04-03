@@ -2,7 +2,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.communication.LeaderboardCommunication;
+import client.communication.Utils;
 import client.scenes.MainCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
@@ -16,6 +16,7 @@ public class Main extends Application {
     /**
      * Program entry point.
      * @param args Command line arguments
+     *      the only supported one is --server='[serverUrl]'
      */
     public static void main(String[] args) {
         launch(args);
@@ -28,7 +29,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         Main.primaryStage = primaryStage;
-        LeaderboardCommunication.serverAddress = getParameters().getNamed().getOrDefault("server", "http://localhost:8080");
+        Utils.serverAddress = getParameters().getNamed()
+                .getOrDefault("server","http://localhost:8080");
+        System.out.println("server: " +  Utils.serverAddress);
         MainCtrl mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.start(); // give control to mainCtrl
     }
