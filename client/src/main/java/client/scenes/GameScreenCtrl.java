@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -207,9 +208,9 @@ public class GameScreenCtrl extends SceneController {
                         System.out.println("holy schmoop");
                         tasks[0].cancel(false);
 
-                    //    Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                      //     roundEndTime));
-                        showCorrectAnswer();
+                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                           roundEndTime));
+                        //showCorrectAnswer();
 
 
 
@@ -336,13 +337,14 @@ public class GameScreenCtrl extends SceneController {
             });
         }
 
-        long correctAnswer = GameCommunication.getAnswer(currentGameID, qindex -1);
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, qindex-1);
         System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
 
-        // TODO solve the problem
-        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                Instant.now()));
+
+        scheduler.schedule(() -> Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                Instant.now().plusSeconds(6))), 2000);
+
 
     }
     private void showAnswerInComponent(long correctAnswer) {
