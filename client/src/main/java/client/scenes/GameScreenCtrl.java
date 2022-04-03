@@ -188,6 +188,7 @@ public class GameScreenCtrl extends SceneController {
                 break;
 
         }
+        rewardLabel.setText("");
         countDown();
 
     }
@@ -302,7 +303,6 @@ public class GameScreenCtrl extends SceneController {
             + MainCtrl.username, userProperties);
         System.out.println("the time is " + currentTime);
         refreshQuestion();
-
         showScene();
     }
 
