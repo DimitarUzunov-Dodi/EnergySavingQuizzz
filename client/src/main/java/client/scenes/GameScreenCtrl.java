@@ -190,7 +190,7 @@ public class GameScreenCtrl extends SceneController {
                     .scheduleProgressBar(progressBar, roundStartTime, roundEndTime);
 
 
-        }
+
         
 
                 // progress bar
@@ -207,9 +207,9 @@ public class GameScreenCtrl extends SceneController {
                         System.out.println("holy schmoop");
                         tasks[0].cancel(false);
 
-                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                            roundEndTime));
-
+                    //    Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                      //     roundEndTime));
+                        showCorrectAnswer();
 
 
 
@@ -221,8 +221,10 @@ public class GameScreenCtrl extends SceneController {
                         System.out.println("holy schdfsfoop");
                         //tasks[0].cancel(false);
 
-                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                            Instant.now().plusMillis(10).plusSeconds(6)));
+
+                        showCorrectAnswer();
+                        //Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                          //  Instant.now().plusMillis(10).plusSeconds(6)));
                         System.out.println(qindex);
 
 
@@ -319,40 +321,40 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
+        System.out.print("sending answer");
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                qIndex - 1, answer, getTimeLeft());
+                qindex -1 , answer, getTimeLeft());
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
     }
     private void showCorrectAnswer() {
+        System.out.println("showing correct answer");
         if (reward != 0) {
             rewardLabel.setText("+" + reward + " points");
             rewardLabel.setVisible(true);
         }
 
-        long correctAnswer = GameCommunication.getAnswer(currentGameID, qIndex - 1);
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, qindex -1);
+        System.out.println(correctAnswer);
         showAnswerInComponent(correctAnswer);
 
-        Timer myTimer = new Timer();
-        myTimer.schedule(new TimerTask() {
 
-            @Override
-            public void run() {
-                Platform.runLater(() -> refreshQuestion());
-            }
-        }, SHOW_ANSWER_DELAY * 1000);
+           //     Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+             //       Instant.now().plusSeconds(2)));
 
+    }
     private void showAnswerInComponent(long correctAnswer) {
+        System.out.println(activeQuestion.getQuestionType()+ "    That was the active question");
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class).showCorrectAnswer(correctAnswer);
                 break;
             case 1:
                 myFxml.get(QuestionTypeBComponentCtrl.class).showCorrectAnswer(correctAnswer);
+                break;
             case 2:
-                break;
                 myFxml.get(QuestionTypeCComponentCtrl.class).showCorrectAnswer(correctAnswer);
-            case 3:
                 break;
+            case 3:
                 myFxml.get(QuestionTypeDComponentCtrl.class).showCorrectAnswer(correctAnswer);
                 break;
             default:
@@ -360,11 +362,13 @@ public class GameScreenCtrl extends SceneController {
 
         }
 
+
     }
+
+
     private int getTimeLeft() {
         return (int) Math.round(progressBar.getProgress() * 100);
     }
-    }
 
-    
+
 }
