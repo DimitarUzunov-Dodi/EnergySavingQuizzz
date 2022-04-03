@@ -383,10 +383,11 @@ public class GameScreenCtrl extends SceneController {
         }
 
 
-        
+
 
     }
-    private int getTimeLeft () {
+
+    private int getTimeLeft() {
         return (int) Math.round(progressBar.getProgress() * 100);
     }
 }
