@@ -383,21 +383,10 @@ public class GameScreenCtrl extends SceneController {
         }
 
 
-    /**
-     * Show the next question and resets the theme if it had been changed.
-     * @param node givs all the elements for the current question
-     */
-    public void showQuestion(Node node) {
-        //fixes the theme during game
-        getScene().getStylesheets().clear();
-        getScene().getStylesheets().add(FileUtils.getTheme());
-        questionHolder.getChildren().setAll(node);
+        
+
     }
-
-
-    private int getTimeLeft() {
+    private int getTimeLeft () {
         return (int) Math.round(progressBar.getProgress() * 100);
     }
-
-
 }
