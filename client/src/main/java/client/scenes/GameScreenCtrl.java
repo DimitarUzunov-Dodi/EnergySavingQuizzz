@@ -280,7 +280,7 @@ public class GameScreenCtrl extends SceneController {
      * Get the question from the server and display it.
      */
     public void refreshQuestion() {
-        Question activeQuestion = GameCommunication.getQuestion(currentGameID, qindex);
+        activeQuestion = GameCommunication.getQuestion(currentGameID, qindex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class)
@@ -322,24 +322,27 @@ public class GameScreenCtrl extends SceneController {
      */
     public void sendAnswer(long answer) {
         System.out.print("sending answer");
+        System.out.println(answer);
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                qindex -1 , answer, getTimeLeft());
+                qindex, answer, getTimeLeft());
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
     }
     private void showCorrectAnswer() {
         System.out.println("showing correct answer");
         if (reward != 0) {
-            rewardLabel.setText("+" + reward + " points");
-            rewardLabel.setVisible(true);
+            Platform.runLater(() -> {
+                rewardLabel.setText("+" + reward + " points");
+                rewardLabel.setVisible(true);
+            });
         }
 
         long correctAnswer = GameCommunication.getAnswer(currentGameID, qindex -1);
         System.out.println(correctAnswer);
-        showAnswerInComponent(correctAnswer);
+        Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
 
-
-           //     Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-             //       Instant.now().plusSeconds(2)));
+        // TODO solve the problem
+        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                Instant.now()));
 
     }
     private void showAnswerInComponent(long correctAnswer) {
