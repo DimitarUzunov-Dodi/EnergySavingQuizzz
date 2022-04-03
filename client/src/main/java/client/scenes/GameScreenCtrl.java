@@ -284,9 +284,17 @@ public class GameScreenCtrl extends SceneController {
             + MainCtrl.username, userProperties);
         System.out.println("the time is " + currentTime);
         refreshQuestion();
+        showScene();
     }
 
+    /**
+     * Show the next question and resets the theme if it had been changed.
+     * @param node givs all the elements for the current question
+     */
     public void showQuestion(Node node) {
+        //fixes the theme during game
+        getScene().getStylesheets().clear();
+        getScene().getStylesheets().add(FileUtils.getTheme());
         questionHolder.getChildren().setAll(node);
     }
 
