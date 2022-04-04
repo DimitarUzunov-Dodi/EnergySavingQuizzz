@@ -77,7 +77,7 @@ public class GameScreenCtrl extends SceneController {
      */
     @FXML
     private void emoji1Pressed() {
-        EmojiMessage emojiInfo = new EmojiMessage(username, "emoji1");
+        EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username, "emoji1");
         GameCommunication.send("/app/emoji/" + currentGameID
             + "/" + MainCtrl.username, emojiInfo);
     }
@@ -87,7 +87,7 @@ public class GameScreenCtrl extends SceneController {
      */
     @FXML
     private void emoji2Pressed() {
-        EmojiMessage emojiInfo = new EmojiMessage(username, "emoji2");
+        EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username, "emoji2");
         GameCommunication.send("/app/emoji/" + currentGameID
                 + "/" + MainCtrl.username, emojiInfo);
     }
@@ -97,7 +97,7 @@ public class GameScreenCtrl extends SceneController {
      */
     @FXML
     private void emoji3Pressed() {
-        EmojiMessage emojiInfo = new EmojiMessage(username, "emoji3");
+        EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username, "emoji3");
         GameCommunication.send("/app/emoji/" + currentGameID
                 + "/" + MainCtrl.username, emojiInfo);
     }
