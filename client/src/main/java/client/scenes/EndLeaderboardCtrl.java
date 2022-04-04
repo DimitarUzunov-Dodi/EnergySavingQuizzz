@@ -4,14 +4,18 @@ import static client.scenes.MainCtrl.currentGameID;
 import static client.scenes.MainCtrl.scheduler;
 
 import client.MyFXML;
+import client.communication.GameCommunication;
 import client.communication.Utils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.TaskScheduler;
 import commons.User;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -28,7 +32,7 @@ import javafx.scene.image.ImageView;
 public class EndLeaderboardCtrl extends SceneController {
 
 
-
+    private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[1];
     @FXML
     private BarChart chart;
     @FXML
@@ -57,6 +61,8 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
+        tasks[0] = scheduler.scheduleAtInstant( () -> {GameCommunication.endGame(currentGameID);
+        }, Instant.now().plusSeconds(2));
         chart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         //get player list from server
         scheduler.execute(() -> {

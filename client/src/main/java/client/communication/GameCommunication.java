@@ -3,6 +3,7 @@ package client.communication;
 import static client.communication.Utils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.Game;
 import commons.Question;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
@@ -66,6 +67,11 @@ public class GameCommunication {
                 consumer.accept((T) payload);
             }
         });
+       // session.disconnect();
+    }
+
+    public static void disconnect(){
+        session.disconnect();
     }
 
     public static void send(String dest, Object o) {
@@ -102,6 +108,24 @@ public class GameCommunication {
                 .get(new GenericType<>() {});
     }
 
+
+
+    /**
+     * Get the correct answer from the question.
+     *
+     * @param gameCode The game code for the specific game
+     * @return The correct answer(in energy consumption number)
+     */
+    public static Game endGame(String gameCode) {
+        if (gameCode.equals("foo")) {
+            throw new IllegalArgumentException("blame yehor");
+        }
+        return ClientBuilder.newClient(new ClientConfig())
+            .target(serverAddress)
+            .path(String.format("/api/game/end/%s", gameCode))
+            .request(APPLICATION_JSON)
+            .get(new GenericType<>() {});
+    }
     /**
      * Get the correct answer from the question.
      *
@@ -148,4 +172,6 @@ public class GameCommunication {
                 .get(new GenericType<>() {});
 
     }
+
+
 }
