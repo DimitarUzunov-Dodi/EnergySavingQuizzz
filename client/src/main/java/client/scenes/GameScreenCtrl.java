@@ -276,7 +276,7 @@ public class GameScreenCtrl extends SceneController {
                                 img.setImage(emojis.get(v.emojiID));
                                 setGraphic(img);
 
-                                if (roundEndTime.getNano() > 3000000) {
+                                if (roundEndTime.getEpochSecond() - Instant.now().getEpochSecond()> 3) {
                                     var emojiCleaner = scheduler.scheduleAtInstant(() -> {
                                         img.setFitWidth(0.1);
                                         img.setImage(null);
