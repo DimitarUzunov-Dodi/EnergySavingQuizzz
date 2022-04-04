@@ -49,6 +49,14 @@ public class GameScreenCtrl extends SceneController {
     private ProgressBar progressBar;
     @FXML
     private ListView<String> currentLeaderboard;
+    @FXML
+    private ImageView emoji1;
+    @FXML
+    private ImageView emoji2;
+    @FXML
+    private ImageView emoji3;
+    @FXML
+    private ImageView menuButton;
 
     private int reward;
     @FXML
@@ -146,6 +154,7 @@ public class GameScreenCtrl extends SceneController {
         //GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
         refreshQuestion();
         present();
+        initImages();
     }
 
     // TODO: Replace with final ws implementation
@@ -385,6 +394,17 @@ public class GameScreenCtrl extends SceneController {
 
 
 
+    }
+
+    /**
+     * Initialises the images for the game screen.
+     */
+    public void initImages() {
+        //windmill.setImage(new Image("client/images/OIP.jpg"));
+        menuButton.setImage(new Image(("client/images/menu.png")));
+        emoji1.setImage(new Image("client/images/emoji1.png"));
+        emoji2.setImage(new Image("client/images/emoji2.png"));
+        emoji3.setImage(new Image("client/images/emoji3.png"));
     }
 
     private int getTimeLeft() {

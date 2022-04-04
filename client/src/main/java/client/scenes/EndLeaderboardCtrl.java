@@ -18,6 +18,8 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 /**
@@ -33,6 +35,8 @@ public class EndLeaderboardCtrl extends SceneController {
     private CategoryAxis usernames;
     @FXML
     private NumberAxis points;
+    @FXML
+    private ImageView backButtonImg;
 
 
 
@@ -91,6 +95,7 @@ public class EndLeaderboardCtrl extends SceneController {
 
             }
         });
+        initImages();
         present();
     }
 
@@ -109,5 +114,13 @@ public class EndLeaderboardCtrl extends SceneController {
     @FXML
     private void onBackButton() {
         myFxml.showScene(SplashCtrl.class);
+    }
+
+    /**
+     * Initialises the images for the game screen.
+     */
+    public void initImages() {
+        //windmill.setImage(new Image("client/images/OIP.jpg"));
+        backButtonImg.setImage(new Image(("client/images/exit_icon.png")));
     }
 }
