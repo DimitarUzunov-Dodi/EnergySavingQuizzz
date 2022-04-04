@@ -117,6 +117,7 @@ public class GameScreenCtrl extends SceneController {
      */
     @Override
     public void show(Object... args) {
+        System.out.println(currentGameID);
         // handle varargs
         if (args.length != 1 || !args[0].getClass().equals(Boolean.class)) {
             throw new IllegalArgumentException("Expected only one Boolean argument");
@@ -211,7 +212,7 @@ public class GameScreenCtrl extends SceneController {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
                         System.out.println("holy schmoop");
                         tasks[0].cancel(false);
-
+                        System.out.println("the real index = " + qindex);
                         Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
                                 roundEndTime));
                         //showCorrectAnswer();
@@ -222,7 +223,7 @@ public class GameScreenCtrl extends SceneController {
                 }
                 System.out.println("the index is: " + qindex);
                 if (qindex != 0) {
-                    tasks[1] = scheduler.scheduleAtInstant(() -> {
+
                         System.out.println("holy schdfsfoop");
                         //tasks[0].cancel(false);
 
@@ -230,12 +231,12 @@ public class GameScreenCtrl extends SceneController {
                         showCorrectAnswer();
                         //Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
                         //Instant.now().plusMillis(10).plusSeconds(6)));
-                        System.out.println(qindex);
+                        System.out.println("the real index = " + qindex);
 
 
 
 
-                    }, Instant.now().plusMillis(10));
+
                 }
 
 
