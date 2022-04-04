@@ -1,12 +1,11 @@
 package client.scenes;
 
-import static client.scenes.MainCtrl.currentGameID;
-import static client.scenes.MainCtrl.scheduler;
-
 import client.MyFXML;
 import client.communication.GameCommunication;
 import client.communication.Utils;
+import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
+import client.utils.UserAlert;
 import com.google.inject.Inject;
 import commons.TaskScheduler;
 import commons.User;
@@ -17,13 +16,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
+
+import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import static client.scenes.MainCtrl.*;
+import static client.utils.UserAlert.userAlert;
 
 
 /**
@@ -107,11 +113,47 @@ public class EndLeaderboardCtrl extends SceneController {
 
 
     /**
-     * Send a user to a new waiting lobby with the same game ID.
+     * Send a user to a new public waiting room.
      */
     @FXML
     private void nextGame() {
-        myFxml.showScene(WaitingRoomCtrl.class, currentGameID);
+        try {
+            currentGameID = WaitingRoomCommunication.getPublicCode();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            UserAlert.userAlert("WARN", "Cannot connect ot server",
+                    "Check your connection and try again.");
+        }
+        try {
+            joinGame();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            UserAlert.userAlert("WARN", "Cannot connect ot server",
+                    "Check your connection and try again.");
+        }
+    }
+
+    private void joinGame() throws RuntimeException {
+        Response joinResponse = WaitingRoomCommunication.joinGame(currentGameID, username);
+        int statusCode = joinResponse.getStatus();
+        if (statusCode == 200) {
+            myFxml.showScene(WaitingRoomCtrl.class);
+        } else if (statusCode == 400) {
+            userAlert(
+                    "ERROR",
+                    "Username is already taken",
+                    "Username already in use in this game!");
+        } else if (statusCode == 404 || statusCode == 418) {
+            Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            quitAlert.setTitle("Oops");
+            quitAlert.setHeaderText(
+                    "It is no longer possible to join this room. "
+                            + "Would you like to join a public game?");
+            Optional<ButtonType> result = quitAlert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                nextGame();
+            }
+        }
     }
 
     /**
