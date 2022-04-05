@@ -108,13 +108,11 @@ public class GameCommunication {
                 .get(new GenericType<>() {});
     }
 
-
-
     /**
+     * End the specified game.
      *
-     *
-     * @param gameCode
-     * @return
+     * @param gameCode gameId
+     * @return the game that has been ended I guess
      */
     public static Game endGame(String gameCode) {
         if (gameCode.equals("foo")) {

@@ -14,19 +14,19 @@ import client.utils.UserAlert;
 import com.google.inject.Inject;
 import commons.User;
 import jakarta.ws.rs.core.Response;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -35,7 +35,7 @@ import javafx.scene.image.ImageView;
 public class EndLeaderboardCtrl extends SceneController {
 
     @FXML
-    private BarChart chart;
+    private BarChart<String, Integer> chart;
     @FXML
     private ImageView backButtonImg;
 
@@ -53,44 +53,30 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
-        GameCommunication.endGame(currentGameID); // end current game
-        chart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
-        //get player list from server
         scheduler.execute(() -> {
             Optional<List<User>> l = CommunicationUtils.getAllUsers(currentGameID);
 
             if (l.isPresent()) {
                 //Sorts the list for a proper display
-
-                //var sortedList = l.stream().toList().get(0);
                 User[] array = l.get().toArray(new User[l.get().size()]);
-                ArrayList<User> sortedList = new ArrayList<>();
-                for (User a: array) {
-                    sortedList.add(a);
-                }
+                ArrayList<User> sortedList = new ArrayList<>(Arrays.asList(array));
                 List<User> newList = sortedList.stream()
-                        .sorted((x,y) -> x.getScore() - y.getScore()).collect(Collectors.toList());
+                        .sorted(Comparator.comparingInt(User::getScore))
+                        .collect(Collectors.toList());
                 Collections.reverse(newList);
-
-                for (User user:newList
-                     ) {
-                    System.out.println(user.getUsername());
-                }
 
                 var series = new XYChart.Series<String, Integer>();
                 series.setName("Points");
                 newList.forEach(user -> {
-                    var data = new XYChart.Data<String,Integer>(user.getUsername(),user.getScore());
+                    var data = new XYChart.Data<>(user.getUsername(), user.getScore());
                     series.getData().add(data);
                 });
-                System.out.println(series);
-                chart.getData().add(series);
+                Platform.runLater(() -> chart.getData().add(series));
+                GameCommunication.endGame(currentGameID); // end current game
             }
         });
-        initImages();
         present();
     }
-
 
     /**
      * Send a user to a new public waiting room.
@@ -142,13 +128,5 @@ public class EndLeaderboardCtrl extends SceneController {
     @FXML
     private void onBackButton() {
         myFxml.showScene(SplashCtrl.class);
-    }
-
-    /**
-     * Initialises the images for the game screen.
-     */
-    public void initImages() {
-        //windmill.setImage(new Image("client/images/OIP.jpg"));
-        backButtonImg.setImage(new Image(("client/images/exit_icon.png")));
     }
 }

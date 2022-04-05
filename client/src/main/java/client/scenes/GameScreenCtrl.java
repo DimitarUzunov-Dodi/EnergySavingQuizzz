@@ -73,7 +73,6 @@ public class GameScreenCtrl extends SceneController {
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
-        questionIndex = 0;
     }
 
     /**
@@ -140,7 +139,8 @@ public class GameScreenCtrl extends SceneController {
                 }
             }
         });
-        System.out.println(currentGameID);
+        System.out.println("game ID: " + currentGameID);
+        questionIndex = 0;
         // handle varargs
         if (args.length != 1 || !args[0].getClass().equals(Boolean.class)) {
             throw new IllegalArgumentException("Expected only one Boolean argument");
@@ -216,29 +216,25 @@ public class GameScreenCtrl extends SceneController {
                 }
 
                 roundStartTime = Instant.ofEpochMilli(o[0]);
-
                 roundEndTime = Instant.ofEpochMilli(o[1]);
 
-                System.out.println("roundStart Time: " + roundStartTime);
-                System.out.println("roundEndTime: " + roundEndTime);
-                //shows round EndTime
-
                 // handle end of game
-                if (questionIndex++ >= 21) {
+                if (questionIndex++ >= 3) {
                     GameCommunication.disconnect(); // disconnects from ws
-                    for (var task: tasks) // cancel all queued tasks
+                    for (var task: tasks) { // cancel all queued tasks
                         task.cancel(false);
-                    myFxml.showScene(EndLeaderboardCtrl.class); // transition immediately
+                    }
+                    // transition immediately
+                    Platform.runLater(() -> myFxml.showScene(EndLeaderboardCtrl.class));
+                    return;
                 }
 
                 // transition to leaderboard
                 if (tasks[1] != null) {
-                    System.out.println("1 canceled");
                     tasks[1].cancel(false);
                 }
                 System.out.println("the index is: " + questionIndex);
                 if (tasks[3] != null) {
-                    System.out.println("3 canceled");
                     tasks[3].cancel(false);
                 }
 
@@ -250,7 +246,6 @@ public class GameScreenCtrl extends SceneController {
                     showCorrectAnswer();
                 }
                 if (tasks[4] != null) {
-                    System.out.println("3 canceled");
                     tasks[4].cancel(false);
                 }
 
@@ -258,18 +253,13 @@ public class GameScreenCtrl extends SceneController {
                 if (questionIndex == 1) {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
                         //tasks[0].cancel(false);
-                        System.out.println("non live time: " + roundStartTime);
                         Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
                             roundStartTime));
                         GameCommunication.send("/app/time/get/" + currentGameID
                             + "/" + questionIndex, "foo");
                     }, roundEndTime.plusSeconds(2));
-
-                    System.out.println("live time: " + roundEndTime);
                 } else {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
-                        //tasks[0].cancel(false);
-                        System.out.println("non live time: " + roundStartTime);
                         Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
                             Instant.now().plusSeconds(6)));
 
@@ -278,19 +268,12 @@ public class GameScreenCtrl extends SceneController {
                         GameCommunication.send("/app/time/get/" + currentGameID
                             + "/" + questionIndex, "foo");
                     }, roundEndTime.plusSeconds(2));
-                    System.out.println("live time: " + roundEndTime);
                 }
 
                 if (tasks[2] != null) {
-                    System.out.println("2 canceled");
                     tasks[2].cancel(false);
-
                 }
 
-                tasks[2] = scheduler.scheduleAtInstant(() -> {
-                    System.out.println("debug");
-
-                }, roundEndTime.plusSeconds(2).plusMillis(100));
                 System.out.println("foo");
             });
 
