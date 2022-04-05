@@ -111,7 +111,7 @@ public class GameScreenCtrl extends SceneController {
      */
     @FXML
     private void onMenuButton() {
-        myFxml.showScene(SettingsCtrl.class);
+        myFxml.showScene(SettingsCtrl.class,false);
     }
 
     /**

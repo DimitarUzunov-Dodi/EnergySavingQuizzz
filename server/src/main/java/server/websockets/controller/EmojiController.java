@@ -1,7 +1,7 @@
 package server.websockets.controller;
-
 import commons.EmojiMessage;
 import commons.Game;
+import commons.TaskScheduler;
 import commons.WsGame;
 import java.time.Instant;
 import java.util.HashMap;
@@ -23,7 +23,11 @@ public class EmojiController {
     @Autowired
     private final GameService gameService;
 
+
     private Game currentGame;
+
+    // used to schedule and execute all sorts of stuff (e.g. end the current round)
+    public static final TaskScheduler scheduler = new TaskScheduler(1);
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
@@ -42,6 +46,7 @@ public class EmojiController {
     public EmojiController(Random random, GameService gameService) {
         this.random = random;
         this.gameService = gameService;
+        checkActiveGames();
         //this.currentGame = getGame();
 
     }
@@ -55,6 +60,20 @@ public class EmojiController {
         return gameService.getGame(gameCode);
     }
 
+    public void checkActiveGames(){
+        scheduler.scheduleAtFixedRate(() -> {
+            for (String gameID: webSocketSessionList.keySet()){
+                if (gameService.getGame(gameID).getUserList().size() == 0){
+                    gameService.removeGame(gameID);
+                    webSocketSessionList.remove(gameID);
+
+                }
+            }
+        }, 1000);
+
+    }
+
+
     /**
      * creates the time for a game.
      *
@@ -64,6 +83,7 @@ public class EmojiController {
     @SendTo("/foo")
     public void createDate(@DestinationVariable String currentGameID,
                            @DestinationVariable Integer questionNumber) throws Exception {
+
         LOGGER.info("creating time");
         LOGGER.info(currentGameID + "  " + questionNumber);
 
