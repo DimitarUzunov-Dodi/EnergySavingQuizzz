@@ -10,7 +10,7 @@ import java.util.Optional;
 import org.glassfish.jersey.client.ClientConfig;
 
 public class CommunicationUtils {
-    public static String serverAddress;
+    public static String serverAddress = "";
 
     /**
      * Send GET request to the server to get a list of all users in an ongoing game.
