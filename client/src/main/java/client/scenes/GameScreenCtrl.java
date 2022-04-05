@@ -350,15 +350,16 @@ public class GameScreenCtrl extends SceneController {
         System.out.print("sending answer");
         System.out.println(answer);
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                questionIndex -1, answer, getTimeLeft());
+                questionIndex, answer, getTimeLeft());
         System.out.println("foo time: " + questionIndex);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
     }
 
     private void showCorrectAnswer() {
-        System.out.println("showing correct answer");
+
         if (reward != 0) {
             Platform.runLater(() -> {
+                System.out.println("showing correct answer");
                 rewardLabel.setText("+" + reward + " points");
                 rewardLabel.setVisible(true);
             });
