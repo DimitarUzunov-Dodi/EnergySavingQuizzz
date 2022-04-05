@@ -1,6 +1,6 @@
 package client.communication;
 
-import static client.communication.Utils.serverAddress;
+import static client.communication.CommunicationUtils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import jakarta.ws.rs.client.ClientBuilder;

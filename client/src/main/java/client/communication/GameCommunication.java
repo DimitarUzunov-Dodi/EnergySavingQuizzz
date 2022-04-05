@@ -1,6 +1,6 @@
 package client.communication;
 
-import static client.communication.Utils.serverAddress;
+import static client.communication.CommunicationUtils.serverAddress;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.Game;
@@ -67,10 +67,10 @@ public class GameCommunication {
                 consumer.accept((T) payload);
             }
         });
-       // session.disconnect();
+        // session.disconnect();
     }
 
-    public static void disconnect(){
+    public static void disconnect() {
         session.disconnect();
     }
 
@@ -126,6 +126,7 @@ public class GameCommunication {
             .request(APPLICATION_JSON)
             .get(new GenericType<>() {});
     }
+
     /**
      * Get the correct answer from the question.
      *

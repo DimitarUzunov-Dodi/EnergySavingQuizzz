@@ -5,8 +5,8 @@ import static client.scenes.MainCtrl.scheduler;
 import static java.util.Map.entry;
 
 import client.MyFXML;
+import client.communication.CommunicationUtils;
 import client.communication.GameCommunication;
-import client.communication.Utils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.EmojiMessage;
@@ -16,6 +16,7 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,11 +39,16 @@ public class GameScreenCtrl extends SceneController {
 
     private Instant roundStartTime;
     private Instant roundEndTime;
-    private int qindex;
+    private int questionIndex;
     private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[3];
-    private String username;
     private Question activeQuestion;
-    private static final int SHOW_ANSWER_DELAY = 2;
+    private int reward;
+
+    private final Map<String, Image> emojis = Map.ofEntries(
+            entry("emoji1", new Image("client/images/emoji1.png")),
+            entry("emoji2", new Image("client/images/emoji2.png")),
+            entry("emoji3", new Image("client/images/emoji3.png")));
+
     @FXML
     private StackPane questionHolder;
     @FXML
@@ -57,19 +63,13 @@ public class GameScreenCtrl extends SceneController {
     private ImageView emoji3;
     @FXML
     private ImageView menuButton;
-
-    private int reward;
     @FXML
     private Label rewardLabel;
-    private final Map<String, Image> emojis = Map.ofEntries(
-            entry("emoji1", new Image("client/images/emoji1.png")),
-            entry("emoji2", new Image("client/images/emoji2.png")),
-            entry("emoji3", new Image("client/images/emoji3.png")));
 
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
-        qindex = 0;
+        questionIndex = 0;
     }
 
     /**
@@ -127,7 +127,7 @@ public class GameScreenCtrl extends SceneController {
             // ws setup
             setupWebSockets();
             // receive first question time
-            GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
+            GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         }
         show();
     }
@@ -139,26 +139,19 @@ public class GameScreenCtrl extends SceneController {
      */
     @Override
     public void show() {
-
-
-
         // refresh player list
         currentLeaderboard.setItems(FXCollections.observableList(
-                Utils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
+                CommunicationUtils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
                         .stream().map(User::getUsername).collect(Collectors.toList())
         ));
 
-                           
-
-        // other UI stuff
+        // UI stuff
         progressBar.setProgress(1d);
-        //GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
         refreshQuestion();
         present();
         initImages();
     }
 
-    // TODO: Replace with final ws implementation
     /**
      * Set up the WS connection and start listening for messages.
      */
@@ -167,7 +160,7 @@ public class GameScreenCtrl extends SceneController {
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("currentGameID", currentGameID);
         properties.put("username", MainCtrl.username);
-        GameCommunication.connect(Utils.serverAddress, properties);
+        GameCommunication.connect(CommunicationUtils.serverAddress, properties);
 
         // configure the connection
         HashMap<String, Object> userProperties = new HashMap<>();
@@ -175,9 +168,6 @@ public class GameScreenCtrl extends SceneController {
         userProperties.put("username", MainCtrl.username);
         GameCommunication.send("/app/game/" + currentGameID + "/"
                 + MainCtrl.username, userProperties);
-
-        // save barTask (0 - barTask) (1 - transitionTask)
-
 
         // register to receive roundEndTime
         GameCommunication.registerForMessages("/time/get/receive/" + currentGameID,
@@ -190,17 +180,11 @@ public class GameScreenCtrl extends SceneController {
 
                 roundEndTime = Instant.ofEpochMilli(o[1]);
                 if (tasks[0] != null) {
-                    tasks[0].cancel(false);
+                    tasks[0].cancel(true);
                 }
                 tasks[0] = SceneController
-                    .scheduleProgressBar(progressBar, roundStartTime, roundEndTime);
-
-
-
-        
-
-                // progress bar
-
+                    .scheduleProgressBar(progressBar, roundEndTime);
+                System.out.println("-- step: " + progressBar.getUserData());
 
                 // transition to leaderboard
                 if (tasks[1] != null) {
@@ -208,54 +192,30 @@ public class GameScreenCtrl extends SceneController {
                     tasks[1].cancel(false);
                 }
 
-                if (qindex == 0) {
+                System.out.println("the index is: " + questionIndex);
+                if (questionIndex == 0) {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
-                        System.out.println("holy schmoop");
                         tasks[0].cancel(false);
-                        System.out.println("the real index = " + qindex);
+                        System.out.println("the real index = " + questionIndex);
                         Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
                                 roundEndTime));
-                        //showCorrectAnswer();
-
-
-
                     }, roundEndTime);
                 }
-                System.out.println("the index is: " + qindex);
-                if (qindex != 0) {
-
-                        System.out.println("holy schdfsfoop");
-                        //tasks[0].cancel(false);
-
-
-                        showCorrectAnswer();
-                        //Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                        //Instant.now().plusMillis(10).plusSeconds(6)));
-                        System.out.println("the real index = " + qindex);
-
-
-
-
-
+                if (questionIndex != 0) {
+                    showCorrectAnswer();
+                    System.out.println("the real index = " + questionIndex);
                 }
-
-
-                //  System.out.println("qIndex" + qindex);
-                qindex++;
-
+                questionIndex++;
 
                 if (tasks[2] != null) {
                     System.out.println("1 canceled");
                     tasks[2].cancel(false);
 
                 }
-
                 tasks[2] = scheduler.scheduleAtInstant(() -> {
                     System.out.println("debug");
                     GameCommunication.send("/app/time/get/" + currentGameID
-                          + "/" + qindex, "foo");
-
-
+                          + "/" + questionIndex, "foo");
                 }, roundEndTime);
             });
 
@@ -276,21 +236,19 @@ public class GameScreenCtrl extends SceneController {
                                 img.setImage(emojis.get(v.emojiID));
                                 setGraphic(img);
 
-                                if (roundEndTime.getEpochSecond() - Instant.now().getEpochSecond()> 3) {
-                                    var emojiCleaner = scheduler.scheduleAtInstant(() -> {
+                                if (Duration.between(Instant.now(), roundEndTime).toSeconds() > 3) {
+                                    scheduler.scheduleAtInstant(() -> {
                                         img.setFitWidth(0.1);
                                         img.setImage(null);
                                         setGraphic(img);
                                     },Instant.now().plusSeconds(3));
                                 } else {
-                                    var emojiCleaner = scheduler.scheduleAtInstant(() -> {
+                                    scheduler.scheduleAtInstant(() -> {
                                         img.setFitWidth(0.1);
                                         img.setImage(null);
                                         setGraphic(img);
                                     }, roundEndTime);
-
                                 }
-
                             }
                             setText(name);
                         }
@@ -302,7 +260,7 @@ public class GameScreenCtrl extends SceneController {
      * Get the question from the server and display it.
      */
     public void refreshQuestion() {
-        activeQuestion = GameCommunication.getQuestion(currentGameID, qindex);
+        activeQuestion = GameCommunication.getQuestion(currentGameID, questionIndex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class)
@@ -323,7 +281,6 @@ public class GameScreenCtrl extends SceneController {
             default:
                 break;
         }
-
         rewardLabel.setVisible(false);
     }
 
@@ -346,8 +303,8 @@ public class GameScreenCtrl extends SceneController {
         System.out.print("sending answer");
         System.out.println(answer);
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                qindex, answer, getTimeLeft());
-        GameCommunication.send("/app/time/get/" + currentGameID + "/" + qindex, "foo");
+                questionIndex, answer, getTimeLeft());
+        GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
     }
 
     private void showCorrectAnswer() {
@@ -359,7 +316,7 @@ public class GameScreenCtrl extends SceneController {
             });
         }
 
-        long correctAnswer = GameCommunication.getAnswer(currentGameID, qindex - 1);
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex - 1);
         System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
 
@@ -389,7 +346,6 @@ public class GameScreenCtrl extends SceneController {
                 break;
             default:
                 break;
-
         }
 
 
@@ -408,6 +364,7 @@ public class GameScreenCtrl extends SceneController {
         emoji3.setImage(new Image("client/images/emoji3.png"));
     }
 
+    // This is stupid, why not use the ACTUAL time left?
     private int getTimeLeft() {
         return (int) Math.round(progressBar.getProgress() * 100);
     }

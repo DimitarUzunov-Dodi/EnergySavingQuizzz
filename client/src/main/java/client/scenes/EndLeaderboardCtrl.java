@@ -1,14 +1,19 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.currentGameID;
+import static client.scenes.MainCtrl.scheduler;
+import static client.scenes.MainCtrl.username;
+import static client.utils.UserAlert.userAlert;
+
 import client.MyFXML;
+import client.communication.CommunicationUtils;
 import client.communication.GameCommunication;
-import client.communication.Utils;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import client.utils.UserAlert;
 import com.google.inject.Inject;
-import commons.TaskScheduler;
 import commons.User;
+import jakarta.ws.rs.core.Response;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,21 +21,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
-
-import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import static client.scenes.MainCtrl.*;
-import static client.utils.UserAlert.userAlert;
-
 
 /**
  * Displays the final screen at the end of the game.
@@ -42,15 +39,7 @@ public class EndLeaderboardCtrl extends SceneController {
     @FXML
     private BarChart chart;
     @FXML
-    private CategoryAxis usernames;
-    @FXML
-    private NumberAxis points;
-    @FXML
     private ImageView backButtonImg;
-
-
-
-
 
     /**
      * Constructor used by INJECTOR.
@@ -59,7 +48,6 @@ public class EndLeaderboardCtrl extends SceneController {
     @Inject
     protected EndLeaderboardCtrl(MyFXML myFxml) {
         super(myFxml);
-
     }
 
     /**
@@ -67,14 +55,13 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
-        tasks[0] = scheduler.scheduleAtInstant( () -> {GameCommunication.endGame(currentGameID);
+        tasks[0] = scheduler.scheduleAtInstant(() -> {
+            GameCommunication.endGame(currentGameID);
         }, Instant.now().plusSeconds(2));
         chart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         //get player list from server
         scheduler.execute(() -> {
-            Optional<List<User>> l = Utils.getAllUsers(currentGameID);
-
-
+            Optional<List<User>> l = CommunicationUtils.getAllUsers(currentGameID);
 
             if (l.isPresent()) {
                 //Sorts the list for a proper display
@@ -82,8 +69,7 @@ public class EndLeaderboardCtrl extends SceneController {
                 //var sortedList = l.stream().toList().get(0);
                 User[] array = l.get().toArray(new User[l.get().size()]);
                 ArrayList<User> sortedList = new ArrayList<>();
-                for (User a: array
-                     ) {
+                for (User a: array) {
                     sortedList.add(a);
                 }
                 List<User> newList = sortedList.stream()
