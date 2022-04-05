@@ -25,6 +25,14 @@
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="22.0" percentHeight="5.0" prefHeight="50.0" valignment="CENTER" vgrow="NEVER" />
     </rowConstraints>
     <children>
+      <BarChart id="chart" fx:id="chart" style="-fx-background-color: TRANSPARENT;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <xAxis>
+          <CategoryAxis fx:id="usernames" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis id="lable" fx:id="points" side="LEFT" />
+        </yAxis>
+      </BarChart>
         <Text id="title" boundsType="VISUAL" fill="#f2c914" stroke="BLACK" strokeType="OUTSIDE" text="Final Results" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="503.142578125" GridPane.columnSpan="2147483647">
             <font>
                 <Font name="Consolas Bold" size="42.0" />
@@ -39,14 +47,6 @@
                 </ImageView>
             </graphic>
         </Button>
-      <BarChart id="label" fx:id="chart" GridPane.columnIndex="1" GridPane.rowIndex="1">
-        <xAxis>
-          <CategoryAxis fx:id="usernames" side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis id="lable" fx:id="points" side="LEFT" />
-        </yAxis>
-      </BarChart>
       <Button fx:id="anotherGame" alignment="CENTER" mnemonicParsing="false" onAction="#nextGame" style="-fx-background-color: #f2c914; -fx-background-radius: 10; -fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 10;" text=" Play Another" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <font>
             <Font name="System Bold" size="12.0" />
