@@ -83,8 +83,12 @@ public abstract class SceneController {
      * @return A reference to the scheduled task that can be used to cancel it
      */
     protected static ScheduledFuture<?> scheduleProgressBar(ProgressBar bar, Instant endTime) {
+        System.out.println(endTime);
         bar.setUserData(bar.getProgress() * 32d
                 / Duration.between(Instant.now(), endTime).toMillis()); // progress step
+        System.out.println("-- step: " + bar.getUserData());
+        System.out.println("progress: " + bar.getProgress());
+
         return scheduler.scheduleAtFixedRate(
                 () -> bar.setProgress(Math.max(0,
                         bar.getProgress() - (Double) bar.getUserData())),

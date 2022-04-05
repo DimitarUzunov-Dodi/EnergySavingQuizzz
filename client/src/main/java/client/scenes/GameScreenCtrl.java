@@ -40,7 +40,7 @@ public class GameScreenCtrl extends SceneController {
     private Instant roundStartTime;
     private Instant roundEndTime;
     private int questionIndex;
-    private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[3];
+    private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[5];
     private Question activeQuestion;
     private int reward;
 
@@ -124,6 +124,7 @@ public class GameScreenCtrl extends SceneController {
         }
 
         if ((Boolean) args[0]) {
+
             // ws setup
             setupWebSockets();
             // receive first question time
@@ -139,14 +140,23 @@ public class GameScreenCtrl extends SceneController {
      */
     @Override
     public void show() {
+
+
         // refresh player list
         currentLeaderboard.setItems(FXCollections.observableList(
                 CommunicationUtils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
                         .stream().map(User::getUsername).collect(Collectors.toList())
         ));
+        progressBar.setProgress(1d);
+        if (tasks[0] != null) {
+
+            tasks[0].cancel(false);
+        }
+        tasks[0] = SceneController
+            .scheduleProgressBar(progressBar, roundEndTime);
 
         // UI stuff
-        progressBar.setProgress(1d);
+
         refreshQuestion();
         present();
         initImages();
@@ -176,47 +186,84 @@ public class GameScreenCtrl extends SceneController {
                     return;
                 }
 
+
                 roundStartTime = Instant.ofEpochMilli(o[0]);
 
                 roundEndTime = Instant.ofEpochMilli(o[1]);
-                if (tasks[0] != null) {
-                    tasks[0].cancel(true);
-                }
-                tasks[0] = SceneController
-                    .scheduleProgressBar(progressBar, roundEndTime);
-                System.out.println("-- step: " + progressBar.getUserData());
+
+                System.out.println("roundStart Time: " + roundStartTime);
+                System.out.println("roundEndTime: " + roundEndTime);
+                //shows round EndTime
+
+                questionIndex++;
+                //System.out.println("the real index = " + questionIndex);
+
 
                 // transition to leaderboard
                 if (tasks[1] != null) {
                     System.out.println("1 canceled");
                     tasks[1].cancel(false);
                 }
-
                 System.out.println("the index is: " + questionIndex);
-                if (questionIndex == 0) {
-                    tasks[1] = scheduler.scheduleAtInstant(() -> {
-                        tasks[0].cancel(false);
-                        System.out.println("the real index = " + questionIndex);
-                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                                roundEndTime));
+                if (tasks[3] != null) {
+                    System.out.println("3 canceled");
+                    tasks[3].cancel(false);
+                }
+
+                if (questionIndex == 1){
+                    tasks[3] = scheduler.scheduleAtInstant(() -> {
+                        showCorrectAnswer();
                     }, roundEndTime);
                 }
-                if (questionIndex != 0) {
+                else{
                     showCorrectAnswer();
-                    System.out.println("the real index = " + questionIndex);
                 }
-                questionIndex++;
+                if (tasks[4] != null) {
+                    System.out.println("3 canceled");
+                    tasks[4].cancel(false);
+                }
+
+
+                if (questionIndex == 1){
+                    tasks[1] = scheduler.scheduleAtInstant(() -> {
+                        //tasks[0].cancel(false);
+                        System.out.println("non live time: " + roundStartTime);
+                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                            roundStartTime));
+                        GameCommunication.send("/app/time/get/" + currentGameID
+                            + "/" + questionIndex, "foo");
+                    }, roundEndTime.plusSeconds(2));
+
+                    System.out.println("live time: " + roundEndTime);
+                }
+                else{
+                    tasks[1] = scheduler.scheduleAtInstant(() -> {
+                        //tasks[0].cancel(false);
+                        System.out.println("non live time: " + roundStartTime);
+                        Platform.runLater(() -> myFxml.showScene(MatchLeaderboardCtrl.class,
+                            Instant.now().plusSeconds(6)));
+
+                    }, Instant.now().plusSeconds(2));
+                    tasks[4] = scheduler.scheduleAtInstant(() -> {
+                        GameCommunication.send("/app/time/get/" + currentGameID
+                            + "/" + questionIndex, "foo");
+                    }, roundEndTime.plusSeconds(2));
+                    System.out.println("live time: " + roundEndTime);
+                }
+
+
 
                 if (tasks[2] != null) {
-                    System.out.println("1 canceled");
+                    System.out.println("2 canceled");
                     tasks[2].cancel(false);
 
                 }
+
                 tasks[2] = scheduler.scheduleAtInstant(() -> {
                     System.out.println("debug");
-                    GameCommunication.send("/app/time/get/" + currentGameID
-                          + "/" + questionIndex, "foo");
-                }, roundEndTime);
+
+                }, roundEndTime.plusSeconds(2).plusMillis(100));
+                System.out.println("foo");
             });
 
         // register for emojis
@@ -303,7 +350,8 @@ public class GameScreenCtrl extends SceneController {
         System.out.print("sending answer");
         System.out.println(answer);
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                questionIndex, answer, getTimeLeft());
+                questionIndex -1, answer, getTimeLeft());
+        System.out.println("foo time: " + questionIndex);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
     }
 
@@ -321,10 +369,6 @@ public class GameScreenCtrl extends SceneController {
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
 
 
-        scheduler.schedule(
-                () -> Platform.runLater(
-                        () -> myFxml.showScene(MatchLeaderboardCtrl.class,
-                                Instant.now().plusSeconds(6))), 2000);
 
 
     }

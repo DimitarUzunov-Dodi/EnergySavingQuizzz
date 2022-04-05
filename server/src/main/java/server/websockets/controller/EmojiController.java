@@ -114,10 +114,11 @@ public class EmojiController {
         userInputs.get(currentGameID).put(questionNumber, last + 1);
         if (userInputs.get(currentGameID).get(questionNumber)
             == gameService.getGame(currentGameID).getUserList().size()) {
-            WsGame time = new WsGame(Instant.now().plusMillis(500),
-                Instant.now().plusSeconds(gameService
+            Instant endTime = Instant.now().plusSeconds(gameService
                 .getQuestion(currentGameID, questionNumber)
-                .getDuration().toSeconds()));
+                .getDuration().toSeconds());
+            Instant startTime = endTime.plusSeconds(8);
+            WsGame time = new WsGame(startTime, endTime);
             if (questionNumber != 0) {
                 LOGGER.info("plus 12");
                 time.endTime = time.endTime.plusSeconds(6);
