@@ -1,4 +1,5 @@
 package server.websockets.controller;
+
 import commons.EmojiMessage;
 import commons.Game;
 import commons.TaskScheduler;
@@ -60,10 +61,13 @@ public class EmojiController {
         return gameService.getGame(gameCode);
     }
 
-    public void checkActiveGames(){
+    /**
+     * Check for empty games and handle them.
+     */
+    public void checkActiveGames() {
         scheduler.scheduleAtFixedRate(() -> {
-            for (String gameID: webSocketSessionList.keySet()){
-                if (gameService.getGame(gameID).getUserList().size() == 0){
+            for (String gameID: webSocketSessionList.keySet()) {
+                if (gameService.getGame(gameID).getUserList().size() == 0) {
                     gameService.removeGame(gameID);
                     webSocketSessionList.remove(gameID);
 
