@@ -3,20 +3,25 @@ package client.scenes;
 import static client.Main.primaryStage;
 
 import client.MyFXML;
+import client.communication.CommunicationUtils;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class SettingsCtrl extends SceneController {
 
+    private String server;
     private final Stage stage; // the stage we show this scene on
     private Double posX; // saved window position
     private Double posY;
 
+    @FXML
+    private TextField serverText;
     @FXML
     private Button colourModeButton;
 
@@ -44,12 +49,36 @@ public class SettingsCtrl extends SceneController {
      */
     @Override
     public void show() {
+        initTextField();
         stage.setX(posX);
         stage.setY(posY);
         present(stage);
         stage.show();
         stage.requestFocus();
     }
+
+    /**
+     * Show the scene without the server field. For use during game.
+     */
+    @Override
+    public void show(Object... args) {
+
+        stage.setX(posX);
+        stage.setY(posY);
+        present(stage);
+        stage.show();
+        serverText.setVisible(false);
+        stage.requestFocus();
+    }
+
+    /**
+     * initialises the text field.
+     */
+    private void initTextField() {
+        server = CommunicationUtils.serverAddress;
+        serverText.setText(server);
+    }
+
 
     /**
      * Function called by Back button when clicked.
@@ -81,5 +110,16 @@ public class SettingsCtrl extends SceneController {
         posY = stage.getY();
         myFxml.showScene(SettingsCtrl.class);
     }
+
+    /**
+     * changes the current server the client is connected to.
+     */
+    @FXML
+    private void changeServer() {
+        server = serverText.getText().strip();
+        CommunicationUtils.serverAddress = server;
+
+    }
+
 
 }

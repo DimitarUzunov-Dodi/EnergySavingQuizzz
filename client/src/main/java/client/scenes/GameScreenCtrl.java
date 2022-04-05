@@ -107,7 +107,7 @@ public class GameScreenCtrl extends SceneController {
      */
     @FXML
     private void onMenuButton() {
-        myFxml.showScene(SettingsCtrl.class);
+        myFxml.showScene(SettingsCtrl.class,false);
     }
 
     /**
@@ -210,12 +210,11 @@ public class GameScreenCtrl extends SceneController {
                     tasks[3].cancel(false);
                 }
 
-                if (questionIndex == 1){
+                if (questionIndex == 1) {
                     tasks[3] = scheduler.scheduleAtInstant(() -> {
                         showCorrectAnswer();
                     }, roundEndTime);
-                }
-                else{
+                } else {
                     showCorrectAnswer();
                 }
                 if (tasks[4] != null) {
@@ -224,7 +223,7 @@ public class GameScreenCtrl extends SceneController {
                 }
 
 
-                if (questionIndex == 1){
+                if (questionIndex == 1) {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
                         //tasks[0].cancel(false);
                         System.out.println("non live time: " + roundStartTime);
@@ -235,8 +234,7 @@ public class GameScreenCtrl extends SceneController {
                     }, roundEndTime.plusSeconds(2));
 
                     System.out.println("live time: " + roundEndTime);
-                }
-                else{
+                } else {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
                         //tasks[0].cancel(false);
                         System.out.println("non live time: " + roundStartTime);
