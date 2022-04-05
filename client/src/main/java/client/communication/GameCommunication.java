@@ -111,10 +111,10 @@ public class GameCommunication {
 
 
     /**
-     * Get the correct answer from the question.
      *
-     * @param gameCode The game code for the specific game
-     * @return The correct answer(in energy consumption number)
+     *
+     * @param gameCode
+     * @return
      */
     public static Game endGame(String gameCode) {
         if (gameCode.equals("foo")) {

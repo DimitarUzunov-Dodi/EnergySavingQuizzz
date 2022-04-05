@@ -170,11 +170,9 @@ public class GameScreenCtrl extends SceneController {
 
         userListWithEmojis = FXCollections.observableList(new ArrayList<>());
         for (String name : userList) {
-            if (emojisForUsers.containsKey(name)) {
-                userListWithEmojis.add(new EmojiListCell(emojisForUsers.get(name), name));
-            } else {
-                userListWithEmojis.add(new EmojiListCell(null, name));
-            }
+            userListWithEmojis.add(
+                    new EmojiListCell(emojisForUsers.getOrDefault(name, null), name)
+            );
         }
         // refresh player list
         currentLeaderboard.setItems(userListWithEmojis);
@@ -217,7 +215,6 @@ public class GameScreenCtrl extends SceneController {
                     return;
                 }
 
-
                 roundStartTime = Instant.ofEpochMilli(o[0]);
 
                 roundEndTime = Instant.ofEpochMilli(o[1]);
@@ -226,9 +223,13 @@ public class GameScreenCtrl extends SceneController {
                 System.out.println("roundEndTime: " + roundEndTime);
                 //shows round EndTime
 
-                questionIndex++;
-                //System.out.println("the real index = " + questionIndex);
-
+                // handle end of game
+                if (questionIndex++ >= 21) {
+                    GameCommunication.disconnect(); // disconnects from ws
+                    for (var task: tasks) // cancel all queued tasks
+                        task.cancel(false);
+                    myFxml.showScene(EndLeaderboardCtrl.class); // transition immediately
+                }
 
                 // transition to leaderboard
                 if (tasks[1] != null) {
@@ -280,8 +281,6 @@ public class GameScreenCtrl extends SceneController {
                     System.out.println("live time: " + roundEndTime);
                 }
 
-
-
                 if (tasks[2] != null) {
                     System.out.println("2 canceled");
                     tasks[2].cancel(false);
@@ -317,38 +316,6 @@ public class GameScreenCtrl extends SceneController {
                     },Instant.now().plusSeconds(3));
 
                 });
-        /*
-        GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, EmojiMessage.class,
-                v -> currentLeaderboard.setCellFactory(param -> new ListCell<>() {
-                    @Override
-                    public void updateItem(String name, boolean empty) {
-                        super.updateItem(name, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-
-
-                                if (Duration.between(Instant.now(), roundEndTime).toSeconds() > 3) {
-                                    scheduler.scheduleAtInstant(() -> {
-                                        img.setFitWidth(0.1);
-                                        img.setImage(null);
-                                        setGraphic(img);
-                                    },Instant.now().plusSeconds(3));
-                                } else {
-                                    scheduler.scheduleAtInstant(() -> {
-                                        img.setFitWidth(0.1);
-                                        img.setImage(null);
-                                        setGraphic(img);
-                                    }, roundEndTime);
-                                }
-                            }
-                            setText(name);
-                        }
-                    }
-                }));
-
-         */
     }
 
     /**
@@ -416,10 +383,6 @@ public class GameScreenCtrl extends SceneController {
         long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex - 1);
         System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
-
-
-
-
     }
 
     private void showAnswerInComponent(long correctAnswer) {

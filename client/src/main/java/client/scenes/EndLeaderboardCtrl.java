@@ -34,8 +34,6 @@ import javafx.scene.image.ImageView;
  */
 public class EndLeaderboardCtrl extends SceneController {
 
-
-    private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[1];
     @FXML
     private BarChart chart;
     @FXML
@@ -55,9 +53,7 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
-        tasks[0] = scheduler.scheduleAtInstant(() -> {
-            GameCommunication.endGame(currentGameID);
-        }, Instant.now().plusSeconds(2));
+        GameCommunication.endGame(currentGameID); // end current game
         chart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         //get player list from server
         scheduler.execute(() -> {
@@ -89,8 +85,6 @@ public class EndLeaderboardCtrl extends SceneController {
                 });
                 System.out.println(series);
                 chart.getData().add(series);
-
-
             }
         });
         initImages();
@@ -107,14 +101,14 @@ public class EndLeaderboardCtrl extends SceneController {
             currentGameID = WaitingRoomCommunication.getPublicCode();
         } catch (RuntimeException e) {
             e.printStackTrace();
-            UserAlert.userAlert("WARN", "Cannot connect ot server",
+            UserAlert.userAlert("WARN", "Cannot connect to server",
                     "Check your connection and try again.");
         }
         try {
             joinGame();
         } catch (RuntimeException e) {
             e.printStackTrace();
-            UserAlert.userAlert("WARN", "Cannot connect ot server",
+            UserAlert.userAlert("WARN", "Cannot connect to server",
                     "Check your connection and try again.");
         }
     }
