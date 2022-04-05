@@ -16,7 +16,6 @@ import commons.QuestionTypeB;
 import commons.QuestionTypeC;
 import commons.QuestionTypeD;
 import commons.User;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -49,12 +49,16 @@ public class GameScreenCtrl extends SceneController {
             entry("emoji2", new Image("client/images/emoji2.png")),
             entry("emoji3", new Image("client/images/emoji3.png")));
 
+    private ObservableList<String> userList;
+    private ObservableList<EmojiListCell> userListWithEmojis;
+    private Map<String, String> emojisForUsers;
+
     @FXML
     private StackPane questionHolder;
     @FXML
     private ProgressBar progressBar;
     @FXML
-    private ListView<String> currentLeaderboard;
+    private ListView<EmojiListCell> currentLeaderboard;
     @FXML
     private ImageView emoji1;
     @FXML
@@ -117,6 +121,25 @@ public class GameScreenCtrl extends SceneController {
      */
     @Override
     public void show(Object... args) {
+        emojisForUsers = new HashMap<>();
+        currentLeaderboard.setCellFactory(param -> new ListCell<EmojiListCell>() {
+            @Override
+            protected void updateItem(EmojiListCell myObject, boolean b) {
+                super.updateItem(myObject, b);
+                if (myObject != null) {
+                    setText(myObject.getName());
+                    ImageView img = new ImageView();
+                    if (myObject.getEmoji() != null) {
+                        img.setFitHeight(20);
+                        img.setFitWidth(20);
+                        img.setImage(emojis.get(myObject.getEmoji()));
+                    } else {
+                        img.setImage(null);
+                    }
+                    setGraphic(img);
+                }
+            }
+        });
         System.out.println(currentGameID);
         // handle varargs
         if (args.length != 1 || !args[0].getClass().equals(Boolean.class)) {
@@ -140,13 +163,21 @@ public class GameScreenCtrl extends SceneController {
      */
     @Override
     public void show() {
+        userList = FXCollections.observableList(
+                CommunicationUtils.getAllUsers(currentGameID)
+                        .orElse(new ArrayList<>(0))
+                .stream().map(User::getUsername).collect(Collectors.toList()));
 
-
+        userListWithEmojis = FXCollections.observableList(new ArrayList<>());
+        for (String name : userList) {
+            if (emojisForUsers.containsKey(name)) {
+                userListWithEmojis.add(new EmojiListCell(emojisForUsers.get(name), name));
+            } else {
+                userListWithEmojis.add(new EmojiListCell(null, name));
+            }
+        }
         // refresh player list
-        currentLeaderboard.setItems(FXCollections.observableList(
-                CommunicationUtils.getAllUsers(currentGameID).orElse(new ArrayList<>(0))
-                        .stream().map(User::getUsername).collect(Collectors.toList())
-        ));
+        currentLeaderboard.setItems(userListWithEmojis);
         progressBar.setProgress(1d);
         if (tasks[0] != null) {
 
@@ -210,12 +241,11 @@ public class GameScreenCtrl extends SceneController {
                     tasks[3].cancel(false);
                 }
 
-                if (questionIndex == 1){
+                if (questionIndex == 1) {
                     tasks[3] = scheduler.scheduleAtInstant(() -> {
                         showCorrectAnswer();
                     }, roundEndTime);
-                }
-                else{
+                } else {
                     showCorrectAnswer();
                 }
                 if (tasks[4] != null) {
@@ -224,7 +254,7 @@ public class GameScreenCtrl extends SceneController {
                 }
 
 
-                if (questionIndex == 1){
+                if (questionIndex == 1) {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
                         //tasks[0].cancel(false);
                         System.out.println("non live time: " + roundStartTime);
@@ -235,8 +265,7 @@ public class GameScreenCtrl extends SceneController {
                     }, roundEndTime.plusSeconds(2));
 
                     System.out.println("live time: " + roundEndTime);
-                }
-                else{
+                } else {
                     tasks[1] = scheduler.scheduleAtInstant(() -> {
                         //tasks[0].cancel(false);
                         System.out.println("non live time: " + roundStartTime);
@@ -268,6 +297,28 @@ public class GameScreenCtrl extends SceneController {
 
         // register for emojis
         GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, EmojiMessage.class,
+                v -> {
+                    System.out.println("Activated");
+                    emojisForUsers.put(v.username, v.emojiID);
+                    userListWithEmojis = FXCollections.observableList(new ArrayList<>());
+                    new Thread(() -> {
+                        for (String name : userList) {
+                            if (emojisForUsers.containsKey(name)) {
+                                userListWithEmojis.add(
+                                        new EmojiListCell(emojisForUsers.get(name), name));
+                            } else {
+                                userListWithEmojis.add(new EmojiListCell(null, name));
+                            }
+                        }
+                        Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
+                    }).run();
+                    scheduler.scheduleAtInstant(() -> {
+                        emojisForUsers.remove(v.username);
+                    },Instant.now().plusSeconds(3));
+
+                });
+        /*
+        GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, EmojiMessage.class,
                 v -> currentLeaderboard.setCellFactory(param -> new ListCell<>() {
                     @Override
                     public void updateItem(String name, boolean empty) {
@@ -276,12 +327,7 @@ public class GameScreenCtrl extends SceneController {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            if (name.equals(v.username)) {
-                                ImageView img = new ImageView();
-                                img.setFitHeight(20);
-                                img.setFitWidth(20);
-                                img.setImage(emojis.get(v.emojiID));
-                                setGraphic(img);
+
 
                                 if (Duration.between(Instant.now(), roundEndTime).toSeconds() > 3) {
                                     scheduler.scheduleAtInstant(() -> {
@@ -301,6 +347,8 @@ public class GameScreenCtrl extends SceneController {
                         }
                     }
                 }));
+
+         */
     }
 
     /**

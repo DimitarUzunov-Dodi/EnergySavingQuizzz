@@ -185,7 +185,7 @@ public class EmojiController {
     public EmojiMessage sendEmoji(
         @DestinationVariable String gameID, @DestinationVariable String username,
         EmojiMessage emojiInfo) throws Exception {
-
+        System.out.println("ACtivated");
         LOGGER.info(gameID);
         System.out.println("fuck");
         if (emojiInfo.emojiID.equals("emoji1")) {
