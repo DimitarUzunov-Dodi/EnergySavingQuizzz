@@ -33,7 +33,7 @@ public final class MainCtrl {
         myFxml = new MyFXML(injector);
         scheduler.setRemoveOnCancelPolicy(false);
         scheduler.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-        scheduler.startDebugPrinting();
+        //scheduler.startDebugPrinting();
     }
 
     /**
@@ -46,7 +46,7 @@ public final class MainCtrl {
         Main.primaryStage.setMinWidth(800);
         Main.primaryStage.setMinHeight(600);
 
-        myFxml.showScene(EndLeaderboardCtrl.class);
+        myFxml.showScene(SplashCtrl.class);
         Main.primaryStage.show(); // make app window visible
     }
 

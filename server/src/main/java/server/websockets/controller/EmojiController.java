@@ -2,6 +2,7 @@ package server.websockets.controller;
 
 import commons.EmojiMessage;
 import commons.Game;
+import commons.TaskScheduler;
 import commons.WsGame;
 import java.time.Instant;
 import java.util.HashMap;
@@ -23,7 +24,11 @@ public class EmojiController {
     @Autowired
     private final GameService gameService;
 
+
     private Game currentGame;
+
+    // used to schedule and execute all sorts of stuff (e.g. end the current round)
+    public static final TaskScheduler scheduler = new TaskScheduler(1);
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
@@ -42,6 +47,7 @@ public class EmojiController {
     public EmojiController(Random random, GameService gameService) {
         this.random = random;
         this.gameService = gameService;
+        checkActiveGames();
         //this.currentGame = getGame();
 
     }
@@ -56,6 +62,23 @@ public class EmojiController {
     }
 
     /**
+     * Check for empty games and handle them.
+     */
+    public void checkActiveGames() {
+        scheduler.scheduleAtFixedRate(() -> {
+            for (String gameID: webSocketSessionList.keySet()) {
+                if (gameService.getGame(gameID).getUserList().size() == 0) {
+                    gameService.removeGame(gameID);
+                    webSocketSessionList.remove(gameID);
+
+                }
+            }
+        }, 1000);
+
+    }
+
+
+    /**
      * creates the time for a game.
      *
      * @throws Exception Exception
@@ -64,6 +87,7 @@ public class EmojiController {
     @SendTo("/foo")
     public void createDate(@DestinationVariable String currentGameID,
                            @DestinationVariable Integer questionNumber) throws Exception {
+
         LOGGER.info("creating time");
         LOGGER.info(currentGameID + "  " + questionNumber);
 
@@ -114,10 +138,11 @@ public class EmojiController {
         userInputs.get(currentGameID).put(questionNumber, last + 1);
         if (userInputs.get(currentGameID).get(questionNumber)
             == gameService.getGame(currentGameID).getUserList().size()) {
-            WsGame time = new WsGame(Instant.now().plusMillis(500),
-                Instant.now().plusSeconds(gameService
+            Instant endTime = Instant.now().plusSeconds(gameService
                 .getQuestion(currentGameID, questionNumber)
-                .getDuration().toSeconds()));
+                .getDuration().toSeconds());
+            Instant startTime = endTime.plusSeconds(8);
+            WsGame time = new WsGame(startTime, endTime);
             if (questionNumber != 0) {
                 LOGGER.info("plus 12");
                 time.endTime = time.endTime.plusSeconds(6);
@@ -184,7 +209,7 @@ public class EmojiController {
     public EmojiMessage sendEmoji(
         @DestinationVariable String gameID, @DestinationVariable String username,
         EmojiMessage emojiInfo) throws Exception {
-
+        System.out.println("ACtivated");
         LOGGER.info(gameID);
         System.out.println("fuck");
         if (emojiInfo.emojiID.equals("emoji1")) {

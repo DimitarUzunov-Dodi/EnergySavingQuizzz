@@ -1,6 +1,6 @@
 package client.communication;
 
-import static client.communication.Utils.serverAddress;
+import static client.communication.CommunicationUtils.serverAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 

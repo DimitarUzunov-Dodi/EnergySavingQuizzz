@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
-
 /**
  * Abstract class that forms the basis of a scene controller.
  */
@@ -77,24 +76,22 @@ public abstract class SceneController {
         stage.setScene(scene);
     }
 
+    /**
+     * Schedule a recurrent task that continuously adjusts the progress bar value.
+     * @param bar Progress bar to be updated
+     * @param endTime The moment in time the progress reaches 0
+     * @return A reference to the scheduled task that can be used to cancel it
+     */
     protected static ScheduledFuture<?> scheduleProgressBar(ProgressBar bar, Instant endTime) {
-        bar.setUserData(32d / Duration.between(Instant.now(), endTime).toMillis());
-        return scheduler.scheduleAtFixedRate(
-                () -> {
-                    bar.setProgress(Math.max(0,
-                            bar.getProgress() - (Double) bar.getUserData()));
-                },
-                32L);
-    }
+        System.out.println(endTime);
+        bar.setUserData(bar.getProgress() * 32d
+                / Duration.between(Instant.now(), endTime).toMillis()); // progress step
+        System.out.println("-- step: " + bar.getUserData());
+        System.out.println("progress: " + bar.getProgress());
 
-    protected static ScheduledFuture<?> scheduleProgressBar(ProgressBar bar,
-                                                            Instant startTime, Instant endTime) {
-        bar.setUserData(32d / Duration.between(startTime, endTime).toMillis());
         return scheduler.scheduleAtFixedRate(
-            () -> {
-                bar.setProgress(Math.max(0,
-                    bar.getProgress() - (Double) bar.getUserData()));
-            },
-            32L);
+                () -> bar.setProgress(Math.max(0,
+                        bar.getProgress() - (Double) bar.getUserData())),
+                32L);
     }
 }

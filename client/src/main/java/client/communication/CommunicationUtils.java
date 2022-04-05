@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import org.glassfish.jersey.client.ClientConfig;
 
-public class Utils {
+public class CommunicationUtils {
     public static String serverAddress;
 
     /**
