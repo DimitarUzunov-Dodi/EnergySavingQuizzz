@@ -42,9 +42,4 @@ class ScoreRecordTest {
 
     }
 
-    @Test
-    void testToStringSameAttribute() {
-        ScoreRecord a =  new ScoreRecord("Dodi",100);
-        assertEquals(record1.toString(),a.toString());
-    }
 }
