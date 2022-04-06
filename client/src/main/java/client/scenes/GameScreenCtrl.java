@@ -151,6 +151,7 @@ public class GameScreenCtrl extends SceneController {
             // ws setup
             setupWebSockets();
             // receive first question time
+            System.out.println("fuck");
             GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         }
         show();
@@ -176,14 +177,18 @@ public class GameScreenCtrl extends SceneController {
         }
         // refresh player list
         currentLeaderboard.setItems(userListWithEmojis);
-        progressBar.setProgress(1d);
-        if (tasks[0] != null) {
+        if (questionIndex != 0){
+            progressBar.setProgress(1d);
+            if (tasks[0] != null) {
 
-            tasks[0].cancel(false);
+                tasks[0].cancel(false);
+            }
+            tasks[0] = SceneController
+                .scheduleProgressBar(progressBar, roundEndTime);
         }
-        tasks[0] = SceneController
-            .scheduleProgressBar(progressBar, roundEndTime);
 
+
+    progressBar.setProgress(1);
         // UI stuff
 
         refreshQuestion();
@@ -217,9 +222,17 @@ public class GameScreenCtrl extends SceneController {
 
                 roundStartTime = Instant.ofEpochMilli(o[0]);
                 roundEndTime = Instant.ofEpochMilli(o[1]);
+                System.out.println(roundEndTime);
+                Long check = o[2];
+                if (check == 0L){
+                    //TODO
+                }
 
+                if (check != 0L){
+                    questionIndex++;
+                }
                 // handle end of game
-                if (questionIndex++ >= 3) {
+                if (questionIndex >= 10) {
                     GameCommunication.disconnect(); // disconnects from ws
                     for (var task: tasks) { // cancel all queued tasks
                         task.cancel(false);
@@ -228,6 +241,18 @@ public class GameScreenCtrl extends SceneController {
                     Platform.runLater(() -> myFxml.showScene(EndLeaderboardCtrl.class));
                     return;
                 }
+
+              //
+                if (questionIndex == 1){
+                    if (tasks[0] != null) {
+
+                        tasks[0].cancel(false);
+                    }
+                    progressBar.setProgress(1d);
+                    tasks[0] = SceneController
+                        .scheduleProgressBar(progressBar, roundEndTime);
+                }
+
 
                 // transition to leaderboard
                 if (tasks[1] != null) {
@@ -346,10 +371,11 @@ public class GameScreenCtrl extends SceneController {
      */
     public void sendAnswer(long answer) {
         System.out.print("sending answer");
-        System.out.println(answer);
+        System.out.println(answer + "foo");
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                questionIndex, answer, getTimeLeft());
+                questionIndex , answer, getTimeLeft());
         System.out.println("foo time: " + questionIndex);
+        System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
     }
 
