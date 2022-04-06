@@ -121,10 +121,10 @@ public class EmojiController {
     @SendTo("/time/get/receive/{currentGameID}")
     public Long[] getDate(@DestinationVariable String currentGameID,
                         @DestinationVariable Integer questionNumber, String foo) throws Exception {
-        if (foo.equals("Joker")){
+        if (foo.equals("Joker")) {
             WsGame res = gameTimes.get(currentGameID).get(questionNumber);
             Long[] realRes = new Long[]{Instant.now().toEpochMilli(), (res.endTime.toEpochMilli()
-                - ((res.endTime.toEpochMilli() - Instant.now().toEpochMilli())/2)), 0L};
+                    - ((res.endTime.toEpochMilli() - Instant.now().toEpochMilli()) / 2)), 0L};
             return realRes;
         }
         LOGGER.info("getting time");

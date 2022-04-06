@@ -52,7 +52,7 @@ public class GameScreenCtrl extends SceneController {
     private ObservableList<String> userList;
     private ObservableList<EmojiListCell> userListWithEmojis;
     private Map<String, String> emojisForUsers;
-
+    private boolean bool = false;
     @FXML
     private StackPane questionHolder;
     @FXML
@@ -177,7 +177,7 @@ public class GameScreenCtrl extends SceneController {
         }
         // refresh player list
         currentLeaderboard.setItems(userListWithEmojis);
-        if (questionIndex != 0){
+        if (questionIndex != 0) {
             progressBar.setProgress(1d);
             if (tasks[0] != null) {
 
@@ -188,7 +188,7 @@ public class GameScreenCtrl extends SceneController {
         }
 
 
-    progressBar.setProgress(1);
+        progressBar.setProgress(1);
         // UI stuff
 
         refreshQuestion();
@@ -224,11 +224,11 @@ public class GameScreenCtrl extends SceneController {
                 roundEndTime = Instant.ofEpochMilli(o[1]);
                 System.out.println(roundEndTime);
                 Long check = o[2];
-                if (check == 0L){
+                if (check == 0L) {
                     //TODO
                 }
 
-                if (check != 0L){
+                if (check != 0L) {
                     questionIndex++;
                 }
                 // handle end of game
@@ -242,8 +242,9 @@ public class GameScreenCtrl extends SceneController {
                     return;
                 }
 
-              //
-                if (questionIndex == 1){
+
+                if (questionIndex == 1) {
+                    bool = true;
                     if (tasks[0] != null) {
 
                         tasks[0].cancel(false);
@@ -330,7 +331,13 @@ public class GameScreenCtrl extends SceneController {
      * Get the question from the server and display it.
      */
     public void refreshQuestion() {
-        activeQuestion = GameCommunication.getQuestion(currentGameID, questionIndex);
+        int specialIndex = questionIndex;
+        if (bool) {
+            specialIndex--;
+        }
+        System.out.println("REAL QUESTION INDEX: " + questionIndex);
+        System.out.println("SPECIALINDEX: " + specialIndex);
+        activeQuestion = GameCommunication.getQuestion(currentGameID, specialIndex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class)
@@ -373,7 +380,7 @@ public class GameScreenCtrl extends SceneController {
         System.out.print("sending answer");
         System.out.println(answer + "foo");
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                questionIndex , answer, getTimeLeft());
+                questionIndex, answer, getTimeLeft());
         System.out.println("foo time: " + questionIndex);
         System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
