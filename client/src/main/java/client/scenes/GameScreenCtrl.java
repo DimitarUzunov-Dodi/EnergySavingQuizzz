@@ -20,7 +20,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -52,6 +55,8 @@ public class GameScreenCtrl extends SceneController {
     private ObservableList<String> userList;
     private ObservableList<EmojiListCell> userListWithEmojis;
     private Map<String, String> emojisForUsers;
+    private Map<String, ScheduledFuture> emojisForDestruction;
+    public static ScheduledExecutorService emojiService;
     private boolean bool = false;
     private int superSpecialIndex = 0;
     @FXML
@@ -71,9 +76,15 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private Label rewardLabel;
 
+    /**
+     * Constructor is changed for emoji disappearing purposes.
+     * @param myFxml myfxml object
+     */
+
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
+        emojiService = Executors.newSingleThreadScheduledExecutor();
     }
 
     /**
@@ -122,12 +133,12 @@ public class GameScreenCtrl extends SceneController {
     @Override
     public void show(Object... args) {
         emojisForUsers = new HashMap<>();
+        emojisForDestruction = new HashMap<>();
         currentLeaderboard.setCellFactory(param -> new ListCell<EmojiListCell>() {
             @Override
             protected void updateItem(EmojiListCell myObject, boolean b) {
                 super.updateItem(myObject, b);
                 if (myObject != null) {
-                    setText(myObject.getName());
                     ImageView img = new ImageView();
                     if (myObject.getEmoji() != null) {
                         img.setFitHeight(20);
@@ -136,7 +147,10 @@ public class GameScreenCtrl extends SceneController {
                     } else {
                         img.setImage(null);
                     }
-                    setGraphic(img);
+                    Platform.runLater(() -> {
+                        setText(myObject.getName());
+                        setGraphic(img);
+                    });
                 }
             }
         });
@@ -321,10 +335,23 @@ public class GameScreenCtrl extends SceneController {
                         }
                         Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
                     }).run();
-                    scheduler.scheduleAtInstant(() -> {
+                    if (emojisForDestruction.containsKey(v.username)) {
+                        emojisForDestruction.get(v.username).cancel(true);
+                    }
+                    ScheduledFuture f = emojiService.schedule(() -> {
                         emojisForUsers.remove(v.username);
-                    },Instant.now().plusSeconds(3));
-
+                        userListWithEmojis = FXCollections.observableList(new ArrayList<>());
+                        for (String name : userList) {
+                            if (emojisForUsers.containsKey(name)) {
+                                userListWithEmojis.add(
+                                        new EmojiListCell(emojisForUsers.get(name), name));
+                            } else {
+                                userListWithEmojis.add(new EmojiListCell(null, name));
+                            }
+                        }
+                        Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
+                    },500, TimeUnit.MILLISECONDS);
+                    emojisForDestruction.put(v.username, f);
                 });
     }
 

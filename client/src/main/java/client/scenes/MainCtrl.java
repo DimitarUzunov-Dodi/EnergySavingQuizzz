@@ -64,6 +64,7 @@ public final class MainCtrl {
                 System.out.println("Blame Yehor for this stupid catch");
             }
             scheduler.shutdown();
+            GameScreenCtrl.emojiService.shutdown();
             Main.primaryStage.close();
         } else {
             e.consume();
