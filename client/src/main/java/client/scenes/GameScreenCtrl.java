@@ -378,7 +378,7 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
-        superSpecialIndex = questionIndex -1;
+        superSpecialIndex = questionIndex - 1;
         System.out.print("sending answer");
         System.out.println(answer + "foo");
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
@@ -398,7 +398,7 @@ public class GameScreenCtrl extends SceneController {
             });
         }
 
-        long correctAnswer = GameCommunication.getAnswer(currentGameID, superSpecialIndex );
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, superSpecialIndex);
         System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
     }
