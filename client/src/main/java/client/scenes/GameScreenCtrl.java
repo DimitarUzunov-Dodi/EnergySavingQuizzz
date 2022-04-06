@@ -53,6 +53,7 @@ public class GameScreenCtrl extends SceneController {
     private ObservableList<EmojiListCell> userListWithEmojis;
     private Map<String, String> emojisForUsers;
     private boolean bool = false;
+    private int superSpecialIndex = 0;
     @FXML
     private StackPane questionHolder;
     @FXML
@@ -377,10 +378,11 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
+        superSpecialIndex = questionIndex -1;
         System.out.print("sending answer");
         System.out.println(answer + "foo");
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                questionIndex, answer, getTimeLeft());
+                superSpecialIndex, answer, getTimeLeft());
         System.out.println("foo time: " + questionIndex);
         System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
@@ -396,7 +398,7 @@ public class GameScreenCtrl extends SceneController {
             });
         }
 
-        long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex - 1);
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, superSpecialIndex );
         System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
     }
