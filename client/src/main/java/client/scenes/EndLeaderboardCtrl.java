@@ -53,6 +53,7 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
+        cleanGraph();
         scheduler.execute(() -> {
             Optional<List<User>> l = CommunicationUtils.getAllUsers(currentGameID);
 
@@ -128,5 +129,13 @@ public class EndLeaderboardCtrl extends SceneController {
     @FXML
     private void onBackButton() {
         myFxml.showScene(SplashCtrl.class);
+    }
+
+    /**
+     * fixes the data in on the graph
+     */
+    private void cleanGraph(){
+        chart.lookup(".chart").setStyle("-fx-max-width: 10000");
+        chart.getData().clear();
     }
 }
