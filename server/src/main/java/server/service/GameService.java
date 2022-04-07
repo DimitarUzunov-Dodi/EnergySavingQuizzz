@@ -37,7 +37,7 @@ public class GameService {
         this.activeGames = new HashMap<String, Game>();
         this.activityRepository = activityRepository;
         this.random = random;
-        this.currentPublicGame = createGame();
+        this.currentPublicGame = "";
     }
 
     /**
@@ -303,5 +303,9 @@ public class GameService {
             }
         }
         return null;
+    }
+
+    public void setCurrentPublicGame(String currentPublicGame) {
+        this.currentPublicGame = currentPublicGame;
     }
 }
