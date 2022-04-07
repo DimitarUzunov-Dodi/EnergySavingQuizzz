@@ -277,7 +277,7 @@ public class GameScreenCtrl extends SceneController {
                     questionIndex++;
                 }
                 // handle end of game
-                if (questionIndex >= 21) {
+                if (questionIndex >= 5) {
                     GameCommunication.disconnect(); // disconnects from ws
                     for (var task: tasks) { // cancel all queued tasks
                         if (task != null) {
