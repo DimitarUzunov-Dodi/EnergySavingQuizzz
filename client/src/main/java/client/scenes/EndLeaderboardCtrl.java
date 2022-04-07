@@ -27,7 +27,6 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.ImageView;
 
 /**
  * Displays the final screen at the end of the game.
@@ -36,8 +35,6 @@ public class EndLeaderboardCtrl extends SceneController {
 
     @FXML
     private BarChart<String, Integer> chart;
-    @FXML
-    private ImageView backButtonImg;
 
     /**
      * Constructor used by INJECTOR.
@@ -132,9 +129,9 @@ public class EndLeaderboardCtrl extends SceneController {
     }
 
     /**
-     * fixes the data in on the graph
+     * fixes the data in on the graph.
      */
-    private void cleanGraph(){
+    private void cleanGraph() {
         chart.lookup(".chart").setStyle("-fx-max-width: 10000");
         chart.getData().clear();
     }
