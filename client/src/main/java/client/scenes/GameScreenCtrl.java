@@ -132,6 +132,7 @@ public class GameScreenCtrl extends SceneController {
      */
     @Override
     public void show(Object... args) {
+        bool = false;
         emojisForUsers = new HashMap<>();
         emojisForDestruction = new HashMap<>();
         currentLeaderboard.setCellFactory(param -> new ListCell<EmojiListCell>() {
