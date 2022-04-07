@@ -247,10 +247,12 @@ public class GameScreenCtrl extends SceneController {
                     questionIndex++;
                 }
                 // handle end of game
-                if (questionIndex >= 10) {
+                if (questionIndex >= 4) {
                     GameCommunication.disconnect(); // disconnects from ws
                     for (var task: tasks) { // cancel all queued tasks
-                        task.cancel(false);
+                        if (task != null) {
+                            task.cancel(false);
+                        }
                     }
                     // transition immediately
                     Platform.runLater(() -> myFxml.showScene(EndLeaderboardCtrl.class));
