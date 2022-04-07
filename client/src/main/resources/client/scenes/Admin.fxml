@@ -57,7 +57,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="Admin Page" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Label id="label" text="Admin Page" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <font>
                         <Font name="Imprint MT Shadow" size="59.0" />
                     </font>
