@@ -6,6 +6,8 @@ import client.communication.WaitingRoomCommunication;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import commons.TaskScheduler;
+
+import java.net.ConnectException;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -57,14 +59,16 @@ public final class MainCtrl {
         quitAlert.setHeaderText("Are you sure you want to quit?");
         Optional<ButtonType> result = quitAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            WaitingRoomCommunication.leaveGame(currentGameID, username);
             try {
                 WaitingRoomCtrl.pollingThread.cancel();
+                WaitingRoomCommunication.leaveGame(currentGameID, username);
+                GameScreenCtrl.emojiService.shutdown();
             } catch (NullPointerException exception) {
-                System.out.println("Blame Yehor for this stupid catch");
+                //exception.printStackTrace();
+            } catch (RuntimeException re) {
+                //re.printStackTrace();
             }
             scheduler.shutdown();
-            GameScreenCtrl.emojiService.shutdown();
             Main.primaryStage.close();
         } else {
             e.consume();

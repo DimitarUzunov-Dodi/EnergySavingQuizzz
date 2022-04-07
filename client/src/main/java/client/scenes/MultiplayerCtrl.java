@@ -43,12 +43,6 @@ public class MultiplayerCtrl extends SceneController {
     private void onJoinPublic() {
         try {
             currentGameID = WaitingRoomCommunication.getPublicCode();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            UserAlert.userAlert("WARN", "Cannot connect ot server",
-                    "Check your connection and try again.");
-        }
-        try {
             joinGame();
         } catch (RuntimeException e) {
             e.printStackTrace();
