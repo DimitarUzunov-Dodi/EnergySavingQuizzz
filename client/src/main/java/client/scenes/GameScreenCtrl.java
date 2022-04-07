@@ -447,7 +447,7 @@ public class GameScreenCtrl extends SceneController {
             timeLeft *= 2;
         }
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                questionIndex, answer, timeLeft);
+                superSpecialIndex, answer, timeLeft);
         System.out.println("foo time: " + questionIndex);
         System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
