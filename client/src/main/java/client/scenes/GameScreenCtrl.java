@@ -43,6 +43,7 @@ public class GameScreenCtrl extends SceneController {
     private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[5];
     private Question activeQuestion;
     private int reward;
+    private boolean jokerDoublePointsUsed;
 
     private final Map<String, Image> emojis = Map.ofEntries(
             entry("emoji1", new Image("client/images/emoji1.png")),
@@ -69,6 +70,10 @@ public class GameScreenCtrl extends SceneController {
     private ImageView menuButton;
     @FXML
     private Label rewardLabel;
+    @FXML
+    private ImageView jokerRemoveOneIncorrect;
+    @FXML
+    private ImageView jokerDoublePoints;
 
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
@@ -103,6 +108,21 @@ public class GameScreenCtrl extends SceneController {
         EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username, "emoji3");
         GameCommunication.send("/app/emoji/" + currentGameID
                 + "/" + MainCtrl.username, emojiInfo);
+    }
+
+    @FXML
+    private void jokerRemoveOneIncorrectPressed() {
+
+    }
+
+    @FXML
+    private void jokerDoublePointsPressed() {
+        if (!jokerDoublePoints.isDisabled()) {
+            jokerDoublePointsUsed = true;
+            jokerDoublePoints.setDisable(true);
+            jokerDoublePoints.setOpacity(0.25);
+            jokerDoublePointsUsed = true;
+        }
     }
 
     /**
@@ -153,6 +173,7 @@ public class GameScreenCtrl extends SceneController {
             // receive first question time
             GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         }
+        //initJokers();
         show();
     }
 
@@ -327,6 +348,7 @@ public class GameScreenCtrl extends SceneController {
                 break;
         }
         rewardLabel.setVisible(false);
+        jokerDoublePointsUsed = false;
     }
 
     /**
@@ -347,8 +369,11 @@ public class GameScreenCtrl extends SceneController {
     public void sendAnswer(long answer) {
         System.out.print("sending answer");
         System.out.println(answer);
+        int timeLeft = getTimeLeft();
+        if(jokerDoublePointsUsed)
+            timeLeft *= 2;
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                questionIndex, answer, getTimeLeft());
+                questionIndex, answer, timeLeft);
         System.out.println("foo time: " + questionIndex);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
     }
@@ -401,10 +426,24 @@ public class GameScreenCtrl extends SceneController {
         emoji1.setImage(new Image("client/images/emoji1.png"));
         emoji2.setImage(new Image("client/images/emoji2.png"));
         emoji3.setImage(new Image("client/images/emoji3.png"));
+
+        jokerRemoveOneIncorrect.setImage(new Image("client/images/joker1.png"));
+        jokerDoublePoints.setImage(new Image("client/images/joker2.png"));
     }
 
     // This is stupid, why not use the ACTUAL time left?
     private int getTimeLeft() {
         return (int) Math.round(progressBar.getProgress() * 100);
     }
+
+    /*
+    private void initJokers() {
+        jokerDoublePoints.setOpacity(1);
+        jokerDoublePoints.setDisable(false);
+
+        jokerRemoveOneIncorrect.setOpacity(1);
+        jokerRemoveOneIncorrect.setDisable(false);
+    }
+
+     */
 }
