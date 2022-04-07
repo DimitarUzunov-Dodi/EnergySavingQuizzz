@@ -114,7 +114,7 @@ public class UserController {
      * @param gameCode gamecode
      * @return ResponseEntity
      */
-    @GetMapping("start/{gameCode}/started")
+    @GetMapping("/start/{gameCode}/started")
     public ResponseEntity<String> testIfStarted(@PathVariable String gameCode) {
         if (!(gameService.doesGameExist(gameCode))) {
             return ResponseEntity

@@ -88,5 +88,26 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="jokerRemoveOneIncorrect" fitHeight="50.0" fitWidth="60.0" onMouseClicked="#jokerRemoveOneIncorrectPressed" onMousePressed="#jokerRemoveOneIncorrectPressed" onTouchPressed="#jokerRemoveOneIncorrectPressed" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../images/joker1.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="jokerDoublePoints" fitHeight="50.0" fitWidth="60.0" onMouseClicked="#jokerDoublePointsPressed" onMousePressed="#jokerDoublePointsPressed" onTouchPressed="#jokerDoublePointsPressed" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../images/joker2.png" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
    </children>
 </GridPane>

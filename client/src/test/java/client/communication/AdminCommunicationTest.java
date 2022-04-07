@@ -21,6 +21,7 @@ public class AdminCommunicationTest {
     public static HttpServer httpServer;
     public static String activityId = "1";
 
+
     /**
      * Setups http server with similar mapping to game server
      * in order to simulate server responses.

@@ -28,7 +28,7 @@ public class TestActivityRepository implements ActivityRepository {
      */
     public List<Activity> getThreeRandom() {
         ArrayList<Activity> result = new ArrayList<>();
-        for (int i = 0; i < activities.size(); i++) {
+        for (int i = 0; i < 3; i++) {
             result.add(activities.get(i));
         }
         return result;

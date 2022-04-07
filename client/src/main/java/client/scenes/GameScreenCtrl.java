@@ -46,6 +46,8 @@ public class GameScreenCtrl extends SceneController {
     private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[5];
     private Question activeQuestion;
     private int reward;
+    private boolean jokerDoublePointsUsed;
+    private boolean answerGiven;
 
     private final Map<String, Image> emojis = Map.ofEntries(
             entry("emoji1", new Image("client/images/emoji1.png")),
@@ -75,6 +77,10 @@ public class GameScreenCtrl extends SceneController {
     private ImageView menuButton;
     @FXML
     private Label rewardLabel;
+    @FXML
+    private ImageView jokerRemoveOneIncorrect;
+    @FXML
+    private ImageView jokerDoublePoints;
 
     /**
      * Constructor is changed for emoji disappearing purposes.
@@ -115,6 +121,28 @@ public class GameScreenCtrl extends SceneController {
         EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username, "emoji3");
         GameCommunication.send("/app/emoji/" + currentGameID
                 + "/" + MainCtrl.username, emojiInfo);
+    }
+
+    @FXML
+    private void jokerRemoveOneIncorrectPressed() {
+        if (!jokerRemoveOneIncorrect.isDisabled() && !answerGiven
+                && activeQuestion.getQuestionType() != 3) {
+
+            jokerRemoveOneIncorrect.setDisable(true);
+            jokerRemoveOneIncorrect.setOpacity(0.25);
+            long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex);
+            removeIncorrectAnswer(correctAnswer);
+        }
+    }
+
+    @FXML
+    private void jokerDoublePointsPressed() {
+        if (!jokerDoublePoints.isDisabled() && !answerGiven) {
+            jokerDoublePointsUsed = true;
+            jokerDoublePoints.setDisable(true);
+            jokerDoublePoints.setOpacity(0.25);
+            jokerDoublePointsUsed = true;
+        }
     }
 
     /**
@@ -170,6 +198,7 @@ public class GameScreenCtrl extends SceneController {
             System.out.println("fuck");
             GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         }
+        initJokers();
         show();
     }
 
@@ -390,6 +419,8 @@ public class GameScreenCtrl extends SceneController {
                 break;
         }
         rewardLabel.setVisible(false);
+        jokerDoublePointsUsed = false;
+        answerGiven = false;
     }
 
     /**
@@ -410,12 +441,17 @@ public class GameScreenCtrl extends SceneController {
     public void sendAnswer(long answer) {
         superSpecialIndex = questionIndex - 1;
         System.out.print("sending answer");
-        System.out.println(answer + "foo");
+        System.out.println(answer);
+        int timeLeft = getTimeLeft();
+        if (jokerDoublePointsUsed) {
+            timeLeft *= 2;
+        }
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
-                superSpecialIndex, answer, getTimeLeft());
+                questionIndex, answer, timeLeft);
         System.out.println("foo time: " + questionIndex);
         System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
+        answerGiven = true;
     }
 
     private void showCorrectAnswer() {
@@ -452,9 +488,22 @@ public class GameScreenCtrl extends SceneController {
                 break;
         }
 
+    }
 
-
-
+    private void removeIncorrectAnswer(long correctAnswer) {
+        switch (activeQuestion.getQuestionType()) {
+            case 0:
+                myFxml.get(QuestionTypeAComponentCtrl.class).removeIncorrectAnswer(correctAnswer);
+                break;
+            case 1:
+                myFxml.get(QuestionTypeBComponentCtrl.class).removeIncorrectAnswer(correctAnswer);
+                break;
+            case 2:
+                myFxml.get(QuestionTypeCComponentCtrl.class).removeIncorrectAnswer(correctAnswer);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -466,10 +515,22 @@ public class GameScreenCtrl extends SceneController {
         emoji1.setImage(new Image("client/images/emoji1.png"));
         emoji2.setImage(new Image("client/images/emoji2.png"));
         emoji3.setImage(new Image("client/images/emoji3.png"));
+
+        jokerRemoveOneIncorrect.setImage(new Image("client/images/joker1.png"));
+        jokerDoublePoints.setImage(new Image("client/images/joker2.png"));
     }
 
     // This is stupid, why not use the ACTUAL time left?
     private int getTimeLeft() {
         return (int) Math.round(progressBar.getProgress() * 100);
     }
+
+    private void initJokers() {
+        jokerDoublePoints.setOpacity(1);
+        jokerDoublePoints.setDisable(false);
+
+        jokerRemoveOneIncorrect.setOpacity(1);
+        jokerRemoveOneIncorrect.setDisable(false);
+    }
+
 }
