@@ -6,6 +6,7 @@ import static client.utils.FileUtils.readNickname;
 import static client.utils.FileUtils.writeNickname;
 import static client.utils.UserAlert.userAlert;
 
+import client.Main;
 import client.MyFXML;
 import client.communication.LeaderboardCommunication;
 import client.communication.WaitingRoomCommunication;
@@ -81,6 +82,7 @@ public class SplashCtrl extends SceneController {
     private void initTextField() {
         username = readNickname();
         usernameText.setText(username);
+        Main.primaryStage.setTitle(username);
     }
 
     /**
@@ -100,6 +102,7 @@ public class SplashCtrl extends SceneController {
                     "Username is too long",
                     "Username can be less no more than 20 characters");
         }
+        Main.primaryStage.setTitle(username);
     }
 
     /**
