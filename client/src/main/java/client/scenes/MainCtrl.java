@@ -6,8 +6,6 @@ import client.communication.WaitingRoomCommunication;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import commons.TaskScheduler;
-
-import java.net.ConnectException;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
