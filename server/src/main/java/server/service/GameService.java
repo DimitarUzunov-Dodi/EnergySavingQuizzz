@@ -37,7 +37,7 @@ public class GameService {
         this.activeGames = new HashMap<String, Game>();
         this.activityRepository = activityRepository;
         this.random = random;
-        this.currentPublicGame = createGame();
+        this.currentPublicGame = "";
     }
 
     /**
@@ -155,8 +155,9 @@ public class GameService {
      * @param username username of the user that leaves
      */
     public void leaveGame(String gameCode, String username) {
+        System.out.println(gameCode);
         activeGames.get(gameCode).removeUser(new User(username));
-        if (getUsers(gameCode).size() == 0) {
+        if (getUsers(gameCode).size() == 0 && !gameCode.equals(currentPublicGame)) {
             activeGames.remove(gameCode);
         }
     }
@@ -302,5 +303,9 @@ public class GameService {
             }
         }
         return null;
+    }
+
+    public void setCurrentPublicGame(String currentPublicGame) {
+        this.currentPublicGame = currentPublicGame;
     }
 }

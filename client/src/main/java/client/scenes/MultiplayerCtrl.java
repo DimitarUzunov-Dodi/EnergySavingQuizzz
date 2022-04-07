@@ -43,12 +43,6 @@ public class MultiplayerCtrl extends SceneController {
     private void onJoinPublic() {
         try {
             currentGameID = WaitingRoomCommunication.getPublicCode();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            UserAlert.userAlert("WARN", "Cannot connect ot server",
-                    "Check your connection and try again.");
-        }
-        try {
             joinGame();
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -89,6 +83,7 @@ public class MultiplayerCtrl extends SceneController {
                     "Username is already taken",
                     "Username already in use in this game!");
         } else if (statusCode == 404 || statusCode == 418) {
+            System.out.println(statusCode);
             Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
             quitAlert.setTitle("Oops");
             quitAlert.setHeaderText(

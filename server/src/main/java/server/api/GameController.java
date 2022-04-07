@@ -156,6 +156,9 @@ public class GameController {
      */
     @GetMapping("/get/public")
     public ResponseEntity<?> getPublicCode() {
+        if (gameService.getCurrentPublicGame().equals("")) {
+            gameService.setCurrentPublicGame(gameService.createGame());
+        }
         return ResponseEntity.ok().body(gameService.getCurrentPublicGame());
     }
 

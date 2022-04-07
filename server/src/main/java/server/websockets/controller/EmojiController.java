@@ -121,7 +121,12 @@ public class EmojiController {
     @SendTo("/time/get/receive/{currentGameID}")
     public Long[] getDate(@DestinationVariable String currentGameID,
                         @DestinationVariable Integer questionNumber, String foo) throws Exception {
-
+        if (foo.equals("Joker")) {
+            WsGame res = gameTimes.get(currentGameID).get(questionNumber);
+            Long[] realRes = new Long[]{Instant.now().toEpochMilli(), (res.endTime.toEpochMilli()
+                    - ((res.endTime.toEpochMilli() - Instant.now().toEpochMilli()) / 2)), 0L};
+            return realRes;
+        }
         LOGGER.info("getting time");
         if (!gameTimes.containsKey(currentGameID)) {
             LOGGER.info("poo");
@@ -152,7 +157,7 @@ public class EmojiController {
             LOGGER.info("SENDING CHECK");
             Long[] array = new Long[]{gameTimes.get(currentGameID)
                 .get(questionNumber).startTime.toEpochMilli(),gameTimes.get(currentGameID)
-                .get(questionNumber).endTime.toEpochMilli()};
+                .get(questionNumber).endTime.toEpochMilli(), -1L};
             return array;
         }
 

@@ -20,7 +20,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -54,7 +57,10 @@ public class GameScreenCtrl extends SceneController {
     private ObservableList<String> userList;
     private ObservableList<EmojiListCell> userListWithEmojis;
     private Map<String, String> emojisForUsers;
-
+    private Map<String, ScheduledFuture> emojisForDestruction;
+    public static ScheduledExecutorService emojiService;
+    private boolean bool = false;
+    private int superSpecialIndex = 0;
     @FXML
     private StackPane questionHolder;
     @FXML
@@ -76,9 +82,15 @@ public class GameScreenCtrl extends SceneController {
     @FXML
     private ImageView jokerDoublePoints;
 
+    /**
+     * Constructor is changed for emoji disappearing purposes.
+     * @param myFxml myfxml object
+     */
+
     @Inject
     public GameScreenCtrl(MyFXML myFxml) {
         super(myFxml);
+        emojiService = Executors.newSingleThreadScheduledExecutor();
     }
 
     /**
@@ -148,13 +160,14 @@ public class GameScreenCtrl extends SceneController {
      */
     @Override
     public void show(Object... args) {
+        bool = false;
         emojisForUsers = new HashMap<>();
+        emojisForDestruction = new HashMap<>();
         currentLeaderboard.setCellFactory(param -> new ListCell<EmojiListCell>() {
             @Override
             protected void updateItem(EmojiListCell myObject, boolean b) {
                 super.updateItem(myObject, b);
                 if (myObject != null) {
-                    setText(myObject.getName());
                     ImageView img = new ImageView();
                     if (myObject.getEmoji() != null) {
                         img.setFitHeight(20);
@@ -163,7 +176,10 @@ public class GameScreenCtrl extends SceneController {
                     } else {
                         img.setImage(null);
                     }
-                    setGraphic(img);
+                    Platform.runLater(() -> {
+                        setText(myObject.getName());
+                        setGraphic(img);
+                    });
                 }
             }
         });
@@ -179,6 +195,7 @@ public class GameScreenCtrl extends SceneController {
             // ws setup
             setupWebSockets();
             // receive first question time
+            System.out.println("fuck");
             GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         }
         initJokers();
@@ -205,14 +222,18 @@ public class GameScreenCtrl extends SceneController {
         }
         // refresh player list
         currentLeaderboard.setItems(userListWithEmojis);
-        progressBar.setProgress(1d);
-        if (tasks[0] != null) {
+        if (questionIndex != 0) {
+            progressBar.setProgress(1d);
+            if (tasks[0] != null) {
 
-            tasks[0].cancel(false);
+                tasks[0].cancel(false);
+            }
+            tasks[0] = SceneController
+                .scheduleProgressBar(progressBar, roundEndTime);
         }
-        tasks[0] = SceneController
-            .scheduleProgressBar(progressBar, roundEndTime);
 
+
+        progressBar.setProgress(1);
         // UI stuff
 
         refreshQuestion();
@@ -246,17 +267,40 @@ public class GameScreenCtrl extends SceneController {
 
                 roundStartTime = Instant.ofEpochMilli(o[0]);
                 roundEndTime = Instant.ofEpochMilli(o[1]);
+                System.out.println(roundEndTime);
+                Long check = o[2];
+                if (check == 0L) {
+                    //TODO
+                }
 
+                if (check != 0L) {
+                    questionIndex++;
+                }
                 // handle end of game
-                if (questionIndex++ >= 3) {
+                if (questionIndex >= 4) {
                     GameCommunication.disconnect(); // disconnects from ws
                     for (var task: tasks) { // cancel all queued tasks
-                        task.cancel(false);
+                        if (task != null) {
+                            task.cancel(false);
+                        }
                     }
                     // transition immediately
                     Platform.runLater(() -> myFxml.showScene(EndLeaderboardCtrl.class));
                     return;
                 }
+
+
+                if (questionIndex == 1) {
+                    bool = true;
+                    if (tasks[0] != null) {
+
+                        tasks[0].cancel(false);
+                    }
+                    progressBar.setProgress(1d);
+                    tasks[0] = SceneController
+                        .scheduleProgressBar(progressBar, roundEndTime);
+                }
+
 
                 // transition to leaderboard
                 if (tasks[1] != null) {
@@ -323,10 +367,23 @@ public class GameScreenCtrl extends SceneController {
                         }
                         Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
                     }).run();
-                    scheduler.scheduleAtInstant(() -> {
+                    if (emojisForDestruction.containsKey(v.username)) {
+                        emojisForDestruction.get(v.username).cancel(true);
+                    }
+                    ScheduledFuture f = emojiService.schedule(() -> {
                         emojisForUsers.remove(v.username);
-                    },Instant.now().plusSeconds(3));
-
+                        userListWithEmojis = FXCollections.observableList(new ArrayList<>());
+                        for (String name : userList) {
+                            if (emojisForUsers.containsKey(name)) {
+                                userListWithEmojis.add(
+                                        new EmojiListCell(emojisForUsers.get(name), name));
+                            } else {
+                                userListWithEmojis.add(new EmojiListCell(null, name));
+                            }
+                        }
+                        Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
+                    },500, TimeUnit.MILLISECONDS);
+                    emojisForDestruction.put(v.username, f);
                 });
     }
 
@@ -334,7 +391,13 @@ public class GameScreenCtrl extends SceneController {
      * Get the question from the server and display it.
      */
     public void refreshQuestion() {
-        activeQuestion = GameCommunication.getQuestion(currentGameID, questionIndex);
+        int specialIndex = questionIndex;
+        if (bool) {
+            specialIndex--;
+        }
+        System.out.println("REAL QUESTION INDEX: " + questionIndex);
+        System.out.println("SPECIALINDEX: " + specialIndex);
+        activeQuestion = GameCommunication.getQuestion(currentGameID, specialIndex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class)
@@ -376,6 +439,7 @@ public class GameScreenCtrl extends SceneController {
      * @param answer - answer from the user
      */
     public void sendAnswer(long answer) {
+        superSpecialIndex = questionIndex - 1;
         System.out.print("sending answer");
         System.out.println(answer);
         int timeLeft = getTimeLeft();
@@ -385,6 +449,7 @@ public class GameScreenCtrl extends SceneController {
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
                 questionIndex, answer, timeLeft);
         System.out.println("foo time: " + questionIndex);
+        System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         answerGiven = true;
     }
@@ -399,7 +464,7 @@ public class GameScreenCtrl extends SceneController {
             });
         }
 
-        long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex - 1);
+        long correctAnswer = GameCommunication.getAnswer(currentGameID, superSpecialIndex);
         System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
     }

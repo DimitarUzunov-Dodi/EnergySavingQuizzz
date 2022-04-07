@@ -27,6 +27,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -53,10 +54,16 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @Override
     public void show() {
+        cleanGraph();
+        backButtonImg.setImage(new Image(("client/images/exit_icon.jpg")));
         scheduler.execute(() -> {
             Optional<List<User>> l = CommunicationUtils.getAllUsers(currentGameID);
 
             if (l.isPresent()) {
+                //Sets the graph smaller if it is one player playing
+                if (l.get().size() == 1) {
+                    chart.lookup(".chart").setStyle("-fx-max-width: 60");
+                }
                 //Sorts the list for a proper display
                 User[] array = l.get().toArray(new User[l.get().size()]);
                 ArrayList<User> sortedList = new ArrayList<>(Arrays.asList(array));
@@ -83,6 +90,7 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @FXML
     private void nextGame() {
+        cleanGraph();
         try {
             currentGameID = WaitingRoomCommunication.getPublicCode();
         } catch (RuntimeException e) {
@@ -127,6 +135,15 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @FXML
     private void onBackButton() {
+        cleanGraph();
         myFxml.showScene(SplashCtrl.class);
+    }
+
+    /**
+     * fixes the data in on the graph.
+     */
+    private void cleanGraph() {
+        chart.lookup(".chart").setStyle("-fx-max-width: 10000");
+        chart.getData().clear();
     }
 }

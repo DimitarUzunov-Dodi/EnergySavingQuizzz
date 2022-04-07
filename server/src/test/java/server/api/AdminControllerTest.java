@@ -3,7 +3,6 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import commons.Activity;
-import commons.ActivityBankEntry;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,18 +34,6 @@ public class AdminControllerTest {
         assertEquals(2, activityRepo.activities.size());
         List<Activity> list = controller.getAllActivities().getBody();
         assertEquals(2, list.size());
-    }
-
-    @Test
-    public void addActivityBankEntryTest() {
-        assertEquals(0, activityRepo.activities.size());
-        ActivityBankEntry a = new ActivityBankEntry("test_id", "/test/test", "a", 24, "test");
-        controller.addActivityBankEntry("3", a);
-        assertEquals(1, activityRepo.activities.size());
-        Activity createdActivity = activityRepo.activities.get(0);
-        assertEquals("a", createdActivity.getActivityText());
-        assertEquals(24, createdActivity.getValue());
-        assertEquals("test", createdActivity.getSource());
     }
 
     @Test
