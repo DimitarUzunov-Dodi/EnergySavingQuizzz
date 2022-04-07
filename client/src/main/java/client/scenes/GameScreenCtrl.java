@@ -44,6 +44,7 @@ public class GameScreenCtrl extends SceneController {
     private Question activeQuestion;
     private int reward;
     private boolean jokerDoublePointsUsed;
+    private boolean answerGiven;
 
     private final Map<String, Image> emojis = Map.ofEntries(
             entry("emoji1", new Image("client/images/emoji1.png")),
@@ -112,12 +113,19 @@ public class GameScreenCtrl extends SceneController {
 
     @FXML
     private void jokerRemoveOneIncorrectPressed() {
+        if (!jokerRemoveOneIncorrect.isDisabled() && !answerGiven
+                && activeQuestion.getQuestionType() != 3) {
 
+            jokerRemoveOneIncorrect.setDisable(true);
+            jokerRemoveOneIncorrect.setOpacity(0.25);
+            long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex);
+            removeIncorrectAnswer(correctAnswer);
+        }
     }
 
     @FXML
     private void jokerDoublePointsPressed() {
-        if (!jokerDoublePoints.isDisabled()) {
+        if (!jokerDoublePoints.isDisabled() && !answerGiven) {
             jokerDoublePointsUsed = true;
             jokerDoublePoints.setDisable(true);
             jokerDoublePoints.setOpacity(0.25);
@@ -173,7 +181,7 @@ public class GameScreenCtrl extends SceneController {
             // receive first question time
             GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         }
-        //initJokers();
+        initJokers();
         show();
     }
 
@@ -349,6 +357,7 @@ public class GameScreenCtrl extends SceneController {
         }
         rewardLabel.setVisible(false);
         jokerDoublePointsUsed = false;
+        answerGiven = false;
     }
 
     /**
@@ -370,12 +379,14 @@ public class GameScreenCtrl extends SceneController {
         System.out.print("sending answer");
         System.out.println(answer);
         int timeLeft = getTimeLeft();
-        if(jokerDoublePointsUsed)
+        if (jokerDoublePointsUsed) {
             timeLeft *= 2;
+        }
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
                 questionIndex, answer, timeLeft);
         System.out.println("foo time: " + questionIndex);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
+        answerGiven = true;
     }
 
     private void showCorrectAnswer() {
@@ -412,9 +423,22 @@ public class GameScreenCtrl extends SceneController {
                 break;
         }
 
+    }
 
-
-
+    private void removeIncorrectAnswer(long correctAnswer) {
+        switch (activeQuestion.getQuestionType()) {
+            case 0:
+                myFxml.get(QuestionTypeAComponentCtrl.class).removeIncorrectAnswer(correctAnswer);
+                break;
+            case 1:
+                myFxml.get(QuestionTypeBComponentCtrl.class).removeIncorrectAnswer(correctAnswer);
+                break;
+            case 2:
+                myFxml.get(QuestionTypeCComponentCtrl.class).removeIncorrectAnswer(correctAnswer);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -436,7 +460,6 @@ public class GameScreenCtrl extends SceneController {
         return (int) Math.round(progressBar.getProgress() * 100);
     }
 
-    /*
     private void initJokers() {
         jokerDoublePoints.setOpacity(1);
         jokerDoublePoints.setDisable(false);
@@ -445,5 +468,4 @@ public class GameScreenCtrl extends SceneController {
         jokerRemoveOneIncorrect.setDisable(false);
     }
 
-     */
 }
