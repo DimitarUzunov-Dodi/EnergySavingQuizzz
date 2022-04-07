@@ -74,6 +74,7 @@ public class UserController {
     public ResponseEntity<String> leaveGame(@PathVariable String gameCode,
                                            @PathVariable String username) {
         if (!(gameService.doesGameExist(gameCode))) {
+            System.out.println(gameCode);
             return ResponseEntity
                     .badRequest()
                     .body("No game found with this game code!");

@@ -155,8 +155,9 @@ public class GameService {
      * @param username username of the user that leaves
      */
     public void leaveGame(String gameCode, String username) {
+        System.out.println(gameCode);
         activeGames.get(gameCode).removeUser(new User(username));
-        if (getUsers(gameCode).size() == 0) {
+        if (getUsers(gameCode).size() == 0 && !gameCode.equals(currentPublicGame)) {
             activeGames.remove(gameCode);
         }
     }

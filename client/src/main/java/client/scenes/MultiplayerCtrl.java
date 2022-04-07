@@ -83,6 +83,7 @@ public class MultiplayerCtrl extends SceneController {
                     "Username is already taken",
                     "Username already in use in this game!");
         } else if (statusCode == 404 || statusCode == 418) {
+            System.out.println(statusCode);
             Alert quitAlert = new Alert(Alert.AlertType.CONFIRMATION);
             quitAlert.setTitle("Oops");
             quitAlert.setHeaderText(
