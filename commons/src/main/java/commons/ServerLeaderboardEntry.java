@@ -36,6 +36,10 @@ public class ServerLeaderboardEntry {
         this.score = score;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     /**
      * gets the player's number of played matches.
      *
