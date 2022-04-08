@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import commons.Activity;
+import commons.ActivityBankEntry;
 import jakarta.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -27,11 +28,31 @@ public class AdminCommunicationTest {
      * in order to simulate server responses.
      */
     @BeforeEach
-    public void setup() {
-        httpServer = null;
-        try {
-            httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
-            httpServer.createContext("/api/admin/restart",
+    public void setup() throws IOException {
+        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+        httpServer.createContext("/api/admin/restart",
+            new HttpHandler() {
+                public void handle(HttpExchange exchange) throws IOException {
+                    byte[] response = "Success".getBytes();
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
+                            response.length);
+                    exchange.getResponseBody().write(response);
+                    exchange.close();
+                }
+            }
+        );
+        httpServer.createContext("/api/admin/activity/all",
+                new HttpHandler() {
+                    public void handle(HttpExchange exchange) throws IOException {
+                        byte[] response = new byte[0];
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
+                                response.length);
+                        exchange.getResponseBody().write(response);
+                        exchange.close();
+                    }
+                }
+        );
+        httpServer.createContext("/api/admin/activity/delete/all",
                 new HttpHandler() {
                     public void handle(HttpExchange exchange) throws IOException {
                         byte[] response = "Success".getBytes();
@@ -41,55 +62,30 @@ public class AdminCommunicationTest {
                         exchange.close();
                     }
                 }
-            );
-            httpServer.createContext("/api/admin/activity/all",
-                    new HttpHandler() {
-                        public void handle(HttpExchange exchange) throws IOException {
-                            byte[] response = new byte[0];
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
-                                    response.length);
-                            exchange.getResponseBody().write(response);
-                            exchange.close();
-                        }
+        );
+        httpServer.createContext("/api/admin/activity/edit/" + activityId,
+                new HttpHandler() {
+                    public void handle(HttpExchange exchange) throws IOException {
+                        byte[] response = "Success".getBytes();
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
+                                response.length);
+                        exchange.getResponseBody().write(response);
+                        exchange.close();
                     }
-            );
-            httpServer.createContext("/api/admin/activity/delete/all",
-                    new HttpHandler() {
-                        public void handle(HttpExchange exchange) throws IOException {
-                            byte[] response = "Success".getBytes();
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
-                                    response.length);
-                            exchange.getResponseBody().write(response);
-                            exchange.close();
-                        }
+                }
+        );
+        httpServer.createContext("/api/admin/activity/add",
+                new HttpHandler() {
+                    public void handle(HttpExchange exchange) throws IOException {
+                        byte[] response = "Success".getBytes();
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
+                                response.length);
+                        exchange.getResponseBody().write(response);
+                        exchange.close();
                     }
-            );
-            httpServer.createContext("/api/admin/activity/edit/" + activityId,
-                    new HttpHandler() {
-                        public void handle(HttpExchange exchange) throws IOException {
-                            byte[] response = "Success".getBytes();
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
-                                    response.length);
-                            exchange.getResponseBody().write(response);
-                            exchange.close();
-                        }
-                    }
-            );
-            httpServer.createContext("/api/admin/activity/add",
-                    new HttpHandler() {
-                        public void handle(HttpExchange exchange) throws IOException {
-                            byte[] response = "Success".getBytes();
-                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,
-                                    response.length);
-                            exchange.getResponseBody().write(response);
-                            exchange.close();
-                        }
-                    }
-            );
-            httpServer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                }
+        );
+        httpServer.start();
     }
 
     @AfterEach
@@ -129,7 +125,13 @@ public class AdminCommunicationTest {
     @Test
     public void addActivityBankEntryTest() {
         serverAddress = "http://localhost:8080";
-        Response result = AdminCommunication.addActivityBankEntry(null, 1);
+        ActivityBankEntry a = new ActivityBankEntry();
+        a.source = "source";
+        a.title = "source";
+        a.id = "source";
+        a.image_path = "source";
+        a.consumption_in_wh = 23;
+        Response result = AdminCommunication.addActivityBankEntry(a, 1);
         assertEquals("Success".length(), result.getLength());
     }
 }
