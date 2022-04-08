@@ -8,7 +8,6 @@ import static client.utils.UserAlert.userAlert;
 
 import client.Main;
 import client.MyFXML;
-import client.communication.LeaderboardCommunication;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import client.utils.UserAlert;

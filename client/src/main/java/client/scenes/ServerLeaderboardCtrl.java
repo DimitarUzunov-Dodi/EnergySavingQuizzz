@@ -1,5 +1,7 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.scheduler;
+
 import client.MyFXML;
 import client.communication.LeaderboardCommunication;
 import client.utils.SceneController;
@@ -17,8 +19,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import static client.scenes.MainCtrl.scheduler;
 
 public class ServerLeaderboardCtrl extends SceneController {
 
