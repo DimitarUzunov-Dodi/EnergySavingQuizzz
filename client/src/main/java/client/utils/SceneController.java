@@ -73,17 +73,18 @@ public abstract class SceneController {
      * Shows this controller's scene on the specified stage.
      */
     protected void present(Stage stage) {
+        stage.setScene(scene);
+        /* depricated stage resizing
         double posX = stage.getX();
         double posY = stage.getY();
         double sizeX = stage.getWidth();
         double sizeY = stage.getHeight();
 
-        stage.setScene(scene);
-
         stage.setWidth(sizeX);
         stage.setHeight(sizeY);
         stage.setX(posX);
         stage.setY(posY);
+        */
     }
 
     /**
