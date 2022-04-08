@@ -22,7 +22,8 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> getThreeRandom();
 
     @Query (
-            value = "select * from activity order by ABS(value - :energy) limit 1",
+            value = "select * from activity order by ABS(value - :energy) "
+                    + "offset 2 fetch next 1 row only",
             nativeQuery = true
     )
     Optional<Activity> getOneRelated(@Param("energy") long energy);
