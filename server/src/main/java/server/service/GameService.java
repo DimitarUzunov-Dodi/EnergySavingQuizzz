@@ -214,8 +214,9 @@ public class GameService {
         } else {
             if (question.getQuestionType() == 3) {
                 if (answer >= 0.25 * correctAnswer && answer <= 1.75 * correctAnswer) {
-                    if(correctAnswer != 0) {
-                        rewardPoints = (int) (1 - Math.abs((answer - correctAnswer) / correctAnswer)) * 10;
+                    if (correctAnswer != 0) {
+                        rewardPoints = (int)
+                            (1 - Math.abs((answer - correctAnswer) / correctAnswer)) * 10;
                     }
                 }
             }
