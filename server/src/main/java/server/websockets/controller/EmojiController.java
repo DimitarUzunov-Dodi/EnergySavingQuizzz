@@ -110,6 +110,7 @@ public class EmojiController {
 
 
 
+
     /**
      * deals with retrieving correct time from server.
      * @param currentGameID the gameID
@@ -150,8 +151,8 @@ public class EmojiController {
             WsGame time = new WsGame(startTime, endTime);
             if (questionNumber != 0) {
                 LOGGER.info("plus 12");
-                time.endTime = time.endTime.plusSeconds(6);
-                time.startTime = time.startTime.plusSeconds(6);
+                time.endTime = time.endTime.plusSeconds(8);
+                time.startTime = time.startTime.plusSeconds(8);
             }
             gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
             LOGGER.info("SENDING CHECK");
@@ -229,5 +230,6 @@ public class EmojiController {
         return emojiInfo;
 
     }
+
 
 }
