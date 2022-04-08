@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.util.concurrent.ScheduledFuture;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -73,7 +74,15 @@ public abstract class SceneController {
      * Shows this controller's scene on the specified stage.
      */
     protected void present(Stage stage) {
+        if (stage.getUserData() == null) {
+            stage.setUserData(new Rectangle(800, 600));
+        } else {
+            stage.setUserData(new Rectangle(stage.getWidth(), stage.getHeight()));
+        }
+        System.out.println("\n()\n");
         stage.setScene(scene);
+        stage.setWidth(((Rectangle)stage.getUserData()).getWidth());
+        stage.setHeight(((Rectangle)stage.getUserData()).getHeight());
     }
 
     /**
