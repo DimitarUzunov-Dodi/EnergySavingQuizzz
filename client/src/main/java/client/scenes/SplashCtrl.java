@@ -68,7 +68,7 @@ public class SplashCtrl extends SceneController {
             currentGameID = WaitingRoomCommunication.createNewGame();
         } catch (RuntimeException e) {
             e.printStackTrace();
-            UserAlert.userAlert("WARN", "Cannot connect ot server",
+            UserAlert.userAlert("WARN", "Cannot connect to server",
                     "Check your connection and try again.");
         }
         // may throw exceptions, but it's unlikely
