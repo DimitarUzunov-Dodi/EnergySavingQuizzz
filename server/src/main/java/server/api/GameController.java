@@ -17,18 +17,14 @@ import server.service.GameService;
 public class GameController {
 
     @Autowired
-    private final Random random;
-    @Autowired
     private final GameService gameService;
 
     /**
      * Constructor for the GameController class.
      *
-     * @param random Random instance for game code generation
      * @param gameService Service
      */
-    public GameController(Random random, GameService gameService) {
-        this.random = random;
+    public GameController(GameService gameService) {
         this.gameService = gameService;
     }
 
@@ -53,7 +49,7 @@ public class GameController {
     @DeleteMapping("/end/{gameCode}")
     public ResponseEntity<?>  endGame(@PathVariable String gameCode) {
 
-        if (gameService.doesGameExist(gameCode)) {
+        if (!gameService.doesGameExist(gameCode)) {
             return ResponseEntity
                     .badRequest()
                     .body("Game not found!");
