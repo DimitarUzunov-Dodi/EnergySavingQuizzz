@@ -228,7 +228,24 @@ public class EmojiController {
             LOGGER.info("Emoji3 send by" + emojiInfo.username);
         }
         return emojiInfo;
+    }
 
+    /**
+     * sends the appropriate emoji to the clients of all websockets connected.
+     *
+     * @param emojiInfo the recieved emoji
+     * @return the sent emoji
+     * @throws Exception Exception
+     */
+    @MessageMapping("/joker/{gameID}/{username}")
+    @SendTo("/joker/receive/{gameID}")
+    public EmojiMessage sendJoker(
+            @DestinationVariable String gameID, @DestinationVariable String username,
+            EmojiMessage emojiInfo) throws Exception {
+        System.out.println("JOKER Activated");
+        LOGGER.info(gameID);
+        LOGGER.info("Joker used by " + emojiInfo.username);
+        return emojiInfo;
     }
 
 

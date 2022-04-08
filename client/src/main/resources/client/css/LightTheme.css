@@ -24,3 +24,6 @@
 .default-color0.chart-bar {
     -fx-bar-fill: #fffa00
 }
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
