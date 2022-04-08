@@ -219,6 +219,7 @@ public class GameScreenCtrl extends SceneController {
         emojisForUsers = new HashMap<>();
         emojisForDestruction = new HashMap<>();
         jokersForUsers = new HashMap<>();
+        currentLeaderboard.getItems().clear();
         userList = FXCollections.observableList(
                 CommunicationUtils.getAllUsers(currentGameID)
                         .orElse(new ArrayList<>(0))
