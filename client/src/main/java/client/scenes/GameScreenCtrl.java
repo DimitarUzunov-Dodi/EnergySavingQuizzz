@@ -43,7 +43,7 @@ public class GameScreenCtrl extends SceneController {
     private Instant roundStartTime;
     private Instant roundEndTime;
     private int questionIndex;
-    private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[6];
+    private final ScheduledFuture<?>[] tasks = new ScheduledFuture<?>[7];
     private Question activeQuestion;
     private int reward;
     private boolean jokerDoublePointsUsed;
@@ -291,16 +291,21 @@ public class GameScreenCtrl extends SceneController {
 
                 // handle end of game
                 if (questionIndex >= 20) {
-                    GameCommunication.disconnect(); // disconnects from ws
-                    for (var task: tasks) { // cancel all queued tasks
-                        if (task != null) {
-                            task.cancel(false);
+                    tasks[6] = scheduler.scheduleAtInstant( () ->{
+                        GameCommunication.disconnect(); // disconnects from ws
+                        for (var task: tasks) { // cancel all queued tasks
+                            if (task != null) {
+                                task.cancel(false);
+                            }
                         }
-                    }
-                    // transition immediately
-                    Platform.runLater(() -> myFxml.showScene(EndLeaderboardCtrl.class));
-                    return;
-                }
+                        // transition immediately
+                        Platform.runLater(() -> myFxml.showScene(EndLeaderboardCtrl.class));
+                        return;
+
+
+
+                }, Instant.now().plusSeconds(2));
+                };
 
                 if (tasks[0] != null) {
 
