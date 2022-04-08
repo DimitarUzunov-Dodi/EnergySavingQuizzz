@@ -6,10 +6,10 @@ public class EmojiListCell {
     private String joker;
 
     /**
-     * Creates an emoji.
-     * @param emoji and emoji
-     * @param name a name
-     * @param joker a joker
+     * Default constructor used for creating a new cell in the list view.
+     * @param emoji emoji code for displaying the emoji
+     * @param name name of the user
+     * @param joker joker that user might have used
      */
     public EmojiListCell(String emoji, String name, String joker) {
         this.emoji = emoji;

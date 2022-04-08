@@ -66,14 +66,24 @@ public abstract class SceneController {
      * Shows this controller's scene on the primary stage.
      */
     protected void present() {
-        Main.primaryStage.setScene(scene);
+        present(Main.primaryStage);
     }
 
     /**
      * Shows this controller's scene on the specified stage.
      */
     protected void present(Stage stage) {
+        double posX = stage.getX();
+        double posY = stage.getY();
+        double sizeX = stage.getWidth();
+        double sizeY = stage.getHeight();
+
         stage.setScene(scene);
+
+        stage.setWidth(sizeX);
+        stage.setHeight(sizeY);
+        stage.setX(posX);
+        stage.setY(posY);
     }
 
     /**
