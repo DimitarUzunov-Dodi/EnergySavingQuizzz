@@ -135,7 +135,8 @@ public class GameScreenCtrl extends SceneController {
             long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex);
             removeIncorrectAnswer(correctAnswer);
 
-            EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username, " used Joker with answer removal");
+            EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username,
+                " used Joker with answer removal");
             GameCommunication.send("/app/joker/" + currentGameID
                     + "/" + MainCtrl.username, emojiInfo);
         }
@@ -149,7 +150,8 @@ public class GameScreenCtrl extends SceneController {
             jokerDoublePoints.setOpacity(0.25);
             jokerDoublePointsUsed = true;
 
-            EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username, " used Joker with double points");
+            EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username,
+                " used Joker with double points");
             GameCommunication.send("/app/joker/" + currentGameID
                     + "/" + MainCtrl.username, emojiInfo);
         }
@@ -230,9 +232,11 @@ public class GameScreenCtrl extends SceneController {
         for (String name : userList) {
             if (emojisForUsers.containsKey(name)) {
                 userListWithEmojis.add(
-                        new EmojiListCell(emojisForUsers.get(name), name, jokersForUsers.getOrDefault(name, "")));
+                        new EmojiListCell(emojisForUsers.get(name),
+                            name, jokersForUsers.getOrDefault(name, "")));
             } else {
-                userListWithEmojis.add(new EmojiListCell(null, name, jokersForUsers.getOrDefault(name, "")));
+                userListWithEmojis.add(new EmojiListCell(null,
+                    name, jokersForUsers.getOrDefault(name, "")));
             }
         }
         // refresh player list
@@ -283,15 +287,16 @@ public class GameScreenCtrl extends SceneController {
                 roundStartTime = Instant.ofEpochMilli(o[0]);
                 roundEndTime = Instant.ofEpochMilli(o[1]);
                 System.out.println(roundEndTime);
+
                 if (tasks[5] != null) {
 
                     tasks[5].cancel(false);
                 }
-                    questionIndex++;
+                questionIndex++;
 
                 // handle end of game
                 if (questionIndex >= 20) {
-                    tasks[6] = scheduler.scheduleAtInstant( () ->{
+                    tasks[6] = scheduler.scheduleAtInstant(() -> {
                         GameCommunication.disconnect(); // disconnects from ws
                         for (var task: tasks) { // cancel all queued tasks
                             if (task != null) {
@@ -304,8 +309,8 @@ public class GameScreenCtrl extends SceneController {
 
 
 
-                }, Instant.now().plusSeconds(2));
-                };
+                    }, Instant.now().plusSeconds(2));
+                }
 
                 if (tasks[0] != null) {
 
@@ -384,9 +389,11 @@ public class GameScreenCtrl extends SceneController {
                         for (String name : userList) {
                             if (emojisForUsers.containsKey(name)) {
                                 userListWithEmojis.add(
-                                        new EmojiListCell(emojisForUsers.get(name), name, jokersForUsers.getOrDefault(name, "")));
+                                        new EmojiListCell(emojisForUsers.get(name),
+                                            name, jokersForUsers.getOrDefault(name, "")));
                             } else {
-                                userListWithEmojis.add(new EmojiListCell(null, name, jokersForUsers.getOrDefault(name, "")));
+                                userListWithEmojis.add(new EmojiListCell(null,
+                                    name, jokersForUsers.getOrDefault(name, "")));
                             }
                         }
                         Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
@@ -400,9 +407,11 @@ public class GameScreenCtrl extends SceneController {
                         for (String name : userList) {
                             if (emojisForUsers.containsKey(name)) {
                                 userListWithEmojis.add(
-                                        new EmojiListCell(emojisForUsers.get(name), name, jokersForUsers.getOrDefault(name, "")));
+                                        new EmojiListCell(emojisForUsers.get(name),
+                                            name, jokersForUsers.getOrDefault(name, "")));
                             } else {
-                                userListWithEmojis.add(new EmojiListCell(null, name, jokersForUsers.getOrDefault(name, "")));
+                                userListWithEmojis.add(new EmojiListCell(null,
+                                    name, jokersForUsers.getOrDefault(name, "")));
                             }
                         }
                         Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
@@ -420,16 +429,19 @@ public class GameScreenCtrl extends SceneController {
                         for (String name : userList) {
                             if (emojisForUsers.containsKey(name)) {
                                 userListWithEmojis.add(
-                                        new EmojiListCell(emojisForUsers.get(name), name, jokersForUsers.getOrDefault(name, "")));
+                                        new EmojiListCell(emojisForUsers.get(name),
+                                            name, jokersForUsers.getOrDefault(name, "")));
                             } else {
-                                userListWithEmojis.add(new EmojiListCell(null, name, jokersForUsers.getOrDefault(name, "")));
+                                userListWithEmojis.add(
+                                    new EmojiListCell(
+                                        null, name, jokersForUsers.getOrDefault(name, "")));
                             }
                             System.out.println(jokersForUsers.getOrDefault(name, ""));
                         }
                         Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
                     }).run();
                 });
-        }
+    }
 
     /**
      * Get the question from the server and display it.
@@ -494,7 +506,6 @@ public class GameScreenCtrl extends SceneController {
         }
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
                 superSpecialIndex, answer, timeLeft);
-      //  correctAnswer = GameCommunication.getAnswer(currentGameID, superSpecialIndex );
         System.out.println("foo time: " + questionIndex);
         System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
@@ -502,8 +513,8 @@ public class GameScreenCtrl extends SceneController {
     }
 
     private void showCorrectAnswer() {
-        System.out.println(questionIndex -1 +"shmoo");
-        correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex -2);
+        System.out.println(questionIndex - 1 + "shmoo");
+        correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex - 2);
         if (reward != 0) {
             Platform.runLater(() -> {
                 System.out.println("showing correct answer");

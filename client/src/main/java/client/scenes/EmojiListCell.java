@@ -5,6 +5,12 @@ public class EmojiListCell {
     private String name;
     private String joker;
 
+    /**
+     * Creates an emoji.
+     * @param emoji and emoji
+     * @param name a name
+     * @param joker a joker
+     */
     public EmojiListCell(String emoji, String name, String joker) {
         this.emoji = emoji;
         this.name = name;
