@@ -3,11 +3,10 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import commons.Activity;
-import java.util.List;
-import java.util.Optional;
-
 import commons.ActivityBankEntry;
 import commons.ActivityImage;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
