@@ -3,6 +3,8 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import commons.Activity;
+import commons.ActivityBankEntry;
+import commons.ActivityImage;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,7 @@ public class AdminControllerTest {
     private AdminController controller;
     private TestActivityRepository activityRepo;
     private TestActivityImagesRepository imageRepo;
+
 
     /**
      * Test setup entities.
@@ -76,4 +79,28 @@ public class AdminControllerTest {
         assertEquals(editedA.getValue(), afterEdit.getValue());
         assertEquals(editedA.getImageId(), afterEdit.getImageId());
     }
+
+    @Test
+    public void addActivityBankEntryTest() {
+        ActivityBankEntry a = new ActivityBankEntry();
+        a.id = "testId";
+        a.image_path = "imagepath";
+        a.title = "TEST";
+        a.source = "verygoodsource.com";
+        a.consumption_in_wh = 3;
+        controller.addActivityBankEntry("23", a);
+        assertEquals(1, activityRepo.activities.size());
+        Activity newActivity = activityRepo.getOneRandom().get();
+        assertEquals(a.source, newActivity.getSource());
+        assertEquals(a.title, newActivity.getActivityText());
+        assertEquals(a.consumption_in_wh, newActivity.getValue());
+    }
+
+    @Test
+    public void addActivityImage() {
+        ActivityImage a = new ActivityImage();
+        a.setImageId(1);
+        controller.addActivityImage(a);
+    }
+
 }

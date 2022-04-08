@@ -215,8 +215,8 @@ public class GameService {
             if (question.getQuestionType() == 3) {
                 if (answer >= 0.25 * correctAnswer && answer <= 1.75 * correctAnswer) {
                     if (correctAnswer != 0) {
-                        rewardPoints = (int)
-                            (1 - Math.abs((answer - correctAnswer) / correctAnswer)) * 10;
+                        rewardPoints =
+                                (int) (1 - Math.abs((answer - correctAnswer) / correctAnswer)) * 10;
                     }
                 }
             }
@@ -273,7 +273,12 @@ public class GameService {
         return currentPublicGame;
     }
 
-    private long correctAnswerQuestionTypeA(QuestionTypeA question) {
+    /** Get correct Answer from a question.
+     *
+     * @param question question.
+     * @return correct energy value.
+     */
+    public long correctAnswerQuestionTypeA(QuestionTypeA question) {
         List<Activity> activities = Arrays.asList(
                 question.getActivity1(),
                 question.getActivity2(),
@@ -299,7 +304,13 @@ public class GameService {
         return question.getActivity().getValue();
     }
 
-    private User getUserByUsername(String gameCode, String username) {
+    /**
+     * Get user entity by username.
+     * @param gameCode Gamecode
+     * @param username username
+     * @return the user entity
+     */
+    public User getUserByUsername(String gameCode, String username) {
         for (User user : getUsers(gameCode)) {
             if (user.getUsername().equals(username)) {
                 return user;
