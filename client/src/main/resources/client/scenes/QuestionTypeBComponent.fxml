@@ -12,9 +12,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="questionTypeBPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTypeBComponentCtrl">
+<StackPane fx:id="questionTypeBPane" maxHeight="400.0" maxWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTypeBComponentCtrl">
     <children>
-        <GridPane>
+        <GridPane maxHeight="400.0" maxWidth="600.0">
             <children>
                 <GridPane GridPane.rowIndex="2">
                     <columnConstraints>
@@ -33,7 +33,7 @@
                 </GridPane>
                 <Text id="questionText" fx:id="questionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
-                  <Font size="18.0" />
+                  <Font size="13.0" />
                </font></Text>
                 <GridPane GridPane.rowIndex="1">
                     <columnConstraints>
@@ -51,9 +51,9 @@
                                       <Image url="@../images/OIP.jpg" />
                                   </image>
                               </ImageView>
-                        <Text fx:id="activityText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                        <Text fx:id="activityText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" VBox.vgrow="NEVER">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font></Text>
                      </children>
                   </VBox>
@@ -62,17 +62,17 @@
                         <Region prefHeight="200.0" prefWidth="200.0" />
                         <Text fx:id="answer1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font></Text>
                         <Region prefHeight="200.0" prefWidth="200.0" />
                         <Text fx:id="answer2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font></Text>
                         <Region prefHeight="200.0" prefWidth="200.0" />
                         <Text fx:id="answer3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="13.0" />
                            </font></Text>
                         <Region prefHeight="200.0" prefWidth="200.0" />
                      </children></VBox>

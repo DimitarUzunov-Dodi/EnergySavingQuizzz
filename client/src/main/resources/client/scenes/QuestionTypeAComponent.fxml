@@ -10,9 +10,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="questionTypeAPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTypeAComponentCtrl">
+<StackPane fx:id="questionTypeAPane" maxHeight="400.0" maxWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTypeAComponentCtrl">
     <children>
-        <GridPane>
+        <GridPane maxHeight="400.0" maxWidth="600.0">
             <children>
                 <GridPane GridPane.rowIndex="2">
                     <columnConstraints>
@@ -31,7 +31,7 @@
                 </GridPane>
                 <Text id="questionText" fx:id="questionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.halignment="CENTER">
                <font>
-                  <Font size="18.0" />
+                  <Font size="13.0" />
                </font></Text>
                 <GridPane GridPane.rowIndex="1">
                     <columnConstraints>
@@ -51,15 +51,15 @@
                         </ImageView>
                         <Text id="Question_text" fx:id="activityText1" boundsType="LOGICAL_VERTICAL_CENTER" strokeType="INSIDE" strokeWidth="0.0" text="Text" wrappingWidth="147.7367286682129" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="13.0" />
                      </font></Text>
                         <Text id="Question_text" fx:id="activityText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="146.93669509887695" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="13.0" />
                      </font></Text>
                         <Text id="Question_text" fx:id="activityText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="145.3367042541504" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="13.0" />
                      </font></Text>
                         <ImageView fx:id="image2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                             <image>
