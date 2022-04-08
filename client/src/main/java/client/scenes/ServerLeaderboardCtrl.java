@@ -15,6 +15,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ServerLeaderboardCtrl extends SceneController {
 
@@ -28,6 +30,8 @@ public class ServerLeaderboardCtrl extends SceneController {
     private TableColumn<ServerLeaderboardEntry, Integer> colGamesPlayed;
     @FXML
     private TableColumn<ServerLeaderboardEntry, Integer> colScore;
+    @FXML
+    private ImageView exitImg;
 
     /**
      * Constructor used by INJECTOR.
@@ -41,6 +45,7 @@ public class ServerLeaderboardCtrl extends SceneController {
     @Override
     public void show() {
         // load contents async
+        exitImg.setImage(new Image(("client/images/exit_icon.jpg")));
         new Thread(() -> {
             try {
                 List<ServerLeaderboardEntry> list = LeaderboardCommunication.getServerLeaderboard();
