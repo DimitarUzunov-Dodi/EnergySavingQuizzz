@@ -190,6 +190,9 @@ public class GameScreenCtrl extends SceneController {
                         setText(myObject.getName() + myObject.getJoker());
                         setGraphic(img);
                     });
+                } else {
+                    setText(null);
+                    setGraphic(null);
                 }
             }
         });
@@ -239,6 +242,29 @@ public class GameScreenCtrl extends SceneController {
                     name, jokersForUsers.getOrDefault(name, "")));
             }
         }
+        currentLeaderboard.setCellFactory(param -> new ListCell<EmojiListCell>() {
+            @Override
+            protected void updateItem(EmojiListCell myObject, boolean b) {
+                super.updateItem(myObject, b);
+                if (myObject != null) {
+                    ImageView img = new ImageView();
+                    if (myObject.getEmoji() != null) {
+                        img.setFitHeight(20);
+                        img.setFitWidth(20);
+                        img.setImage(emojis.get(myObject.getEmoji()));
+                    } else {
+                        img.setImage(null);
+                    }
+                    Platform.runLater(() -> {
+                        setText(myObject.getName() + myObject.getJoker());
+                        setGraphic(img);
+                    });
+                } else {
+                    setText(null);
+                    setGraphic(null);
+                }
+            }
+        });
         // refresh player list
         currentLeaderboard.setItems(userListWithEmojis);
         if (questionIndex != 0) {
