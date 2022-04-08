@@ -46,7 +46,6 @@ public class MyFXML {
             ctrl.setScene(new Scene(parent));
             return ctrl;
         } catch (IOException e) {
-            System.out.println("IO error while loading fxml:\n" + e);
             throw new RuntimeException(e); // crash (unless handled by caller)
         }
     }

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import org.glassfish.jersey.client.ClientConfig;
 
-public class Utils {
-    public static String serverAddress;
+public class CommunicationUtils {
+    public static String serverAddress = "";
 
     /**
      * Send GET request to the server to get a list of all users in an ongoing game.
@@ -18,8 +18,6 @@ public class Utils {
      * @return Optional list of Users
      */
     public static Optional<List<User>> getAllUsers(String gameCode) {
-
-
         try {
             if (gameCode == null) {
                 throw new IllegalArgumentException("'gameCode' may not be null!");

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javafx.scene.image.Image;
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 
 public class ActivityImageUtils {
@@ -33,8 +34,11 @@ public class ActivityImageUtils {
             throw new CorruptImageException("Corrupt Image");
         }
 
-        ImageIO.write(bufferedImage, getFormat(path), outputStream);
-
+        try {
+            ImageIO.write(bufferedImage, getFormat(path), outputStream);
+        } catch (IIOException e) {
+            e.printStackTrace();
+        }
         byte[] imageData = outputStream.toByteArray();
         if (imageData.length == 0) {
             return fileToByteArray(path);

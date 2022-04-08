@@ -1,44 +1,45 @@
 package commons;
 
 public class ActivityBankEntry {
-    private String id;
-    private String imagePath;
-    private String title;
-    private long consumptionInWh;
-    private String source;
+    public String id;
+    //CHECKSTYLE:OFF
+    public String image_path;
+    //CHECKSTYLE:ON
+    public String title;
+    //CHECKSTYLE:OFF
+    public long consumption_in_wh;
+    //CHECKSTYLE:ON
+    public String source;
 
-    /**
-     * Constructor, used only for testing, because in app ActivityBankEntry
-     * can be created only with ObjectMapper, which doesnt require constructor.
-     * @param id id attribute
-     * @param imagePath imagePath attribute
-     * @param title title attribute
-     * @param consumptionInWh consumptionInWh attribute
-     * @param source source attribute
-     */
-    public ActivityBankEntry(String id, String imagePath, String title,
-                             long consumptionInWh, String source) {
-        this.id = id;
-        this.imagePath = imagePath;
-        this.title = title;
-        this.consumptionInWh = consumptionInWh;
-        this.source = source;
-    }
+
 
     public String getId() {
         return id;
     }
 
+
+    /**
+     * GETTER.
+     * @return value
+     */
     public String getImagePath() {
-        return imagePath;
+        //CHECKSTYLE:OFF
+        return image_path;
+        //CHECKSTYLE:ON
     }
 
     public String getTitle() {
         return title;
     }
 
+    /**
+     * GETTER.
+     * @return value
+     */
     public long getConsumptionInWh() {
-        return consumptionInWh;
+        //CHECKSTYLE:OFF
+        return consumption_in_wh;
+        //CHECKSTYLE:ON
     }
 
     public String getSource() {

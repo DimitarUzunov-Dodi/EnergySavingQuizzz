@@ -2,6 +2,7 @@ package server.websockets.controller;
 
 import commons.EmojiMessage;
 import commons.Game;
+import commons.TaskScheduler;
 import commons.WsGame;
 import java.time.Instant;
 import java.util.HashMap;
@@ -23,7 +24,11 @@ public class EmojiController {
     @Autowired
     private final GameService gameService;
 
+
     private Game currentGame;
+
+    // used to schedule and execute all sorts of stuff (e.g. end the current round)
+    public static final TaskScheduler scheduler = new TaskScheduler(1);
 
     private HashMap<String,HashMap<String, HashMap<String, Object>>> webSocketSessionList =
         new HashMap<String,HashMap<String, HashMap<String, Object>>>();
@@ -42,6 +47,7 @@ public class EmojiController {
     public EmojiController(Random random, GameService gameService) {
         this.random = random;
         this.gameService = gameService;
+        checkActiveGames();
         //this.currentGame = getGame();
 
     }
@@ -56,6 +62,23 @@ public class EmojiController {
     }
 
     /**
+     * Check for empty games and handle them.
+     */
+    public void checkActiveGames() {
+        scheduler.scheduleAtFixedRate(() -> {
+            for (String gameID: webSocketSessionList.keySet()) {
+                if (gameService.getGame(gameID).getUserList().size() == 0) {
+                    gameService.removeGame(gameID);
+                    webSocketSessionList.remove(gameID);
+
+                }
+            }
+        }, 1000);
+
+    }
+
+
+    /**
      * creates the time for a game.
      *
      * @throws Exception Exception
@@ -64,14 +87,11 @@ public class EmojiController {
     @SendTo("/foo")
     public void createDate(@DestinationVariable String currentGameID,
                            @DestinationVariable Integer questionNumber) throws Exception {
-        LOGGER.info("creating time");
-        LOGGER.info(currentGameID + "  " + questionNumber);
 
         WsGame time = new WsGame(Instant.now(), Instant.now().plusSeconds(gameService
             .getQuestion(currentGameID, questionNumber)
             .getDuration().toSeconds()));
         if (!gameTimes.containsKey(currentGameID)) {
-            LOGGER.info("poo");
             gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
         }
         gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
@@ -82,6 +102,7 @@ public class EmojiController {
 
 
     }
+
 
 
 
@@ -97,10 +118,13 @@ public class EmojiController {
     @SendTo("/time/get/receive/{currentGameID}")
     public Long[] getDate(@DestinationVariable String currentGameID,
                         @DestinationVariable Integer questionNumber, String foo) throws Exception {
-
-        LOGGER.info("getting time");
+        if (foo.equals("Joker")) {
+            WsGame res = gameTimes.get(currentGameID).get(questionNumber);
+            Long[] realRes = new Long[]{Instant.now().toEpochMilli(), (res.endTime.toEpochMilli()
+                    - ((res.endTime.toEpochMilli() - Instant.now().toEpochMilli()) / 2)), 0L};
+            return realRes;
+        }
         if (!gameTimes.containsKey(currentGameID)) {
-            LOGGER.info("poo");
             gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
         }
         if (!userInputs.containsKey(currentGameID)) {
@@ -114,20 +138,19 @@ public class EmojiController {
         userInputs.get(currentGameID).put(questionNumber, last + 1);
         if (userInputs.get(currentGameID).get(questionNumber)
             == gameService.getGame(currentGameID).getUserList().size()) {
-            WsGame time = new WsGame(Instant.now().plusMillis(500),
-                Instant.now().plusSeconds(gameService
+            Instant endTime = Instant.now().plusSeconds(gameService
                 .getQuestion(currentGameID, questionNumber)
-                .getDuration().toSeconds()));
+                .getDuration().toSeconds());
+            Instant startTime = endTime.plusSeconds(8);
+            WsGame time = new WsGame(startTime, endTime);
             if (questionNumber != 0) {
-                LOGGER.info("plus 12");
-                time.endTime = time.endTime.plusSeconds(6);
-                time.startTime = time.startTime.plusSeconds(6);
+                time.endTime = time.endTime.plusSeconds(8);
+                time.startTime = time.startTime.plusSeconds(8);
             }
             gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
-            LOGGER.info("SENDING CHECK");
             Long[] array = new Long[]{gameTimes.get(currentGameID)
                 .get(questionNumber).startTime.toEpochMilli(),gameTimes.get(currentGameID)
-                .get(questionNumber).endTime.toEpochMilli()};
+                .get(questionNumber).endTime.toEpochMilli(), -1L};
             return array;
         }
 
@@ -162,10 +185,6 @@ public class EmojiController {
             new HashMap<String, HashMap<String, HashMap<String, Object>>>();
         webSocketSessionList.put(gameID, middle);
 
-        System.out.println(gameID);
-        System.out.println(gameID);
-        LOGGER.info(gameID);
-        LOGGER.info("fcucucucucu");
         LOGGER.info(webSocketSessionList.toString());
         return properties;
 
@@ -184,9 +203,6 @@ public class EmojiController {
     public EmojiMessage sendEmoji(
         @DestinationVariable String gameID, @DestinationVariable String username,
         EmojiMessage emojiInfo) throws Exception {
-
-        LOGGER.info(gameID);
-        System.out.println("fuck");
         if (emojiInfo.emojiID.equals("emoji1")) {
             LOGGER.info("Emoji1 send by" + emojiInfo.username);
         }
@@ -197,7 +213,23 @@ public class EmojiController {
             LOGGER.info("Emoji3 send by" + emojiInfo.username);
         }
         return emojiInfo;
-
     }
+
+    /**
+     * sends the appropriate emoji to the clients of all websockets connected.
+     *
+     * @param emojiInfo the recieved emoji
+     * @return the sent emoji
+     * @throws Exception Exception
+     */
+    @MessageMapping("/joker/{gameID}/{username}")
+    @SendTo("/joker/receive/{gameID}")
+    public EmojiMessage sendJoker(
+            @DestinationVariable String gameID, @DestinationVariable String username,
+            EmojiMessage emojiInfo) throws Exception {
+        LOGGER.info(gameID + ": Joker used by " + emojiInfo.username);
+        return emojiInfo;
+    }
+
 
 }

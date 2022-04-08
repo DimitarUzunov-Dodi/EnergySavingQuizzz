@@ -4,7 +4,7 @@ import static client.scenes.MainCtrl.currentGameID;
 import static client.scenes.MainCtrl.scheduler;
 
 import client.MyFXML;
-import client.communication.Utils;
+import client.communication.CommunicationUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.User;
@@ -82,7 +82,7 @@ public class MatchLeaderboardCtrl extends SceneController {
 
         // get player list from server
         scheduler.execute(() -> {
-            Optional<List<User>> l = Utils.getAllUsers(currentGameID);
+            Optional<List<User>> l = CommunicationUtils.getAllUsers(currentGameID);
             if (l.isPresent()) {
                 data.clear();
                 data.addAll(l.get());
@@ -100,7 +100,7 @@ public class MatchLeaderboardCtrl extends SceneController {
         scheduler.scheduleAtInstant(() -> {
             barTask.cancel(false); // stop progressBar
             Platform.runLater(() -> myFxml.showScene(GameScreenCtrl.class));
-        }, endTime);
+        }, endTime.minusMillis(10)); // account for slow UI
         // transition screen
         scheduler.scheduleAtInstant(() -> {
             readyText.setVisible(true);

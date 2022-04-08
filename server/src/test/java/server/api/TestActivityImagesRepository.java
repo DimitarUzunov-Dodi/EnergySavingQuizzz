@@ -47,7 +47,7 @@ public class TestActivityImagesRepository implements ActivityImagesRepository {
  
     @Override
     public <S extends ActivityImage> S save(S entity) {
-        return null;
+        return entity;
     }
  
     @Override
@@ -57,7 +57,7 @@ public class TestActivityImagesRepository implements ActivityImagesRepository {
  
     @Override
     public Optional<ActivityImage> findById(Long along) {
-        return Optional.empty();
+        return Optional.of(new ActivityImage());
     }
  
     @Override

@@ -37,7 +37,7 @@ public class GameService {
         this.activeGames = new HashMap<String, Game>();
         this.activityRepository = activityRepository;
         this.random = random;
-        this.currentPublicGame = createGame();
+        this.currentPublicGame = "";
     }
 
     /**
@@ -156,7 +156,7 @@ public class GameService {
      */
     public void leaveGame(String gameCode, String username) {
         activeGames.get(gameCode).removeUser(new User(username));
-        if (getUsers(gameCode).size() == 0) {
+        if (getUsers(gameCode).size() == 0 && !gameCode.equals(currentPublicGame)) {
             activeGames.remove(gameCode);
         }
     }
@@ -212,8 +212,11 @@ public class GameService {
             rewardPoints = 10;
         } else {
             if (question.getQuestionType() == 3) {
-                if (answer >= 0.8 * correctAnswer && answer <= 1.2 * correctAnswer) {
-                    rewardPoints = 10;
+                if (answer >= 0.25 * correctAnswer && answer <= 1.75 * correctAnswer) {
+                    if (correctAnswer != 0) {
+                        rewardPoints =
+                                (int) (1 - Math.abs((answer - correctAnswer) / correctAnswer)) * 10;
+                    }
                 }
             }
         }
@@ -269,7 +272,12 @@ public class GameService {
         return currentPublicGame;
     }
 
-    private long correctAnswerQuestionTypeA(QuestionTypeA question) {
+    /** Get correct Answer from a question.
+     *
+     * @param question question.
+     * @return correct energy value.
+     */
+    public long correctAnswerQuestionTypeA(QuestionTypeA question) {
         List<Activity> activities = Arrays.asList(
                 question.getActivity1(),
                 question.getActivity2(),
@@ -295,12 +303,22 @@ public class GameService {
         return question.getActivity().getValue();
     }
 
-    private User getUserByUsername(String gameCode, String username) {
+    /**
+     * Get user entity by username.
+     * @param gameCode Gamecode
+     * @param username username
+     * @return the user entity
+     */
+    public User getUserByUsername(String gameCode, String username) {
         for (User user : getUsers(gameCode)) {
             if (user.getUsername().equals(username)) {
                 return user;
             }
         }
         return null;
+    }
+
+    public void setCurrentPublicGame(String currentPublicGame) {
+        this.currentPublicGame = currentPublicGame;
     }
 }

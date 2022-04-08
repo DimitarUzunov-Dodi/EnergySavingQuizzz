@@ -37,7 +37,6 @@ public class AdminController {
      */
     @PostMapping(value = "/restart")
     public ResponseEntity<String> restartServer() {
-        System.out.println("Restart has been started");
         Main.restart();
         return ResponseEntity.ok("Restarted successfully");
     }
@@ -51,15 +50,6 @@ public class AdminController {
         return  ResponseEntity.ok(repo.findAll());
     }
 
-    /*
-    @PostMapping(value = "/activity/add")
-    public ResponseEntity<String> addDefaultActivity() {
-        System.out.println("Adding new activity");
-        repo.save(new Activity("TestText", 13, "SourceText", 1));
-        return ResponseEntity.ok("Added entity successfully");
-    }
-     */
-
     /**
      * POST mapping that adds a new activity.
      * @RequestParam imageId id of the activity image
@@ -70,7 +60,6 @@ public class AdminController {
     public ResponseEntity<String> addActivityBankEntry(
             @RequestParam(name = "imageId") String imageId,
             @RequestBody ActivityBankEntry newActivity) {
-        System.out.println("Adding new activity bank entry");
         Activity translatedActivity = new Activity(
                 newActivity.getTitle(),
                 newActivity.getConsumptionInWh(),
@@ -86,7 +75,6 @@ public class AdminController {
      */
     @DeleteMapping(value = "/activity/delete/all")
     public ResponseEntity<String> deleteAllActivities() {
-        System.out.println("Deleting all activities");
         repo.deleteAll();
         imageRepo.deleteAll();
         return ResponseEntity.ok("Deleted all entities successfully");
@@ -102,7 +90,6 @@ public class AdminController {
     public ResponseEntity<String> editActivity(
             @PathVariable String activityId,
             @RequestBody Activity newActivity) {
-        System.out.println("Editing activity " + activityId);
         repo.save(newActivity);
         return ResponseEntity.ok("Added entity successfully");
     }
@@ -115,7 +102,6 @@ public class AdminController {
     @PostMapping(value = "/activity/add/image")
     public ResponseEntity<Long> addActivityImage(
             @RequestBody ActivityImage newActivityImage) {
-        System.out.println("Adding a new activity image");
         long id = imageRepo.save(newActivityImage).getImageId();
         return ResponseEntity.ok(id);
     }

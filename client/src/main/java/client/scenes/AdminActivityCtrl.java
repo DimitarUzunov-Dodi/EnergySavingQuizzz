@@ -70,10 +70,9 @@ public class AdminActivityCtrl extends SceneController {
     @FXML
     private void refresh() {
         new Thread(() -> {
-            System.out.println("Refreshing activities table...");
             try {
                 data = FXCollections.observableList(AdminCommunication.getAllActivities());
-                activityTable.setItems(data);
+                Platform.runLater(() -> activityTable.setItems(data));
                 System.out.println("Populated table with " + data.size() + " entries.");
             } catch (RuntimeException e) {
                 Platform.runLater(
@@ -83,17 +82,6 @@ public class AdminActivityCtrl extends SceneController {
                                 "Client was unable to connect to the server"));
             }
         }).start();
-    }
-
-    /**
-     * FOR MANUAL TESTING PURPOSES ONLY.
-     * (It's still available in the admin panel)
-     * Adds a dummy activity with fixed values:
-     *
-     */
-    @FXML
-    private void add() {
-        // AdminCommunication.addTestingActivity();
     }
 
     /**
@@ -142,7 +130,6 @@ public class AdminActivityCtrl extends SceneController {
     @FXML
     private void load() {
         new Thread(() -> {
-            System.out.println("Loading activities...");
             try {
                 ActivityBankUtils.unzipActivityBank();
             } catch (IOException exception) {

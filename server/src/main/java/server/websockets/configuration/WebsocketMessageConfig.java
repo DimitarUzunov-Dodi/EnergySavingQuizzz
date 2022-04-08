@@ -21,14 +21,13 @@ public class WebsocketMessageConfig implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint(GAME_ENDPOINT);
-        //System.out.println("foo");
     }
 
 
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry registry) {
 
-        registry.enableSimpleBroker("/topic", "/emoji", "/time");
+        registry.enableSimpleBroker("/topic", "/emoji", "/time", "/joker");
         registry.setApplicationDestinationPrefixes("/app");
     }
 

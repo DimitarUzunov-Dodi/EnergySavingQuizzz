@@ -29,4 +29,6 @@
 #nicknameField{
     -fx-text-fill: #fffc00;
 }
-
+.chart-plot-background {
+    -fx-background-color: transparent;
+}

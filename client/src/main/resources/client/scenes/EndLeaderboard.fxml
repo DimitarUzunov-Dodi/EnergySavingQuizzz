@@ -32,7 +32,7 @@
         </Text>
         <Button fx:id="backButton" alignment="CENTER" mnemonicParsing="false" onAction="#onBackButton" style="-fx-background-color: #f2c914; -fx-background-radius: 10; -fx-border-color: #000000; -fx-border-width: 1; -fx-border-radius: 10;" textAlignment="CENTER" GridPane.rowIndex="2">
             <graphic>
-                <ImageView id="exit_icon" fitHeight="20.0" fitWidth="20.0" preserveRatio="true" rotate="180.0" scaleX="1.4" scaleY="1.4">
+                <ImageView id="exit_icon" fx:id="backButtonImg" fitHeight="20.0" fitWidth="20.0" preserveRatio="true" rotate="180.0" scaleX="1.4" scaleY="1.4">
                     <image>
                         <Image url="@../images/exit_icon.jpg" />
                     </image>

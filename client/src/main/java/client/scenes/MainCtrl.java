@@ -33,7 +33,6 @@ public final class MainCtrl {
         myFxml = new MyFXML(injector);
         scheduler.setRemoveOnCancelPolicy(false);
         scheduler.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-        scheduler.startDebugPrinting();
     }
 
     /**
@@ -46,7 +45,7 @@ public final class MainCtrl {
         Main.primaryStage.setMinWidth(800);
         Main.primaryStage.setMinHeight(600);
 
-        myFxml.showScene(EndLeaderboardCtrl.class);
+        myFxml.showScene(SplashCtrl.class);
         Main.primaryStage.show(); // make app window visible
     }
 
@@ -57,11 +56,12 @@ public final class MainCtrl {
         quitAlert.setHeaderText("Are you sure you want to quit?");
         Optional<ButtonType> result = quitAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            WaitingRoomCommunication.leaveGame(currentGameID, username);
             try {
                 WaitingRoomCtrl.pollingThread.cancel();
+                WaitingRoomCommunication.leaveGame(currentGameID, username);
+                GameScreenCtrl.emojiService.shutdown();
             } catch (NullPointerException exception) {
-                System.out.println("Blame Yehor for this stupid catch");
+                exception.printStackTrace();
             }
             scheduler.shutdown();
             Main.primaryStage.close();

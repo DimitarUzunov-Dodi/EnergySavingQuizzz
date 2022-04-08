@@ -150,10 +150,32 @@ public class QuestionTypeBComponentCtrl extends SceneController {
         }
     }
 
+    /**
+     * removeIncorrectAnswer for joker 50/50.
+     * removes 1 incorrect answer out of 3 answers.
+     * @param correctAnswer - correct answer from the server
+     */
+    public void removeIncorrectAnswer(long correctAnswer) {
+        List<Button> answers = new ArrayList<>(Arrays.asList(
+                button1, button2, button3
+        ));
+        Button correctButton = findButtonByAnswer(correctAnswer);
+        answers.remove(correctButton);
+        Collections.shuffle(answers);
+        answers.get(0).setVisible(false);
+        answers.get(0).setDisable(true);
+    }
+
     private void resetButtons() {
         button1.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+        button1.setVisible(true);
+        button1.setDisable(false);
         button2.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+        button2.setVisible(true);
+        button2.setDisable(false);
         button3.setStyle(StyleUtils.DEFAULT_BUTTON_STYLE);
+        button3.setVisible(true);
+        button3.setDisable(false);
     }
 
 

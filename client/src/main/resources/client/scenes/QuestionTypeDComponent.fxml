@@ -14,21 +14,27 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="questionTypeDPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTypeDComponentCtrl">
+<StackPane fx:id="questionTypeDPane" maxHeight="400.0" maxWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTypeDComponentCtrl">
     <children>
         <GridPane>
             <children>
-                <Text id="questionText" fx:id="questionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" />
+                <Text id="questionText" fx:id="questionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="301.3367042541504" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="13.0" />
+               </font></Text>
             <VBox alignment="CENTER" GridPane.rowIndex="1">
                <children>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                              <ImageView fx:id="activityImage" fitHeight="76.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="activityImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                   <image>
                                       <Image url="@../images/OIP.jpg" />
                                   </image>
                               </ImageView>
-                        <Text fx:id="activityText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <Text fx:id="activityText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Text>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -47,9 +53,9 @@
             </VBox>
             <VBox alignment="CENTER" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" prefHeight="26.0" prefWidth="104.0" text="Submit">
+                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" prefHeight="28.0" prefWidth="273.0" text="Submit">
                      <font>
-                        <Font size="10.0" />
+                        <Font size="14.0" />
                      </font></Button>
                </children>
             </VBox>

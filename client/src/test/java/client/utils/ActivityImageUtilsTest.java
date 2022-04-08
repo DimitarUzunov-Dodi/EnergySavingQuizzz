@@ -34,7 +34,6 @@ class ActivityImageUtilsTest {
         for (String filename : images) {
             try {
                 String path = pathToResources + filename;
-                System.out.println(path);
                 BufferedImage imageIn = ImageIO.read(new FileInputStream(path));
 
                 byte[] imageToByteArray = fileToByteArray(path);

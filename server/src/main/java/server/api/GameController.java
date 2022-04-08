@@ -1,6 +1,5 @@
 package server.api;
 
-import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +16,14 @@ import server.service.GameService;
 public class GameController {
 
     @Autowired
-    private final Random random;
-    @Autowired
     private final GameService gameService;
 
     /**
      * Constructor for the GameController class.
      *
-     * @param random Random instance for game code generation
      * @param gameService Service
      */
-    public GameController(Random random, GameService gameService) {
-        this.random = random;
+    public GameController(GameService gameService) {
         this.gameService = gameService;
     }
 
@@ -39,7 +34,6 @@ public class GameController {
      */
     @GetMapping("/new")
     public ResponseEntity<?> createGame() {
-        System.out.println("ACTIVATED TO CREATE NEW GAME");
         return ResponseEntity.ok()
                 .body(gameService.createGame());
     }
@@ -53,7 +47,7 @@ public class GameController {
     @DeleteMapping("/end/{gameCode}")
     public ResponseEntity<?>  endGame(@PathVariable String gameCode) {
 
-        if (gameService.doesGameExist(gameCode)) {
+        if (!gameService.doesGameExist(gameCode)) {
             return ResponseEntity
                     .badRequest()
                     .body("Game not found!");
@@ -156,6 +150,9 @@ public class GameController {
      */
     @GetMapping("/get/public")
     public ResponseEntity<?> getPublicCode() {
+        if (gameService.getCurrentPublicGame().equals("")) {
+            gameService.setCurrentPublicGame(gameService.createGame());
+        }
         return ResponseEntity.ok().body(gameService.getCurrentPublicGame());
     }
 

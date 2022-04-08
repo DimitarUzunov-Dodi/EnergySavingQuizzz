@@ -91,11 +91,10 @@ public class ActivityBankUtils {
      */
     public static void jsonToActivityBankEntry() throws IOException {
         String jsonActivityBankArray = new String(Files.readAllBytes(
-                Paths.get(pathToBankZip + "unzipped/activities.json")));
+                Paths.get(pathToBankZip + "unzipped/activities.json")));;
         ObjectMapper objectMapper = new ObjectMapper();
         List<ActivityBankEntry> activityBankEntryList = objectMapper.readValue(
-                jsonActivityBankArray,
-                new TypeReference<List<ActivityBankEntry>>() {});
+                jsonActivityBankArray, new TypeReference<List<ActivityBankEntry>>() {});
 
         long imageId;
         for (ActivityBankEntry entry : activityBankEntryList) {

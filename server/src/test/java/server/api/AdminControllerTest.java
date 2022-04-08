@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import commons.Activity;
 import commons.ActivityBankEntry;
+import commons.ActivityImage;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ public class AdminControllerTest {
     private AdminController controller;
     private TestActivityRepository activityRepo;
     private TestActivityImagesRepository imageRepo;
+
 
     /**
      * Test setup entities.
@@ -35,18 +37,6 @@ public class AdminControllerTest {
         assertEquals(2, activityRepo.activities.size());
         List<Activity> list = controller.getAllActivities().getBody();
         assertEquals(2, list.size());
-    }
-
-    @Test
-    public void addActivityBankEntryTest() {
-        assertEquals(0, activityRepo.activities.size());
-        ActivityBankEntry a = new ActivityBankEntry("test_id", "/test/test", "a", 24, "test");
-        controller.addActivityBankEntry("3", a);
-        assertEquals(1, activityRepo.activities.size());
-        Activity createdActivity = activityRepo.activities.get(0);
-        assertEquals("a", createdActivity.getActivityText());
-        assertEquals(24, createdActivity.getValue());
-        assertEquals("test", createdActivity.getSource());
     }
 
     @Test
@@ -89,4 +79,28 @@ public class AdminControllerTest {
         assertEquals(editedA.getValue(), afterEdit.getValue());
         assertEquals(editedA.getImageId(), afterEdit.getImageId());
     }
+
+    @Test
+    public void addActivityBankEntryTest() {
+        ActivityBankEntry a = new ActivityBankEntry();
+        a.id = "testId";
+        a.image_path = "imagepath";
+        a.title = "TEST";
+        a.source = "verygoodsource.com";
+        a.consumption_in_wh = 3;
+        controller.addActivityBankEntry("23", a);
+        assertEquals(1, activityRepo.activities.size());
+        Activity newActivity = activityRepo.getOneRandom().get();
+        assertEquals(a.source, newActivity.getSource());
+        assertEquals(a.title, newActivity.getActivityText());
+        assertEquals(a.consumption_in_wh, newActivity.getValue());
+    }
+
+    @Test
+    public void addActivityImage() {
+        ActivityImage a = new ActivityImage();
+        a.setImageId(1);
+        controller.addActivityImage(a);
+    }
+
 }

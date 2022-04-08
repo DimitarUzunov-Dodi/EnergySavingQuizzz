@@ -1,41 +1,95 @@
 package client.scenes;
 
+import static client.Main.primaryStage;
+
 import client.MyFXML;
+import client.communication.CommunicationUtils;
 import client.utils.FileUtils;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class SettingsCtrl extends SceneController {
+
+    private String server;
+    private final Stage stage; // the stage we show this scene on
+    private Double posX; // saved window position
+    private Double posY;
+
     @FXML
-    GridPane background;
+    private TextField serverText;
     @FXML
-    Button colourModeButton;
+    private Button colourModeButton;
 
     /**
-     * Basic constructor.
+     * Sets up the secondary stage as well.
      * @param myFxml handled by INJECTOR
      */
     @Inject
     private SettingsCtrl(MyFXML myFxml) {
         super(myFxml);
+
+        stage = new Stage();
+        stage.setAlwaysOnTop(true);
+        stage.setMinHeight(250);
+        stage.setMinWidth(300);
+        stage.setTitle("Settings");
+        stage.setOnCloseRequest(this::onBackButton);
+
+        posX = primaryStage.getX();
+        posY = primaryStage.getY();
     }
 
+    /**
+     * Show the scene and un-hide the secondary stage.
+     */
     @Override
     public void show() {
-        present();
+        initTextField();
+        stage.setX(posX);
+        stage.setY(posY);
+        present(stage);
+        stage.show();
+        stage.requestFocus();
+    }
 
+    /**
+     * Show the scene without the server field. For use during game.
+     */
+    @Override
+    public void show(Object... args) {
+
+        stage.setX(posX);
+        stage.setY(posY);
+        present(stage);
+        stage.show();
+        serverText.setVisible(false);
+        stage.requestFocus();
+    }
+
+    /**
+     * initialises the text field.
+     */
+    private void initTextField() {
+        server = CommunicationUtils.serverAddress;
+        serverText.setText(server);
     }
 
 
     /**
-     * Function called by Back to MainMenu button when clicked. Changes scene to SplashScreen scene.
+     * Function called by Back button when clicked.
+     * Hides the secondary stage.
      */
     @FXML
-    private void splashAction() {
-        myFxml.showScene(SplashCtrl.class);
+    private void onBackButton(Event event) {
+        posX = stage.getX();
+        posY = stage.getY();
+        stage.hide();
+        primaryStage.requestFocus();
     }
 
     /**
@@ -46,15 +100,24 @@ public class SettingsCtrl extends SceneController {
         if (colourModeButton.getText().equals("Dark Mode")) {
             colourModeButton.setText("Light Mode");
             FileUtils.setTheme("DarkTheme");
-            System.out.println(FileUtils.getTheme());
-            myFxml.showScene(SettingsCtrl.class);
-
         } else {
             FileUtils.setTheme("LightTheme");
-            System.out.println(FileUtils.getTheme());
             colourModeButton.setText("Dark Mode");
-            myFxml.showScene(SettingsCtrl.class);
         }
+        posX = stage.getX();
+        posY = stage.getY();
+        myFxml.showScene(SettingsCtrl.class);
     }
+
+    /**
+     * changes the current server the client is connected to.
+     */
+    @FXML
+    private void changeServer() {
+        server = serverText.getText().strip();
+        CommunicationUtils.serverAddress = server;
+
+    }
+
 
 }

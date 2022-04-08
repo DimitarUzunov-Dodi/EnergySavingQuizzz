@@ -2,7 +2,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.communication.Utils;
+import client.communication.CommunicationUtils;
 import client.scenes.MainCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
@@ -29,9 +29,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         Main.primaryStage = primaryStage;
-        Utils.serverAddress = getParameters().getNamed()
+        CommunicationUtils.serverAddress = getParameters().getNamed()
                 .getOrDefault("server","http://localhost:8080");
-        System.out.println("server: " +  Utils.serverAddress);
         MainCtrl mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.start(); // give control to mainCtrl
     }
