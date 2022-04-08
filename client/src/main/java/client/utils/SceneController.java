@@ -10,7 +10,6 @@ import java.time.Instant;
 import java.util.concurrent.ScheduledFuture;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
