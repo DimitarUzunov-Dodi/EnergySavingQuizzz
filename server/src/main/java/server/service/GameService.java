@@ -213,8 +213,10 @@ public class GameService {
             rewardPoints = 10;
         } else {
             if (question.getQuestionType() == 3) {
-                if (answer >= 0.8 * correctAnswer && answer <= 1.2 * correctAnswer) {
-                    rewardPoints = 10;
+                if (answer >= 0.25 * correctAnswer && answer <= 1.75 * correctAnswer) {
+                    if(correctAnswer != 0) {
+                        rewardPoints = (int) (1 - Math.abs((answer - correctAnswer) / correctAnswer)) * 10;
+                    }
                 }
             }
         }
