@@ -106,7 +106,6 @@ public class WaitingRoomCtrl extends SceneController {
     @FXML
     private void onStartButton() {
         WaitingRoomCommunication.startGame(currentGameID);
-        System.out.println("gameID: " + currentGameID);
     }
     
 }

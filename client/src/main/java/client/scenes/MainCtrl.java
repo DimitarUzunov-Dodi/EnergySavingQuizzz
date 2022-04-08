@@ -33,7 +33,6 @@ public final class MainCtrl {
         myFxml = new MyFXML(injector);
         scheduler.setRemoveOnCancelPolicy(false);
         scheduler.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-        //scheduler.startDebugPrinting();
     }
 
     /**
@@ -62,9 +61,7 @@ public final class MainCtrl {
                 WaitingRoomCommunication.leaveGame(currentGameID, username);
                 GameScreenCtrl.emojiService.shutdown();
             } catch (NullPointerException exception) {
-                //exception.printStackTrace();
-            } catch (RuntimeException re) {
-                //re.printStackTrace();
+                exception.printStackTrace();
             }
             scheduler.shutdown();
             Main.primaryStage.close();

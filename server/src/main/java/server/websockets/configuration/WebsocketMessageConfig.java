@@ -21,7 +21,6 @@ public class WebsocketMessageConfig implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint(GAME_ENDPOINT);
-        //System.out.println("foo");
     }
 
 

@@ -161,7 +161,6 @@ public class QuestionTypeBComponentCtrl extends SceneController {
         ));
         Button correctButton = findButtonByAnswer(correctAnswer);
         answers.remove(correctButton);
-        System.out.println(answers.size());
         Collections.shuffle(answers);
         answers.get(0).setVisible(false);
         answers.get(0).setDisable(true);

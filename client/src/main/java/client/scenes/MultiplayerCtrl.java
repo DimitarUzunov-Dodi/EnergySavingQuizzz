@@ -32,7 +32,6 @@ public class MultiplayerCtrl extends SceneController {
 
     @Override
     public void show() {
-        System.out.println("switching");
         present();
     }
 

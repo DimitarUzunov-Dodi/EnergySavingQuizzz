@@ -88,14 +88,10 @@ public class EmojiController {
     public void createDate(@DestinationVariable String currentGameID,
                            @DestinationVariable Integer questionNumber) throws Exception {
 
-        LOGGER.info("creating time");
-        LOGGER.info(currentGameID + "  " + questionNumber);
-
         WsGame time = new WsGame(Instant.now(), Instant.now().plusSeconds(gameService
             .getQuestion(currentGameID, questionNumber)
             .getDuration().toSeconds()));
         if (!gameTimes.containsKey(currentGameID)) {
-            LOGGER.info("poo");
             gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
         }
         gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
@@ -128,9 +124,7 @@ public class EmojiController {
                     - ((res.endTime.toEpochMilli() - Instant.now().toEpochMilli()) / 2)), 0L};
             return realRes;
         }
-        LOGGER.info("getting time");
         if (!gameTimes.containsKey(currentGameID)) {
-            LOGGER.info("poo");
             gameTimes.put(currentGameID, new HashMap<Integer,WsGame>());
         }
         if (!userInputs.containsKey(currentGameID)) {
@@ -150,12 +144,10 @@ public class EmojiController {
             Instant startTime = endTime.plusSeconds(8);
             WsGame time = new WsGame(startTime, endTime);
             if (questionNumber != 0) {
-                LOGGER.info("plus 12");
                 time.endTime = time.endTime.plusSeconds(8);
                 time.startTime = time.startTime.plusSeconds(8);
             }
             gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
-            LOGGER.info("SENDING CHECK");
             Long[] array = new Long[]{gameTimes.get(currentGameID)
                 .get(questionNumber).startTime.toEpochMilli(),gameTimes.get(currentGameID)
                 .get(questionNumber).endTime.toEpochMilli(), -1L};
@@ -193,10 +185,6 @@ public class EmojiController {
             new HashMap<String, HashMap<String, HashMap<String, Object>>>();
         webSocketSessionList.put(gameID, middle);
 
-        System.out.println(gameID);
-        System.out.println(gameID);
-        LOGGER.info(gameID);
-        LOGGER.info("fcucucucucu");
         LOGGER.info(webSocketSessionList.toString());
         return properties;
 
@@ -215,9 +203,6 @@ public class EmojiController {
     public EmojiMessage sendEmoji(
         @DestinationVariable String gameID, @DestinationVariable String username,
         EmojiMessage emojiInfo) throws Exception {
-        System.out.println("ACtivated");
-        LOGGER.info(gameID);
-        System.out.println("fuck");
         if (emojiInfo.emojiID.equals("emoji1")) {
             LOGGER.info("Emoji1 send by" + emojiInfo.username);
         }
@@ -242,9 +227,7 @@ public class EmojiController {
     public EmojiMessage sendJoker(
             @DestinationVariable String gameID, @DestinationVariable String username,
             EmojiMessage emojiInfo) throws Exception {
-        System.out.println("JOKER Activated");
-        LOGGER.info(gameID);
-        LOGGER.info("Joker used by " + emojiInfo.username);
+        LOGGER.info(gameID + ": Joker used by " + emojiInfo.username);
         return emojiInfo;
     }
 

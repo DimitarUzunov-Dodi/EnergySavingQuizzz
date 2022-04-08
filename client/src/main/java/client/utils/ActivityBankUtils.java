@@ -96,7 +96,6 @@ public class ActivityBankUtils {
         List<ActivityBankEntry> activityBankEntryList = objectMapper.readValue(
                 jsonActivityBankArray, new TypeReference<List<ActivityBankEntry>>() {});
 
-        System.out.println("HERE!");
         long imageId;
         for (ActivityBankEntry entry : activityBankEntryList) {
             try {

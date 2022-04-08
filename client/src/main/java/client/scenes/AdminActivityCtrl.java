@@ -70,7 +70,6 @@ public class AdminActivityCtrl extends SceneController {
     @FXML
     private void refresh() {
         new Thread(() -> {
-            System.out.println("Refreshing activities table...");
             try {
                 data = FXCollections.observableList(AdminCommunication.getAllActivities());
                 Platform.runLater(() -> activityTable.setItems(data));
@@ -131,7 +130,6 @@ public class AdminActivityCtrl extends SceneController {
     @FXML
     private void load() {
         new Thread(() -> {
-            System.out.println("Loading activities...");
             try {
                 ActivityBankUtils.unzipActivityBank();
             } catch (IOException exception) {

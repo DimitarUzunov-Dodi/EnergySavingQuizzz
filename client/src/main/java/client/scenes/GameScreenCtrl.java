@@ -132,7 +132,7 @@ public class GameScreenCtrl extends SceneController {
 
             jokerRemoveOneIncorrect.setDisable(true);
             jokerRemoveOneIncorrect.setOpacity(0.25);
-            long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex-1);
+            long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex - 1);
             removeIncorrectAnswer(correctAnswer);
 
             EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username,
@@ -196,7 +196,6 @@ public class GameScreenCtrl extends SceneController {
                 }
             }
         });
-        System.out.println("game ID: " + currentGameID);
         questionIndex = 0;
         // handle varargs
         if (args.length != 1 || !args[0].getClass().equals(Boolean.class)) {
@@ -208,7 +207,6 @@ public class GameScreenCtrl extends SceneController {
             // ws setup
             setupWebSockets();
             // receive first question time
-            System.out.println("fuck");
             GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         }
         initJokers();
@@ -312,7 +310,6 @@ public class GameScreenCtrl extends SceneController {
 
                 roundStartTime = Instant.ofEpochMilli(o[0]);
                 roundEndTime = Instant.ofEpochMilli(o[1]);
-                System.out.println(roundEndTime);
 
                 if (tasks[5] != null) {
 
@@ -355,14 +352,12 @@ public class GameScreenCtrl extends SceneController {
                 if (tasks[1] != null) {
                     tasks[1].cancel(false);
                 }
-                System.out.println("the index is: " + questionIndex);
                 if (tasks[3] != null) {
                     tasks[3].cancel(false);
                 }
 
                 if (questionIndex == 1) {
                     tasks[5] = scheduler.scheduleAtInstant(() -> {
-                        System.out.println("fucccck");
                         showCorrectAnswer();
 
                     }, roundEndTime);
@@ -402,13 +397,11 @@ public class GameScreenCtrl extends SceneController {
                     tasks[2].cancel(false);
                 }
 
-                System.out.println("foo");
             });
 
         // register for emojis
         GameCommunication.registerForMessages("/emoji/receive/" + currentGameID, EmojiMessage.class,
                 v -> {
-                    System.out.println("Activated");
                     emojisForUsers.put(v.username, v.emojiID);
                     userListWithEmojis = FXCollections.observableList(new ArrayList<>());
                     new Thread(() -> {
@@ -448,7 +441,6 @@ public class GameScreenCtrl extends SceneController {
         // register for jokers
         GameCommunication.registerForMessages("/joker/receive/" + currentGameID, EmojiMessage.class,
                 v -> {
-                    System.out.println("JOKER ACTIVATED");
                     jokersForUsers.put(v.username, v.emojiID);
                     userListWithEmojis = FXCollections.observableList(new ArrayList<>());
                     new Thread(() -> {
@@ -462,7 +454,6 @@ public class GameScreenCtrl extends SceneController {
                                     new EmojiListCell(
                                         null, name, jokersForUsers.getOrDefault(name, "")));
                             }
-                            System.out.println(jokersForUsers.getOrDefault(name, ""));
                         }
                         Platform.runLater(() -> currentLeaderboard.setItems(userListWithEmojis));
                     }).run();
@@ -477,8 +468,6 @@ public class GameScreenCtrl extends SceneController {
         if (bool) {
             specialIndex--;
         }
-        System.out.println("REAL QUESTION INDEX: " + questionIndex);
-        System.out.println("SPECIALINDEX: " + specialIndex);
         activeQuestion = GameCommunication.getQuestion(currentGameID, specialIndex);
         switch (activeQuestion.getQuestionType()) {
             case 0:
@@ -500,7 +489,6 @@ public class GameScreenCtrl extends SceneController {
             default:
                 break;
         }
-        System.out.println("badoodle");
         rewardLabel.setVisible(false);
         jokerDoublePointsUsed = false;
         answerGiven = false;
@@ -524,39 +512,29 @@ public class GameScreenCtrl extends SceneController {
      */
     public void sendAnswer(long answer) {
         superSpecialIndex = questionIndex - 1;
-        System.out.print("sending answer");
-        System.out.println(answer);
         int timeLeft = getTimeLeft();
         if (jokerDoublePointsUsed) {
             timeLeft *= 2;
         }
         reward = GameCommunication.processAnswer(currentGameID, MainCtrl.username,
                 superSpecialIndex, answer, timeLeft);
-        System.out.println("foo time: " + questionIndex);
-        System.out.println("reward: " + reward);
         GameCommunication.send("/app/time/get/" + currentGameID + "/" + questionIndex, "foo");
         answerGiven = true;
     }
 
     private void showCorrectAnswer() {
-        System.out.println(questionIndex - 1 + "shmoo");
         correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex - 2);
         if (reward != 0) {
             Platform.runLater(() -> {
-                System.out.println("showing correct answer");
                 rewardLabel.setText("+" + reward + " points");
                 rewardLabel.setVisible(true);
             });
         }
 
-
-        System.out.println(correctAnswer);
         Platform.runLater(() ->  showAnswerInComponent(correctAnswer));
     }
 
     private void showAnswerInComponent(long correctAnswer) {
-        System.out.println(activeQuestion.getQuestionType() + "    That was the active question");
-        System.out.println(correctAnswer);
         switch (activeQuestion.getQuestionType()) {
             case 0:
                 myFxml.get(QuestionTypeAComponentCtrl.class).showCorrectAnswer(correctAnswer);

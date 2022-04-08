@@ -100,10 +100,8 @@ public class SettingsCtrl extends SceneController {
         if (colourModeButton.getText().equals("Dark Mode")) {
             colourModeButton.setText("Light Mode");
             FileUtils.setTheme("DarkTheme");
-            System.out.println(FileUtils.getTheme());
         } else {
             FileUtils.setTheme("LightTheme");
-            System.out.println(FileUtils.getTheme());
             colourModeButton.setText("Dark Mode");
         }
         posX = stage.getX();
