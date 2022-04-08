@@ -51,15 +51,6 @@ public class AdminController {
         return  ResponseEntity.ok(repo.findAll());
     }
 
-    /*
-    @PostMapping(value = "/activity/add")
-    public ResponseEntity<String> addDefaultActivity() {
-        System.out.println("Adding new activity");
-        repo.save(new Activity("TestText", 13, "SourceText", 1));
-        return ResponseEntity.ok("Added entity successfully");
-    }
-     */
-
     /**
      * POST mapping that adds a new activity.
      * @RequestParam imageId id of the activity image
