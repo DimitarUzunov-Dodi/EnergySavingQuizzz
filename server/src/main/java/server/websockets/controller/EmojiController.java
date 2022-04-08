@@ -110,6 +110,7 @@ public class EmojiController {
 
 
 
+
     /**
      * deals with retrieving correct time from server.
      * @param currentGameID the gameID
@@ -150,8 +151,8 @@ public class EmojiController {
             WsGame time = new WsGame(startTime, endTime);
             if (questionNumber != 0) {
                 LOGGER.info("plus 12");
-                time.endTime = time.endTime.plusSeconds(6);
-                time.startTime = time.startTime.plusSeconds(6);
+                time.endTime = time.endTime.plusSeconds(8);
+                time.startTime = time.startTime.plusSeconds(8);
             }
             gameTimes.get(currentGameID).putIfAbsent(questionNumber, time);
             LOGGER.info("SENDING CHECK");
@@ -227,7 +228,25 @@ public class EmojiController {
             LOGGER.info("Emoji3 send by" + emojiInfo.username);
         }
         return emojiInfo;
-
     }
+
+    /**
+     * sends the appropriate emoji to the clients of all websockets connected.
+     *
+     * @param emojiInfo the recieved emoji
+     * @return the sent emoji
+     * @throws Exception Exception
+     */
+    @MessageMapping("/joker/{gameID}/{username}")
+    @SendTo("/joker/receive/{gameID}")
+    public EmojiMessage sendJoker(
+            @DestinationVariable String gameID, @DestinationVariable String username,
+            EmojiMessage emojiInfo) throws Exception {
+        System.out.println("JOKER Activated");
+        LOGGER.info(gameID);
+        LOGGER.info("Joker used by " + emojiInfo.username);
+        return emojiInfo;
+    }
+
 
 }

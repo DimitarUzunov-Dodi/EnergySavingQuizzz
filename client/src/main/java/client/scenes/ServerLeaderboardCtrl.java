@@ -1,5 +1,7 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.scheduler;
+
 import client.MyFXML;
 import client.communication.LeaderboardCommunication;
 import client.utils.SceneController;
@@ -15,6 +17,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ServerLeaderboardCtrl extends SceneController {
 
@@ -28,6 +32,8 @@ public class ServerLeaderboardCtrl extends SceneController {
     private TableColumn<ServerLeaderboardEntry, Integer> colGamesPlayed;
     @FXML
     private TableColumn<ServerLeaderboardEntry, Integer> colScore;
+    @FXML
+    private ImageView exitImg;
 
     /**
      * Constructor used by INJECTOR.
@@ -41,7 +47,8 @@ public class ServerLeaderboardCtrl extends SceneController {
     @Override
     public void show() {
         // load contents async
-        new Thread(() -> {
+        exitImg.setImage(new Image(("client/images/exit_icon.jpg")));
+        scheduler.execute(() -> {
             try {
                 List<ServerLeaderboardEntry> list = LeaderboardCommunication.getServerLeaderboard();
                 Platform.runLater(() -> {
@@ -58,7 +65,7 @@ public class ServerLeaderboardCtrl extends SceneController {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }).start();
+        });
         present();
     }
 
