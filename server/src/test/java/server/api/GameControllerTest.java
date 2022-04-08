@@ -1,11 +1,8 @@
 package server.api;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,6 +11,7 @@ import commons.Activity;
 import commons.Question;
 import commons.QuestionTypeB;
 import commons.User;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +21,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import server.service.GameService;
 
-import java.util.List;
-import java.util.Random;
-
 
 @WebMvcTest(GameController.class)
 public class GameControllerTest {
 
     @MockBean
-    private transient GameService gameService;;
+    private transient GameService gameService;
     @Autowired
     private transient MockMvc mvc;
     private transient String gameCode;
@@ -71,7 +66,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void endGameFailTest() throws Exception{
+    public void endGameFailTest() throws Exception {
 
         when(gameService.doesGameExist(gameCode)).thenReturn(false);
 
@@ -82,7 +77,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void endGameTest() throws Exception{
+    public void endGameTest() throws Exception {
 
         when(gameService.doesGameExist(gameCode)).thenReturn(true);
 
