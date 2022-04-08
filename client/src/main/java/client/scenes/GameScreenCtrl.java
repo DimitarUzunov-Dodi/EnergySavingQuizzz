@@ -132,7 +132,7 @@ public class GameScreenCtrl extends SceneController {
 
             jokerRemoveOneIncorrect.setDisable(true);
             jokerRemoveOneIncorrect.setOpacity(0.25);
-            long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex);
+            long correctAnswer = GameCommunication.getAnswer(currentGameID, questionIndex-1);
             removeIncorrectAnswer(correctAnswer);
 
             EmojiMessage emojiInfo = new EmojiMessage(MainCtrl.username,
