@@ -8,6 +8,7 @@ import static client.utils.UserAlert.userAlert;
 import client.MyFXML;
 import client.communication.CommunicationUtils;
 import client.communication.GameCommunication;
+import client.communication.LeaderboardCommunication;
 import client.communication.WaitingRoomCommunication;
 import client.utils.SceneController;
 import client.utils.UserAlert;
@@ -82,6 +83,13 @@ public class EndLeaderboardCtrl extends SceneController {
                 GameCommunication.endGame(currentGameID); // end current game
             }
         });
+        scheduler.execute(() -> LeaderboardCommunication.updateServerLeaderboard(username, 1,
+                CommunicationUtils.getAllUsers(currentGameID)
+                        .orElse(new ArrayList<>(0))
+                        .stream()
+                        .filter(o -> ((User)o).getUsername().equals(username))
+                        .collect(Collectors.toList())
+                        .get(0).getScore()));
         present();
     }
 
@@ -135,7 +143,6 @@ public class EndLeaderboardCtrl extends SceneController {
      */
     @FXML
     private void onBackButton() {
-        cleanGraph();
         myFxml.showScene(SplashCtrl.class);
     }
 

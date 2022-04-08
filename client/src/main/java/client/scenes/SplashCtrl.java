@@ -126,7 +126,6 @@ public class SplashCtrl extends SceneController {
      */
     @FXML
     private void onHighScoresButton() {
-        LeaderboardCommunication.updateServerLeaderboard("IceTeaFoot", 0, 16);
         myFxml.showScene(ServerLeaderboardCtrl.class);
     }
 }

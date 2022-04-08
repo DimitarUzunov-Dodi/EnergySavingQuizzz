@@ -18,8 +18,6 @@ public class CommunicationUtils {
      * @return Optional list of Users
      */
     public static Optional<List<User>> getAllUsers(String gameCode) {
-
-
         try {
             if (gameCode == null) {
                 throw new IllegalArgumentException("'gameCode' may not be null!");

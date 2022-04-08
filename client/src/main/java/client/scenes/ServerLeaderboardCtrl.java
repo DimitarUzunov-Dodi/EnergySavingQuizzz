@@ -18,6 +18,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import static client.scenes.MainCtrl.scheduler;
+
 public class ServerLeaderboardCtrl extends SceneController {
 
     private ObservableList<ServerLeaderboardEntry> data;
@@ -46,7 +48,7 @@ public class ServerLeaderboardCtrl extends SceneController {
     public void show() {
         // load contents async
         exitImg.setImage(new Image(("client/images/exit_icon.jpg")));
-        new Thread(() -> {
+        scheduler.execute(() -> {
             try {
                 List<ServerLeaderboardEntry> list = LeaderboardCommunication.getServerLeaderboard();
                 Platform.runLater(() -> {
@@ -63,7 +65,7 @@ public class ServerLeaderboardCtrl extends SceneController {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }).start();
+        });
         present();
     }
 
