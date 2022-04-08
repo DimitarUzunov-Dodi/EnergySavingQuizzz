@@ -3,10 +3,12 @@ package client.scenes;
 public class EmojiListCell {
     private String emoji;
     private String name;
+    private String joker;
 
-    public EmojiListCell(String emoji, String name) {
+    public EmojiListCell(String emoji, String name, String joker) {
         this.emoji = emoji;
         this.name = name;
+        this.joker = joker;
     }
 
     public String getEmoji() {
@@ -17,4 +19,7 @@ public class EmojiListCell {
         return name;
     }
 
+    public String getJoker() {
+        return joker;
+    }
 }
