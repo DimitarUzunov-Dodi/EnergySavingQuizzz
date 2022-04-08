@@ -67,19 +67,19 @@ public abstract class SceneController {
      * Shows this controller's scene on the primary stage.
      */
     protected void present() {
-        Main.primaryStage.setScene(scene);
+        present(Main.primaryStage);
     }
 
     /**
      * Shows this controller's scene on the specified stage.
      */
     protected void present(Stage stage) {
+        System.out.println("\n()\n");
         if (stage.getUserData() == null) {
             stage.setUserData(new Rectangle(800, 600));
         } else {
             stage.setUserData(new Rectangle(stage.getWidth(), stage.getHeight()));
         }
-        System.out.println("\n()\n");
         stage.setScene(scene);
         stage.setWidth(((Rectangle)stage.getUserData()).getWidth());
         stage.setHeight(((Rectangle)stage.getUserData()).getHeight());
